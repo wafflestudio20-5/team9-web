@@ -36,17 +36,20 @@ function Header() {
   return (
     <>
       <header className={styles.header}>
+        {/* sidebar menu */}
         <div className={styles.sidebarContainer}>
           <button>
             <Image src={menu_icon} height={25} alt="sidebar" />
           </button>
         </div>
 
+        {/* title */}
         <div className={styles.titleContainer}>
           <Image src={calendar_icon} height={35} alt="calendar" />
           <span>캘린더</span>
         </div>
 
+        {/* date (today, year, month) */}
         <div className={styles.dateContainer}>
           <div>
             <button className={styles.today}>오늘</button>
@@ -64,22 +67,27 @@ function Header() {
           </div>
         </div>
 
+        {/* utils */}
         <div className={styles.utilContainer}>
+          {/* search */}
           <div className={styles.search}>
             <button>
               <Image src={search_icon} height={25} alt="search" />
             </button>
           </div>
+          {/* help */}
           <div className={styles.help}>
             <button>
               <Image src={help_icon} height={25} alt="help" />
             </button>
           </div>
+          {/* settings */}
           <div className={styles.settings}>
             <button>
               <Image src={settings_icon} height={25} alt="settings" />
             </button>
           </div>
+          {/* page options */}
           <select
             name="pageOption"
             id="pageOption"
@@ -90,6 +98,7 @@ function Header() {
             <option value={PageOption.month.name}>월</option>
             <option value={PageOption.schedule.name}>일정</option>
           </select>
+          {/* user */}
           <div className={styles.user}>
             <button>J</button>
           </div>
