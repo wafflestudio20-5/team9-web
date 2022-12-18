@@ -11,12 +11,15 @@ import styles from './Header.module.scss';
 import { useRouter } from 'next/router';
 
 const PageOption = {
-  month: { name: 'month', path: '/' },
+  index: { name: 'index', path: '/' },
+  month: { name: 'month', path: '/month' },
   schedule: { name: 'schedule', path: '/schedule' },
 };
 
 const getValueFromPathname = (pathname: string) => {
   if (pathname === '/') {
+    return '';
+  } else if (pathname === '/month') {
     return PageOption.month.name;
   } else if (pathname === '/schedule') {
     return PageOption.schedule.name;
@@ -83,6 +86,7 @@ function Header() {
             defaultValue={getValueFromPathname(router.pathname)}
             onChange={onChangePageOption}
           >
+            <option value="">캘린더</option>
             <option value={PageOption.month.name}>월</option>
             <option value={PageOption.schedule.name}>일정</option>
           </select>
