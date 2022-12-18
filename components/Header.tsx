@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import menu_icon from '../public/images/menu_icon.svg';
-import calendar_icon from '../public/images/calendar_icon.svg';
-import next_icon from '../public/images/next_icon.svg';
-import before_icon from '../public/images/before_icon.svg';
-import search_icon from '../public/images/search_icon.svg';
-import help_icon from '../public/images/help_icon.svg';
-import settings_icon from '../public/images/settings_icon.svg';
+import menu_icon from '../public/images/menu_icon.png';
+import calendar_icon from '../public/images/calendar_icon.png';
+import next_icon from '../public/images/next_icon.png';
+import before_icon from '../public/images/before_icon.png';
+import search_icon from '../public/images/search_icon.png';
+import help_icon from '../public/images/help_icon.png';
+import settings_icon from '../public/images/settings_icon.png';
 import styles from './Header.module.scss';
 import { useRouter } from 'next/router';
 
