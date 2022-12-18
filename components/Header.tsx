@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import menu_icon from '../public/images/menu_icon.svg';
 import calendar_icon from '../public/images/calendar_icon.svg';
@@ -8,8 +8,28 @@ import search_icon from '../public/images/search_icon.svg';
 import help_icon from '../public/images/help_icon.svg';
 import settings_icon from '../public/images/settings_icon.svg';
 import styles from './Header.module.scss';
+import { useRouter } from 'next/router';
+
+const PageOption = {
+  month: { name: 'month', path: '/' },
+  schedule: { name: 'schedule', path: '/schedule' },
+};
+
+const getValueFromPathname = (pathname: string) => {
+  if (pathname === '/') {
+    return PageOption.month.name;
+  } else if (pathname === '/schedule') {
+    return PageOption.schedule.name;
+  }
+};
 
 function Header() {
+  const router = useRouter();
+
+  const onChangePageOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    router.push(PageOption[e.target.value]?.path || '/');
+  };
+
   return (
     <>
       <header className={styles.header}>
@@ -68,9 +88,14 @@ function Header() {
             </button>
           </div>
           {/* 페이지 옵션(월/일정) */}
-          <select name="mode" id="mode">
-            <option value="month">월</option>
-            <option value="schedule">일정</option>
+          <select
+            name="pageOption"
+            id="pageOption"
+            defaultValue={getValueFromPathname(router.pathname)}
+            onChange={onChangePageOption}
+          >
+            <option value={PageOption.month.name}>월</option>
+            <option value={PageOption.schedule.name}>일정</option>
           </select>
           {/* 사용자 */}
           <div className={styles.user}>
