@@ -49,9 +49,9 @@ function Header() {
         {/* 날짜 */}
         <div className={styles.dateContainer}>
           <div>
-            {/* 오늘 */}
+            {/* 오늘 (차후에 클릭 시 context 등에 저장해둔 날짜 데이터 변경하도록 수정) */}
             <button className={styles.today}>오늘</button>
-            {/* 월 이동 버튼 */}
+            {/* 월 이동 버튼 (차후에 클릭 시 context 등에 저장해둔 날짜 데이터 변경하도록 수정) */}
             <div className={styles.btnContainer}>
               <button>
                 <Image src={before_icon} height={25} alt="last_month" />
@@ -61,6 +61,7 @@ function Header() {
               </button>
             </div>
             {/* 연월 */}
+            {/* 차후에 선택된 날짜 context 등에 저장해두고 불러와서 동적으로 사용 */}
             <div className={styles.date}>
               <button>2023년 12월</button>
             </div>
