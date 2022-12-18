@@ -1,0 +1,111 @@
+$gray: #f0f0f0;
+
+.header {
+  padding: 8px 15px;
+  height: 65px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    height: 100%;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $gray;
+    }
+  }
+
+  > div {
+    flex-shrink: 0;
+  }
+
+  .sidebarContainer {
+    padding: 10px;
+    width: 50px;
+    height: 100%;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $gray;
+    }
+  }
+
+  .titleContainer {
+    display: flex;
+    align-items: center;
+    margin: 0 20px;
+    width: 180px;
+    height: 100%;
+    font-size: x-large;
+    cursor: default;
+  }
+
+  .dateContainer {
+    display: flex;
+    width: 650px;
+    height: 100%;
+    flex-shrink: 1;
+
+    > div {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 270px;
+
+      .today {
+        width: 70px;
+        height: 70%;
+        text-align: center;
+        border: 1px solid gainsboro;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: $gray;
+        }
+      }
+
+      .btnContainer {
+        height: 100%;
+      }
+
+      .date {
+        height: 100%;
+        button {
+          font-size: large;
+        }
+      }
+    }
+  }
+
+  .utilContainer {
+    display: flex;
+    width: 240px;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+      border-radius: 50%;
+      padding: 10px;
+      width: 45px;
+      height: 90%;
+      text-align: center;
+
+      &:hover {
+        background-color: $gray;
+      }
+    }
+
+    .user {
+      button {
+        font-size: large;
+      }
+    }
+  }
+}
