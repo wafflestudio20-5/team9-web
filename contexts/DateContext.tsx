@@ -1,6 +1,8 @@
 import React, {
     createContext,
+    Dispatch,
     PropsWithChildren,
+    SetStateAction,
     useContext,
     useState,
 } from 'react';
@@ -10,10 +12,10 @@ type DateContextData = {
     month: number;
     date: number;
     day: number;
-    setYear(yyyy: number): void;
-    setMonth(mm: number): void;
-    setDate(dd: number): void;
-    setDay(d: number): void;
+    setYear: Dispatch<SetStateAction<number>>;
+    setMonth: Dispatch<SetStateAction<number>>;
+    setDate: Dispatch<SetStateAction<number>>;
+    setDay: Dispatch<SetStateAction<number>>;
 };
 
 const DateContext = createContext<DateContextData>({
