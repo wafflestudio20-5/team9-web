@@ -10,16 +10,22 @@
         "@types/node": "^18.11.15",
         "@types/react": "^18.0.26",
         "@types/react-dom": "^18.0.9",
+        "@typescript-eslint/parser": "^5.46.1",
+        "eslint-import-resolver-typescript": "^3.5.2",
+        "eslint-plugin-import": "^2.26.0",
         "next": "^13.0.7",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "sass": "^1.57.0",
         "typescript": "^4.9.4",
         "web-vitals": "^2.1.4"
     },
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "start": "next start"
+        "start": "next start",
+        "prettier:fix": "npx prettier --write .",
+        "lint:fix": "npx eslint --fix ."
     },
     "eslintConfig": {
         "extends": [
@@ -38,5 +44,9 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.46.1",
+        "eslint-plugin-react": "^7.31.11"
     }
 }
