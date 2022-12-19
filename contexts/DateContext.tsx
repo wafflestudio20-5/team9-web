@@ -4,6 +4,7 @@ import React, {
     PropsWithChildren,
     SetStateAction,
     useContext,
+    useMemo,
     useState,
 } from 'react';
 
@@ -46,21 +47,22 @@ function DateProvider({ children }: PropsWithChildren) {
     const [date, setDate] = useState(now.getDate());
     const [day, setDay] = useState(now.getDay());
 
+    const value = useMemo(
+        () => ({
+            year,
+            month,
+            date,
+            day,
+            setYear,
+            setMonth,
+            setDate,
+            setDay,
+        }),
+        [year, month, date, day],
+    );
+
     return (
-        <DateContext.Provider
-            value={{
-                year,
-                month,
-                date,
-                day,
-                setYear,
-                setMonth,
-                setDate,
-                setDay,
-            }}
-        >
-            {children}
-        </DateContext.Provider>
+        <DateContext.Provider value={value}>{children}</DateContext.Provider>
     );
 }
 

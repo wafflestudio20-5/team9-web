@@ -2,6 +2,7 @@ import React, {
     createContext,
     PropsWithChildren,
     useContext,
+    useMemo,
     useState,
 } from 'react';
 
@@ -51,8 +52,18 @@ function SessionProvider({ children }: PropsWithChildren) {
 
     // functions related to refresh token may be added later
 
+    const value = useMemo(
+        () => ({
+            user,
+            accessToken,
+            login,
+            logout,
+        }),
+        [user, accessToken],
+    );
+
     return (
-        <SessionContext.Provider value={{ user, accessToken, login, logout }}>
+        <SessionContext.Provider value={value}>
             {children}
         </SessionContext.Provider>
     );
