@@ -23,7 +23,9 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "start": "next start"
+        "start": "next start",
+        "prettier:fix": "npx prettier --write .",
+        "lint:fix": "npx eslint --fix ."
     },
     "eslintConfig": {
         "extends": [
