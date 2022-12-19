@@ -8,7 +8,7 @@ import React, {
     useState,
 } from 'react';
 
-type DateContextData = {
+interface DateContextData {
     year: number;
     month: number;
     date: number;
@@ -17,7 +17,7 @@ type DateContextData = {
     setMonth: Dispatch<SetStateAction<number>>;
     setDate: Dispatch<SetStateAction<number>>;
     setDay: Dispatch<SetStateAction<number>>;
-};
+}
 
 const DateContext = createContext<DateContextData>({
     year: 0,

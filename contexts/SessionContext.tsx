@@ -6,22 +6,22 @@ import React, {
     useState,
 } from 'react';
 
-type LoginInfo = {
+interface LoginInfo {
     id: string;
     password: string;
-};
+}
 
-type User = {
+interface User {
     id: string;
     name: string;
-};
+}
 
-type SessionContextData = {
+interface SessionContextData {
     user: User | null;
     accessToken: string | null;
     login(loginInfo: LoginInfo): void;
     logout(): void;
-};
+}
 
 const SessionContext = createContext<SessionContextData>({
     user: null,
