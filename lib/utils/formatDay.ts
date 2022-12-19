@@ -1,7 +1,7 @@
 export enum DAYS {
     SUN = '일',
     MON = '월',
-    TUS = '화',
+    TUE = '화',
     WED = '수',
     THU = '목',
     FRI = '금',
