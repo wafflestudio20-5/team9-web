@@ -45,3 +45,5 @@ function DateProvider({ children }: PropsWithChildren) {
         </DateContext.Provider>
     );
 }
+
+export default DateProvider;

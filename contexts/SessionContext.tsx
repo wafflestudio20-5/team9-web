@@ -57,3 +57,5 @@ function SessionProvider({ children }: PropsWithChildren) {
         </SessionContext.Provider>
     );
 }
+
+export default SessionProvider;
