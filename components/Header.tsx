@@ -33,7 +33,9 @@ function Header() {
 
     const onChangePageOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const option = e.target.value;
-        router.push(PageOption[option]?.path || '/');
+        console.log(option);
+        console.log(PageOption[option]);
+        // router.push(PageOption[option]?.path || '/');
     };
 
     return (
