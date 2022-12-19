@@ -1,13 +1,15 @@
-import React from 'react';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
-import menu_icon from '../public/images/menu_icon.svg';
-import calendar_icon from '../public/images/calendar_icon.svg';
-import next_icon from '../public/images/next_icon.svg';
+import { useRouter } from 'next/router';
+import React from 'react';
+
 import before_icon from '../public/images/before_icon.svg';
-import search_icon from '../public/images/search_icon.svg';
+import calendar_icon from '../public/images/calendar_icon.svg';
 import help_icon from '../public/images/help_icon.svg';
+import menu_icon from '../public/images/menu_icon.svg';
+import next_icon from '../public/images/next_icon.svg';
+import search_icon from '../public/images/search_icon.svg';
 import settings_icon from '../public/images/settings_icon.svg';
+
 import styles from './Header.module.scss';
 
 const PageOption = {

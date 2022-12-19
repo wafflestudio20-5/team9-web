@@ -3,6 +3,9 @@ module.exports = {
         browser: true,
         es2021: true,
     },
+    settings: {
+        'import/parsers': { '@typescript-eslint/parser': ['.ts'] },
+    },
     extends: [
         'eslint:recommended',
         'plugin:react/recommended',
@@ -16,7 +19,7 @@ module.exports = {
         sourceType: 'module',
     },
     parser: '@typescript-eslint/parser',
-    plugins: ['react', 'import'],
+    plugins: ['react', 'import', '@typescript-eslint'],
     rules: {
         'react/prop-types': 'off',
         'no-unused-vars': 'off',
@@ -24,7 +27,7 @@ module.exports = {
         'import/order': [
             'error',
             {
-                groups: ['builtin', 'external', ['parent', 'sibling'], 'index'],
+                groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
                 pathGroups: [
                     {
                         pattern: 'react',
@@ -43,8 +46,5 @@ module.exports = {
                 'newlines-between': 'always',
             },
         ],
-    },
-    settings: {
-        'import/parsers': { '@typescript-eslint/parser': ['.ts'] },
     },
 };
