@@ -12,7 +12,7 @@ import settings_icon from '../public/images/settings_icon.svg';
 
 import styles from './Header.module.scss';
 
-const PageOption = {
+const PageOption: { [key: string]: { name: string; path: string } } = {
     index: { name: 'index', path: '/' },
     month: { name: 'month', path: '/month' },
     schedule: { name: 'schedule', path: '/schedule' },
@@ -32,7 +32,8 @@ function Header() {
     const router = useRouter();
 
     const onChangePageOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        router.push(PageOption[e.target.value]?.path || '/');
+        const option = e.target.value;
+        router.push(PageOption[option]?.path || '/');
     };
 
     return (
@@ -108,7 +109,7 @@ function Header() {
                         defaultValue={getValueFromPathname(router.pathname)}
                         onChange={onChangePageOption}
                     >
-                        <option value="">캘린더</option>
+                        <option value={PageOption.index.name}>캘린더</option>
                         <option value={PageOption.month.name}>월</option>
                         <option value={PageOption.schedule.name}>일정</option>
                     </select>
