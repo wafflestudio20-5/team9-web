@@ -1,0 +1,35 @@
+$border-gray: #dadce0;
+$font-gray: #70757a;
+$background-gray: #f0f0f0;
+
+.wrapper {
+    display: grid;
+    height: fit-content;
+    padding: 8px 10px 8px 14px;
+    border-bottom: 1px solid $border-gray;
+    grid-template-columns: 140px 1fr;
+}
+
+.dateHolder {
+    display: flex;
+    align-items: baseline;
+    .date {
+        font-size: 18px;
+        color: black;
+        border-radius: 50%;
+        border-color: transparent;
+        height: 36px;
+        width: 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+            background-color: $background-gray;
+        }
+    }
+    .monthDay {
+        font-size: 11px;
+        color: $font-gray;
+    }
+}
