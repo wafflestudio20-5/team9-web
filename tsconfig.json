@@ -16,6 +16,6 @@
         "forceConsistentCasingInFileNames": true,
         "incremental": true
     },
-    "include": ["src", "src/svg.d.ts"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
     "exclude": ["node_modules"]
 }
