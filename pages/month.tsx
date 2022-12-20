@@ -52,13 +52,13 @@ export default function MonthPage() {
             {isOpen && <Sidebar />}
             <div className={styles.monthHolder}>
                 <div className={styles.headrow}>
-                    {DAYS_ARR.map(item => {
-                        return <div>{item}</div>;
+                    {DAYS_ARR.map((item, index) => {
+                        return <div key={index}>{item}</div>;
                     })}
                 </div>
                 <div className={styles.month}>
-                    {monthData.map(dayData => {
-                        return <DayinMonth dayData={dayData} />;
+                    {monthData.map((dayData, index) => {
+                        return <DayinMonth key={index} dayData={dayData} />;
                     })}
                 </div>
             </div>
