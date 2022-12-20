@@ -1,10 +1,13 @@
+import React from 'react';
+
 import { useDateContext } from '../contexts/DateContext';
+
 import styles from './DayinMonth.module.scss';
 
 export interface DayData {
     m: number;
     d: number;
-    events: any; // to be specified
+    events: object[]; // to be specified
 }
 
 export default function DayinMonth({ dayData }: { dayData: DayData }) {
@@ -30,8 +33,8 @@ export default function DayinMonth({ dayData }: { dayData: DayData }) {
                 <div className={dateStringClass()}>{dateString}</div>
             </div>
             <div className={styles.eventsHolder}>
-                {events.map(() => {
-                    return <div>event</div>;
+                {events.map((event, index) => {
+                    return <div key={index}>event</div>;
                 })}
             </div>
         </div>

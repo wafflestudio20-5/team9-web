@@ -1,7 +1,10 @@
+import React from 'react';
+
+import DayinSchedule from '../components/DayinSchedule';
 import Sidebar from '../components/Sidebar';
 import { useSidebarContext } from '../contexts/SidebarContext';
+
 import styles from './schedule.module.scss';
-import DayinSchedule from '../components/DayinSchedule';
 
 export default function SchedulePage() {
     const { isOpen } = useSidebarContext();

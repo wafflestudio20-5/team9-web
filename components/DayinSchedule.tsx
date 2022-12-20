@@ -1,5 +1,8 @@
+import React from 'react';
+
 import { useDateContext } from '../contexts/DateContext';
 import { formatDayToKr } from '../lib/utils/formatDay';
+
 import styles from './DayinSchedule.module.scss';
 
 // interface name overlaps & is different
@@ -7,7 +10,7 @@ import styles from './DayinSchedule.module.scss';
 interface DayData {
     dt: number;
     dy: number;
-    events: any; // to be specified
+    events: object[]; // to be specified
 }
 
 export default function DayinSchedule({ dayData }: { dayData: DayData }) {
@@ -25,8 +28,8 @@ export default function DayinSchedule({ dayData }: { dayData: DayData }) {
             </div>
 
             <div>
-                {events.map(() => {
-                    return <div>event</div>;
+                {events.map((event, index) => {
+                    return <div key={index}>event</div>;
                 })}
             </div>
         </div>

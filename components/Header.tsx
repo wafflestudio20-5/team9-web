@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useSidebarContext } from '../contexts/SidebarContext';
 
+import { useSidebarContext } from '../contexts/SidebarContext';
 import before_icon from '../public/images/before_icon.svg';
 import calendar_icon from '../public/images/calendar_icon.svg';
 import help_icon from '../public/images/help_icon.svg';

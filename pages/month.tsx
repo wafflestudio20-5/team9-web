@@ -1,8 +1,11 @@
+import React from 'react';
+
+import DayinMonth from '../components/DayinMonth';
 import Sidebar from '../components/Sidebar';
 import { useSidebarContext } from '../contexts/SidebarContext';
-import styles from './month.module.scss';
 import { DAYS_ARR } from '../lib/utils/formatDay';
-import DayinMonth from '../components/DayinMonth';
+
+import styles from './month.module.scss';
 
 export default function MonthPage() {
     const { isOpen } = useSidebarContext();
