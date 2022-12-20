@@ -50,15 +50,17 @@ export default function MonthPage() {
     return (
         <div className={styles.wrapper}>
             {isOpen && <Sidebar />}
-            <div className={styles.headrow}>
-                {DAYS_ARR.map(item => {
-                    return <div>{item}</div>;
-                })}
-            </div>
-            <div className={styles.month}>
-                {monthData.map(dayData => {
-                    return <DayinMonth dayData={dayData} />;
-                })}
+            <div className={styles.monthHolder}>
+                <div className={styles.headrow}>
+                    {DAYS_ARR.map(item => {
+                        return <div>{item}</div>;
+                    })}
+                </div>
+                <div className={styles.month}>
+                    {monthData.map(dayData => {
+                        return <DayinMonth dayData={dayData} />;
+                    })}
+                </div>
             </div>
         </div>
     );
