@@ -3,28 +3,22 @@ $font-gray: #70757a;
 
 .wrapper {
     display: flex;
+    flex-direction: column;
 }
 
-.UpperHalf {
-    display: flex;
-    .left {
-        display: flex;
-        flex-direction: column;
-        > div {
-            color: $font-gray;
-            font-size: 10px;
-        }
-        > button {
-            border-color: transparent;
-            border-radius: 50%;
-            background-color: transparent;
-            height: 30px;
-            width: 30px;
-            padding: 0;
-            cursor: pointer;
-            &:hover {
-                background-color: $background-gray;
-            }
-        }
+.headrow {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+
+    div {
+        color: $font-gray;
+        text-align: center;
+        font-size: 11px;
     }
+}
+
+.month {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-template-columns: repeat(7, 1fr);
 }

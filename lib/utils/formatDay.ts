@@ -8,7 +8,7 @@ export enum DAYS {
     SAT = '토',
 }
 
-const DAYS_ARR = Object.values(DAYS);
+export const DAYS_ARR = Object.values(DAYS);
 
 export const formatDayToKr = (d: number) => DAYS_ARR[d];
 
