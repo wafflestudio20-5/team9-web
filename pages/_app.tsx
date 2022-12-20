@@ -4,6 +4,7 @@ import React from 'react';
 import Header from '../components/Header';
 import DateProvider from '../contexts/DateContext';
 import SessionProvider from '../contexts/SessionContext';
+import SidebarProvider from '../contexts/SidebarContext';
 import '../styles/global.css';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -11,8 +12,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <>
             <SessionProvider>
                 <DateProvider>
-                    <Header />
-                    <Component {...pageProps} />
+                    <SidebarProvider>
+                        <Header />
+                        <Component {...pageProps} />
+                    </SidebarProvider>
                 </DateProvider>
             </SessionProvider>
         </>

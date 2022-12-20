@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useSidebarContext } from '../contexts/SidebarContext';
 
 import before_icon from '../public/images/before_icon.svg';
 import calendar_icon from '../public/images/calendar_icon.svg';
@@ -36,12 +37,14 @@ function Header() {
         router.push(PageOption[option]?.path || '/');
     };
 
+    const { isOpen, openSidebar, closeSidebar } = useSidebarContext();
+
     return (
         <>
             <header className={styles.header}>
                 {/* sidebar menu */}
                 <div className={styles.sidebarContainer}>
-                    <button>
+                    <button onClick={isOpen ? closeSidebar : openSidebar}>
                         <Image src={menu_icon} height={25} alt="sidebar" />
                     </button>
                 </div>
