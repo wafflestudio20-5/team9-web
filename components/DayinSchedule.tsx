@@ -1,6 +1,6 @@
 import { useDateContext } from '../contexts/DateContext';
 import { formatDayToKr } from '../lib/utils/formatDay';
-import styles from './DaysinSchedule.module.scss';
+import styles from './DayinSchedule.module.scss';
 
 // interface name overlaps & is different
 // Need to properly decide data structure for further development
@@ -16,7 +16,9 @@ export default function DayinSchedule({ dayData }: { dayData: DayData }) {
     return (
         <div className={styles.wrapper}>
             <div className={styles.dateHolder}>
-                <div className={styles.date}>{dt}</div>
+                <div className={styles.date}>
+                    <div>{dt}</div>
+                </div>
                 <div className={styles.monthDay}>{`${month}월, ${formatDayToKr(
                     dy,
                 )}`}</div>
