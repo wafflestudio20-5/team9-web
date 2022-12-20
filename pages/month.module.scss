@@ -1,3 +1,30 @@
+$background-gray: #f0f0f0;
+$font-gray: #70757a;
+
 .wrapper {
     display: flex;
+}
+
+.UpperHalf {
+    display: flex;
+    .left {
+        display: flex;
+        flex-direction: column;
+        > div {
+            color: $font-gray;
+            font-size: 10px;
+        }
+        > button {
+            border-color: transparent;
+            border-radius: 50%;
+            background-color: transparent;
+            height: 30px;
+            width: 30px;
+            padding: 0;
+            cursor: pointer;
+            &:hover {
+                background-color: $background-gray;
+            }
+        }
+    }
 }
