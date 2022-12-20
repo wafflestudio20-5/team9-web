@@ -14,7 +14,7 @@ export default function SchedulePage() {
             {isOpen && <Sidebar />}
             <div className={styles.scheduleHolder}>
                 {scheduleData.map((dayData, index) => {
-                    return <DayinSchedule dayData={dayData} />;
+                    return <DayinSchedule key={index} dayData={dayData} />;
                 })}
             </div>
         </div>
