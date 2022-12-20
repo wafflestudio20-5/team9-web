@@ -10,42 +10,42 @@ export default function MonthPage() {
     // data for month to be displayed
     // will fetch from api request
     // need to specify response format
-    const month = [
-        { year: 2022, month: 11, date: 27, events: [] },
-        { year: 2022, month: 11, date: 28, events: [] },
-        { year: 2022, month: 11, date: 29, events: [] },
-        { year: 2022, month: 11, date: 30, events: [] },
-        { year: 2022, month: 12, date: 1, events: [] },
-        { year: 2022, month: 12, date: 2, events: [] },
-        { year: 2022, month: 12, date: 3, events: [] },
-        { year: 2022, month: 12, date: 4, events: [] },
-        { year: 2022, month: 12, date: 5, events: [] },
-        { year: 2022, month: 12, date: 6, events: [] },
-        { year: 2022, month: 12, date: 7, events: [] },
-        { year: 2022, month: 12, date: 8, events: [] },
-        { year: 2022, month: 12, date: 9, events: [] },
-        { year: 2022, month: 12, date: 10, events: [] },
-        { year: 2022, month: 12, date: 11, events: [] },
-        { year: 2022, month: 12, date: 12, events: [] },
-        { year: 2022, month: 12, date: 13, events: [] },
-        { year: 2022, month: 12, date: 14, events: [] },
-        { year: 2022, month: 12, date: 15, events: [] },
-        { year: 2022, month: 12, date: 16, events: [] },
-        { year: 2022, month: 12, date: 17, events: [] },
-        { year: 2022, month: 12, date: 18, events: [] },
-        { year: 2022, month: 12, date: 19, events: [] },
-        { year: 2022, month: 12, date: 20, events: [] },
-        { year: 2022, month: 12, date: 21, events: [] },
-        { year: 2022, month: 12, date: 22, events: [] },
-        { year: 2022, month: 12, date: 23, events: [] },
-        { year: 2022, month: 12, date: 24, events: [] },
-        { year: 2022, month: 12, date: 25, events: [] },
-        { year: 2022, month: 12, date: 26, events: [] },
-        { year: 2022, month: 12, date: 27, events: [] },
-        { year: 2022, month: 12, date: 28, events: [] },
-        { year: 2022, month: 12, date: 29, events: [] },
-        { year: 2022, month: 12, date: 30, events: [] },
-        { year: 2022, month: 12, date: 31, events: [] },
+    const monthData = [
+        { m: 11, d: 27, events: [] },
+        { m: 11, d: 28, events: [] },
+        { m: 11, d: 29, events: [] },
+        { m: 11, d: 30, events: [] },
+        { m: 12, d: 1, events: [] },
+        { m: 12, d: 2, events: [] },
+        { m: 12, d: 3, events: [] },
+        { m: 12, d: 4, events: [] },
+        { m: 12, d: 5, events: [] },
+        { m: 12, d: 6, events: [] },
+        { m: 12, d: 7, events: [] },
+        { m: 12, d: 8, events: [] },
+        { m: 12, d: 9, events: [] },
+        { m: 12, d: 10, events: [] },
+        { m: 12, d: 11, events: [] },
+        { m: 12, d: 12, events: [] },
+        { m: 12, d: 13, events: [] },
+        { m: 12, d: 14, events: [] },
+        { m: 12, d: 15, events: [] },
+        { m: 12, d: 16, events: [] },
+        { m: 12, d: 17, events: [] },
+        { m: 12, d: 18, events: [] },
+        { m: 12, d: 19, events: [] },
+        { m: 12, d: 20, events: [] },
+        { m: 12, d: 21, events: [] },
+        { m: 12, d: 22, events: [] },
+        { m: 12, d: 23, events: [] },
+        { m: 12, d: 24, events: [] },
+        { m: 12, d: 25, events: [] },
+        { m: 12, d: 26, events: [] },
+        { m: 12, d: 27, events: [] },
+        { m: 12, d: 28, events: [] },
+        { m: 12, d: 29, events: [] },
+        { m: 12, d: 30, events: [] },
+        { m: 12, d: 31, events: [] },
     ];
     return (
         <div className={styles.wrapper}>
@@ -56,8 +56,8 @@ export default function MonthPage() {
                 })}
             </div>
             <div className={styles.month}>
-                {month.map(day => {
-                    return <DayinMonth data={day} />;
+                {monthData.map(dayData => {
+                    return <DayinMonth dayData={dayData} />;
                 })}
             </div>
         </div>
