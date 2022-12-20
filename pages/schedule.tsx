@@ -1,3 +1,11 @@
+import Sidebar from '../components/Sidebar';
+import { useSidebarContext } from '../contexts/SidebarContext';
 export default function SchedulePage() {
-    return <div>Schedule Page</div>;
+    const { isOpen } = useSidebarContext();
+    return (
+        <>
+            {isOpen && <Sidebar />}
+            <div>Schedule Page</div>
+        </>
+    );
 }
