@@ -9,8 +9,8 @@ import styles from './schedule.module.scss';
 export default function SchedulePage() {
     const { isOpen } = useSidebarContext();
     const scheduleData = [
-        { dt: 2, dy: 5, events: [] },
-        { dt: 5, dy: 1, events: [] },
+        { date: 2, day: 5, events: [] },
+        { date: 5, day: 1, events: [] },
     ];
     return (
         <div className={styles.wrapper}>

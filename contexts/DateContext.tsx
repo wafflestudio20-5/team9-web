@@ -9,31 +9,31 @@ import React, {
 } from 'react';
 
 interface DateContextData {
-    year: number;
-    month: number;
-    date: number;
-    day: number;
-    setYear: Dispatch<SetStateAction<number>>;
-    setMonth: Dispatch<SetStateAction<number>>;
-    setDate: Dispatch<SetStateAction<number>>;
-    setDay: Dispatch<SetStateAction<number>>;
+    yearNow: number;
+    monthNow: number;
+    dateNow: number;
+    dayNow: number;
+    setYearNow: Dispatch<SetStateAction<number>>;
+    setMonthNow: Dispatch<SetStateAction<number>>;
+    setDateNow: Dispatch<SetStateAction<number>>;
+    setDayNow: Dispatch<SetStateAction<number>>;
 }
 
 const DateContext = createContext<DateContextData>({
-    year: 0,
-    month: 0,
-    date: 0,
-    day: 0,
-    setYear() {
+    yearNow: 0,
+    monthNow: 0,
+    dateNow: 0,
+    dayNow: 0,
+    setYearNow() {
         throw new Error('DateContext not provided');
     },
-    setMonth() {
+    setMonthNow() {
         throw new Error('DateContext not provided');
     },
-    setDate() {
+    setDateNow() {
         throw new Error('DateContext not provided');
     },
-    setDay() {
+    setDayNow() {
         throw new Error('DateContext not provided');
     },
 });
@@ -42,23 +42,23 @@ export const useDateContext = () => useContext(DateContext);
 
 function DateProvider({ children }: PropsWithChildren) {
     const now = new Date();
-    const [year, setYear] = useState(now.getFullYear());
-    const [month, setMonth] = useState(now.getMonth() + 1);
-    const [date, setDate] = useState(now.getDate());
-    const [day, setDay] = useState(now.getDay());
+    const [yearNow, setYearNow] = useState(now.getFullYear());
+    const [monthNow, setMonthNow] = useState(now.getMonth() + 1);
+    const [dateNow, setDateNow] = useState(now.getDate());
+    const [dayNow, setDayNow] = useState(now.getDay());
 
     const value = useMemo(
         () => ({
-            year,
-            month,
-            date,
-            day,
-            setYear,
-            setMonth,
-            setDate,
-            setDay,
+            yearNow,
+            setYearNow,
+            monthNow,
+            setMonthNow,
+            dateNow,
+            setDateNow,
+            dayNow,
+            setDayNow,
         }),
-        [year, month, date, day],
+        [yearNow, monthNow, dateNow, dayNow],
     );
 
     return (
