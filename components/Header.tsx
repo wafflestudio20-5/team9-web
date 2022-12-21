@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { useDateContext } from '../contexts/DateContext';
 import { useSidebarContext } from '../contexts/SidebarContext';
@@ -31,7 +31,14 @@ const getValueFromPathname = (pathname: string) => {
 };
 
 function Header() {
-    const { setYearNow, setMonthNow, setDateNow, setDayNow } = useDateContext();
+    const {
+        yearNow,
+        monthNow,
+        setYearNow,
+        setMonthNow,
+        setDateNow,
+        setDayNow,
+    } = useDateContext();
     const router = useRouter();
     const now = useMemo(() => new Date(), []);
 
@@ -45,6 +52,30 @@ function Header() {
         setMonthNow(now.getMonth() + 1);
         setDateNow(now.getDate());
         setDayNow(now.getDay());
+    };
+
+    const moveToNextMonth = () => {
+        if (monthNow === 12) {
+            setYearNow(yearNow + 1);
+            setMonthNow(1);
+            setDayNow(new Date(`${yearNow + 1}-1-1`).getDay());
+        } else {
+            setMonthNow(monthNow + 1);
+            setDayNow(new Date(`${yearNow}-${monthNow + 1}-1`).getDay());
+        }
+        setDateNow(1);
+    };
+
+    const moveToLastMonth = () => {
+        if (monthNow === 1) {
+            setYearNow(yearNow - 1);
+            setMonthNow(12);
+            setDayNow(new Date(`${yearNow - 1}-12-1`).getDay());
+        } else {
+            setMonthNow(monthNow - 1);
+            setDayNow(new Date(`${yearNow}-${monthNow - 1}-1`).getDay());
+        }
+        setDateNow(1);
     };
 
     const { isOpen, openSidebar, closeSidebar } = useSidebarContext();
@@ -76,14 +107,14 @@ function Header() {
                             오늘
                         </button>
                         <div className={styles.btnContainer}>
-                            <button>
+                            <button onClick={moveToLastMonth}>
                                 <Image
                                     src={before_icon}
                                     height={25}
                                     alt="last_month"
                                 />
                             </button>
-                            <button>
+                            <button onClick={moveToNextMonth}>
                                 <Image
                                     src={next_icon}
                                     height={25}
@@ -92,7 +123,9 @@ function Header() {
                             </button>
                         </div>
                         <div className={styles.date}>
-                            <button>2023년 12월</button>
+                            <button>
+                                {yearNow}년 {monthNow}월
+                            </button>
                         </div>
                     </div>
                 </div>
