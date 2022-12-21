@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useModal from '../lib/hooks/useModal';
+import { useModal } from '../lib/hooks/useModal';
 
 import styles from './ModalFrame.module.scss';
 

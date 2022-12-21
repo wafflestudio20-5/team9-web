@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { useDateContext } from '../contexts/DateContext';
 import { useSidebarContext } from '../contexts/SidebarContext';
+import { useModal } from '../lib/hooks/useModal';
 import before_icon from '../public/images/before_icon.svg';
 import calendar_icon from '../public/images/calendar_icon.svg';
 import help_icon from '../public/images/help_icon.svg';
@@ -13,6 +14,7 @@ import search_icon from '../public/images/search_icon.svg';
 import settings_icon from '../public/images/settings_icon.svg';
 
 import styles from './Header.module.scss';
+import { MODAL_NAMES } from './ModalContainer';
 
 const PageOption: { [key: string]: { name: string; path: string } } = {
     index: { name: 'index', path: '/' },
@@ -39,6 +41,7 @@ function Header() {
         setDateNow,
         setDayNow,
     } = useDateContext();
+    const { openModal } = useModal();
     const router = useRouter();
     const now = useMemo(() => new Date(), []);
 
@@ -125,7 +128,7 @@ function Header() {
                     </div>
                     <div className={styles.date}>
                         <button>
-                            {yearNow}년 {monthNow}월
+                            {yearNow}년 {monthNow}월 ▾
                         </button>
                     </div>
                 </div>
@@ -167,7 +170,9 @@ function Header() {
                     </select>
                     {/* user */}
                     <div className={styles.user}>
-                        <button>J</button>
+                        <button onClick={() => openModal(MODAL_NAMES.user)}>
+                            J
+                        </button>
                     </div>
                 </div>
             </header>
