@@ -13,11 +13,9 @@ export default function UserModal() {
     return (
         <>
             <ModalFrame>
-                <div
-                    className={styles.userInfo}
-                    onClick={e => e.stopPropagation()}
-                >
+                <div className={styles.userInfo}>
                     이것은 유저 정보 모달
+                    <div></div>
                 </div>
             </ModalFrame>
         </>

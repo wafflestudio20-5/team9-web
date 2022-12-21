@@ -14,7 +14,12 @@ export default function ModalFrame({ children }: ModalFrameProps) {
     return (
         <>
             <div className={styles.overlay} onClick={closeModal}>
-                {children}
+                <div
+                    className={styles.modalBody}
+                    onClick={e => e.stopPropagation()}
+                >
+                    {children}
+                </div>
             </div>
         </>
     );
