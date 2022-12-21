@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useSidebarContext } from '../contexts/SidebarContext';
 import before_icon from '../public/images/before_icon.svg';
@@ -31,6 +31,7 @@ const getValueFromPathname = (pathname: string) => {
 
 function Header() {
     const router = useRouter();
+    const today = useMemo(() => new Date().getDate(), []);
 
     const onChangePageOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const option = e.target.value;
@@ -51,6 +52,7 @@ function Header() {
 
                 {/* title */}
                 <div className={styles.titleContainer}>
+                    <span className={styles.date}>{today}</span>
                     <Image src={calendar_icon} height={35} alt="calendar" />
                     <span>캘린더</span>
                 </div>

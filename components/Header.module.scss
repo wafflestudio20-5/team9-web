@@ -42,8 +42,20 @@ $gray: #f0f0f0;
         margin: 0 20px;
         width: 220px;
         height: 100%;
+        position: relative;
         font-size: x-large;
         cursor: default;
+
+        .date {
+            display: inline-block;
+            width: 23px;
+            height: 16px;
+            position: absolute;
+            top: 20px;
+            left: 6px;
+            text-align: center;
+            font-size: small;
+        }
     }
 
     .dateContainer {
