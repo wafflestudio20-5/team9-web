@@ -1,4 +1,6 @@
-$gray: #f0f0f0;
+$background-gray: #f0f0f0;
+$font-gray: #70757a;
+$border-gray: #dadce0;
 
 .header {
     padding: 8px 15px;
@@ -6,6 +8,7 @@ $gray: #f0f0f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid $border-gray;
 
     button {
         border: none;
@@ -15,7 +18,7 @@ $gray: #f0f0f0;
         cursor: pointer;
 
         &:hover {
-            background-color: $gray;
+            background-color: $background-gray;
         }
     }
 
@@ -32,7 +35,7 @@ $gray: #f0f0f0;
         cursor: pointer;
 
         &:hover {
-            background-color: $gray;
+            background-color: $background-gray;
         }
     }
 
@@ -49,9 +52,9 @@ $gray: #f0f0f0;
         .date {
             display: inline-block;
             width: 23px;
-            height: 16px;
+            height: 17px;
             position: absolute;
-            top: 20px;
+            top: 19px;
             left: 6px;
             text-align: center;
             font-size: small;
@@ -78,7 +81,7 @@ $gray: #f0f0f0;
                 border-radius: 5px;
 
                 &:hover {
-                    background-color: $gray;
+                    background-color: $background-gray;
                 }
             }
 
@@ -103,7 +106,7 @@ $gray: #f0f0f0;
                 }
 
                 &:hover {
-                    background-color: $gray;
+                    background-color: $background-gray;
                 }
             }
         }
@@ -124,7 +127,7 @@ $gray: #f0f0f0;
             text-align: center;
 
             &:hover {
-                background-color: $gray;
+                background-color: $background-gray;
             }
         }
 
@@ -135,7 +138,7 @@ $gray: #f0f0f0;
             border-radius: 5px;
 
             &:hover {
-                background-color: $gray;
+                background-color: $background-gray;
             }
         }
 
