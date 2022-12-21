@@ -1,0 +1,14 @@
+$border-gray: #dadce0;
+
+.userInfo {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    width: 300px;
+    height: calc(100vh - 70px);
+    border: 1px solid $border-gray;
+    border-radius: 10px;
+    background-color: white;
+
+    box-shadow: 0 1px 5px 1px $border-gray;
+}
