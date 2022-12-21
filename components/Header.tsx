@@ -92,41 +92,41 @@ function Header() {
 
                 {/* title */}
                 <div className={styles.titleContainer}>
-                    <span className={styles.date}>{now.getDate()}</span>
-                    <Image src={calendar_icon} height={35} alt="calendar" />
+                    <div>
+                        <span className={styles.date}>{now.getDate()}</span>
+                        <Image src={calendar_icon} height={35} alt="calendar" />
+                    </div>
                     <span>캘린더</span>
                 </div>
 
                 {/* date (today, year, month) */}
                 <div className={styles.dateContainer}>
-                    <div>
-                        <button
-                            className={styles.today}
-                            onClick={changeDateToToday}
-                        >
-                            오늘
+                    <button
+                        className={styles.today}
+                        onClick={changeDateToToday}
+                    >
+                        오늘
+                    </button>
+                    <div className={styles.btnContainer}>
+                        <button onClick={moveToLastMonth}>
+                            <Image
+                                src={before_icon}
+                                height={25}
+                                alt="last_month"
+                            />
                         </button>
-                        <div className={styles.btnContainer}>
-                            <button onClick={moveToLastMonth}>
-                                <Image
-                                    src={before_icon}
-                                    height={25}
-                                    alt="last_month"
-                                />
-                            </button>
-                            <button onClick={moveToNextMonth}>
-                                <Image
-                                    src={next_icon}
-                                    height={25}
-                                    alt="next_month"
-                                />
-                            </button>
-                        </div>
-                        <div className={styles.date}>
-                            <button>
-                                {yearNow}년 {monthNow}월
-                            </button>
-                        </div>
+                        <button onClick={moveToNextMonth}>
+                            <Image
+                                src={next_icon}
+                                height={25}
+                                alt="next_month"
+                            />
+                        </button>
+                    </div>
+                    <div className={styles.date}>
+                        <button>
+                            {yearNow}년 {monthNow}월
+                        </button>
                     </div>
                 </div>
 

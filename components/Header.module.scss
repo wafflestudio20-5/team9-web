@@ -3,18 +3,22 @@ $font-gray: #70757a;
 $border-gray: #dadce0;
 
 .header {
+    display: grid;
+    grid-template-columns: 48px 190px minmax(310px, auto) 260px;
+    grid-template-rows: 48px;
     padding: 8px 15px;
     height: 65px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     border-bottom: 1px solid $border-gray;
 
     button {
-        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 0;
-        background-color: transparent;
+        width: 100%;
         height: 100%;
+        border: none;
+        background-color: transparent;
         cursor: pointer;
 
         &:hover {
@@ -22,118 +26,92 @@ $border-gray: #dadce0;
         }
     }
 
-    > div {
-        flex-shrink: 0;
-    }
-
     .sidebarContainer {
-        padding: 10px;
-        width: 50px;
-        height: 100%;
-        text-align: center;
-        border-radius: 50%;
-        cursor: pointer;
-
-        &:hover {
-            background-color: $background-gray;
+        button {
+            border-radius: 50%;
         }
     }
 
     .titleContainer {
         display: flex;
         align-items: center;
-        margin: 0 20px;
-        width: 220px;
-        height: 100%;
-        position: relative;
-        font-size: x-large;
         cursor: default;
 
-        .date {
-            display: inline-block;
-            width: 23px;
-            height: 17px;
-            position: absolute;
-            top: 19px;
-            left: 6px;
-            text-align: center;
-            font-size: small;
+        > div {
+            position: relative;
+            margin: 0 5px;
+            height: 35px;
+
+            .date {
+                display: inline-block;
+                width: 23px;
+                height: 17px;
+                position: absolute;
+                top: 13px;
+                left: 6px;
+                text-align: center;
+                font-size: small;
+            }
+        }
+
+        span {
+            font-size: 22px;
         }
     }
 
     .dateContainer {
         display: flex;
-        width: 670px;
-        height: 100%;
-        flex-shrink: 1;
+        align-items: center;
 
-        > div {
+        .today {
+            margin-right: 20px;
+            width: 65px;
+            height: 75%;
+            border: 1px solid $border-gray;
+            border-radius: 5px;
+        }
+
+        .btnContainer {
             display: flex;
-            justify-content: space-evenly;
             align-items: center;
-            width: 270px;
+            height: 100%;
 
-            .today {
-                width: 70px;
-                height: 70%;
-                text-align: center;
-                border: 1px solid $border-gray;
+            button {
+                height: 75%;
                 border-radius: 5px;
-
-                &:hover {
-                    background-color: $background-gray;
-                }
             }
+        }
 
-            .btnContainer {
-                display: flex;
-                align-items: center;
-                height: 100%;
+        .date {
+            margin-left: 15px;
+            height: 75%;
 
-                button {
-                    height: 70%;
-                    border-radius: 5px;
-                }
-            }
-
-            .date {
+            button {
                 padding: 0 5px;
-                height: 70%;
                 border-radius: 5px;
-
-                button {
-                    font-size: large;
-                }
-
-                &:hover {
-                    background-color: $background-gray;
-                }
+                font-size: 22px;
             }
         }
     }
 
     .utilContainer {
         display: flex;
-        width: 260px;
-        height: 100%;
         justify-content: space-between;
         align-items: center;
 
         > div {
-            border-radius: 50%;
-            padding: 10px;
             width: 45px;
             height: 90%;
-            text-align: center;
+        }
 
-            &:hover {
-                background-color: $background-gray;
-            }
+        button {
+            border-radius: 50%;
         }
 
         select {
-            height: 70%;
+            margin: 0 5px;
             width: 70px;
+            height: 75%;
             border: 1px solid $border-gray;
             border-radius: 5px;
 
