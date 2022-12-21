@@ -1,0 +1,39 @@
+$background-gray: #f0f0f0;
+$font-gray: #70757a;
+$border-gray: #dadce0;
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 65px);
+    width: 100vw;
+}
+
+.monthHolder {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-left: 8px;
+}
+
+.headrow {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-left: 1px solid $border-gray;
+    div {
+        color: $font-gray;
+        text-align: center;
+        font-size: 11px;
+        border-right: 1px solid $border-gray;
+    }
+}
+
+.month {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-template-columns: repeat(7, 1fr);
+    flex-grow: 1;
+    border-left: 1px solid $border-gray;
+    background-color: $border-gray;
+    gap: 1px;
+}
