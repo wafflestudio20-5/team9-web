@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 
+import { useDateContext } from '../contexts/DateContext';
 import { useSidebarContext } from '../contexts/SidebarContext';
 import before_icon from '../public/images/before_icon.svg';
 import calendar_icon from '../public/images/calendar_icon.svg';
@@ -30,12 +31,20 @@ const getValueFromPathname = (pathname: string) => {
 };
 
 function Header() {
+    const { setYearNow, setMonthNow, setDateNow, setDayNow } = useDateContext();
     const router = useRouter();
-    const today = useMemo(() => new Date().getDate(), []);
+    const now = useMemo(() => new Date(), []);
 
     const onChangePageOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const option = e.target.value;
         router.push(PageOption[option]?.path || '/');
+    };
+
+    const changeDateToToday = () => {
+        setYearNow(now.getFullYear());
+        setMonthNow(now.getMonth() + 1);
+        setDateNow(now.getDate());
+        setDayNow(now.getDay());
     };
 
     const { isOpen, openSidebar, closeSidebar } = useSidebarContext();
@@ -52,7 +61,7 @@ function Header() {
 
                 {/* title */}
                 <div className={styles.titleContainer}>
-                    <span className={styles.date}>{today}</span>
+                    <span className={styles.date}>{now.getDate()}</span>
                     <Image src={calendar_icon} height={35} alt="calendar" />
                     <span>캘린더</span>
                 </div>
@@ -60,7 +69,12 @@ function Header() {
                 {/* date (today, year, month) */}
                 <div className={styles.dateContainer}>
                     <div>
-                        <button className={styles.today}>오늘</button>
+                        <button
+                            className={styles.today}
+                            onClick={changeDateToToday}
+                        >
+                            오늘
+                        </button>
                         <div className={styles.btnContainer}>
                             <button>
                                 <Image
