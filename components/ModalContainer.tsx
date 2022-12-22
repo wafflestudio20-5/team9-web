@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useModalStateContext } from '../contexts/ModalContext';
+import { useModalContext } from '../contexts/ModalContext';
 
 import UserModal from './UserModal';
 
@@ -14,7 +14,7 @@ const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
 };
 
 export default function ModalContainer() {
-    const { name, props } = useModalStateContext();
+    const { name, props } = useModalContext();
 
     // all modals are closed
     if (!name) return null;

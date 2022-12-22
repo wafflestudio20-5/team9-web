@@ -1,6 +1,6 @@
-.overlay {
-    position: absolute;
-    top: 0;
+.backdrop {
+    position: fixed;
+    top: 0px;
     left: 0;
     width: 100vw;
     height: 100vh;
@@ -10,9 +10,10 @@
     .modalBody {
         &.open {
             animation: fadein 0.3s;
+            // animation: slidedown 0.3s;
         }
 
-        &.close {
+        &.closing {
             animation: fadeout 0.3s;
         }
     }
@@ -33,5 +34,14 @@
     }
     to {
         opacity: 0;
+    }
+}
+
+@keyframes slidedown {
+    from {
+        transform: translateY(-30px);
+    }
+    to {
+        transform: translateY(0px);
     }
 }

@@ -8,48 +8,50 @@ import React, {
     useState,
 } from 'react';
 
+type ModalState = 'open' | 'closing' | 'closed';
+
 interface Modal {
     name: string | null;
     props: object | null;
+    state: ModalState;
 }
 
-interface ModalStateContextData {
+interface ModalContextData {
     name: string | null;
     props: object | null;
+    state: ModalState;
+    setModalInfo: Dispatch<SetStateAction<Modal>>;
 }
 
-interface ModalSetterContextData {
-    setModalState: Dispatch<SetStateAction<Modal>>;
-}
-
-const ModalStateContext = createContext<ModalStateContextData>({
+const ModalContext = createContext<ModalContextData>({
     name: null,
     props: null,
-});
-
-const ModalSetterConext = createContext<ModalSetterContextData>({
-    setModalState() {
+    state: 'open',
+    setModalInfo() {
         throw new Error('ModalContext not provided');
     },
 });
 
-export const useModalStateContext = () => useContext(ModalStateContext);
-export const useModalSetterContext = () => useContext(ModalSetterConext);
+export const useModalContext = () => useContext(ModalContext);
 
 export default function ModalProvider({ children }: PropsWithChildren) {
-    const [modalState, setModalState] = useState<Modal>({
+    const [modalInfo, setModalInfo] = useState<Modal>({
         name: null,
         props: null,
+        state: 'open',
     });
 
-    const stateValue = useMemo(() => modalState, [modalState]);
-    const setterValue = useMemo(() => ({ setModalState }), []);
+    const value = useMemo(
+        () => ({
+            name: modalInfo.name,
+            props: modalInfo.props,
+            state: modalInfo.state,
+            setModalInfo,
+        }),
+        [modalInfo],
+    );
 
     return (
-        <ModalSetterConext.Provider value={setterValue}>
-            <ModalStateContext.Provider value={stateValue}>
-                {children}
-            </ModalStateContext.Provider>
-        </ModalSetterConext.Provider>
+        <ModalContext.Provider value={value}>{children}</ModalContext.Provider>
     );
 }
