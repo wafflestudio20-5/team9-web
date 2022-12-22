@@ -127,7 +127,7 @@ function Header() {
                         </button>
                     </div>
                     <div className={styles.date}>
-                        <button>
+                        <button onClick={() => openModal(MODAL_NAMES.calendar)}>
                             {yearNow}년 {monthNow}월 ▾
                         </button>
                     </div>
