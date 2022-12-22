@@ -15,7 +15,6 @@ export default function UserModal() {
     return (
         <>
             <ModalFrame>
-                이것은 유저 정보 모달
                 <div className={styles.userModal}>
                     <div className={styles.userInfo}>
                         <div className={styles.photo}>
