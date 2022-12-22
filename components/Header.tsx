@@ -96,7 +96,9 @@ function Header() {
                 {/* title */}
                 <div className={styles.titleContainer}>
                     <div>
-                        <span className={styles.date}>{now.getDate()}</span>
+                        <span className={styles.dateToday}>
+                            {now.getDate()}
+                        </span>
                         <Image src={calendar_icon} height={35} alt="calendar" />
                     </div>
                     <span>캘린더</span>
@@ -127,8 +129,13 @@ function Header() {
                         </button>
                     </div>
                     <div className={styles.date}>
-                        <button onClick={() => openModal(MODAL_NAMES.calendar)}>
-                            {yearNow}년 {monthNow}월 ▾
+                        <button
+                            className={isOpen ? styles.inactive : undefined}
+                            onClick={() =>
+                                !isOpen && openModal(MODAL_NAMES.calendar)
+                            }
+                        >
+                            {yearNow}년 {monthNow}월 {!isOpen && '▾'}
                         </button>
                     </div>
                 </div>
