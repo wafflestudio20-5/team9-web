@@ -13,7 +13,10 @@ export default function ModalFrame({ children }: ModalFrameProps) {
 
     return (
         <>
-            <div className={styles.backdrop} onClick={closeModal}>
+            <div
+                className={`${styles.backdrop} ${styles[state]}`}
+                onClick={closeModal}
+            >
                 <div
                     className={`${styles.modalBody} ${styles[state]}`}
                     onClick={e => e.stopPropagation()}

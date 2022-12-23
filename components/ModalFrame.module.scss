@@ -5,16 +5,23 @@
     width: 100vw;
     height: 100vh;
     z-index: 100;
-    // background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
+
+    &.open {
+        animation: fadein 0.3s;
+    }
+
+    &.closing {
+        animation: fadeout 0.3s;
+    }
 
     .modalBody {
         &.open {
-            animation: fadein 0.3s;
-            // animation: slidedown 0.3s;
+            animation: slidedown 0.3s;
         }
 
         &.closing {
-            animation: fadeout 0.3s;
+            animation: slideup 0.3s;
         }
     }
 }
@@ -43,5 +50,14 @@
     }
     to {
         transform: translateY(0px);
+    }
+}
+
+@keyframes slideup {
+    from {
+        transform: translateY(0px);
+    }
+    to {
+        transform: translateY(-30px);
     }
 }
