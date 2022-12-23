@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useModalContext } from '../contexts/ModalContext';
+import { useModalStateContext } from '../contexts/ModalContext';
 
 import CalendarModal from './CalendarModal';
 import UserModal from './UserModal';
@@ -17,12 +17,17 @@ const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
 };
 
 export default function ModalContainer() {
-    const { name, props } = useModalContext();
+    const modals = useModalStateContext();
 
-    // all modals are closed
-    if (!name) return null;
-
-    const Modal = MODAL_COMPONENTS[name];
-
-    return <Modal {...props} />;
+    return (
+        <>
+            {Object.keys(modals).map(name => {
+                const modal = modals[name];
+                if (modal.state !== 'closed') {
+                    const Modal = MODAL_COMPONENTS[name];
+                    return <Modal key={name} {...modal.props} />;
+                }
+            })}
+        </>
+    );
 }

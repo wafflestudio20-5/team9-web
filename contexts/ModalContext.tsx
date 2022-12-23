@@ -1,57 +1,82 @@
 import React, {
     createContext,
-    Dispatch,
     PropsWithChildren,
-    SetStateAction,
+    useCallback,
     useContext,
     useMemo,
     useState,
 } from 'react';
 
+import { MODAL_NAMES } from '../components/ModalContainer';
+
 type ModalState = 'open' | 'closing' | 'closed';
 
-interface Modal {
-    name: string | null;
+interface ModalValues {
     props: object | null;
     state: ModalState;
 }
 
-interface ModalContextData {
-    name: string | null;
-    props: object | null;
-    state: ModalState;
-    setModalInfo: Dispatch<SetStateAction<Modal>>;
+interface Modals {
+    [name: string]: ModalValues;
 }
 
-const ModalContext = createContext<ModalContextData>({
-    name: null,
-    props: null,
-    state: 'open',
-    setModalInfo() {
+interface ModalStateContextData {
+    [name: string]: ModalValues;
+}
+
+interface ModalSetterContextData {
+    updateModalInfo(
+        name: MODAL_NAMES,
+        values: { props?: object | null; state: ModalState },
+    ): void;
+}
+
+const ModalStateContext = createContext<ModalStateContextData>({});
+const ModalSetterContext = createContext<ModalSetterContextData>({
+    updateModalInfo() {
         throw new Error('ModalContext not provided');
     },
 });
 
-export const useModalContext = () => useContext(ModalContext);
+export const useModalStateContext = () => useContext(ModalStateContext);
+export const useModalSetterContext = () => useContext(ModalSetterContext);
+
+const initModals: Modals = {
+    [MODAL_NAMES.user]: { props: null, state: 'closed' },
+    [MODAL_NAMES.calendar]: { props: null, state: 'closed' },
+};
 
 export default function ModalProvider({ children }: PropsWithChildren) {
-    const [modalInfo, setModalInfo] = useState<Modal>({
-        name: null,
-        props: null,
-        state: 'open',
-    });
+    const [modals, setModals] = useState<Modals>(initModals);
 
-    const value = useMemo(
+    const updateModalInfo = useCallback(
+        (
+            name: MODAL_NAMES,
+            values: { props?: object | null; state: ModalState },
+        ) => {
+            const currValues = modals[name];
+            setModals(prev => ({
+                ...prev,
+                [name]: { ...currValues, ...values },
+            }));
+        },
+        [modals],
+    );
+
+    const value = useMemo(() => modals, [modals]);
+
+    const setter = useMemo(
         () => ({
-            name: modalInfo.name,
-            props: modalInfo.props,
-            state: modalInfo.state,
-            setModalInfo,
+            updateModalInfo,
         }),
-        [modalInfo],
+        [updateModalInfo],
     );
 
     return (
-        <ModalContext.Provider value={value}>{children}</ModalContext.Provider>
+        <ModalSetterContext.Provider value={setter}>
+            <ModalStateContext.Provider value={value}>
+                {children}
+            </ModalStateContext.Provider>
+        </ModalSetterContext.Provider>
     );
 }

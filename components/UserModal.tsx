@@ -2,19 +2,22 @@ import Image from 'next/image';
 import React from 'react';
 
 import { useSessionContext } from '../contexts/SessionContext';
+import { useModal } from '../lib/hooks/useModal';
 import camera_icon from '../public/images/camera_icon.svg';
 
+import { MODAL_NAMES } from './ModalContainer';
 import ModalFrame from './ModalFrame';
 import styles from './UserModal.module.scss';
 
 export default function UserModal() {
     const { user, logout } = useSessionContext();
+    const { openModal } = useModal();
 
     // if (!user) return null;
 
     return (
         <>
-            <ModalFrame>
+            <ModalFrame modalName={MODAL_NAMES.user}>
                 <div className={styles.userModal}>
                     <div className={styles.userInfo}>
                         <div className={styles.photo}>
@@ -33,7 +36,11 @@ export default function UserModal() {
                             </span>
                         </div>
                         <div className={styles.management}>
-                            <button>Google 계정 관리</button>
+                            <button
+                                onClick={() => openModal(MODAL_NAMES.calendar)}
+                            >
+                                Google 계정 관리
+                            </button>
                         </div>
                     </div>
                     <div className={styles.otherAccount}></div>

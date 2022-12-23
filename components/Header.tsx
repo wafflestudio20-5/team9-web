@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 
 import { useDateContext } from '../contexts/DateContext';
+import { useModalStateContext } from '../contexts/ModalContext';
 import { useSidebarContext } from '../contexts/SidebarContext';
 import { useModal } from '../lib/hooks/useModal';
 import before_icon from '../public/images/before_icon.svg';
@@ -44,6 +45,8 @@ function Header() {
     const { openModal } = useModal();
     const router = useRouter();
     const now = useMemo(() => new Date(), []);
+
+    const modals = useModalStateContext();
 
     const onChangePageOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const option = e.target.value;
@@ -144,7 +147,7 @@ function Header() {
                 <div className={styles.utilContainer}>
                     {/* search */}
                     <div className={styles.search}>
-                        <button>
+                        <button onClick={() => console.log(modals)}>
                             <Image src={search_icon} height={25} alt="search" />
                         </button>
                     </div>

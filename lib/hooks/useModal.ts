@@ -1,25 +1,37 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
-import { useModalContext } from '../../contexts/ModalContext';
+import { MODAL_NAMES } from '../../components/ModalContainer';
+import {
+    useModalSetterContext,
+    useModalStateContext,
+} from '../../contexts/ModalContext';
 
 // use this to open and close modals
 export function useModal() {
-    const { state, setModalInfo } = useModalContext();
+    // const { state, setModalInfo } = useModalContext();
+    const { updateModalInfo } = useModalSetterContext();
+    const modals = useModalStateContext();
     let timeoutId: NodeJS.Timeout;
 
     // pass modal name and props you need in the modal (props is optional)
     // modal names list is at ModalContainer.tsx
-    const openModal = (name: string, props?: object) => {
-        setModalInfo({ name: name, props: props ?? null, state: 'open' });
+    const openModal = (name: MODAL_NAMES, props?: object) => {
+        updateModalInfo(name, { state: 'open', props: props ?? null });
     };
 
     // reset modal state in modalContext
-    const closeModal = () => {
-        setModalInfo(prev => ({ ...prev, state: 'closing' }));
+    const closeModal = (name: MODAL_NAMES) => {
+        updateModalInfo(name, { state: 'closing' });
+
         timeoutId = setTimeout(() => {
-            setModalInfo({ name: null, props: null, state: 'closed' });
+            updateModalInfo(name, { state: 'closed', props: null });
         }, 200);
     };
+
+    const getState = useCallback(
+        (name: MODAL_NAMES) => modals[name].state,
+        [modals],
+    );
 
     useEffect(() => {
         return () => {
@@ -27,5 +39,5 @@ export function useModal() {
         };
     }, []);
 
-    return { state, openModal, closeModal };
+    return { getState, openModal, closeModal };
 }
