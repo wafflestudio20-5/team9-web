@@ -36,11 +36,7 @@ export default function UserModal() {
                             </span>
                         </div>
                         <div className={styles.management}>
-                            <button
-                                onClick={() => openModal(MODAL_NAMES.calendar)}
-                            >
-                                Google 계정 관리
-                            </button>
+                            <button>Google 계정 관리</button>
                         </div>
                     </div>
                     <div className={styles.otherAccount}></div>

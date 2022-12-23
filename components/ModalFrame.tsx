@@ -7,17 +7,24 @@ import styles from './ModalFrame.module.scss';
 
 interface ModalFrameProps {
     modalName: MODAL_NAMES;
+    isDim?: boolean;
     children: React.ReactNode;
 }
 
-export default function ModalFrame({ modalName, children }: ModalFrameProps) {
+export default function ModalFrame({
+    modalName,
+    isDim,
+    children,
+}: ModalFrameProps) {
     const { getState, closeModal } = useModal();
     const state = useMemo(() => getState(modalName), [getState]);
 
     return (
         <>
             <div
-                className={`${styles.backdrop} ${styles[state]}`}
+                className={`${styles.backdrop} ${styles[state]} ${
+                    isDim && styles.dim
+                }`}
                 onClick={() => closeModal(modalName)}
             >
                 <div
