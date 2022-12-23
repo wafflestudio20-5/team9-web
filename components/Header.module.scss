@@ -1,14 +1,25 @@
 $background-gray: #f0f0f0;
 $font-gray: #70757a;
 $border-gray: #dadce0;
+$profile-green: #008a7c;
 
 .header {
     display: grid;
-    grid-template-columns: 48px 190px minmax(310px, auto) 260px;
+    grid-template-columns: 240px minmax(550px, auto) 100px;
     grid-template-rows: 48px;
     padding: 8px 15px;
     height: 65px;
     border-bottom: 1px solid $border-gray;
+
+    .left,
+    .middle,
+    .right {
+        display: flex;
+    }
+
+    .middle {
+        justify-content: space-between;
+    }
 
     button {
         display: flex;
@@ -31,6 +42,7 @@ $border-gray: #dadce0;
 
     .sidebarContainer {
         button {
+            padding: 11px;
             border-radius: 50%;
         }
     }
@@ -51,7 +63,8 @@ $border-gray: #dadce0;
                 height: 17px;
                 position: absolute;
                 top: 13px;
-                left: 6px;
+                left: 50%;
+                transform: translateX(-50%);
                 text-align: center;
                 font-size: small;
             }
@@ -77,10 +90,9 @@ $border-gray: #dadce0;
         .btnContainer {
             display: flex;
             align-items: center;
-            height: 100%;
+            height: 75%;
 
             button {
-                height: 75%;
                 border-radius: 5px;
             }
         }
@@ -108,6 +120,7 @@ $border-gray: #dadce0;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding-right: 30px;
 
         > div {
             position: relative;
@@ -119,8 +132,7 @@ $border-gray: #dadce0;
             border-radius: 50%;
         }
 
-        .pageOptions {
-            position: relative;
+        .calendarType {
             width: 75px;
             height: 75%;
 
@@ -132,10 +144,29 @@ $border-gray: #dadce0;
                 text-align: right;
             }
         }
+    }
 
-        .user {
-            button {
-                font-size: large;
+    .userContainer {
+        display: flex;
+        align-items: center;
+
+        > div {
+            width: 45px;
+            height: 90%;
+        }
+
+        button {
+            border-radius: 50%;
+            font-size: large;
+        }
+
+        .user button {
+            border: 2px solid white;
+            background-color: $profile-green;
+            color: white;
+
+            &:hover {
+                border: 2px solid $border-gray;
             }
         }
     }
