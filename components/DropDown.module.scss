@@ -1,0 +1,46 @@
+$background-gray: #f0f0f0;
+$font-gray: #70757a;
+$border-gray: #dadce0;
+
+.dropDown {
+    position: absolute;
+    top: 45px;
+    left: 0px;
+    width: 160px;
+    border: 1px solid $border-gray;
+    background-color: white;
+    box-shadow: 0 5px 8px 3px $border-gray;
+
+    &.open {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    }
+
+    &.closed {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    }
+
+    ul {
+        padding: 8px 0;
+    }
+
+    ul:not(:last-child) {
+        border-bottom: 1px solid $border-gray;
+    }
+
+    li {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 15px;
+        font-size: small;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $background-gray;
+        }
+    }
+}

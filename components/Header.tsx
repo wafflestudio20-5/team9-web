@@ -1,9 +1,7 @@
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 
 import { useDateContext } from '../contexts/DateContext';
-import { useModalStateContext } from '../contexts/ModalContext';
 import { useSidebarContext } from '../contexts/SidebarContext';
 import { useModal } from '../lib/hooks/useModal';
 import before_icon from '../public/images/before_icon.svg';
@@ -14,24 +12,11 @@ import next_icon from '../public/images/next_icon.svg';
 import search_icon from '../public/images/search_icon.svg';
 import settings_icon from '../public/images/settings_icon.svg';
 
+import CalendarTypeDropDown from './CalendarTypeDropDown';
 import styles from './Header.module.scss';
+import HelpDropDown from './HelpDropDown';
 import { MODAL_NAMES } from './ModalContainer';
-
-const PageOption: { [key: string]: { name: string; path: string } } = {
-    index: { name: 'index', path: '/' },
-    month: { name: 'month', path: '/month' },
-    schedule: { name: 'schedule', path: '/schedule' },
-};
-
-const getValueFromPathname = (pathname: string) => {
-    if (pathname === '/') {
-        return '';
-    } else if (pathname === '/month') {
-        return PageOption.month.name;
-    } else if (pathname === '/schedule') {
-        return PageOption.schedule.name;
-    }
-};
+import SettingsDropDown from './SettingsDropDown';
 
 function Header() {
     const {
@@ -43,15 +28,7 @@ function Header() {
         setDayNow,
     } = useDateContext();
     const { openModal } = useModal();
-    const router = useRouter();
     const now = useMemo(() => new Date(), []);
-
-    const modals = useModalStateContext();
-
-    const onChangePageOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const option = e.target.value;
-        router.push(PageOption[option]?.path || '/');
-    };
 
     const changeDateToToday = () => {
         setYearNow(now.getFullYear());
@@ -147,37 +124,22 @@ function Header() {
                 <div className={styles.utilContainer}>
                     {/* search */}
                     <div className={styles.search}>
-                        <button onClick={() => console.log(modals)}>
+                        <button>
                             <Image src={search_icon} height={25} alt="search" />
                         </button>
                     </div>
                     {/* help */}
                     <div className={styles.help}>
-                        <button>
-                            <Image src={help_icon} height={25} alt="help" />
-                        </button>
+                        <HelpDropDown />
                     </div>
                     {/* settings */}
                     <div className={styles.settings}>
-                        <button>
-                            <Image
-                                src={settings_icon}
-                                height={25}
-                                alt="settings"
-                            />
-                        </button>
+                        <SettingsDropDown />
                     </div>
                     {/* page options */}
-                    <select
-                        name="pageOption"
-                        id="pageOption"
-                        defaultValue={getValueFromPathname(router.pathname)}
-                        onChange={onChangePageOption}
-                    >
-                        <option value={PageOption.index.name}>캘린더</option>
-                        <option value={PageOption.month.name}>월</option>
-                        <option value={PageOption.schedule.name}>일정</option>
-                    </select>
+                    <div className={styles.pageOptions}>
+                        <CalendarTypeDropDown />
+                    </div>
                     {/* user */}
                     <div className={styles.user}>
                         <button onClick={() => openModal(MODAL_NAMES.user)}>
