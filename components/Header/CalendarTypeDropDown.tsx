@@ -31,28 +31,26 @@ export default function CalendarTypeDropDown() {
     };
 
     return (
-        <>
-            <div ref={dropDownRef} style={{ height: '100%' }}>
-                <button onClick={openDropDown}>
-                    <span>
-                        {getCalendarTypeFromPathname(router.pathname)}
-                        {/* 캘린더 */}
-                    </span>
-                    <span>▾</span>
-                </button>
-                <DropDown isOpen={isOpen}>
-                    <ul>
-                        <li onClick={() => changeCalendarType('month')}>
-                            <span>월</span>
-                            <span>M</span>
-                        </li>
-                        <li onClick={() => changeCalendarType('schedule')}>
-                            <span>일정</span>
-                            <span>A</span>
-                        </li>
-                    </ul>
-                </DropDown>
-            </div>
-        </>
+        <div ref={dropDownRef} style={{ height: '100%' }}>
+            <button onClick={openDropDown}>
+                <span>
+                    {getCalendarTypeFromPathname(router.pathname)}
+                    {/* 캘린더 */}
+                </span>
+                <span>▾</span>
+            </button>
+            <DropDown isOpen={isOpen}>
+                <ul>
+                    <li onClick={() => changeCalendarType('month')}>
+                        <span>월</span>
+                        <span>M</span>
+                    </li>
+                    <li onClick={() => changeCalendarType('schedule')}>
+                        <span>일정</span>
+                        <span>A</span>
+                    </li>
+                </ul>
+            </DropDown>
+        </div>
     );
 }

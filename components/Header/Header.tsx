@@ -69,149 +69,141 @@ function Header() {
     const { isOpen, openSidebar, closeSidebar } = useSidebarContext();
 
     return (
-        <>
-            <header className={styles.header}>
-                <div className={styles.left}>
-                    {!isSearchOpen ? (
-                        <>
-                            {/* sidebar menu */}
-                            <div className={styles.sidebarContainer}>
+        <header className={styles.header}>
+            <div className={styles.left}>
+                {!isSearchOpen ? (
+                    <>
+                        {/* sidebar menu */}
+                        <div className={styles.sidebarContainer}>
+                            <button
+                                onClick={isOpen ? closeSidebar : openSidebar}
+                            >
+                                <Image
+                                    src={menu_icon}
+                                    height={25}
+                                    alt="sidebar"
+                                />
+                            </button>
+                        </div>
+
+                        {/* title */}
+                        <div className={styles.titleContainer}>
+                            <div>
+                                <span className={styles.dateToday}>
+                                    {now.getDate()}
+                                </span>
+                                <Image
+                                    src={calendar_icon}
+                                    height={35}
+                                    alt="calendar"
+                                />
+                            </div>
+                            <span>캘린더</span>
+                        </div>
+                    </>
+                ) : (
+                    <div className={styles.back}>
+                        <button onClick={closeSearchbar}>
+                            <Image src={back_icon} height={25} alt="back" />
+                        </button>
+                        <span>검색</span>
+                    </div>
+                )}
+            </div>
+
+            <div className={styles.middle}>
+                {!isSearchOpen ? (
+                    <>
+                        {/* date (today, year, month) */}
+                        <div className={styles.dateContainer}>
+                            <button
+                                className={styles.today}
+                                onClick={changeDateToToday}
+                            >
+                                오늘
+                            </button>
+                            <div className={styles.btnContainer}>
+                                <button onClick={moveToLastMonth}>
+                                    <Image
+                                        src={before_icon}
+                                        height={25}
+                                        alt="last_month"
+                                    />
+                                </button>
+                                <button onClick={moveToNextMonth}>
+                                    <Image
+                                        src={next_icon}
+                                        height={25}
+                                        alt="next_month"
+                                    />
+                                </button>
+                            </div>
+                            <div className={styles.date}>
                                 <button
-                                    onClick={
-                                        isOpen ? closeSidebar : openSidebar
+                                    className={
+                                        isOpen ? styles.inactive : undefined
+                                    }
+                                    onClick={() =>
+                                        !isOpen &&
+                                        openModal(MODAL_NAMES.calendar)
                                     }
                                 >
-                                    <Image
-                                        src={menu_icon}
-                                        height={25}
-                                        alt="sidebar"
-                                    />
+                                    {yearNow}년 {monthNow}월 {!isOpen && '▾'}
                                 </button>
                             </div>
-
-                            {/* title */}
-                            <div className={styles.titleContainer}>
-                                <div>
-                                    <span className={styles.dateToday}>
-                                        {now.getDate()}
-                                    </span>
-                                    <Image
-                                        src={calendar_icon}
-                                        height={35}
-                                        alt="calendar"
-                                    />
-                                </div>
-                                <span>캘린더</span>
-                            </div>
-                        </>
-                    ) : (
-                        <div className={styles.back}>
-                            <button onClick={closeSearchbar}>
-                                <Image src={back_icon} height={25} alt="back" />
-                            </button>
-                            <span>검색</span>
                         </div>
-                    )}
-                </div>
 
-                <div className={styles.middle}>
-                    {!isSearchOpen ? (
-                        <>
-                            {/* date (today, year, month) */}
-                            <div className={styles.dateContainer}>
+                        {/* utils */}
+                        <div className={styles.utilContainer}>
+                            {/* search */}
+                            <div className={styles.search}>
                                 <button
-                                    className={styles.today}
-                                    onClick={changeDateToToday}
+                                    onClick={e => {
+                                        e.stopPropagation();
+                                        setIsSearchOpen(true);
+                                    }}
                                 >
-                                    오늘
+                                    <Image
+                                        src={search_icon}
+                                        height={25}
+                                        alt="search"
+                                    />
                                 </button>
-                                <div className={styles.btnContainer}>
-                                    <button onClick={moveToLastMonth}>
-                                        <Image
-                                            src={before_icon}
-                                            height={25}
-                                            alt="last_month"
-                                        />
-                                    </button>
-                                    <button onClick={moveToNextMonth}>
-                                        <Image
-                                            src={next_icon}
-                                            height={25}
-                                            alt="next_month"
-                                        />
-                                    </button>
-                                </div>
-                                <div className={styles.date}>
-                                    <button
-                                        className={
-                                            isOpen ? styles.inactive : undefined
-                                        }
-                                        onClick={() =>
-                                            !isOpen &&
-                                            openModal(MODAL_NAMES.calendar)
-                                        }
-                                    >
-                                        {yearNow}년 {monthNow}월{' '}
-                                        {!isOpen && '▾'}
-                                    </button>
-                                </div>
                             </div>
-
-                            {/* utils */}
-                            <div className={styles.utilContainer}>
-                                {/* search */}
-                                <div className={styles.search}>
-                                    <button
-                                        onClick={e => {
-                                            e.stopPropagation();
-                                            setIsSearchOpen(true);
-                                        }}
-                                    >
-                                        <Image
-                                            src={search_icon}
-                                            height={25}
-                                            alt="search"
-                                        />
-                                    </button>
-                                </div>
-                                <div className={styles.help}>
-                                    <HelpDropDown />
-                                </div>
-                                <div className={styles.settings}>
-                                    <SettingsDropDown />
-                                </div>
-                                <div className={styles.calendarType}>
-                                    <CalendarTypeDropDown />
-                                </div>
+                            <div className={styles.help}>
+                                <HelpDropDown />
                             </div>
-                        </>
-                    ) : (
-                        <Searchbar
-                            isOpen={isSearchOpen}
-                            close={closeSearchbar}
-                        />
-                    )}
-                </div>
-                <div className={styles.right}>
-                    {/* user */}
-                    <div className={styles.userContainer}>
-                        <div className={styles.apps}>
-                            <button>
-                                <Image src={apps_icon} height={25} alt="apps" />
-                            </button>
+                            <div className={styles.settings}>
+                                <SettingsDropDown />
+                            </div>
+                            <div className={styles.calendarType}>
+                                <CalendarTypeDropDown />
+                            </div>
                         </div>
-                        <div className={styles.user}>
-                            <button onClick={() => openModal(MODAL_NAMES.user)}>
-                                J
-                            </button>
-                        </div>
-                        {/* <div className={styles.login}>
+                    </>
+                ) : (
+                    <Searchbar isOpen={isSearchOpen} close={closeSearchbar} />
+                )}
+            </div>
+            <div className={styles.right}>
+                {/* user */}
+                <div className={styles.userContainer}>
+                    <div className={styles.apps}>
+                        <button>
+                            <Image src={apps_icon} height={25} alt="apps" />
+                        </button>
+                    </div>
+                    <div className={styles.user}>
+                        <button onClick={() => openModal(MODAL_NAMES.user)}>
+                            J
+                        </button>
+                    </div>
+                    {/* <div className={styles.login}>
                             <button>로그인</button>
                         </div> */}
-                    </div>
                 </div>
-            </header>
-        </>
+            </div>
+        </header>
     );
 }
 

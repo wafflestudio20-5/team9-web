@@ -12,13 +12,14 @@ import CalendarModal from '../components/Header/CalendarModal';
 import SearchDetailsModal from '../components/Header/SearchDetailsModal';
 import UserModal from '../components/Header/UserModal';
 
-// Add modal name to MODAL_NAMES and add your modal component to MODAL_COMPONENTS
+// Add modal name to MODAL_NAMES
 export const enum MODAL_NAMES {
     user = 'user',
     calendar = 'calendar',
     search = 'search',
 }
 
+// Add your modal component to MODAL_COMPONENTS
 const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
     [MODAL_NAMES.user]: UserModal,
     [MODAL_NAMES.calendar]: CalendarModal,

@@ -11,10 +11,8 @@ export default function DropDown({ isOpen, children }: DropDownProps) {
     const dropDownClass = () => (isOpen ? styles.open : styles.closed);
 
     return (
-        <>
-            <div className={`${styles.dropDown} ${dropDownClass()}`}>
-                {children}
-            </div>
-        </>
+        <div className={`${styles.dropDown} ${dropDownClass()}`}>
+            {children}
+        </div>
     );
 }

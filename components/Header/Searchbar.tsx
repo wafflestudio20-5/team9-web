@@ -38,21 +38,19 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
     }, [isOpen]);
 
     return (
-        <>
-            <div className={styles.searchbar} ref={searchRef}>
-                <form className={styles.search} onSubmit={searchSchedule}>
-                    <button>
-                        <Image src={search_icon} height={25} alt="search" />
-                    </button>
-                    <input type="text" placeholder="검색" autoFocus />
-                    <button
-                        type="button"
-                        onClick={() => openModal(MODAL_NAMES.search)}
-                    >
-                        ▾
-                    </button>
-                </form>
-            </div>
-        </>
+        <div className={styles.searchbar} ref={searchRef}>
+            <form className={styles.search} onSubmit={searchSchedule}>
+                <button>
+                    <Image src={search_icon} height={25} alt="search" />
+                </button>
+                <input type="text" placeholder="검색" autoFocus />
+                <button
+                    type="button"
+                    onClick={() => openModal(MODAL_NAMES.search)}
+                >
+                    ▾
+                </button>
+            </form>
+        </div>
     );
 }

@@ -19,23 +19,21 @@ export default function ModalFrame({
     const state = useMemo(() => getState(modalName), [getState]);
 
     return (
-        <>
+        <div
+            className={`${styles.backdrop} ${styles[state]} ${
+                isDim && styles.dim
+            }`}
+            onClick={e => {
+                e.stopPropagation();
+                closeModal(modalName);
+            }}
+        >
             <div
-                className={`${styles.backdrop} ${styles[state]} ${
-                    isDim && styles.dim
-                }`}
-                onClick={e => {
-                    e.stopPropagation();
-                    closeModal(modalName);
-                }}
+                className={`${styles.modalBody} ${styles[state]}`}
+                onClick={e => e.stopPropagation()}
             >
-                <div
-                    className={`${styles.modalBody} ${styles[state]}`}
-                    onClick={e => e.stopPropagation()}
-                >
-                    {children}
-                </div>
+                {children}
             </div>
-        </>
+        </div>
     );
 }

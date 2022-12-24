@@ -12,23 +12,21 @@ export default function SearchCategoryDropDown() {
     };
 
     return (
-        <>
-            <div ref={dropDownRef} style={{ height: '100%' }}>
-                <button type="button" onClick={openDropDown}>
-                    <span>{category}</span>
-                    <span>▾</span>
-                </button>
-                <DropDown isOpen={isOpen}>
-                    <ul>
-                        <li onClick={changeCategory}>사용 중인 캘린더</li>
-                        <li onClick={changeCategory}>전체 캘린더</li>
-                    </ul>
-                    <ul>
-                        <li onClick={changeCategory}>이것은</li>
-                        <li onClick={changeCategory}>카테고리</li>
-                    </ul>
-                </DropDown>
-            </div>
-        </>
+        <div ref={dropDownRef} style={{ height: '100%' }}>
+            <button type="button" onClick={openDropDown}>
+                <span>{category}</span>
+                <span>▾</span>
+            </button>
+            <DropDown isOpen={isOpen}>
+                <ul>
+                    <li onClick={changeCategory}>사용 중인 캘린더</li>
+                    <li onClick={changeCategory}>전체 캘린더</li>
+                </ul>
+                <ul>
+                    <li onClick={changeCategory}>이것은</li>
+                    <li onClick={changeCategory}>카테고리</li>
+                </ul>
+            </DropDown>
+        </div>
     );
 }
