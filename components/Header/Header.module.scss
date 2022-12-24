@@ -2,6 +2,7 @@ $background-gray: #f0f0f0;
 $font-gray: #70757a;
 $border-gray: #dadce0;
 $profile-green: #008a7c;
+$primary-blue: #1a73e8;
 
 .header {
     display: grid;
@@ -170,14 +171,15 @@ $profile-green: #008a7c;
         align-items: center;
         width: 100%;
 
-        > div {
+        .apps,
+        .user {
             width: 45px;
             height: 90%;
-        }
 
-        button {
-            border-radius: 50%;
-            font-size: large;
+            button {
+                border-radius: 50%;
+                font-size: large;
+            }
         }
 
         .user button {
@@ -187,6 +189,22 @@ $profile-green: #008a7c;
 
             &:hover {
                 border: 2px solid $border-gray;
+            }
+        }
+
+        .login {
+            width: 60px;
+            height: 75%;
+
+            button {
+                border-radius: 5px;
+                background-color: $primary-blue;
+                font-size: small;
+                color: white;
+
+                &:hover {
+                    background-color: #1967cd;
+                }
             }
         }
     }
