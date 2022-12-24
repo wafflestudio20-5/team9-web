@@ -16,12 +16,6 @@ $primary-blue: #1a73e8;
     .middle,
     .right {
         display: flex;
-
-        > div {
-            &.hidden {
-                display: none;
-            }
-        }
     }
 
     .middle {
@@ -212,6 +206,20 @@ $primary-blue: #1a73e8;
                     background-color: #1967cd;
                 }
             }
+        }
+    }
+
+    .hidden {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .header {
+        grid-template-columns: 520px minmax(auto, 120px);
+
+        .left {
+            display: none;
         }
     }
 }
