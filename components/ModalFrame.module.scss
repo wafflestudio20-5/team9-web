@@ -1,11 +1,11 @@
 .backdrop {
     position: absolute;
-    top: 0px;
+    top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     z-index: 100;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.1);
 
     &.dim {
         background-color: rgba(0, 0, 0, 0.1);
@@ -18,15 +18,19 @@
     &.closing {
         animation: fadeout 0.3s;
     }
+}
 
-    .modalBody {
-        &.open {
-            animation: slidedown 0.3s;
-        }
+.modalBody {
+    position: absolute;
+    top: 0;
+    z-index: 110;
 
-        &.closing {
-            animation: slideup 0.3s;
-        }
+    &.open {
+        animation: slidedown 0.3s;
+    }
+
+    &.closing {
+        animation: slideup 0.3s;
     }
 }
 
@@ -50,18 +54,22 @@
 
 @keyframes slidedown {
     from {
+        opacity: 0;
         transform: translateY(-30px);
     }
     to {
         transform: translateY(0px);
+        opacity: 1;
     }
 }
 
 @keyframes slideup {
     from {
         transform: translateY(0px);
+        opacity: 1;
     }
     to {
         transform: translateY(-30px);
+        opacity: 0;
     }
 }
