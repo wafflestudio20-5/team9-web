@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app';
 import React from 'react';
 
-import Header from '../components/Header';
+import Header from '../components/Header/Header';
 import ModalContainer from '../components/ModalContainer';
 import DateProvider from '../contexts/DateContext';
 import ModalProvider from '../contexts/ModalContext';

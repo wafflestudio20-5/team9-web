@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 
-import { useDropDown } from '../lib/hooks/useDropDown';
-import settings_icon from '../public/images/settings_icon.svg';
-
-import DropDown from './DropDown';
+import { useDropDown } from '../../lib/hooks/useDropDown';
+import settings_icon from '../../public/images/settings_icon.svg';
+import DropDown from '../DropDown';
 
 export default function SettingsDropDown() {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();

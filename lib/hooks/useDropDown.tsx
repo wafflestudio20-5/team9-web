@@ -14,23 +14,19 @@ export function useDropDown() {
     };
 
     const openDropDown = () => {
-        console.log('open');
         setIsOpen(!isOpen);
     };
 
     const closeDropDown = () => {
-        console.log('close');
         setIsOpen(false);
     };
 
     useEffect(() => {
         if (isOpen) {
             window.addEventListener('click', onClickOuterArea);
-            console.log('added');
         }
         return () => {
             window.removeEventListener('click', onClickOuterArea);
-            console.log('revmoed');
         };
     }, [isOpen]);
 

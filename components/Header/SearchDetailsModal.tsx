@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { MODAL_NAMES } from '../ModalContainer';
+import ModalFrame from '../ModalFrame';
+
 import CalendarDropDown from './CalendarDropDown';
-import { MODAL_NAMES } from './ModalContainer';
-import ModalFrame from './ModalFrame';
 import SearchCategoryDropDown from './SearchCategoryDropDown';
 import styles from './SearchDetailsModal.module.scss';
 

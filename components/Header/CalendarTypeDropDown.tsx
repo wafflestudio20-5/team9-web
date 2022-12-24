@@ -1,9 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { useDropDown } from '../lib/hooks/useDropDown';
-
-import DropDown from './DropDown';
+import { useDropDown } from '../../lib/hooks/useDropDown';
+import DropDown from '../DropDown';
 
 const PageOption: { [key: string]: { name: string; path: string } } = {
     index: { name: 'index', path: '/' },

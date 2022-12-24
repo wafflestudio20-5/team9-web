@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useModalStateContext } from '../contexts/ModalContext';
 
-import CalendarModal from './CalendarModal';
-import SearchDetailsModal from './SearchDetailsModal';
-import UserModal from './UserModal';
+import CalendarModal from './Header/CalendarModal';
+import SearchDetailsModal from './Header/SearchDetailsModal';
+import UserModal from './Header/UserModal';
 
 export const enum MODAL_NAMES {
     user = 'user',

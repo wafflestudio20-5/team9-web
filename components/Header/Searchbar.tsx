@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import React, { FormEvent, useEffect, useRef } from 'react';
 
-import { useModal } from '../lib/hooks/useModal';
-import search_icon from '../public/images/search_icon.svg';
+import { useModal } from '../../lib/hooks/useModal';
+import search_icon from '../../public/images/search_icon.svg';
+import { MODAL_NAMES } from '../ModalContainer';
 
-import { MODAL_NAMES } from './ModalContainer';
 import styles from './Searchbar.module.scss';
 
 interface SearchbarProps {
@@ -16,6 +16,11 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
     const { openModal } = useModal();
     const searchRef = useRef<HTMLDivElement>(null);
 
+    const searchSchedule = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log('search!');
+    };
+
     const onClickOuterArea = (e: MouseEvent) => {
         if (
             searchRef.current !== null &&
@@ -23,11 +28,6 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
         ) {
             close();
         }
-    };
-
-    const searchSchedule = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log('search!');
     };
 
     useEffect(() => {
