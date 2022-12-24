@@ -8,6 +8,7 @@ import apps_icon from '../../public/images/apps_icon.svg';
 import back_icon from '../../public/images/back_icon.svg';
 import before_icon from '../../public/images/before_icon.svg';
 import calendar_icon from '../../public/images/calendar_icon.svg';
+import dropdown_icon from '../../public/images/dropdown_icon.svg';
 import menu_icon from '../../public/images/menu_icon.svg';
 import next_icon from '../../public/images/next_icon.svg';
 import search_icon from '../../public/images/search_icon.svg';
@@ -148,7 +149,14 @@ function Header() {
                                         openModal(MODAL_NAMES.calendar)
                                     }
                                 >
-                                    {yearNow}년 {monthNow}월 {!isOpen && '▾'}
+                                    {yearNow}년 {monthNow}월{' '}
+                                    {!isOpen && (
+                                        <Image
+                                            src={dropdown_icon}
+                                            height={25}
+                                            alt="date"
+                                        />
+                                    )}
                                 </button>
                             </div>
                         </div>

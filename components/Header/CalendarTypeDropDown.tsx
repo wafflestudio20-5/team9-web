@@ -1,7 +1,9 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { useDropDown } from '../../lib/hooks/useDropDown';
+import dropdown_icon from '../../public/images/dropdown_icon.svg';
 import DropDown from '../DropDown';
 
 const PageOption: { [key: string]: { name: string; path: string } } = {
@@ -37,7 +39,7 @@ export default function CalendarTypeDropDown() {
                     {getCalendarTypeFromPathname(router.pathname)}
                     {/* 캘린더 */}
                 </span>
-                <span>▾</span>
+                <Image src={dropdown_icon} height={20} alt="calender_type" />
             </button>
             <DropDown isOpen={isOpen}>
                 <ul>

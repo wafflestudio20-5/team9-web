@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React, { FormEvent, useEffect, useRef } from 'react';
 
 import { MODAL_NAMES, useModal } from '../../contexts/ModalContext';
+import dropdown_icon from '../../public/images/dropdown_icon.svg';
 import search_icon from '../../public/images/search_icon.svg';
 
 import styles from './Searchbar.module.scss';
@@ -48,7 +49,11 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
                     type="button"
                     onClick={() => openModal(MODAL_NAMES.search)}
                 >
-                    ▾
+                    <Image
+                        src={dropdown_icon}
+                        height={20}
+                        alt="search_details"
+                    />
                 </button>
             </form>
         </div>
