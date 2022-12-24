@@ -38,6 +38,8 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
         };
     }, [isOpen]);
 
+    if (!isOpen) return null;
+
     return (
         <div className={styles.searchbar} ref={searchRef}>
             <form className={styles.search} onSubmit={searchSchedule}>
