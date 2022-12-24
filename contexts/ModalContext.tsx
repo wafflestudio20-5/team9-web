@@ -3,25 +3,32 @@ import React, {
     PropsWithChildren,
     useCallback,
     useContext,
+    useEffect,
     useMemo,
     useState,
 } from 'react';
 
-import { MODAL_NAMES } from '../components/ModalContainer';
+import CalendarModal from '../components/Header/CalendarModal';
+import SearchDetailsModal from '../components/Header/SearchDetailsModal';
+import UserModal from '../components/Header/UserModal';
+
+// Add modal name to MODAL_NAMES and add your modal component to MODAL_COMPONENTS
+export const enum MODAL_NAMES {
+    user = 'user',
+    calendar = 'calendar',
+    search = 'search',
+}
+
+const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
+    [MODAL_NAMES.user]: UserModal,
+    [MODAL_NAMES.calendar]: CalendarModal,
+    [MODAL_NAMES.search]: SearchDetailsModal,
+};
 
 type ModalState = 'open' | 'closing' | 'closed';
 
-interface ModalValues {
-    props: object | null;
-    state: ModalState;
-}
-
 interface Modals {
-    [name: string]: ModalValues;
-}
-
-interface ModalStateContextData {
-    [name: string]: ModalValues;
+    [name: string]: { props: object | null; state: ModalState };
 }
 
 interface ModalSetterContextData {
@@ -31,15 +38,15 @@ interface ModalSetterContextData {
     ): void;
 }
 
-const ModalStateContext = createContext<ModalStateContextData>({});
+const ModalStateContext = createContext<Modals>({});
 const ModalSetterContext = createContext<ModalSetterContextData>({
     updateModalInfo() {
         throw new Error('ModalContext not provided');
     },
 });
 
-export const useModalStateContext = () => useContext(ModalStateContext);
-export const useModalSetterContext = () => useContext(ModalSetterContext);
+const useModalStateContext = () => useContext(ModalStateContext);
+const useModalSetterContext = () => useContext(ModalSetterContext);
 
 const initModals: Modals = {
     [MODAL_NAMES.user]: { props: null, state: 'closed' },
@@ -64,7 +71,6 @@ export default function ModalProvider({ children }: PropsWithChildren) {
     );
 
     const value = useMemo(() => modals, [modals]);
-
     const setter = useMemo(
         () => ({
             updateModalInfo,
@@ -79,4 +85,54 @@ export default function ModalProvider({ children }: PropsWithChildren) {
             </ModalStateContext.Provider>
         </ModalSetterContext.Provider>
     );
+}
+
+export function ModalContainer() {
+    const modals = useModalStateContext();
+
+    return (
+        <>
+            {Object.keys(modals).map(name => {
+                const modal = modals[name];
+                if (modal.state !== 'closed') {
+                    const Modal = MODAL_COMPONENTS[name];
+                    return <Modal key={name} {...modal.props} />;
+                }
+            })}
+        </>
+    );
+}
+
+export function useModal() {
+    const { updateModalInfo } = useModalSetterContext();
+    const modals = useModalStateContext();
+    let timeoutId: NodeJS.Timeout;
+
+    // pass modal name and props you need in the modal (props is optional)
+    // modal names list is at the top of this file(ModalContext.tsx)
+    const openModal = (name: MODAL_NAMES, props?: object) => {
+        updateModalInfo(name, { state: 'open', props: props ?? null });
+    };
+
+    // reset modal state in modalContext
+    const closeModal = (name: MODAL_NAMES) => {
+        updateModalInfo(name, { state: 'closing' });
+
+        timeoutId = setTimeout(() => {
+            updateModalInfo(name, { state: 'closed', props: null });
+        }, 200);
+    };
+
+    const getState = useCallback(
+        (name: MODAL_NAMES) => modals[name].state,
+        [modals],
+    );
+
+    useEffect(() => {
+        return () => {
+            if (timeoutId) clearTimeout(timeoutId);
+        };
+    }, []);
+
+    return { getState, openModal, closeModal };
 }

@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 
+import { MODAL_NAMES, useModal } from '../../contexts/ModalContext';
 import { useSessionContext } from '../../contexts/SessionContext';
-import { useModal } from '../../lib/hooks/useModal';
 import camera_icon from '../../public/images/camera_icon.svg';
-import { MODAL_NAMES } from '../ModalContainer';
 import ModalFrame from '../ModalFrame';
 
 import styles from './UserModal.module.scss';

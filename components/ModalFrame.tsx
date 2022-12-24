@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
-import { useModal } from '../lib/hooks/useModal';
+import { MODAL_NAMES, useModal } from '../contexts/ModalContext';
 
-import { MODAL_NAMES } from './ModalContainer';
 import styles from './ModalFrame.module.scss';
 
 interface ModalFrameProps {

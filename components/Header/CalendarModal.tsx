@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MODAL_NAMES } from '../ModalContainer';
+import { MODAL_NAMES } from '../../contexts/ModalContext';
 import ModalFrame from '../ModalFrame';
 
 import styles from './CalendarModal.module.scss';
