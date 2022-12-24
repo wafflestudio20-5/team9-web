@@ -5,7 +5,7 @@
     width: 100vw;
     height: 100vh;
     z-index: 100;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0);
 
     &.dim {
         background-color: rgba(0, 0, 0, 0.1);
@@ -24,6 +24,7 @@
     position: absolute;
     top: 0;
     z-index: 110;
+    width: 100%;
 
     &.open {
         animation: slidedown 0.3s;
