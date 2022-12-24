@@ -160,10 +160,13 @@ function Header() {
 
                             {/* utils */}
                             <div className={styles.utilContainer}>
-                                {/* search */}
+                                `{/* search */}
                                 <div className={styles.search}>
                                     <button
-                                        onClick={() => setIsSearchOpen(true)}
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            setIsSearchOpen(true);
+                                        }}
                                     >
                                         <Image
                                             src={search_icon}

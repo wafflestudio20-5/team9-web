@@ -25,7 +25,10 @@ export default function ModalFrame({
                 className={`${styles.backdrop} ${styles[state]} ${
                     isDim && styles.dim
                 }`}
-                onClick={() => closeModal(modalName)}
+                onClick={e => {
+                    e.stopPropagation();
+                    closeModal(modalName);
+                }}
             >
                 <div
                     className={`${styles.modalBody} ${styles[state]}`}
