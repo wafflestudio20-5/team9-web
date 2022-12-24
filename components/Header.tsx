@@ -1,10 +1,11 @@
 import Image from 'next/image';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { useDateContext } from '../contexts/DateContext';
 import { useSidebarContext } from '../contexts/SidebarContext';
 import { useModal } from '../lib/hooks/useModal';
 import apps_icon from '../public/images/apps_icon.svg';
+import back_icon from '../public/images/back_icon.svg';
 import before_icon from '../public/images/before_icon.svg';
 import calendar_icon from '../public/images/calendar_icon.svg';
 import menu_icon from '../public/images/menu_icon.svg';
@@ -15,6 +16,7 @@ import CalendarTypeDropDown from './CalendarTypeDropDown';
 import styles from './Header.module.scss';
 import HelpDropDown from './HelpDropDown';
 import { MODAL_NAMES } from './ModalContainer';
+import Searchbar from './Searchbar';
 import SettingsDropDown from './SettingsDropDown';
 
 function Header() {
@@ -27,6 +29,7 @@ function Header() {
         setDayNow,
     } = useDateContext();
     const { openModal } = useModal();
+    const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const now = useMemo(() => new Date(), []);
 
     const changeDateToToday = () => {
@@ -60,94 +63,132 @@ function Header() {
         setDateNow(1);
     };
 
+    const closeSearchbar = () => {
+        setIsSearchOpen(false);
+    };
+
     const { isOpen, openSidebar, closeSidebar } = useSidebarContext();
 
     return (
         <>
             <header className={styles.header}>
                 <div className={styles.left}>
-                    {/* sidebar menu */}
-                    <div className={styles.sidebarContainer}>
-                        <button onClick={isOpen ? closeSidebar : openSidebar}>
-                            <Image src={menu_icon} height={25} alt="sidebar" />
-                        </button>
-                    </div>
+                    {!isSearchOpen ? (
+                        <>
+                            {/* sidebar menu */}
+                            <div className={styles.sidebarContainer}>
+                                <button
+                                    onClick={
+                                        isOpen ? closeSidebar : openSidebar
+                                    }
+                                >
+                                    <Image
+                                        src={menu_icon}
+                                        height={25}
+                                        alt="sidebar"
+                                    />
+                                </button>
+                            </div>
 
-                    {/* title */}
-                    <div className={styles.titleContainer}>
-                        <div>
-                            <span className={styles.dateToday}>
-                                {now.getDate()}
-                            </span>
-                            <Image
-                                src={calendar_icon}
-                                height={35}
-                                alt="calendar"
-                            />
+                            {/* title */}
+                            <div className={styles.titleContainer}>
+                                <div>
+                                    <span className={styles.dateToday}>
+                                        {now.getDate()}
+                                    </span>
+                                    <Image
+                                        src={calendar_icon}
+                                        height={35}
+                                        alt="calendar"
+                                    />
+                                </div>
+                                <span>캘린더</span>
+                            </div>
+                        </>
+                    ) : (
+                        <div className={styles.back}>
+                            <button onClick={closeSearchbar}>
+                                <Image src={back_icon} height={25} alt="back" />
+                            </button>
+                            <span>검색</span>
                         </div>
-                        <span>캘린더</span>
-                    </div>
+                    )}
                 </div>
 
                 <div className={styles.middle}>
-                    {/* date (today, year, month) */}
-                    <div className={styles.dateContainer}>
-                        <button
-                            className={styles.today}
-                            onClick={changeDateToToday}
-                        >
-                            오늘
-                        </button>
-                        <div className={styles.btnContainer}>
-                            <button onClick={moveToLastMonth}>
-                                <Image
-                                    src={before_icon}
-                                    height={25}
-                                    alt="last_month"
-                                />
-                            </button>
-                            <button onClick={moveToNextMonth}>
-                                <Image
-                                    src={next_icon}
-                                    height={25}
-                                    alt="next_month"
-                                />
-                            </button>
-                        </div>
-                        <div className={styles.date}>
-                            <button
-                                className={isOpen ? styles.inactive : undefined}
-                                onClick={() =>
-                                    !isOpen && openModal(MODAL_NAMES.calendar)
-                                }
-                            >
-                                {yearNow}년 {monthNow}월 {!isOpen && '▾'}
-                            </button>
-                        </div>
-                    </div>
+                    {!isSearchOpen ? (
+                        <>
+                            {/* date (today, year, month) */}
+                            <div className={styles.dateContainer}>
+                                <button
+                                    className={styles.today}
+                                    onClick={changeDateToToday}
+                                >
+                                    오늘
+                                </button>
+                                <div className={styles.btnContainer}>
+                                    <button onClick={moveToLastMonth}>
+                                        <Image
+                                            src={before_icon}
+                                            height={25}
+                                            alt="last_month"
+                                        />
+                                    </button>
+                                    <button onClick={moveToNextMonth}>
+                                        <Image
+                                            src={next_icon}
+                                            height={25}
+                                            alt="next_month"
+                                        />
+                                    </button>
+                                </div>
+                                <div className={styles.date}>
+                                    <button
+                                        className={
+                                            isOpen ? styles.inactive : undefined
+                                        }
+                                        onClick={() =>
+                                            !isOpen &&
+                                            openModal(MODAL_NAMES.calendar)
+                                        }
+                                    >
+                                        {yearNow}년 {monthNow}월{' '}
+                                        {!isOpen && '▾'}
+                                    </button>
+                                </div>
+                            </div>
 
-                    {/* utils */}
-                    <div className={styles.utilContainer}>
-                        {/* search */}
-                        <div className={styles.search}>
-                            <button>
-                                <Image
-                                    src={search_icon}
-                                    height={25}
-                                    alt="search"
-                                />
-                            </button>
-                        </div>
-                        <div className={styles.help}>
-                            <HelpDropDown />
-                        </div>
-                        <div className={styles.settings}>
-                            <SettingsDropDown />
-                        </div>
-                        <div className={styles.calendarType}>
-                            <CalendarTypeDropDown />
-                        </div>
-                    </div>
+                            {/* utils */}
+                            <div className={styles.utilContainer}>
+                                {/* search */}
+                                <div className={styles.search}>
+                                    <button
+                                        onClick={() => setIsSearchOpen(true)}
+                                    >
+                                        <Image
+                                            src={search_icon}
+                                            height={25}
+                                            alt="search"
+                                        />
+                                    </button>
+                                </div>
+                                <div className={styles.help}>
+                                    <HelpDropDown />
+                                </div>
+                                <div className={styles.settings}>
+                                    <SettingsDropDown />
+                                </div>
+                                <div className={styles.calendarType}>
+                                    <CalendarTypeDropDown />
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <Searchbar
+                            isOpen={isSearchOpen}
+                            close={closeSearchbar}
+                        />
+                    )}
                 </div>
                 <div className={styles.right}>
                     {/* user */}

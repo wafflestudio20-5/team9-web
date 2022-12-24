@@ -1,0 +1,95 @@
+$background-gray: #f0f0f0;
+$font-gray: #70757a;
+$border-gray: #dadce0;
+$primary-blue: #1a73e8;
+
+.searchDetailsModal {
+    position: absolute;
+    top: 60px;
+    left: 255px;
+    padding: 10px 15px;
+    width: 700px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 1px 3px 1px $border-gray;
+
+    form > div {
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        height: 45px;
+    }
+
+    .category {
+        position: relative;
+        height: 100%;
+
+        button {
+            height: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    }
+
+    label {
+        width: 150px;
+    }
+
+    input {
+        padding: 0 5px;
+        width: 430px;
+        height: 100%;
+        border: 2px solid $background-gray;
+        border-radius: 5px;
+        background-color: $background-gray;
+
+        &:focus {
+            border-bottom: 2px solid $border-gray;
+            outline: none;
+        }
+    }
+
+    .calendar {
+        position: relative;
+        height: 100%;
+
+        input {
+            width: 100px;
+        }
+    }
+
+    .dash {
+        display: inline-block;
+        margin: 0 10px;
+    }
+
+    .btnContainer {
+        justify-content: right;
+
+        button {
+            padding: 3px 10px;
+            width: 65px;
+            height: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+
+            &.reset {
+                margin-right: 5px;
+                background-color: white;
+                &:hover {
+                    background-color: $background-gray;
+                }
+            }
+
+            &.search {
+                color: white;
+                background-color: $primary-blue;
+                &:hover {
+                    background-color: #1967cd;
+                }
+            }
+        }
+    }
+}

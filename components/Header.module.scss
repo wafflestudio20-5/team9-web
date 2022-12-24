@@ -5,7 +5,7 @@ $profile-green: #008a7c;
 
 .header {
     display: grid;
-    grid-template-columns: 240px minmax(550px, auto) 100px;
+    grid-template-columns: 240px auto minmax(auto, 120px);
     grid-template-rows: 48px;
     padding: 8px 15px;
     height: 65px;
@@ -75,9 +75,27 @@ $profile-green: #008a7c;
         }
     }
 
+    .back {
+        display: flex;
+        align-items: center;
+
+        button {
+            padding: 11px;
+            width: auto;
+            border-radius: 50%;
+        }
+
+        span {
+            display: inline-block;
+            padding-left: 10px;
+            font-size: 20px;
+        }
+    }
+
     .dateContainer {
         display: flex;
         align-items: center;
+        min-width: 310px;
 
         .today {
             margin-right: 20px;
@@ -120,7 +138,7 @@ $profile-green: #008a7c;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-right: 30px;
+        min-width: auto;
 
         > div {
             position: relative;
@@ -148,7 +166,9 @@ $profile-green: #008a7c;
 
     .userContainer {
         display: flex;
+        justify-content: right;
         align-items: center;
+        width: 100%;
 
         > div {
             width: 45px;

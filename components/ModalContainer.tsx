@@ -3,17 +3,20 @@ import React from 'react';
 import { useModalStateContext } from '../contexts/ModalContext';
 
 import CalendarModal from './CalendarModal';
+import SearchDetailsModal from './SearchDetailsModal';
 import UserModal from './UserModal';
 
 export const enum MODAL_NAMES {
     user = 'user',
     calendar = 'calendar',
+    search = 'search',
 }
 
 // React.ElementType could be inaccurate
 const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
     [MODAL_NAMES.user]: UserModal,
     [MODAL_NAMES.calendar]: CalendarModal,
+    [MODAL_NAMES.search]: SearchDetailsModal,
 };
 
 export default function ModalContainer() {

@@ -1,0 +1,46 @@
+$background-gray: #f0f0f0;
+$font-gray: #70757a;
+$border-gray: #dadce0;
+$profile-green: #008a7c;
+
+.searchbar {
+    margin-right: 10px;
+    min-width: 350px;
+    width: 100%;
+    max-width: 700px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px 1px $border-gray;
+
+    form {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 10px;
+        width: 100%;
+        height: 100%;
+
+        button {
+            width: 37px;
+            // height: 37px;
+            border-radius: 50%;
+
+            &:hover {
+                background-color: $background-gray;
+            }
+        }
+
+        input {
+            flex-grow: 1;
+            margin: 0 10px;
+            padding: 2px;
+            min-width: 250px;
+            height: 100%;
+            border: none;
+            font-size: medium;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}
