@@ -2,11 +2,15 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { useDropDown } from '../../lib/hooks/useDropDown';
 import dropdown_icon from '../../public/images/dropdown_icon.svg';
-import DropDown from '../DropDown';
+import {
+    DropDown,
+    DropDownBody,
+    DropDownHeader,
+    useDropDown,
+} from '../DropDown';
 
-const PageOption: { [key: string]: { name: string; path: string } } = {
+const CalendarType: { [key: string]: { name: string; path: string } } = {
     index: { name: 'index', path: '/' },
     month: { name: 'month', path: '/month' },
     schedule: { name: 'schedule', path: '/schedule' },
@@ -14,9 +18,9 @@ const PageOption: { [key: string]: { name: string; path: string } } = {
 
 const getCalendarTypeFromPathname = (pathname: string) => {
     switch (pathname) {
-        case PageOption.month.path:
+        case CalendarType.month.path:
             return '월';
-        case PageOption.schedule.path:
+        case CalendarType.schedule.path:
             return '일정';
         default:
             return '캘린더';
@@ -29,19 +33,25 @@ export default function CalendarTypeDropDown() {
 
     const changeCalendarType = (option: string) => {
         closeDropDown();
-        router.push(PageOption[option]?.path || '/');
+        router.push(CalendarType[option]?.path || '/');
     };
 
     return (
-        <div ref={dropDownRef} style={{ height: '100%' }}>
-            <button onClick={openDropDown}>
-                <span>
-                    {getCalendarTypeFromPathname(router.pathname)}
-                    {/* 캘린더 */}
-                </span>
-                <Image src={dropdown_icon} height={20} alt="calender_type" />
-            </button>
-            <DropDown isOpen={isOpen}>
+        <DropDown dropDownRef={dropDownRef}>
+            <DropDownHeader openDropDown={openDropDown}>
+                <button>
+                    <span>
+                        {getCalendarTypeFromPathname(router.pathname)}
+                        {/* 캘린더 */}
+                    </span>
+                    <Image
+                        src={dropdown_icon}
+                        height={20}
+                        alt="calender_type"
+                    />
+                </button>
+            </DropDownHeader>
+            <DropDownBody isOpen={isOpen}>
                 <ul>
                     <li onClick={() => changeCalendarType('month')}>
                         <span>월</span>
@@ -52,7 +62,7 @@ export default function CalendarTypeDropDown() {
                         <span>A</span>
                     </li>
                 </ul>
-            </DropDown>
-        </div>
+            </DropDownBody>
+        </DropDown>
     );
 }

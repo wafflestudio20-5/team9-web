@@ -12,7 +12,7 @@ import CalendarModal from '../components/Header/CalendarModal';
 import SearchDetailsModal from '../components/Header/SearchDetailsModal';
 import UserModal from '../components/Header/UserModal';
 
-// Add modal name to MODAL_NAMES
+// Add modal name to MODAL_NAMES (to prevent hard coding)
 // key and value should be the same
 export enum MODAL_NAMES {
     user = 'user',
