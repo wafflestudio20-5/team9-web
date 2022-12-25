@@ -13,7 +13,7 @@ interface SearchbarProps {
 }
 
 export default function Searchbar({ isOpen, close }: SearchbarProps) {
-    const { openModal } = useModal();
+    const { getState, openModal } = useModal();
     const searchRef = useRef<HTMLDivElement>(null);
 
     const searchSchedule = (e: FormEvent<HTMLFormElement>) => {
@@ -30,13 +30,13 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
     };
 
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && getState(MODAL_NAMES.search) === 'closed') {
             window.addEventListener('click', onClickOuterArea);
         }
         return () => {
             window.removeEventListener('click', onClickOuterArea);
         };
-    }, [isOpen]);
+    }, [isOpen, getState]);
 
     if (!isOpen) return null;
 

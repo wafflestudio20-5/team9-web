@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import React, { useState } from 'react';
 
 import { useDropDown } from '../../lib/hooks/useDropDown';
+import dropdown_icon from '../../public/images/dropdown_icon.svg';
 import DropDown from '../DropDown';
 
 export default function SearchCategoryDropDown() {
@@ -15,7 +17,7 @@ export default function SearchCategoryDropDown() {
         <div ref={dropDownRef} style={{ height: '100%' }}>
             <button type="button" onClick={openDropDown}>
                 <span>{category}</span>
-                <span>▾</span>
+                <Image src={dropdown_icon} height={17} alt="search_category" />
             </button>
             <DropDown isOpen={isOpen}>
                 <ul>
