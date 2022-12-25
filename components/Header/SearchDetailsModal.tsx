@@ -24,7 +24,7 @@ function InputTextLayout({ id, label, placeholder }: InputTextLayoutProps) {
 
 export default function SearchDetailsModal() {
     return (
-        <ModalFrame modalName={MODAL_NAMES.search}>
+        <ModalFrame modalName={MODAL_NAMES.searchDetails}>
             <div className={styles.searchDetailsModal}>
                 <form>
                     <div>
@@ -64,7 +64,9 @@ export default function SearchDetailsModal() {
                         </div>
                     </div>
                     <div className={styles.btnContainer}>
-                        <button className={styles.reset}>재설정</button>
+                        <button type="button" className={styles.reset}>
+                            재설정
+                        </button>
                         <button className={styles.search}>검색</button>
                     </div>
                 </form>

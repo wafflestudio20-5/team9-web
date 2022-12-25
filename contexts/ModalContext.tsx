@@ -13,17 +13,18 @@ import SearchDetailsModal from '../components/Header/SearchDetailsModal';
 import UserModal from '../components/Header/UserModal';
 
 // Add modal name to MODAL_NAMES
-export const enum MODAL_NAMES {
+// key and value should be the same
+export enum MODAL_NAMES {
     user = 'user',
     calendar = 'calendar',
-    search = 'search',
+    searchDetails = 'searchDetails',
 }
 
 // Add your modal component to MODAL_COMPONENTS
 const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
     [MODAL_NAMES.user]: UserModal,
     [MODAL_NAMES.calendar]: CalendarModal,
-    [MODAL_NAMES.search]: SearchDetailsModal,
+    [MODAL_NAMES.searchDetails]: SearchDetailsModal,
 };
 
 type ModalState = 'open' | 'closing' | 'closed';
@@ -49,13 +50,16 @@ const ModalSetterContext = createContext<ModalSetterContextData>({
 const useModalStateContext = () => useContext(ModalStateContext);
 const useModalSetterContext = () => useContext(ModalSetterContext);
 
-const initModals: Modals = {
-    [MODAL_NAMES.user]: { props: null, state: 'closed' },
-    [MODAL_NAMES.calendar]: { props: null, state: 'closed' },
+const getInitModals = () => {
+    const initModals: Modals = {};
+    Object.values(MODAL_NAMES).forEach(modalName => {
+        initModals[modalName] = { props: null, state: 'closed' };
+    });
+    return initModals;
 };
 
 export default function ModalProvider({ children }: PropsWithChildren) {
-    const [modals, setModals] = useState<Modals>(initModals);
+    const [modals, setModals] = useState<Modals>(getInitModals());
 
     const updateModalInfo = useCallback(
         (

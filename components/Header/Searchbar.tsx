@@ -30,7 +30,7 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
     };
 
     useEffect(() => {
-        if (isOpen && getState(MODAL_NAMES.search) === 'closed') {
+        if (isOpen && getState(MODAL_NAMES.searchDetails) === 'closed') {
             window.addEventListener('click', onClickOuterArea);
         }
         return () => {
@@ -49,7 +49,7 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
                 <input type="text" placeholder="검색" autoFocus />
                 <button
                     type="button"
-                    onClick={() => openModal(MODAL_NAMES.search)}
+                    onClick={() => openModal(MODAL_NAMES.searchDetails)}
                 >
                     <Image
                         src={dropdown_icon}
