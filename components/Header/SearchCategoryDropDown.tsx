@@ -17,10 +17,19 @@ export default function SearchCategoryDropDown() {
         closeDropDown();
     };
 
+    const buttonStyle = {
+        display: 'flex',
+        alignItems: 'center',
+    };
+
     return (
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader openDropDown={openDropDown}>
-                <button type="button" onClick={openDropDown}>
+                <button
+                    type="button"
+                    onClick={openDropDown}
+                    style={buttonStyle}
+                >
                     <span>{category}</span>
                     <Image
                         src={dropdown_icon}

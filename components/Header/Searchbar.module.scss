@@ -2,9 +2,8 @@
 
 .searchbar {
     padding: 0 30px;
-    min-width: 350px;
     width: 100%;
-    max-width: 700px;
+    max-width: 780px;
 
     form {
         display: flex;
@@ -20,6 +19,10 @@
             width: auto;
             border-radius: 50%;
 
+            &.clear.hidden {
+                visibility: hidden;
+            }
+
             &:hover {
                 background-color: v.$background-gray;
             }
@@ -29,7 +32,6 @@
             flex-grow: 1;
             margin-left: 4px;
             padding: 2px;
-            min-width: 250px;
             height: 100%;
             border: none;
             font-size: medium;

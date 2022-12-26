@@ -29,7 +29,7 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
         e.preventDefault();
     };
 
-    const resetQuery = () => {
+    const clearQuery = () => {
         setQuery('');
         if (inputRef !== null) inputRef.current?.focus();
     };
@@ -72,8 +72,16 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
                     placeholder="검색"
                     autoFocus
                 />
-                <button type="button" onClick={resetQuery}>
-                    <Image src={close_icon} height={24} alt="reset_search" />
+                <button
+                    type="button"
+                    className={`${styles.clear} ${!query && styles.hidden}`}
+                    onClick={clearQuery}
+                >
+                    <Image
+                        src={close_icon}
+                        height={24}
+                        alt="clear_search_input"
+                    />
                 </button>
                 <button
                     type="button"

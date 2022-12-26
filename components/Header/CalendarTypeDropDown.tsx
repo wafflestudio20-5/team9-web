@@ -40,9 +40,8 @@ export default function CalendarTypeDropDown() {
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader openDropDown={openDropDown}>
                 <button>
-                    <span>
+                    <span style={{ whiteSpace: 'nowrap' }}>
                         {getCalendarTypeFromPathname(router.pathname)}
-                        {/* 캘린더 */}
                     </span>
                     <Image
                         src={dropdown_icon}

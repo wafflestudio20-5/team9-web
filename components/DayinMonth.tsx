@@ -13,10 +13,6 @@ export interface DayData {
 export default function DayinMonth({ dayData }: { dayData: DayData }) {
     const { monthNow, dateNow } = useDateContext();
     const { month, date, events } = dayData;
-    // names overlap!
-    // month & date vs m & d
-    // OR
-    // month_now & date_now vs month & date
     const dateString =
         date == 1 && date != dateNow ? `${month}월 ${date}일` : `${date}`;
     const dateStringClass = () => {

@@ -67,7 +67,7 @@
                 width: 25px;
                 height: 18px;
                 position: absolute;
-                top: 16px;
+                top: 17px;
                 left: 50%;
                 transform: translateX(-50%);
                 text-align: center;
@@ -101,10 +101,10 @@
     .dateContainer {
         display: flex;
         align-items: center;
-        min-width: 310px;
         margin-left: 8px;
 
         .today {
+            flex-shrink: 0;
             width: 64px;
             height: 75%;
             border: 1px solid v.$border-gray;
@@ -125,7 +125,7 @@
 
         .date {
             height: 75%;
-            min-width: 160px;
+            white-space: nowrap;
 
             button {
                 padding: 0 5px;
@@ -144,9 +144,7 @@
 
     .utilContainer {
         display: flex;
-        // justify-content: space-between;
         align-items: center;
-        min-width: auto;
 
         > div {
             position: relative;
@@ -168,9 +166,9 @@
             height: 75%;
 
             button {
+                justify-content: space-between;
                 padding-left: 12px;
                 padding-right: 8px;
-                justify-content: space-between;
                 border: 1px solid v.$border-gray;
                 border-radius: 5px;
                 text-align: right;
