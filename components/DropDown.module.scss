@@ -1,6 +1,4 @@
-$background-gray: #f0f0f0;
-$font-gray: #70757a;
-$border-gray: #dadce0;
+@use '../styles/variables.scss' as v;
 
 .dropDown {
     position: relative;
@@ -16,9 +14,9 @@ $border-gray: #dadce0;
     top: 45px;
     left: 0px;
     width: 160px;
-    border: 1px solid $border-gray;
+    border: 1px solid v.$border-gray;
     background-color: white;
-    box-shadow: 0 5px 8px 3px $border-gray;
+    box-shadow: 0 5px 8px 3px v.$border-gray;
     opacity: 1;
     visibility: visible;
     transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
@@ -35,7 +33,7 @@ $border-gray: #dadce0;
     }
 
     ul:not(:last-child) {
-        border-bottom: 1px solid $border-gray;
+        border-bottom: 1px solid v.$border-gray;
     }
 
     li {
@@ -46,7 +44,7 @@ $border-gray: #dadce0;
         cursor: pointer;
 
         &:hover {
-            background-color: $background-gray;
+            background-color: v.$background-gray;
         }
     }
 }

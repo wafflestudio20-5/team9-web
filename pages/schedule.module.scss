@@ -1,4 +1,4 @@
-$border-gray: #dadce0;
+@use '../styles/variables.scss' as v;
 
 .wrapper {
     display: flex;
@@ -9,6 +9,6 @@ $border-gray: #dadce0;
 
 .scheduleHolder {
     margin-left: 8px;
-    border-left: 1px solid $border-gray;
+    border-left: 1px solid v.$border-gray;
     flex-grow: 1;
 }

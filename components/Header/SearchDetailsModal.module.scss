@@ -1,7 +1,4 @@
-$background-gray: #f0f0f0;
-$font-gray: #70757a;
-$border-gray: #dadce0;
-$primary-blue: #1a73e8;
+@use '../../styles/variables.scss' as v;
 
 .searchDetailsModal {
     position: absolute;
@@ -11,7 +8,7 @@ $primary-blue: #1a73e8;
     width: 640px;
     border-radius: 5px;
     background-color: white;
-    box-shadow: 0 1px 3px 1px $border-gray;
+    box-shadow: 0 1px 3px 1px v.$border-gray;
 
     form > div {
         display: flex;
@@ -40,12 +37,12 @@ $primary-blue: #1a73e8;
         padding: 0 5px;
         width: 430px;
         height: 100%;
-        border: 2px solid $background-gray;
+        border: 2px solid v.$background-gray;
         border-radius: 5px;
-        background-color: $background-gray;
+        background-color: v.$background-gray;
 
         &:focus {
-            border-bottom: 2px solid $border-gray;
+            border-bottom: 2px solid v.$border-gray;
             outline: none;
         }
     }
@@ -79,15 +76,15 @@ $primary-blue: #1a73e8;
                 margin-right: 5px;
                 background-color: white;
                 &:hover {
-                    background-color: $background-gray;
+                    background-color: v.$background-gray;
                 }
             }
 
             &.search {
                 color: white;
-                background-color: $primary-blue;
+                background-color: v.$primary-blue;
                 &:hover {
-                    background-color: #1967cd;
+                    background-color: v.$dark-blue;
                 }
             }
         }

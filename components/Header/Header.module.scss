@@ -1,14 +1,10 @@
-$background-gray: #f0f0f0;
-$font-gray: #70757a;
-$border-gray: #dadce0;
-$profile-green: #008a7c;
-$primary-blue: #1a73e8;
+@use '../../styles/variables.scss' as v;
 
 .header {
     display: flex;
     padding: 8px;
     height: 65px;
-    border-bottom: 1px solid $border-gray;
+    border-bottom: 1px solid v.$border-gray;
 
     .left,
     .middle,
@@ -42,10 +38,10 @@ $primary-blue: #1a73e8;
         cursor: pointer;
 
         &:hover {
-            background-color: $background-gray;
+            background-color: v.$background-gray;
         }
         &:focus {
-            background-color: $background-gray;
+            background-color: v.$background-gray;
         }
     }
 
@@ -111,7 +107,7 @@ $primary-blue: #1a73e8;
         .today {
             width: 64px;
             height: 75%;
-            border: 1px solid $border-gray;
+            border: 1px solid v.$border-gray;
             border-radius: 5px;
         }
 
@@ -175,7 +171,7 @@ $primary-blue: #1a73e8;
                 padding-left: 12px;
                 padding-right: 8px;
                 justify-content: space-between;
-                border: 1px solid $border-gray;
+                border: 1px solid v.$border-gray;
                 border-radius: 5px;
                 text-align: right;
             }
@@ -210,11 +206,11 @@ $primary-blue: #1a73e8;
 
         .user button {
             border: 2px solid white;
-            background-color: $profile-green;
+            background-color: v.$green;
             color: white;
 
             &:hover {
-                border: 2px solid $border-gray;
+                border: 2px solid v.$border-gray;
             }
         }
 
@@ -224,12 +220,12 @@ $primary-blue: #1a73e8;
 
             button {
                 border-radius: 5px;
-                background-color: $primary-blue;
+                background-color: v.$primary-blue;
                 font-size: small;
                 color: white;
 
                 &:hover {
-                    background-color: #1967cd;
+                    background-color: v.$dark-blue;
                 }
             }
         }

@@ -6,7 +6,7 @@ import DateProvider from '../contexts/DateContext';
 import ModalProvider, { ModalContainer } from '../contexts/ModalContext';
 import SessionProvider from '../contexts/SessionContext';
 import SidebarProvider from '../contexts/SidebarContext';
-import '../styles/global.css';
+import '../styles/global.scss';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
     return (

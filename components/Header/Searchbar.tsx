@@ -21,7 +21,7 @@ interface SearchbarProps {
 
 export default function Searchbar({ isOpen, close }: SearchbarProps) {
     const { getState, openModal } = useModal();
-    const searchRef = useRef<HTMLDivElement>(null);
+    const searchRef = useRef<HTMLFormElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const [query, setQuery] = useState<string>('');
 
@@ -55,8 +55,12 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
     if (!isOpen) return null;
 
     return (
-        <div className={styles.searchbar} ref={searchRef}>
-            <form className={styles.search} onSubmit={searchSchedule}>
+        <div className={styles.searchbar}>
+            <form
+                className={styles.search}
+                ref={searchRef}
+                onSubmit={searchSchedule}
+            >
                 <button>
                     <Image src={search_icon} height={24} alt="search" />
                 </button>

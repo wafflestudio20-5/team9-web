@@ -1,5 +1,4 @@
-$font-gray: #70757a;
-$primary-blue: #1a73e8;
+@use '../styles/variables.scss' as v;
 
 .wrapper {
     display: flex;
@@ -20,7 +19,7 @@ $primary-blue: #1a73e8;
         color: white;
         border-radius: 50%;
         border-color: transparent;
-        background-color: $primary-blue;
+        background-color: v.$primary-blue;
         height: 24px;
         width: 24px;
     }
@@ -28,7 +27,7 @@ $primary-blue: #1a73e8;
         color: black;
     }
     .notCurrMonth {
-        color: $font-gray;
+        color: v.$font-gray;
     }
 }
 

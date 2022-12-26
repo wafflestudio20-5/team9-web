@@ -1,12 +1,10 @@
-$border-gray: #dadce0;
-$font-gray: #70757a;
-$background-gray: #f0f0f0;
+@use '../styles/variables.scss' as v;
 
 .wrapper {
     display: grid;
     height: fit-content;
     padding: 8px 10px 8px 14px;
-    border-bottom: 1px solid $border-gray;
+    border-bottom: 1px solid v.$border-gray;
     grid-template-columns: 140px 1fr;
 }
 
@@ -25,11 +23,11 @@ $background-gray: #f0f0f0;
         align-items: center;
 
         &:hover {
-            background-color: $background-gray;
+            background-color: v.$background-gray;
         }
     }
     .monthDay {
         font-size: 11px;
-        color: $font-gray;
+        color: v.$font-gray;
     }
 }
