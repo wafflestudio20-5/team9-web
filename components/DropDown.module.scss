@@ -13,7 +13,6 @@
     position: absolute;
     top: 45px;
     left: 0px;
-    width: 160px;
     border: 1px solid v.$border-gray;
     background-color: white;
     box-shadow: 0 5px 8px 3px v.$border-gray;
@@ -30,6 +29,7 @@
 
     ul {
         padding: 8px 0;
+        width: 160px;
     }
 
     ul:not(:last-child) {

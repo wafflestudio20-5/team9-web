@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 
 import { useDateContext } from '../../contexts/DateContext';
 import { MODAL_NAMES, useModal } from '../../contexts/ModalContext';
+import { useSessionContext } from '../../contexts/SessionContext';
 import { useSidebarContext } from '../../contexts/SidebarContext';
 import apps_icon from '../../public/images/apps_icon.svg';
 import back_icon from '../../public/images/back_icon.svg';
@@ -28,6 +29,7 @@ function Header() {
         setDateNow,
         setDayNow,
     } = useDateContext();
+    const { user } = useSessionContext();
     const { openModal } = useModal();
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const now = useMemo(() => new Date(), []);
@@ -196,14 +198,17 @@ function Header() {
                             <Image src={apps_icon} height={24} alt="apps" />
                         </button>
                     </div>
-                    <div className={styles.user}>
-                        <button onClick={() => openModal(MODAL_NAMES.user)}>
-                            J
-                        </button>
-                    </div>
-                    {/* <div className={styles.login}>
+                    {user ? (
+                        <div className={styles.user}>
+                            <button onClick={() => openModal(MODAL_NAMES.user)}>
+                                J
+                            </button>
+                        </div>
+                    ) : (
+                        <div className={styles.login}>
                             <button>로그인</button>
-                        </div> */}
+                        </div>
+                    )}
                 </div>
             </div>
         </header>
