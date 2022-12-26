@@ -79,7 +79,7 @@ function Header() {
                     }`}
                 >
                     <button onClick={isOpen ? closeSidebar : openSidebar}>
-                        <Image src={menu_icon} height={25} alt="sidebar" />
+                        <Image src={menu_icon} height={24} alt="sidebar" />
                     </button>
                 </div>
 
@@ -90,10 +90,10 @@ function Header() {
                     }`}
                 >
                     <div>
+                        <Image src={calendar_icon} height={40} alt="calendar" />
                         <span className={styles.dateToday}>
                             {now.getDate()}
                         </span>
-                        <Image src={calendar_icon} height={35} alt="calendar" />
                     </div>
                     <span>캘린더</span>
                 </div>
@@ -105,7 +105,7 @@ function Header() {
                     }`}
                 >
                     <button onClick={closeSearchbar}>
-                        <Image src={back_icon} height={25} alt="back" />
+                        <Image src={back_icon} height={24} alt="back" />
                     </button>
                     <span>검색</span>
                 </div>
@@ -128,14 +128,14 @@ function Header() {
                         <button onClick={moveToLastMonth}>
                             <Image
                                 src={before_icon}
-                                height={25}
+                                height={24}
                                 alt="last_month"
                             />
                         </button>
                         <button onClick={moveToNextMonth}>
                             <Image
                                 src={next_icon}
-                                height={25}
+                                height={24}
                                 alt="next_month"
                             />
                         </button>
@@ -151,7 +151,7 @@ function Header() {
                             {!isOpen && (
                                 <Image
                                     src={dropdown_icon}
-                                    height={25}
+                                    height={24}
                                     alt="date"
                                 />
                             )}
@@ -173,7 +173,7 @@ function Header() {
                                 setIsSearchOpen(true);
                             }}
                         >
-                            <Image src={search_icon} height={25} alt="search" />
+                            <Image src={search_icon} height={24} alt="search" />
                         </button>
                     </div>
                     <div className={styles.help}>
@@ -193,7 +193,7 @@ function Header() {
                 <div className={styles.userContainer}>
                     <div className={styles.apps}>
                         <button>
-                            <Image src={apps_icon} height={25} alt="apps" />
+                            <Image src={apps_icon} height={24} alt="apps" />
                         </button>
                     </div>
                     <div className={styles.user}>

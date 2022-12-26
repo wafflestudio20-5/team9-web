@@ -16,7 +16,7 @@ export default function HelpDropDown() {
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader openDropDown={openDropDown}>
                 <button onClick={openDropDown}>
-                    <Image src={help_icon} height={25} alt="help" />
+                    <Image src={help_icon} height={24} alt="help" />
                 </button>
             </DropDownHeader>
             <DropDownBody isOpen={isOpen}>

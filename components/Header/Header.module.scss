@@ -5,10 +5,8 @@ $profile-green: #008a7c;
 $primary-blue: #1a73e8;
 
 .header {
-    display: grid;
-    grid-template-columns: 240px auto minmax(auto, 120px);
-    grid-template-rows: 48px;
-    padding: 8px 15px;
+    display: flex;
+    padding: 8px;
     height: 65px;
     border-bottom: 1px solid $border-gray;
 
@@ -18,8 +16,18 @@ $primary-blue: #1a73e8;
         display: flex;
     }
 
+    .left {
+        min-width: 238px;
+        padding-right: 30px;
+    }
+
     .middle {
         justify-content: space-between;
+        flex-grow: 1;
+    }
+
+    .right {
+        padding-left: 30px;
     }
 
     button {
@@ -42,8 +50,10 @@ $primary-blue: #1a73e8;
     }
 
     .sidebarContainer {
+        margin: 0 4px;
+
         button {
-            padding: 11px;
+            padding: 12px;
             border-radius: 50%;
         }
     }
@@ -55,15 +65,13 @@ $primary-blue: #1a73e8;
 
         > div {
             position: relative;
-            margin: 0 5px;
-            height: 35px;
 
             .dateToday {
                 display: inline-block;
-                width: 23px;
-                height: 17px;
+                width: 25px;
+                height: 18px;
                 position: absolute;
-                top: 13px;
+                top: 16px;
                 left: 50%;
                 transform: translateX(-50%);
                 text-align: center;
@@ -71,7 +79,8 @@ $primary-blue: #1a73e8;
             }
         }
 
-        span {
+        > span {
+            padding-left: 4px;
             font-size: 22px;
         }
     }
@@ -97,10 +106,10 @@ $primary-blue: #1a73e8;
         display: flex;
         align-items: center;
         min-width: 310px;
+        margin-left: 8px;
 
         .today {
-            margin-right: 20px;
-            width: 65px;
+            width: 64px;
             height: 75%;
             border: 1px solid $border-gray;
             border-radius: 5px;
@@ -109,16 +118,18 @@ $primary-blue: #1a73e8;
         .btnContainer {
             display: flex;
             align-items: center;
+            margin: 0 15px 0 20px;
             height: 75%;
 
             button {
+                width: 32px;
                 border-radius: 5px;
             }
         }
 
         .date {
-            margin-left: 15px;
             height: 75%;
+            min-width: 160px;
 
             button {
                 padding: 0 5px;
@@ -137,14 +148,18 @@ $primary-blue: #1a73e8;
 
     .utilContainer {
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
         align-items: center;
         min-width: auto;
 
         > div {
             position: relative;
-            width: 45px;
-            height: 90%;
+            width: 40px;
+            height: 40px;
+        }
+
+        .help {
+            margin: 0 2px;
         }
 
         button {
@@ -152,11 +167,13 @@ $primary-blue: #1a73e8;
         }
 
         .calendarType {
-            width: 75px;
+            margin-left: 12px;
+            width: fit-content;
             height: 75%;
 
             button {
-                padding: 0 10px;
+                padding-left: 12px;
+                padding-right: 8px;
                 justify-content: space-between;
                 border: 1px solid $border-gray;
                 border-radius: 5px;
@@ -169,12 +186,21 @@ $primary-blue: #1a73e8;
         display: flex;
         justify-content: right;
         align-items: center;
+        margin-right: 4px;
         width: 100%;
 
-        .apps,
+        .apps {
+            button {
+                padding: 8px;
+                border-radius: 50%;
+            }
+        }
+
         .user {
-            width: 45px;
-            height: 90%;
+            margin-left: 6px;
+            padding: 2px;
+            width: 40px;
+            height: 40px;
 
             button {
                 border-radius: 50%;
@@ -214,12 +240,19 @@ $primary-blue: #1a73e8;
     }
 }
 
-@media screen and (max-width: 640px) {
-    .header {
-        grid-template-columns: 520px minmax(auto, 120px);
+@media screen and (max-width: 1024px) {
+    .header .right {
+        padding: 0;
+    }
+}
 
-        .left {
-            display: none;
-        }
+@media screen and (max-width: 600px) {
+    .header {
+        height: 57px;
+        padding: 4px 8px;
+    }
+
+    .header .left {
+        display: none;
     }
 }

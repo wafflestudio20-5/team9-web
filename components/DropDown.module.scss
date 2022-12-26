@@ -2,6 +2,10 @@ $background-gray: #f0f0f0;
 $font-gray: #70757a;
 $border-gray: #dadce0;
 
+.dropDown {
+    position: relative;
+}
+
 .dropDown,
 .dropDownHeader {
     height: 100%;

@@ -4,24 +4,23 @@ $border-gray: #dadce0;
 $profile-green: #008a7c;
 
 .searchbar {
-    margin-right: 10px;
+    padding: 0 30px;
     min-width: 350px;
     width: 100%;
     max-width: 700px;
-    border-radius: 10px;
-    box-shadow: 0 1px 3px 1px $border-gray;
 
     form {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        padding: 5px 10px;
+        padding: 4px 8px;
         width: 100%;
         height: 100%;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px 1px $border-gray;
 
         button {
-            width: 37px;
-            // height: 37px;
+            padding: 8px;
+            width: auto;
             border-radius: 50%;
 
             &:hover {
@@ -31,7 +30,7 @@ $profile-green: #008a7c;
 
         input {
             flex-grow: 1;
-            margin: 0 10px;
+            margin-left: 4px;
             padding: 2px;
             min-width: 250px;
             height: 100%;
@@ -41,6 +40,16 @@ $profile-green: #008a7c;
             &:focus {
                 outline: none;
             }
+
+            &::-webkit-search-cancel-button {
+                -webkit-appearance: none;
+            }
         }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .searchbar {
+        padding: 0 10px;
     }
 }

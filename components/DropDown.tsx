@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './DropDown.module.scss';
 
 interface DropDownProps {
-    dropDownRef: React.LegacyRef<HTMLDivElement>;
+    dropDownRef: React.ForwardedRef<HTMLDivElement>;
     children: React.ReactNode;
 }
 
@@ -35,12 +35,23 @@ export function DropDownHeader({
 
 interface DropDownBodyProps {
     isOpen: boolean;
+    style?: {
+        top?: string;
+        bottom?: string;
+        left?: string;
+        right?: string;
+        width?: string;
+        height?: string;
+    };
     children: React.ReactNode;
 }
 
-export function DropDownBody({ isOpen, children }: DropDownBodyProps) {
+export function DropDownBody({ isOpen, style, children }: DropDownBodyProps) {
     return (
-        <div className={`${styles.dropDownBody} ${!isOpen && styles.closed}`}>
+        <div
+            className={`${styles.dropDownBody} ${!isOpen && styles.closed}`}
+            style={style}
+        >
             {children}
         </div>
     );

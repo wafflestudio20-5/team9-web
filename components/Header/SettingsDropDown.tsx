@@ -16,7 +16,7 @@ export default function SettingsDropDown() {
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader openDropDown={openDropDown}>
                 <button onClick={openDropDown}>
-                    <Image src={settings_icon} height={25} alt="settings" />
+                    <Image src={settings_icon} height={24} alt="settings" />
                 </button>
             </DropDownHeader>
             <DropDownBody isOpen={isOpen}>
