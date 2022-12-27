@@ -1,0 +1,243 @@
+@use '../../styles/variables.scss' as v;
+
+.header {
+    display: flex;
+    padding: 8px;
+    height: 65px;
+    border-bottom: 1px solid v.$border-gray;
+
+    .left,
+    .middle,
+    .right {
+        display: flex;
+    }
+
+    .left {
+        min-width: 238px;
+        padding-right: 30px;
+    }
+
+    .middle {
+        justify-content: space-between;
+        flex-grow: 1;
+    }
+
+    .right {
+        padding-left: 30px;
+    }
+
+    button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+
+        &:focus {
+            background-color: v.$background-gray;
+        }
+    }
+
+    .sidebarContainer {
+        margin: 0 4px;
+
+        button {
+            padding: 12px;
+            border-radius: 50%;
+        }
+    }
+
+    .titleContainer {
+        display: flex;
+        align-items: center;
+        cursor: default;
+
+        > div {
+            position: relative;
+
+            .dateToday {
+                display: inline-block;
+                width: 25px;
+                height: 18px;
+                position: absolute;
+                top: 17px;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+                font-size: small;
+            }
+        }
+
+        > span {
+            padding-left: 4px;
+            font-size: 22px;
+        }
+    }
+
+    .back {
+        display: flex;
+        align-items: center;
+
+        button {
+            padding: 11px;
+            width: auto;
+            border-radius: 50%;
+        }
+
+        span {
+            display: inline-block;
+            padding-left: 10px;
+            font-size: 20px;
+        }
+    }
+
+    .dateContainer {
+        display: flex;
+        align-items: center;
+        margin-left: 8px;
+
+        .today {
+            flex-shrink: 0;
+            width: 64px;
+            height: 75%;
+            border: 1px solid v.$border-gray;
+        }
+
+        .btnContainer {
+            display: flex;
+            align-items: center;
+            margin: 0 15px 0 20px;
+            height: 75%;
+
+            button {
+                width: 32px;
+            }
+        }
+
+        .date {
+            height: 75%;
+            white-space: nowrap;
+
+            button {
+                padding: 0 5px;
+                font-size: 22px;
+
+                &.inactive {
+                    cursor: default;
+                    &:hover {
+                        background-color: white;
+                    }
+                }
+            }
+        }
+    }
+
+    .utilContainer {
+        display: flex;
+        align-items: center;
+
+        > div {
+            position: relative;
+            width: 40px;
+            height: 40px;
+        }
+
+        .help {
+            margin: 0 2px;
+        }
+
+        button:not(.calendarType button) {
+            border-radius: 50%;
+        }
+
+        .calendarType {
+            margin-left: 12px;
+            width: fit-content;
+            height: 75%;
+
+            button {
+                justify-content: space-between;
+                padding-left: 12px;
+                padding-right: 8px;
+                border: 1px solid v.$border-gray;
+                text-align: right;
+            }
+        }
+    }
+
+    .userContainer {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        margin-right: 4px;
+        width: 100%;
+
+        .apps {
+            button {
+                padding: 8px;
+                border-radius: 50%;
+            }
+        }
+
+        .user {
+            margin-left: 6px;
+            padding: 2px;
+            width: 40px;
+            height: 40px;
+
+            button {
+                border-radius: 50%;
+                font-size: large;
+            }
+        }
+
+        .user button {
+            border: 2px solid white;
+            background-color: v.$green;
+            color: white;
+
+            &:hover {
+                border: 2px solid v.$border-gray;
+            }
+        }
+
+        .login {
+            margin-left: 6px;
+            width: 60px;
+            height: 75%;
+
+            button {
+                background-color: v.$primary-blue;
+                font-size: small;
+                color: white;
+
+                &:hover {
+                    background-color: v.$dark-blue;
+                }
+            }
+        }
+    }
+
+    .hidden {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .header .right {
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .header {
+        height: 57px;
+        padding: 4px 8px;
+    }
+
+    .header .left {
+        display: none;
+    }
+}

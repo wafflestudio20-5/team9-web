@@ -1,0 +1,86 @@
+@use '../../styles/variables.scss' as v;
+
+.searchDetailsModal {
+    position: absolute;
+    top: 60px;
+    left: 276px;
+    padding: 10px 15px;
+    width: 720px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 1px 3px 1px v.$border-gray;
+
+    form > div {
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        height: 45px;
+    }
+
+    .category {
+        position: relative;
+        height: 100%;
+
+        button {
+            height: 100%;
+            border: none;
+            background-color: v.$background-gray;
+        }
+    }
+
+    label {
+        width: 150px;
+    }
+
+    input {
+        padding: 0 5px;
+        width: 460px;
+        height: 100%;
+        border: 2px solid v.$background-gray;
+        border-radius: 5px;
+        background-color: v.$background-gray;
+
+        &:focus {
+            border-bottom: 2px solid v.$border-gray;
+            outline: none;
+        }
+    }
+
+    .calendar {
+        position: relative;
+        height: 100%;
+
+        input {
+            width: 100px;
+        }
+    }
+
+    .dash {
+        display: inline-block;
+        margin: 0 10px;
+    }
+
+    .btnContainer {
+        justify-content: right;
+
+        button {
+            padding: 3px 10px;
+            width: 65px;
+            height: 100%;
+            border: none;
+
+            &.reset {
+                margin-right: 5px;
+            }
+
+            &.search {
+                color: white;
+                background-color: v.$primary-blue;
+
+                &:hover {
+                    background-color: v.$dark-blue;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+@use './variables.scss' as v;
+@import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Nanum+Gothic:wght@400;700;800&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+button {
+    border: 1px solid v.$border-gray;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+
+    &:hover {
+        background-color: v.$background-gray;
+    }
+}
