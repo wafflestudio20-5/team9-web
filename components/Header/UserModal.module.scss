@@ -1,9 +1,6 @@
 @use '../../styles/variables.scss' as v;
 
 .userModal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     position: fixed;
     top: 60px;
     right: 10px;
@@ -15,14 +12,6 @@
     background-color: white;
     box-shadow: 0 1px 5px 1px v.$border-gray;
     overflow: auto;
-
-    button {
-        background-color: white;
-
-        &:hover {
-            background-color: v.$background-gray;
-        }
-    }
 
     .userInfo {
         display: flex;
@@ -68,9 +57,8 @@
 
         .management {
             button {
-                padding: 5px 15px;
+                padding: 8px 15px;
                 border-radius: 20px;
-                border: 1px solid v.$border-gray;
             }
         }
     }
@@ -90,8 +78,6 @@
 
         button {
             padding: 10px 20px;
-            border: 1px solid v.$border-gray;
-            border-radius: 5px;
         }
     }
 }

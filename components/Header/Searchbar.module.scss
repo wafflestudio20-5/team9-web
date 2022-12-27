@@ -22,10 +22,6 @@
             &.clear.hidden {
                 visibility: hidden;
             }
-
-            &:hover {
-                background-color: v.$background-gray;
-            }
         }
 
         input {

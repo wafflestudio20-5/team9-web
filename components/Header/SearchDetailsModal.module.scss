@@ -24,8 +24,6 @@
         button {
             height: 100%;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
     }
 
@@ -69,20 +67,15 @@
             width: 65px;
             height: 100%;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
 
             &.reset {
                 margin-right: 5px;
-                background-color: white;
-                &:hover {
-                    background-color: v.$background-gray;
-                }
             }
 
             &.search {
                 color: white;
                 background-color: v.$primary-blue;
+
                 &:hover {
                     background-color: v.$dark-blue;
                 }
