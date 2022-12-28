@@ -1,0 +1,14 @@
+@use '../../../../styles/variables.scss' as v;
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 65px);
+    width: 100vw;
+}
+
+.scheduleHolder {
+    margin-left: 8px;
+    border-left: 1px solid v.$border-gray;
+    flex-grow: 1;
+}
