@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { useDateContext } from '../../contexts/DateContext';
 import dropdown_icon from '../../public/images/dropdown_icon.svg';
 import {
     DropDown,
@@ -10,30 +11,48 @@ import {
     useDropDown,
 } from '../DropDown';
 
-const CalendarType: { [key: string]: { name: string; path: string } } = {
-    index: { name: 'index', path: '/' },
-    month: { name: 'month', path: '/month' },
-    schedule: { name: 'schedule', path: '/schedule' },
-};
-
-const getCalendarTypeFromPathname = (pathname: string) => {
-    switch (pathname) {
-        case CalendarType.month.path:
-            return '월';
-        case CalendarType.schedule.path:
-            return '일정';
-        default:
-            return '캘린더';
-    }
-};
+export enum CalendarType {
+    index = 'index',
+    day = 'day',
+    week = 'week',
+    month = 'month',
+    schedule = 'schedule',
+}
 
 export default function CalendarTypeDropDown() {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const { yearNow, monthNow, dateNow } = useDateContext();
     const router = useRouter();
 
-    const changeCalendarType = (option: string) => {
+    const getCalendarTypeFromPathname = (pathname: string) => {
+        const regex = /(?<=\/)[^[]*?(?=\/)/g;
+        const calendarType = pathname.match(regex);
+        console.log(pathname);
+        console.log(calendarType);
+        if (!calendarType) return '캘린더';
+        switch (calendarType[0]) {
+            case CalendarType.day:
+                return '일';
+            case CalendarType.week:
+                return '주';
+            case CalendarType.month:
+                return '월';
+            case CalendarType.schedule:
+                return '일정';
+            default:
+                return '캘린더';
+        }
+    };
+
+    const getPathnameFromCalendarType = (calendarType: string) => {
+        if (!(calendarType in CalendarType)) return '/';
+        return `/${calendarType}/${yearNow}/${monthNow}/${dateNow}`;
+    };
+
+    const changeCalendarType = (calenderType: string) => {
         closeDropDown();
-        router.push(CalendarType[option]?.path || '/');
+        const newPathname = getPathnameFromCalendarType(calenderType);
+        router.push(newPathname);
     };
 
     return (
@@ -52,11 +71,23 @@ export default function CalendarTypeDropDown() {
             </DropDownHeader>
             <DropDownBody isOpen={isOpen}>
                 <ul>
-                    <li onClick={() => changeCalendarType('month')}>
+                    <li onClick={() => changeCalendarType(CalendarType.day)}>
+                        <span>일</span>
+                        <span>D</span>
+                    </li>
+                    <li onClick={() => changeCalendarType(CalendarType.week)}>
+                        <span>주</span>
+                        <span>W</span>
+                    </li>
+                    <li onClick={() => changeCalendarType(CalendarType.month)}>
                         <span>월</span>
                         <span>M</span>
                     </li>
-                    <li onClick={() => changeCalendarType('schedule')}>
+                    <li
+                        onClick={() =>
+                            changeCalendarType(CalendarType.schedule)
+                        }
+                    >
                         <span>일정</span>
                         <span>A</span>
                     </li>
