@@ -10,7 +10,7 @@ import styles from './UserModal.module.scss';
 
 export default function UserModal() {
     const { user, logout } = useSessionContext();
-    const { openModal } = useModal();
+    const { closeModal, openModal } = useModal();
 
     // if (!user) return null;
 
@@ -28,9 +28,9 @@ export default function UserModal() {
                         </button>
                     </div>
                     <div className={styles.basic}>
-                        <span className={styles.name}>이름</span>
+                        <span className={styles.name}>{user?.username}</span>
                         <span className={styles.id}>
-                            emailaddress@gmail.com
+                            {user?.email}
                         </span>
                     </div>
                     <div className={styles.management}>
@@ -39,7 +39,10 @@ export default function UserModal() {
                 </div>
                 <div className={styles.otherAccount}></div>
                 <div className={styles.logout}>
-                    <button onClick={logout}>로그아웃</button>
+                    <button onClick={() => {
+                        logout();
+                        closeModal(MODAL_NAMES.user);
+                    }}>로그아웃</button>
                 </div>
             </div>
         </ModalFrame>
