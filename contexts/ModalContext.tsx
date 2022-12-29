@@ -11,6 +11,7 @@ import React, {
 import CalendarModal from '../components/Header/CalendarModal';
 import SearchDetailsModal from '../components/Header/SearchDetailsModal';
 import UserModal from '../components/Header/UserModal';
+import LoginModal from '../components/Header/LoginModal';
 
 // Add modal name to MODAL_NAMES (to prevent hard coding)
 // key and value should be the same
@@ -18,6 +19,7 @@ export enum MODAL_NAMES {
     user = 'user',
     calendar = 'calendar',
     searchDetails = 'searchDetails',
+    login = 'login',
 }
 
 // Add your modal component to MODAL_COMPONENTS
@@ -25,6 +27,7 @@ const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
     [MODAL_NAMES.user]: UserModal,
     [MODAL_NAMES.calendar]: CalendarModal,
     [MODAL_NAMES.searchDetails]: SearchDetailsModal,
+    [MODAL_NAMES.login]: LoginModal,
 };
 
 type ModalState = 'open' | 'closing' | 'closed';
