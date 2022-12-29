@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
 import { MODAL_NAMES } from '../../contexts/ModalContext';
+import { useSessionContext } from '../../contexts/SessionContext';
 import ModalFrame from '../ModalFrame';
 
 import styles from './LoginModal.module.scss';
-import { useSessionContext } from '../../contexts/SessionContext';
 
 export default function LoginModal() {
-    const {
-        login
-    } = useSessionContext();
+    const { login } = useSessionContext();
 
     const [userId, setUserId] = useState('');
     const [userPassword, setUserPassword] = useState('');
@@ -19,7 +17,7 @@ export default function LoginModal() {
             <div className={styles.loginModal}>
                 <form
                     className={styles.loginContainer}
-                    onSubmit = {e => {
+                    onSubmit={e => {
                         e.preventDefault();
                         login({
                             id: userId,
@@ -28,9 +26,7 @@ export default function LoginModal() {
                     }}
                 >
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>
-                            아이디:
-                        </div>
+                        <div className={styles.textName}>아이디:</div>
                         <input
                             type="text"
                             className={styles.text}
@@ -41,9 +37,7 @@ export default function LoginModal() {
                         />
                     </div>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>
-                            비밀번호:
-                        </div>
+                        <div className={styles.textName}>비밀번호:</div>
                         <input
                             type="text"
                             className={styles.text}
@@ -62,7 +56,9 @@ export default function LoginModal() {
                         다른 로그인 방법을 찾으시나요?
                     </div>
                     <div className={styles.socialLoginButtonContainer}>
-                        <button className={styles.socialLoginButton}>소셜 로그인</button>
+                        <button className={styles.socialLoginButton}>
+                            소셜 로그인
+                        </button>
                     </div>
                 </div>
             </div>

@@ -206,10 +206,14 @@ function Header() {
                         </div>
                     ) : (
                         <div className={styles.login}>
-                            <button onClick={() => openModal(MODAL_NAMES.login)}>
+                            <button
+                                onClick={() => openModal(MODAL_NAMES.login)}
+                            >
                                 로그인
                             </button>
-                            <button onClick={() => openModal(MODAL_NAMES.signUp)}>
+                            <button
+                                onClick={() => openModal(MODAL_NAMES.signUp)}
+                            >
                                 회원가입
                             </button>
                         </div>

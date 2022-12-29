@@ -9,10 +9,10 @@ import React, {
 } from 'react';
 
 import CalendarModal from '../components/Header/CalendarModal';
-import SearchDetailsModal from '../components/Header/SearchDetailsModal';
-import UserModal from '../components/Header/UserModal';
 import LoginModal from '../components/Header/LoginModal';
+import SearchDetailsModal from '../components/Header/SearchDetailsModal';
 import SignUpModal from '../components/Header/SignUpModal';
+import UserModal from '../components/Header/UserModal';
 
 // Add modal name to MODAL_NAMES (to prevent hard coding)
 // key and value should be the same
