@@ -9,7 +9,7 @@ import styles from './LoginModal.module.scss';
 export default function LoginModal() {
     const { login } = useSessionContext();
 
-    const [userId, setUserId] = useState('');
+    const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
 
     return (
@@ -20,7 +20,7 @@ export default function LoginModal() {
                     onSubmit={e => {
                         e.preventDefault();
                         login({
-                            id: userId,
+                            email: userEmail,
                             password: userPassword,
                         });
                     }}
@@ -30,9 +30,9 @@ export default function LoginModal() {
                         <input
                             type="text"
                             className={styles.text}
-                            value={userId}
+                            value={userEmail}
                             onChange={e => {
-                                setUserId?.(e.target.value);
+                                setUserEmail?.(e.target.value);
                             }}
                         />
                     </div>

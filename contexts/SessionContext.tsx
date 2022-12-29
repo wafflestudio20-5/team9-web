@@ -7,13 +7,14 @@ import React, {
 } from 'react';
 
 interface LoginInfo {
-    id: string;
+    email: string;
     password: string;
 }
 
 interface User {
-    id: string;
-    name: string;
+    email: string;
+    birthday: string;
+    username: string;
 }
 
 interface SessionContextData {
