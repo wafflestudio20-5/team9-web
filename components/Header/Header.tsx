@@ -209,6 +209,9 @@ function Header() {
                             <button onClick={() => openModal(MODAL_NAMES.login)}>
                                 로그인
                             </button>
+                            <button onClick={() => openModal(MODAL_NAMES.signUp)}>
+                                회원가입
+                            </button>
                         </div>
                     )}
                 </div>

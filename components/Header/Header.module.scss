@@ -204,9 +204,12 @@
         }
 
         .login {
+            display: flex;
+            flex-direction: column;
             margin-left: 6px;
             width: 60px;
-            height: 75%;
+            height: 100%;
+            gap: 2px;
 
             button {
                 background-color: v.$primary-blue;
