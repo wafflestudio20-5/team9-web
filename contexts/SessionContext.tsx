@@ -120,6 +120,9 @@ function SessionProvider({ children }: PropsWithChildren) {
                     username: response.data.user.username,
                 });
                 setAccessToken(response.data.access_token);
+                setRefreshToken(response.data.refresh_token);
+                axios.defaults.headers.post['X-CSRFToken'] =
+                    response.data._csrf;
             })
             .catch(error => {
                 setTimeout(function () {
