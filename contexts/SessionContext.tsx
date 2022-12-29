@@ -11,6 +11,14 @@ interface LoginInfo {
     password: string;
 }
 
+interface RegisterInfo {
+    username: string;
+    email: string;
+    password1: string;
+    password2: string;
+    birthday: string;
+}
+
 interface User {
     email: string;
     birthday: string;
@@ -22,6 +30,7 @@ interface SessionContextData {
     accessToken: string | null;
     login(loginInfo: LoginInfo): void;
     logout(): void;
+    register(registerInfo: RegisterInfo): void;
 }
 
 const SessionContext = createContext<SessionContextData>({
@@ -31,6 +40,9 @@ const SessionContext = createContext<SessionContextData>({
         throw new Error('SessionContext not provided');
     },
     logout() {
+        throw new Error('SessionContext not provided');
+    },
+    register() {
         throw new Error('SessionContext not provided');
     },
 });
@@ -51,6 +63,10 @@ function SessionProvider({ children }: PropsWithChildren) {
         // if logout success, reset user and accessToekn to null
     };
 
+    const register = (registerInfo: RegisterInfo) => {
+        //send register request
+    };
+
     // functions related to refresh token may be added later
 
     const value = useMemo(
@@ -59,6 +75,7 @@ function SessionProvider({ children }: PropsWithChildren) {
             accessToken,
             login,
             logout,
+            register,
         }),
         [user, accessToken],
     );
