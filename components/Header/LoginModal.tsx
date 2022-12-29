@@ -26,7 +26,7 @@ export default function LoginModal() {
                     }}
                 >
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>아이디:</div>
+                        <div className={styles.textName}>이메일:</div>
                         <input
                             type="text"
                             className={styles.text}
