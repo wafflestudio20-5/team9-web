@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { MODAL_NAMES } from '../../contexts/ModalContext';
+import { MODAL_NAMES, useModal } from '../../contexts/ModalContext';
 import { useSessionContext } from '../../contexts/SessionContext';
 import ModalFrame from '../ModalFrame';
 
@@ -8,6 +8,7 @@ import styles from './LoginModal.module.scss';
 
 export default function LoginModal() {
     const { login } = useSessionContext();
+    const { closeModal } = useModal();
 
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
@@ -23,6 +24,7 @@ export default function LoginModal() {
                             email: userEmail,
                             password: userPassword,
                         });
+                        closeModal(MODAL_NAMES.login);
                     }}
                 >
                     <div className={styles.textContainer}>
