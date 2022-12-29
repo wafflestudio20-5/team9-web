@@ -6,6 +6,9 @@ import React, {
     useState,
 } from 'react';
 
+import axios from 'axios';
+import Swal from 'sweetalert2';
+
 interface LoginInfo {
     email: string;
     password: string;
@@ -47,6 +50,8 @@ const SessionContext = createContext<SessionContextData>({
     },
 });
 
+const apiEndPoint = 'http://127.0.0.1:8000/api/v1/user/';
+
 export const useSessionContext = () => useContext(SessionContext);
 
 function SessionProvider({ children }: PropsWithChildren) {
@@ -65,6 +70,25 @@ function SessionProvider({ children }: PropsWithChildren) {
 
     const register = (registerInfo: RegisterInfo) => {
         //send register request
+        axios
+            .post(apiEndPoint + 'registration/', registerInfo)
+            .then(response => {
+                console.log('register!!');
+                setUser({
+                    email: response.data.user.email,
+                    birthday: response.data.user.birthday,
+                    username: response.data.user.username,
+                });
+                setAccessToken(response.data.access_token);
+            })
+            .catch(error => {
+                setTimeout(function () {
+                    Swal.fire({
+                        title: 'Cannot register',
+                        confirmButtonText: 'OK',
+                    });
+                }, 10);
+            });
     };
 
     // functions related to refresh token may be added later

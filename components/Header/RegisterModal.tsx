@@ -44,7 +44,7 @@ export default function RegisterModal() {
                     <div className={styles.textContainer}>
                         <div className={styles.textName}>이메일:</div>
                         <input
-                            type="text"
+                            type="email"
                             className={styles.text}
                             value={userEmail}
                             onChange={e => {
@@ -77,7 +77,7 @@ export default function RegisterModal() {
                     <div className={styles.textContainer}>
                         <div className={styles.textName}>생일:</div>
                         <input
-                            type="text"
+                            type="date"
                             className={styles.text}
                             value={userBirthday}
                             onChange={e => {
