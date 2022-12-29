@@ -4,9 +4,9 @@ import { MODAL_NAMES } from '../../contexts/ModalContext';
 import { useSessionContext } from '../../contexts/SessionContext';
 import ModalFrame from '../ModalFrame';
 
-import styles from './SignUpModal.module.scss';
+import styles from './RegisterModal.module.scss';
 
-export default function SignUpModal() {
+export default function RegisterModal() {
     const { register } = useSessionContext();
 
     const [userName, setUserName] = useState('');
@@ -15,7 +15,7 @@ export default function SignUpModal() {
     const [userPassword2, setUserPassword2] = useState('');
     const [userBirthday, setUserBirthday] = useState('');
     return (
-        <ModalFrame modalName={MODAL_NAMES.signUp}>
+        <ModalFrame modalName={MODAL_NAMES.register}>
             <div className={styles.signUpModal}>
                 <form
                     className={styles.signUpContainer}

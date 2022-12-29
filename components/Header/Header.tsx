@@ -212,7 +212,7 @@ function Header() {
                                 로그인
                             </button>
                             <button
-                                onClick={() => openModal(MODAL_NAMES.signUp)}
+                                onClick={() => openModal(MODAL_NAMES.register)}
                             >
                                 회원가입
                             </button>
