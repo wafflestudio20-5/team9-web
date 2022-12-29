@@ -27,8 +27,6 @@ export default function CalendarTypeDropDown() {
     const getCalendarTypeFromPathname = (pathname: string) => {
         const regex = /(?<=\/)[^[]*?(?=\/)/g;
         const calendarType = pathname.match(regex);
-        console.log(pathname);
-        console.log(calendarType);
         if (!calendarType) return '캘린더';
         switch (calendarType[0]) {
             case CalendarType.day:
