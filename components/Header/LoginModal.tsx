@@ -41,7 +41,7 @@ export default function LoginModal() {
                     <div className={styles.textContainer}>
                         <div className={styles.textName}>비밀번호:</div>
                         <input
-                            type="text"
+                            type="password"
                             className={styles.text}
                             value={userPassword}
                             onChange={e => {
