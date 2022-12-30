@@ -9,8 +9,6 @@ import React, {
 } from 'react';
 
 import CalendarModal from '../components/Header/CalendarModal';
-import LoginModal from '../components/Header/LoginModal';
-import RegisterModal from '../components/Header/RegisterModal';
 import SearchDetailsModal from '../components/Header/SearchDetailsModal';
 import UserModal from '../components/Header/UserModal';
 
@@ -29,8 +27,6 @@ const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
     [MODAL_NAMES.user]: UserModal,
     [MODAL_NAMES.calendar]: CalendarModal,
     [MODAL_NAMES.searchDetails]: SearchDetailsModal,
-    [MODAL_NAMES.login]: LoginModal,
-    [MODAL_NAMES.register]: RegisterModal,
 };
 
 type ModalState = 'open' | 'closing' | 'closed';
