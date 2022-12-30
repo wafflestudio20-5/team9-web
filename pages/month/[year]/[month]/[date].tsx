@@ -1,13 +1,14 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import DayinMonth from '../../../../components/DayinMonth';
-import { CalendarType } from '../../../../components/Header/CalendarTypeDropDown';
-import Sidebar from '../../../../components/Sidebar';
-import { useDateContext } from '../../../../contexts/DateContext';
-import { useSidebarContext } from '../../../../contexts/SidebarContext';
-import { DAYS_ARR } from '../../../../lib/utils/formatDay';
 import styles from '../../../month.module.scss';
+
+import DayinMonth from '@components/DayinMonth';
+import { CalendarType } from '@components/Header/CalendarTypeDropDown';
+import Sidebar from '@components/Sidebar';
+import { useDateContext } from '@contexts/DateContext';
+import { useSidebarContext } from '@contexts/SidebarContext';
+import { DAYS_ARR } from '@utils/formatDay';
 
 export default function MonthPage() {
     const { yearNow, monthNow, dateNow } = useDateContext();

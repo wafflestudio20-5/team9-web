@@ -14,7 +14,15 @@
         "noEmit": true,
         "jsx": "preserve",
         "forceConsistentCasingInFileNames": true,
-        "incremental": true
+        "incremental": true,
+        "baseUrl": ".",
+        "paths": {
+            "@components/*": ["components/*"],
+            "@contexts/*": ["contexts/*"],
+            "@utils/*": ["lib/utils/*"],
+            "@images/*": ["public/images/*"],
+            "@styles/*": ["styles/*"]
+        }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
     "exclude": ["node_modules"]

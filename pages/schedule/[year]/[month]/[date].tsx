@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import DayinSchedule from '../../../../components/DayinSchedule';
-import { CalendarType } from '../../../../components/Header/CalendarTypeDropDown';
-import Sidebar from '../../../../components/Sidebar';
-import { useDateContext } from '../../../../contexts/DateContext';
-import { useSidebarContext } from '../../../../contexts/SidebarContext';
 import styles from '../../../schedule.module.scss';
+
+import DayinSchedule from '@components/DayinSchedule';
+import { CalendarType } from '@components/Header/CalendarTypeDropDown';
+import Sidebar from '@components/Sidebar';
+import { useDateContext } from '@contexts/DateContext';
+import { useSidebarContext } from '@contexts/SidebarContext';
 
 export default function SchedulePage() {
     const { yearNow, monthNow, dateNow } = useDateContext();
