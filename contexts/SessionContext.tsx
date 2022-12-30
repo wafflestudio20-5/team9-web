@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {
     createContext,
     PropsWithChildren,
@@ -5,8 +6,6 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-
-import axios from 'axios';
 import Swal from 'sweetalert2';
 
 interface LoginInfo {
