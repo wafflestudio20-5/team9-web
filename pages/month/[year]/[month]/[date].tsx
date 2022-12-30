@@ -7,8 +7,7 @@ import Sidebar from '../../../../components/Sidebar';
 import { useDateContext } from '../../../../contexts/DateContext';
 import { useSidebarContext } from '../../../../contexts/SidebarContext';
 import { DAYS_ARR } from '../../../../lib/utils/formatDay';
-
-import styles from './month.module.scss';
+import styles from '../../../month.module.scss';
 
 export default function MonthPage() {
     const { yearNow, monthNow, dateNow } = useDateContext();
