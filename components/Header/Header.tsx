@@ -211,9 +211,7 @@ function Header() {
                             <button onClick={() => router.push('/login')}>
                                 로그인
                             </button>
-                            <button
-                                onClick={() => openModal(MODAL_NAMES.register)}
-                            >
+                            <button onClick={() => router.push('/register')}>
                                 회원가입
                             </button>
                         </div>
