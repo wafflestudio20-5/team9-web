@@ -2,6 +2,6 @@ import React from 'react';
 
 import ScheduleCalendar from '@components/ScheduleCalendar';
 
-export default function MonthPage() {
+export default function SchedulePage() {
     return <ScheduleCalendar />;
 }

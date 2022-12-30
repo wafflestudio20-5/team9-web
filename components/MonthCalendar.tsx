@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import styles from './MonthCalendar.module.scss';
 
 import DayinMonth from '@components/DayinMonth';
+import { CalendarType } from '@components/Header/CalendarTypeDropDown';
 import Sidebar from '@components/Sidebar';
 import { useDateContext } from '@contexts/DateContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
@@ -71,9 +72,11 @@ export default function MonthCalendar() {
             monthNow === now.getMonth() + 1 &&
             dateNow === now.getDate()
         ) {
-            router.push('/month/today');
+            router.push(`/${CalendarType.month}/today`);
         } else {
-            router.push(`/month/${yearNow}/${monthNow}/${dateNow}`);
+            router.push(
+                `/${CalendarType.month}/${yearNow}/${monthNow}/${dateNow}`,
+            );
         }
     }, [yearNow, monthNow, dateNow]);
 
