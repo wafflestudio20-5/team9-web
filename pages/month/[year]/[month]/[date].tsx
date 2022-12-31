@@ -20,7 +20,7 @@ export default function MonthPage() {
         ) {
             // redirect to NOT_FOUND page?
             // or throw 404 error?
-            router.push('/month/today');
+            router.push(`/${CalendarType.month}/today`);
             return;
         }
         setYearNow(Number(year));
