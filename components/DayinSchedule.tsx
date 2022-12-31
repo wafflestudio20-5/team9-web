@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { useDateContext } from '../contexts/DateContext';
-import { formatDayToKr } from '../lib/utils/formatDay';
-
 import styles from './DayinSchedule.module.scss';
+
+import { useDateContext } from '@contexts/DateContext';
+import { formatDayToKr } from '@utils/formatDay';
 
 // interface name overlaps & is different
 // Need to properly decide data structure for further development

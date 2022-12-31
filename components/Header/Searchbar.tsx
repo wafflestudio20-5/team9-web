@@ -1,18 +1,12 @@
 import Image from 'next/image';
-import React, {
-    ChangeEvent,
-    FormEvent,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
-
-import { MODAL_NAMES, useModal } from '../../contexts/ModalContext';
-import close_icon from '../../public/images/close_icon.svg';
-import dropdown_icon from '../../public/images/dropdown_icon.svg';
-import search_icon from '../../public/images/search_icon.svg';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import styles from './Searchbar.module.scss';
+
+import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
+import close_icon from '@images/close_icon.svg';
+import dropdown_icon from '@images/dropdown_icon.svg';
+import search_icon from '@images/search_icon.svg';
 
 interface SearchbarProps {
     isOpen: boolean;

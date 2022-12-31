@@ -8,9 +8,9 @@ import React, {
     useState,
 } from 'react';
 
-import CalendarModal from '../components/Header/CalendarModal';
-import SearchDetailsModal from '../components/Header/SearchDetailsModal';
-import UserModal from '../components/Header/UserModal';
+import CalendarModal from '@components/Header/CalendarModal';
+import SearchDetailsModal from '@components/Header/SearchDetailsModal';
+import UserModal from '@components/Header/UserModal';
 
 // Add modal name to MODAL_NAMES (to prevent hard coding)
 // key and value should be the same

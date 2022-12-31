@@ -2,25 +2,24 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 
-import { CalendarType, useDateContext } from '../../contexts/DateContext';
-import { MODAL_NAMES, useModal } from '../../contexts/ModalContext';
-import { useSessionContext } from '../../contexts/SessionContext';
-import { useSidebarContext } from '../../contexts/SidebarContext';
-import apps_icon from '../../public/images/apps_icon.svg';
-import back_icon from '../../public/images/back_icon.svg';
-import before_icon from '../../public/images/before_icon.svg';
-import calendar_icon from '../../public/images/calendar_icon.svg';
-import dropdown_icon from '../../public/images/dropdown_icon.svg';
-import menu_icon from '../../public/images/menu_icon.svg';
-import next_icon from '../../public/images/next_icon.svg';
-import search_icon from '../../public/images/search_icon.svg';
-
-import CalendarTypeDropDown from './CalendarTypeDropDown';
 import styles from './Header.module.scss';
-import HelpDropDown from './HelpDropDown';
-import Searchbar from './Searchbar';
-import SettingsDropDown from './SettingsDropDown';
 
+import CalendarTypeDropDown from '@components/Header/CalendarTypeDropDown';
+import HelpDropDown from '@components/Header/HelpDropDown';
+import Searchbar from '@components/Header/Searchbar';
+import SettingsDropDown from '@components/Header/SettingsDropDown';
+import { CalendarType, useDateContext } from '@contexts/DateContext';
+import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
+import { useSessionContext } from '@contexts/SessionContext';
+import { useSidebarContext } from '@contexts/SidebarContext';
+import apps_icon from '@images/apps_icon.svg';
+import back_icon from '@images/back_icon.svg';
+import before_icon from '@images/before_icon.svg';
+import calendar_icon from '@images/calendar_icon.svg';
+import dropdown_icon from '@images/dropdown_icon.svg';
+import menu_icon from '@images/menu_icon.svg';
+import next_icon from '@images/next_icon.svg';
+import search_icon from '@images/search_icon.svg';
 import {
     getNextDay,
     getNextMonth,

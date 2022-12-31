@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import { CalendarType } from '../contexts/DateContext';
-
 import styles from './RedirectPage.module.scss';
+
+import { CalendarType } from '@contexts/DateContext';
 
 interface RedirectPageProps {
     calendarType: CalendarType;

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { useDateContext } from '../contexts/DateContext';
-
 import styles from './DayinMonth.module.scss';
+
+import { useDateContext } from '@contexts/DateContext';
 
 export interface DayData {
     month: number;

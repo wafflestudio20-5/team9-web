@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import React from 'react';
 
-import help_icon from '../../public/images/help_icon.svg';
 import {
     useDropDown,
     DropDown,
     DropDownBody,
     DropDownHeader,
-} from '../DropDown';
+} from '@components/DropDown';
+import help_icon from '@images/help_icon.svg';
 
 export default function HelpDropDown() {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
