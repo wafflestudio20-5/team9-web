@@ -4,7 +4,10 @@ module.exports = {
         es2021: true,
     },
     settings: {
-        'import/parsers': { '@typescript-eslint/parser': ['.ts'] },
+        'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
+        'import/resolver': {
+            typescript: { alwaysTryTypes: true },
+        },
     },
     extends: [
         'eslint:recommended',
