@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import { CalendarType } from '@components/Header/CalendarTypeDropDown';
-import { useDateContext } from '@contexts/DateContext';
+import { CalendarType, useDateContext } from '@contexts/DateContext';
 
 export default function DayCalendar() {
     const { yearNow, monthNow, dateNow } = useDateContext();

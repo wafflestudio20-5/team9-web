@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { useDateContext } from '../../contexts/DateContext';
+import { CalendarType, useDateContext } from '../../contexts/DateContext';
 import dropdown_icon from '../../public/images/dropdown_icon.svg';
 import {
     DropDown,
@@ -10,14 +10,6 @@ import {
     DropDownHeader,
     useDropDown,
 } from '../DropDown';
-
-export enum CalendarType {
-    index = 'index',
-    day = 'day',
-    week = 'week',
-    month = 'month',
-    schedule = 'schedule',
-}
 
 export default function CalendarTypeDropDown() {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
