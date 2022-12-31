@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 
 import { useDateContext } from '../../contexts/DateContext';
@@ -21,6 +22,7 @@ import Searchbar from './Searchbar';
 import SettingsDropDown from './SettingsDropDown';
 
 function Header() {
+    const router = useRouter();
     const {
         yearNow,
         monthNow,
@@ -206,7 +208,12 @@ function Header() {
                         </div>
                     ) : (
                         <div className={styles.login}>
-                            <button>로그인</button>
+                            <button onClick={() => router.push('/login')}>
+                                로그인
+                            </button>
+                            <button onClick={() => router.push('/register')}>
+                                회원가입
+                            </button>
                         </div>
                     )}
                 </div>

@@ -18,6 +18,8 @@ export enum MODAL_NAMES {
     user = 'user',
     calendar = 'calendar',
     searchDetails = 'searchDetails',
+    login = 'login',
+    register = 'register',
 }
 
 // Add your modal component to MODAL_COMPONENTS

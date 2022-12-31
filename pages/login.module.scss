@@ -1,0 +1,86 @@
+@use '../styles/variables.scss' as v;
+
+.loginPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+
+    .loginBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 200px;
+        height: 220px;
+        padding: 20px 10px;
+        border: 1px solid v.$border-gray;
+        border-radius: 10px;
+        background-color: white;
+
+        .loginContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .textContainer {
+                display: flex;
+                justify-content: space-between;
+
+                .textName {
+                    display: flex;
+                    align-items: center;
+                    font-size: 10px;
+                    font-weight: bold;
+                }
+
+                .text {
+                    width: 110px;
+                    height: 22px;
+                    font-size: 10px;
+                }
+            }
+
+            .loginButtonContainer {
+                display: flex;
+                justify-content: flex-end;
+                button {
+                    width: 50px;
+                    height: 30px;
+                    background-color: v.$primary-blue;
+                    font-size: 10px;
+                    color: white;
+
+                    &:hover {
+                        background-color: v.$dark-blue;
+                    }
+                }
+            }
+        }
+
+        .socialLogin {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .textDescription {
+                font-size: 10px;
+            }
+
+            .socialLoginButtonContainer {
+                display: flex;
+                justify-content: flex-end;
+
+                button {
+                    width: 100px;
+                    height: 30px;
+                    background-color: white;
+                    font-size: 10px;
+
+                    &:hover {
+                        background-color: v.$background-gray;
+                    }
+                }
+            }
+        }
+    }
+}
