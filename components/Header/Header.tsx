@@ -226,7 +226,7 @@ function Header() {
                     {user ? (
                         <div className={styles.user}>
                             <button onClick={() => openModal(MODAL_NAMES.user)}>
-                                J
+                                {user?.username[0] || 'J'}
                             </button>
                         </div>
                     ) : (
