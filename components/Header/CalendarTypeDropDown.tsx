@@ -36,6 +36,7 @@ export default function CalendarTypeDropDown() {
 
     const getPathnameFromCalendarType = (calendarType: string) => {
         if (!(calendarType in CalendarType)) return '/';
+        if (!router.query.year) return `/${calendarType}/today`;
         return `/${calendarType}/${yearNow}/${monthNow}/${dateNow}`;
     };
 
