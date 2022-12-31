@@ -27,10 +27,12 @@ import {
     getPrevDay,
     getPrevMonth,
     getPrevWeek,
+    getMonthInThisWeek,
 } from '@utils/calculateDate';
 
 function Header() {
-    const { yearNow, monthNow, dateNow, calendarType } = useDateContext();
+    const { yearNow, monthNow, dateNow, dayNow, calendarType } =
+        useDateContext();
     const { user } = useSessionContext();
     const { openModal } = useModal();
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
@@ -44,7 +46,6 @@ function Header() {
         date: number,
     ) => `/${calendarType}/${year}/${month}/${date}`;
 
-    // 얘를 datecontext에서 처리하고 메소드로 내려주기?
     const moveToday = () => {
         router.push(`/${calendarType}/today`);
     };
@@ -91,6 +92,22 @@ function Header() {
         const { year, month, date } = fullDate;
         const pathname = getPathname(calendarType, year, month, date);
         router.push(pathname);
+    };
+
+    // schedule should be modified
+    const getSelectedDate = () => {
+        switch (calendarType) {
+            case CalendarType.day:
+                return `${yearNow}년 ${monthNow}월 ${dateNow}일`;
+            case CalendarType.week:
+                return getMonthInThisWeek(yearNow, monthNow, dateNow, dayNow);
+            case CalendarType.month:
+                return `${yearNow}년 ${monthNow}월`;
+            case CalendarType.schedule:
+                return `${yearNow}년 ${monthNow}월`;
+            default:
+                break;
+        }
     };
 
     const closeSearchbar = () => {
@@ -174,7 +191,7 @@ function Header() {
                                 !isOpen && openModal(MODAL_NAMES.calendar)
                             }
                         >
-                            {yearNow}년 {monthNow}월{' '}
+                            {getSelectedDate()}
                             {!isOpen && (
                                 <Image
                                     src={dropdown_icon}

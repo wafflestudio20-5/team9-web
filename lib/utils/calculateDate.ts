@@ -112,3 +112,36 @@ export const getNextMonth = (yearNow: number, monthNow: number) => {
         return { year: yearNow, month: monthNow + 1, date: 1 };
     }
 };
+
+export const getMonthInThisWeek = (
+    yearNow: number,
+    monthNow: number,
+    dateNow: number,
+    dayNow: number,
+) => {
+    if (dateNow - dayNow < 1) {
+        const { year, month } = getPrevMonth(yearNow, monthNow);
+        if (year !== yearNow) {
+            return `${year}년 ${month}월 - ${yearNow}년 ${monthNow}월`;
+        } else {
+            return `${year}년 ${month}월 - ${monthNow}월`;
+        }
+    }
+
+    const saturdayDate = dateNow + (6 - dayNow);
+    const { year, month } = getNextMonth(yearNow, monthNow);
+    if (
+        (monthNow in [1, 3, 5, 7, 8, 10, 12] && saturdayDate > 31) ||
+        (monthNow in [4, 6, 9, 11] && saturdayDate > 30) ||
+        (monthNow === 2 && isLeapYear(yearNow) && saturdayDate > 29) ||
+        (monthNow === 2 && !isLeapYear(yearNow) && saturdayDate > 28)
+    ) {
+        if (year !== yearNow) {
+            return `${yearNow}년 ${monthNow}월 - ${year}년 ${month}월`;
+        } else {
+            return `${yearNow}년 ${monthNow}월 - ${month}월`;
+        }
+    }
+
+    return `${yearNow}년 ${monthNow}월`;
+};
