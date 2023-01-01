@@ -28,9 +28,10 @@ import {
     getPrevMonth,
     getPrevWeek,
     getMonthInThisWeek,
+    getTwoMonth,
 } from '@utils/calculateDate';
 
-function Header() {
+export default function Header() {
     const { yearNow, monthNow, dateNow, dayNow, calendarType } =
         useDateContext();
     const { user } = useSessionContext();
@@ -47,29 +48,16 @@ function Header() {
     ) => `/${calendarType}/${year}/${month}/${date}`;
 
     const moveToday = () => {
-        router.push(`/${calendarType}/today`);
-    };
-
-    const moveNext = () => {
-        let fullDate = { year: yearNow, month: monthNow, date: dateNow };
         switch (calendarType) {
             case CalendarType.day:
-                fullDate = getNextDay(yearNow, monthNow, dateNow);
-                break;
             case CalendarType.week:
-                fullDate = getNextWeek(yearNow, monthNow, dateNow);
-                break;
             case CalendarType.month:
-                fullDate = getNextMonth(yearNow, monthNow);
-                break;
             case CalendarType.schedule:
+                router.push(`/${calendarType}/today`);
                 break;
             default:
                 break;
         }
-        const { year, month, date } = fullDate;
-        const pathname = getPathname(calendarType, year, month, date);
-        router.push(pathname);
     };
 
     const movePrev = () => {
@@ -85,16 +73,39 @@ function Header() {
                 fullDate = getPrevMonth(yearNow, monthNow);
                 break;
             case CalendarType.schedule:
+                fullDate = getPrevMonth(yearNow, monthNow);
                 break;
             default:
-                break;
+                return;
         }
         const { year, month, date } = fullDate;
         const pathname = getPathname(calendarType, year, month, date);
         router.push(pathname);
     };
 
-    // schedule should be modified
+    const moveNext = () => {
+        let fullDate = { year: yearNow, month: monthNow, date: dateNow };
+        switch (calendarType) {
+            case CalendarType.day:
+                fullDate = getNextDay(yearNow, monthNow, dateNow);
+                break;
+            case CalendarType.week:
+                fullDate = getNextWeek(yearNow, monthNow, dateNow);
+                break;
+            case CalendarType.month:
+                fullDate = getNextMonth(yearNow, monthNow);
+                break;
+            case CalendarType.schedule:
+                fullDate = getNextMonth(yearNow, monthNow);
+                break;
+            default:
+                return;
+        }
+        const { year, month, date } = fullDate;
+        const pathname = getPathname(calendarType, year, month, date);
+        router.push(pathname);
+    };
+
     const getSelectedDate = () => {
         switch (calendarType) {
             case CalendarType.day:
@@ -104,9 +115,9 @@ function Header() {
             case CalendarType.month:
                 return `${yearNow}년 ${monthNow}월`;
             case CalendarType.schedule:
-                return `${yearNow}년 ${monthNow}월`;
+                return getTwoMonth(yearNow, monthNow, false);
             default:
-                break;
+                return `${yearNow}년 ${monthNow}월 ${dateNow}일`;
         }
     };
 
@@ -261,5 +272,3 @@ function Header() {
         </header>
     );
 }
-
-export default Header;

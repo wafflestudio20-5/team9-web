@@ -13,14 +13,11 @@ import dropdown_icon from '@images/dropdown_icon.svg';
 
 export default function CalendarTypeDropDown() {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
-    const { yearNow, monthNow, dateNow } = useDateContext();
+    const { yearNow, monthNow, dateNow, calendarType } = useDateContext();
     const router = useRouter();
 
-    const getCalendarTypeFromPathname = (pathname: string) => {
-        const regex = /(?<=\/)[^[]*?(?=\/)/g;
-        const calendarType = pathname.match(regex);
-        if (!calendarType) return '캘린더';
-        switch (calendarType[0]) {
+    const formatCalendarTypeToKr = (calendarType: CalendarType) => {
+        switch (calendarType) {
             case CalendarType.day:
                 return '일';
             case CalendarType.week:
@@ -36,8 +33,8 @@ export default function CalendarTypeDropDown() {
 
     const getPathnameFromCalendarType = (calendarType: string) => {
         if (!(calendarType in CalendarType)) return '/';
-        if (!router.query.year) return `/${calendarType}/today`;
-        return `/${calendarType}/${yearNow}/${monthNow}/${dateNow}`;
+        else if (!router.query.year) return `/${calendarType}/today`;
+        else return `/${calendarType}/${yearNow}/${monthNow}/${dateNow}`;
     };
 
     const changeCalendarType = (calenderType: string) => {
@@ -51,7 +48,7 @@ export default function CalendarTypeDropDown() {
             <DropDownHeader openDropDown={openDropDown}>
                 <button>
                     <span style={{ whiteSpace: 'nowrap' }}>
-                        {getCalendarTypeFromPathname(router.pathname)}
+                        {formatCalendarTypeToKr(calendarType)}
                     </span>
                     <Image
                         src={dropdown_icon}

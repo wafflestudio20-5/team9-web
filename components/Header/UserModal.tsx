@@ -10,9 +10,9 @@ import camera_icon from '@images/camera_icon.svg';
 
 export default function UserModal() {
     const { user, logout } = useSessionContext();
-    const { closeModal, openModal } = useModal();
+    const { closeModal } = useModal();
 
-    // if (!user) return null;
+    if (!user) return null;
 
     return (
         <ModalFrame modalName={MODAL_NAMES.user}>

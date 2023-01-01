@@ -54,13 +54,13 @@ const DateContext = createContext<DateContextData>({
 
 export const useDateContext = () => useContext(DateContext);
 
-function DateProvider({ children }: PropsWithChildren) {
+export default function DateProvider({ children }: PropsWithChildren) {
     const now = new Date();
     const [yearNow, setYearNow] = useState(now.getFullYear());
     const [monthNow, setMonthNow] = useState(now.getMonth() + 1);
     const [dateNow, setDateNow] = useState(now.getDate());
     const [dayNow, setDayNow] = useState(now.getDay());
-    const [calendarType, setCalendarType] = useState(CalendarType.month);
+    const [calendarType, setCalendarType] = useState(CalendarType.index);
 
     const value = useMemo(
         () => ({
@@ -82,5 +82,3 @@ function DateProvider({ children }: PropsWithChildren) {
         <DateContext.Provider value={value}>{children}</DateContext.Provider>
     );
 }
-
-export default DateProvider;
