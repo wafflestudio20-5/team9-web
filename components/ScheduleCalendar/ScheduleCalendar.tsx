@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './ScheduleCalendar.module.scss';
 
-import DayinSchedule from '@components/DayinSchedule';
+import DayinSchedule from '@components/ScheduleCalendar/DayinSchedule';
 import Sidebar from '@components/Sidebar';
 import { useSidebarContext } from '@contexts/SidebarContext';
 

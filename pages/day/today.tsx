@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import DayCalendar from '@components/DayCalendar';
+import DayCalendar from '@components/DayCalendar/DayCalendar';
 import { CalendarType, useDateContext } from '@contexts/DateContext';
 
 export default function DayTodayPage() {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import WeekCalendar from '@components/WeekCalendar';
+import WeekCalendar from '@components/WeekCalendar/WeekCalendar';
 import { CalendarType, useDateContext } from '@contexts/DateContext';
 
 export default function WeekTodayPage() {

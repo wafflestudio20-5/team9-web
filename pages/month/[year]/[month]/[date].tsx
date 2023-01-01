@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import MonthCalendar from '@components/MonthCalendar';
+import MonthCalendar from '@components/MonthCalendar/MonthCalendar';
 import { CalendarType, useDateContext } from '@contexts/DateContext';
 
 export default function MonthPage() {

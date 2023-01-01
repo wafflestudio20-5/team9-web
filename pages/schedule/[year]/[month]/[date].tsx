@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import ScheduleCalendar from '@components/ScheduleCalendar';
+import ScheduleCalendar from '@components/ScheduleCalendar/ScheduleCalendar';
 import { CalendarType, useDateContext } from '@contexts/DateContext';
 
 export default function SchedulePage() {
