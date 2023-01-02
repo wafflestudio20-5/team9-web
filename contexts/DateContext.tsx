@@ -27,6 +27,8 @@ interface DateContextData {
     setDateNow: Dispatch<SetStateAction<number>>;
     setDayNow: Dispatch<SetStateAction<number>>;
     setCalendarType: Dispatch<SetStateAction<CalendarType>>;
+    changeFullDate(year: number, month: number, date: number): void;
+    changeToToday(): void;
 }
 
 const DateContext = createContext<DateContextData>({
@@ -50,6 +52,12 @@ const DateContext = createContext<DateContextData>({
     setCalendarType() {
         throw new Error('DateContext not provided');
     },
+    changeFullDate() {
+        throw new Error('DateContext not provided');
+    },
+    changeToToday() {
+        throw new Error('DateContext not provided');
+    },
 });
 
 export const useDateContext = () => useContext(DateContext);
@@ -61,6 +69,20 @@ export default function DateProvider({ children }: PropsWithChildren) {
     const [dateNow, setDateNow] = useState(now.getDate());
     const [dayNow, setDayNow] = useState(now.getDay());
     const [calendarType, setCalendarType] = useState(CalendarType.index);
+
+    const changeFullDate = (year: number, month: number, date: number) => {
+        setYearNow(year);
+        setMonthNow(month);
+        setDateNow(date);
+        setDayNow(new Date(`${year}-${month}-${date}`).getDay());
+    };
+
+    const changeToToday = () => {
+        setYearNow(now.getFullYear());
+        setMonthNow(now.getMonth() + 1);
+        setDateNow(now.getDate());
+        setDayNow(now.getDay());
+    };
 
     const value = useMemo(
         () => ({
@@ -74,6 +96,8 @@ export default function DateProvider({ children }: PropsWithChildren) {
             setDayNow,
             calendarType,
             setCalendarType,
+            changeFullDate,
+            changeToToday,
         }),
         [yearNow, monthNow, dateNow, dayNow, calendarType],
     );

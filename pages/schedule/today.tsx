@@ -4,16 +4,12 @@ import ScheduleCalendar from '@components/ScheduleCalendar/ScheduleCalendar';
 import { CalendarType, useDateContext } from '@contexts/DateContext';
 
 export default function ScheduleTodayPage() {
-    const { setYearNow, setMonthNow, setDateNow, setDayNow, setCalendarType } =
-        useDateContext();
-    const now = new Date();
+    const { changeToToday, setCalendarType } = useDateContext();
 
     useEffect(() => {
-        setYearNow(now.getFullYear());
-        setMonthNow(now.getMonth() + 1);
-        setDateNow(now.getDate());
-        setDayNow(now.getDay());
+        changeToToday();
         setCalendarType(CalendarType.schedule);
-    }, [now]);
+    }, []);
+
     return <ScheduleCalendar />;
 }
