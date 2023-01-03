@@ -77,3 +77,5 @@ yarn-error.log*
 .vercel
 
 # End of https://www.toptal.com/developers/gitignore/api/nextjs
+
+*secret*

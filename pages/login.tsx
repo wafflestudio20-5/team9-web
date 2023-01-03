@@ -7,7 +7,8 @@ import { useSessionContext } from '@contexts/SessionContext';
 
 export default function LoginPage() {
     const router = useRouter();
-    const { login } = useSessionContext();
+    const { login, openGoogleLoginPage, openKakaoLoginPage } =
+        useSessionContext();
 
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
@@ -53,10 +54,20 @@ export default function LoginPage() {
                     </div>
                 </form>
                 <div className={styles.socialLoginContainer}>
-                    <button className={styles.kakaoLogin}>
+                    <button
+                        className={styles.kakaoLogin}
+                        onClick={() => {
+                            openKakaoLoginPage();
+                        }}
+                    >
                         kakao로 로그인
                     </button>
-                    <button className={styles.googleLogin}>
+                    <button
+                        className={styles.googleLogin}
+                        onClick={() => {
+                            openGoogleLoginPage();
+                        }}
+                    >
                         google로 로그인
                     </button>
                 </div>
