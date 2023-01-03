@@ -9,7 +9,7 @@ export default function DayTodayPage() {
     useEffect(() => {
         changeToToday();
         setCalendarType(CalendarType.day);
-    }, []);
+    }, [changeToToday]);
 
     return <DayCalendar />;
 }

@@ -6,6 +6,7 @@ import React, {
     useContext,
     useMemo,
     useState,
+    useCallback,
 } from 'react';
 
 export enum CalendarType {
@@ -27,6 +28,7 @@ interface DateContextData {
     setDateNow: Dispatch<SetStateAction<number>>;
     setDayNow: Dispatch<SetStateAction<number>>;
     setCalendarType: Dispatch<SetStateAction<CalendarType>>;
+    validateDate(year: any, month: any, date: any): boolean;
     changeFullDate(year: number, month: number, date: number): void;
     changeToToday(): void;
 }
@@ -52,6 +54,9 @@ const DateContext = createContext<DateContextData>({
     setCalendarType() {
         throw new Error('DateContext not provided');
     },
+    validateDate() {
+        throw new Error('DateContext not provided');
+    },
     changeFullDate() {
         throw new Error('DateContext not provided');
     },
@@ -70,19 +75,34 @@ export default function DateProvider({ children }: PropsWithChildren) {
     const [dayNow, setDayNow] = useState(now.getDay());
     const [calendarType, setCalendarType] = useState(CalendarType.index);
 
-    const changeFullDate = (year: number, month: number, date: number) => {
-        setYearNow(year);
-        setMonthNow(month);
-        setDateNow(date);
-        setDayNow(new Date(`${year}-${month}-${date}`).getDay());
-    };
+    const validateDate = useCallback((year: any, month: any, date: any) => {
+        if (
+            isNaN(Number(year)) ||
+            isNaN(Number(month)) ||
+            isNaN(Number(date))
+        ) {
+            return false;
+        }
+        // validate the scope of year, month, date
+        return true;
+    }, []);
 
-    const changeToToday = () => {
+    const changeFullDate = useCallback(
+        (year: number, month: number, date: number) => {
+            setYearNow(Number(year));
+            setMonthNow(Number(month));
+            setDateNow(Number(date));
+            setDayNow(new Date(`${year}-${month}-${date}`).getDay());
+        },
+        [],
+    );
+
+    const changeToToday = useCallback(() => {
         setYearNow(now.getFullYear());
         setMonthNow(now.getMonth() + 1);
         setDateNow(now.getDate());
         setDayNow(now.getDay());
-    };
+    }, [now]);
 
     const value = useMemo(
         () => ({
@@ -96,6 +116,7 @@ export default function DateProvider({ children }: PropsWithChildren) {
             setDayNow,
             calendarType,
             setCalendarType,
+            validateDate,
             changeFullDate,
             changeToToday,
         }),

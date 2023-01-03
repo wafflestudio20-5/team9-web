@@ -5,30 +5,22 @@ import WeekCalendar from '@components/WeekCalendar/WeekCalendar';
 import { CalendarType, useDateContext } from '@contexts/DateContext';
 
 export default function WeekPage() {
-    const { setYearNow, setMonthNow, setDateNow, setDayNow, setCalendarType } =
-        useDateContext();
+    const { validateDate, changeFullDate, setCalendarType } = useDateContext();
     const router = useRouter();
 
     useEffect(() => {
         if (!router.isReady) return;
         const { year, month, date } = router.query;
-
-        if (
-            isNaN(Number(year)) ||
-            isNaN(Number(month)) ||
-            isNaN(Number(date))
-        ) {
+        const isValid = validateDate(year, month, date);
+        if (isValid) {
+            changeFullDate(Number(year), Number(month), Number(date));
+            setCalendarType(CalendarType.day);
+        } else {
             // redirect to NOT_FOUND page?
             // or throw 404 error?
             router.push(`/${CalendarType.week}/today`);
-            return;
         }
-        setYearNow(Number(year));
-        setMonthNow(Number(month));
-        setDateNow(Number(date));
-        setDayNow(new Date(`${year}-${month}-${date}`).getDay());
-        setCalendarType(CalendarType.week);
-    }, [router.isReady, router.query]);
+    }, [router.isReady, router.query, validateDate, changeFullDate]);
 
     return <WeekCalendar />;
 }

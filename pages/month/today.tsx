@@ -9,7 +9,7 @@ export default function MonthTodayPage() {
     useEffect(() => {
         changeToToday();
         setCalendarType(CalendarType.month);
-    }, []);
+    }, [changeToToday]);
 
     return <MonthCalendar />;
 }

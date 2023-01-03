@@ -9,7 +9,7 @@ export default function ScheduleTodayPage() {
     useEffect(() => {
         changeToToday();
         setCalendarType(CalendarType.schedule);
-    }, []);
+    }, [changeToToday]);
 
     return <ScheduleCalendar />;
 }
