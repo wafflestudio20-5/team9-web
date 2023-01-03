@@ -49,7 +49,8 @@ const SessionContext = createContext<SessionContextData>({
     },
 });
 
-const apiEndPoint = 'http://127.0.0.1:8000/api/v1/user/';
+const apiEndPoint =
+    'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/';
 
 export const useSessionContext = () => useContext(SessionContext);
 
