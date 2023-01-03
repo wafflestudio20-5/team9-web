@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { CalendarType } from '@components/Header/CalendarTypeDropDown';
 import RedirectPage from '@components/RedirectPage';
+import { CalendarType } from '@contexts/CalendarContext';
 
 export default function RedirectToMonthPage() {
     return (

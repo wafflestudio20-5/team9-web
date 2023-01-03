@@ -1,70 +1,125 @@
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 
-import { useDateContext } from '../../contexts/DateContext';
-import { MODAL_NAMES, useModal } from '../../contexts/ModalContext';
-import { useSessionContext } from '../../contexts/SessionContext';
-import { useSidebarContext } from '../../contexts/SidebarContext';
-import apps_icon from '../../public/images/apps_icon.svg';
-import back_icon from '../../public/images/back_icon.svg';
-import before_icon from '../../public/images/before_icon.svg';
-import calendar_icon from '../../public/images/calendar_icon.svg';
-import dropdown_icon from '../../public/images/dropdown_icon.svg';
-import menu_icon from '../../public/images/menu_icon.svg';
-import next_icon from '../../public/images/next_icon.svg';
-import search_icon from '../../public/images/search_icon.svg';
-
-import CalendarTypeDropDown from './CalendarTypeDropDown';
 import styles from './Header.module.scss';
-import HelpDropDown from './HelpDropDown';
-import Searchbar from './Searchbar';
-import SettingsDropDown from './SettingsDropDown';
 
-function Header() {
-    const router = useRouter();
-    const {
-        yearNow,
-        monthNow,
-        setYearNow,
-        setMonthNow,
-        setDateNow,
-        setDayNow,
-    } = useDateContext();
+import CalendarTypeDropDown from '@components/Header/CalendarTypeDropDown';
+import HelpDropDown from '@components/Header/HelpDropDown';
+import Searchbar from '@components/Header/Searchbar';
+import SettingsDropDown from '@components/Header/SettingsDropDown';
+import { CalendarType, useCalendarContext } from '@contexts/CalendarContext';
+import { useDateContext } from '@contexts/DateContext';
+import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
+import { useSessionContext } from '@contexts/SessionContext';
+import { useSidebarContext } from '@contexts/SidebarContext';
+import apps_icon from '@images/apps_icon.svg';
+import back_icon from '@images/back_icon.svg';
+import before_icon from '@images/before_icon.svg';
+import calendar_icon from '@images/calendar_icon.svg';
+import dropdown_icon from '@images/dropdown_icon.svg';
+import menu_icon from '@images/menu_icon.svg';
+import next_icon from '@images/next_icon.svg';
+import search_icon from '@images/search_icon.svg';
+import {
+    getNextDay,
+    getNextMonth,
+    getNextWeek,
+    getPrevDay,
+    getPrevMonth,
+    getPrevWeek,
+    getMonthInThisWeek,
+    getTwoMonth,
+} from '@utils/calculateDate';
+
+export default function Header() {
+    const { yearNow, monthNow, dateNow, dayNow } = useDateContext();
+    const { calendarType } = useCalendarContext();
     const { user } = useSessionContext();
     const { openModal } = useModal();
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+    const router = useRouter();
     const now = useMemo(() => new Date(), []);
 
-    const changeDateToToday = () => {
-        setYearNow(now.getFullYear());
-        setMonthNow(now.getMonth() + 1);
-        setDateNow(now.getDate());
-        setDayNow(now.getDay());
+    const getPathname = (
+        calendarType: CalendarType,
+        year: number,
+        month: number,
+        date: number,
+    ) => `/${calendarType}/${year}/${month}/${date}`;
+
+    const moveToday = () => {
+        switch (calendarType) {
+            case CalendarType.day:
+            case CalendarType.week:
+            case CalendarType.month:
+            case CalendarType.schedule:
+                router.push(`/${calendarType}/today`);
+                break;
+            default:
+                break;
+        }
     };
 
-    const moveToNextMonth = () => {
-        if (monthNow === 12) {
-            setYearNow(yearNow + 1);
-            setMonthNow(1);
-            setDayNow(new Date(`${yearNow + 1}-1-1`).getDay());
-        } else {
-            setMonthNow(monthNow + 1);
-            setDayNow(new Date(`${yearNow}-${monthNow + 1}-1`).getDay());
+    const movePrev = () => {
+        let fullDate = { year: yearNow, month: monthNow, date: dateNow };
+        switch (calendarType) {
+            case CalendarType.day:
+                fullDate = getPrevDay(yearNow, monthNow, dateNow);
+                break;
+            case CalendarType.week:
+                fullDate = getPrevWeek(yearNow, monthNow, dateNow);
+                break;
+            case CalendarType.month:
+                fullDate = getPrevMonth(yearNow, monthNow);
+                break;
+            case CalendarType.schedule:
+                fullDate = getPrevMonth(yearNow, monthNow);
+                break;
+            default:
+                return;
         }
-        setDateNow(1);
+        const { year, month, date } = fullDate;
+        const pathname = getPathname(calendarType, year, month, date);
+        router.push(pathname);
     };
 
-    const moveToLastMonth = () => {
-        if (monthNow === 1) {
-            setYearNow(yearNow - 1);
-            setMonthNow(12);
-            setDayNow(new Date(`${yearNow - 1}-12-1`).getDay());
-        } else {
-            setMonthNow(monthNow - 1);
-            setDayNow(new Date(`${yearNow}-${monthNow - 1}-1`).getDay());
+    const moveNext = () => {
+        let fullDate = { year: yearNow, month: monthNow, date: dateNow };
+        switch (calendarType) {
+            case CalendarType.day:
+                fullDate = getNextDay(yearNow, monthNow, dateNow);
+                break;
+            case CalendarType.week:
+                fullDate = getNextWeek(yearNow, monthNow, dateNow);
+                break;
+            case CalendarType.month:
+                fullDate = getNextMonth(yearNow, monthNow);
+                break;
+            case CalendarType.schedule:
+                fullDate = getNextMonth(yearNow, monthNow);
+                break;
+            default:
+                return;
         }
-        setDateNow(1);
+        const { year, month, date } = fullDate;
+        const pathname = getPathname(calendarType, year, month, date);
+        router.push(pathname);
+    };
+
+    const getSelectedDate = () => {
+        switch (calendarType) {
+            case CalendarType.day:
+                return `${yearNow}년 ${monthNow}월 ${dateNow}일`;
+            case CalendarType.week:
+                return getMonthInThisWeek(yearNow, monthNow, dateNow, dayNow);
+            case CalendarType.month:
+                return `${yearNow}년 ${monthNow}월`;
+            case CalendarType.schedule:
+                return getTwoMonth(yearNow, monthNow, false);
+            default:
+                return `${yearNow}년 ${monthNow}월 ${dateNow}일`;
+        }
     };
 
     const closeSearchbar = () => {
@@ -122,25 +177,22 @@ function Header() {
                         isSearchOpen && styles.hidden
                     }`}
                 >
-                    <button
-                        className={styles.today}
-                        onClick={changeDateToToday}
-                    >
+                    <button className={styles.today} onClick={moveToday}>
                         오늘
                     </button>
                     <div className={styles.btnContainer}>
-                        <button onClick={moveToLastMonth}>
+                        <button onClick={movePrev}>
                             <Image
                                 src={before_icon}
                                 height={24}
-                                alt="last_month"
+                                alt="prev_calendar"
                             />
                         </button>
-                        <button onClick={moveToNextMonth}>
+                        <button onClick={moveNext}>
                             <Image
                                 src={next_icon}
                                 height={24}
-                                alt="next_month"
+                                alt="next_calendar"
                             />
                         </button>
                     </div>
@@ -151,7 +203,7 @@ function Header() {
                                 !isOpen && openModal(MODAL_NAMES.calendar)
                             }
                         >
-                            {yearNow}년 {monthNow}월{' '}
+                            {getSelectedDate()}
                             {!isOpen && (
                                 <Image
                                     src={dropdown_icon}
@@ -203,7 +255,7 @@ function Header() {
                     {user ? (
                         <div className={styles.user}>
                             <button onClick={() => openModal(MODAL_NAMES.user)}>
-                                J
+                                {user?.username[0] || 'J'}
                             </button>
                         </div>
                     ) : (
@@ -221,5 +273,3 @@ function Header() {
         </header>
     );
 }
-
-export default Header;

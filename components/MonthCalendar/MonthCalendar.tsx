@@ -1,20 +1,14 @@
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import styles from './MonthCalendar.module.scss';
 
-import DayinMonth from '@components/DayinMonth';
-import { CalendarType } from '@components/Header/CalendarTypeDropDown';
+import DayinMonth from '@components/MonthCalendar/DayinMonth';
 import Sidebar from '@components/Sidebar';
-import { useDateContext } from '@contexts/DateContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import { DAYS_ARR } from '@utils/formatDay';
 
 export default function MonthCalendar() {
-    const { yearNow, monthNow, dateNow } = useDateContext();
     const { isOpen } = useSidebarContext();
-    const router = useRouter();
-    const now = new Date();
 
     // data for month to be displayed
     // will fetch from api request
@@ -56,29 +50,6 @@ export default function MonthCalendar() {
         { month: 12, date: 30, events: [] },
         { month: 12, date: 31, events: [] },
     ];
-
-    useEffect(() => {
-        if (
-            isNaN(Number(yearNow)) ||
-            isNaN(Number(monthNow)) ||
-            isNaN(Number(dateNow))
-        ) {
-            // redirect to NOT_FOUND page?
-            // or throw 404 error?
-        }
-
-        if (
-            yearNow === now.getFullYear() &&
-            monthNow === now.getMonth() + 1 &&
-            dateNow === now.getDate()
-        ) {
-            router.push(`/${CalendarType.month}/today`);
-        } else {
-            router.push(
-                `/${CalendarType.month}/${yearNow}/${monthNow}/${dateNow}`,
-            );
-        }
-    }, [yearNow, monthNow, dateNow]);
 
     return (
         <div className={styles.wrapper}>

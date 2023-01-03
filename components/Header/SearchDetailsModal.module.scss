@@ -1,4 +1,4 @@
-@use '../../styles/variables.scss' as v;
+@use '@styles/variables.scss' as v;
 
 .searchDetailsModal {
     position: absolute;
@@ -82,5 +82,17 @@
                 }
             }
         }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .searchDetailsModal {
+        left: 256px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .searchDetailsModal {
+        left: 18px;
     }
 }

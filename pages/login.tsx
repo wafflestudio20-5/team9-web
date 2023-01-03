@@ -1,9 +1,9 @@
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import { useSessionContext } from '../contexts/SessionContext';
-
 import styles from './login.module.scss';
+
+import { useSessionContext } from '@contexts/SessionContext';
 
 export default function LoginPage() {
     const router = useRouter();

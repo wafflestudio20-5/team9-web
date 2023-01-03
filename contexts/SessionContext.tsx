@@ -56,7 +56,7 @@ export const useSessionContext = () => useContext(SessionContext);
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-function SessionProvider({ children }: PropsWithChildren) {
+export default function SessionProvider({ children }: PropsWithChildren) {
     const [user, setUser] = useState<User | null>(null);
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const [refreshToken, setRefreshToken] = useState<string | null>(null);
@@ -152,5 +152,3 @@ function SessionProvider({ children }: PropsWithChildren) {
         </SessionContext.Provider>
     );
 }
-
-export default SessionProvider;

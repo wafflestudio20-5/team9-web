@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 
-import { MODAL_NAMES, useModal } from '../contexts/ModalContext';
-
 import styles from './ModalFrame.module.scss';
+
+import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 
 interface ModalFrameProps {
     modalName: MODAL_NAMES;

@@ -5,7 +5,7 @@ import {
     DropDownBody,
     DropDownHeader,
     useDropDown,
-} from '../DropDown';
+} from '@components/DropDown';
 
 export default function CalendarDropDown({ title }: { title: string }) {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();

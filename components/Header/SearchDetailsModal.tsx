@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { MODAL_NAMES } from '../../contexts/ModalContext';
-import ModalFrame from '../ModalFrame';
-
-import CalendarDropDown from './CalendarDropDown';
-import SearchCategoryDropDown from './SearchCategoryDropDown';
 import styles from './SearchDetailsModal.module.scss';
+
+import CalendarDropDown from '@components/Header/CalendarDropDown';
+import SearchCategoryDropDown from '@components/Header/SearchCategoryDropDown';
+import ModalFrame from '@components/ModalFrame';
+import { MODAL_NAMES } from '@contexts/ModalContext';
 
 interface InputTextLayoutProps {
     id: string;

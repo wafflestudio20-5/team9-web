@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-import dropdown_icon from '../../public/images/dropdown_icon.svg';
 import {
     useDropDown,
     DropDown,
     DropDownBody,
     DropDownHeader,
-} from '../DropDown';
+} from '@components/DropDown';
+import dropdown_icon from '@images/dropdown_icon.svg';
 
 export default function SearchCategoryDropDown() {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();

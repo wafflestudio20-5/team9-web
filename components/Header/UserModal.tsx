@@ -1,18 +1,18 @@
 import Image from 'next/image';
 import React from 'react';
 
-import { MODAL_NAMES, useModal } from '../../contexts/ModalContext';
-import { useSessionContext } from '../../contexts/SessionContext';
-import camera_icon from '../../public/images/camera_icon.svg';
-import ModalFrame from '../ModalFrame';
-
 import styles from './UserModal.module.scss';
+
+import ModalFrame from '@components/ModalFrame';
+import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
+import { useSessionContext } from '@contexts/SessionContext';
+import camera_icon from '@images/camera_icon.svg';
 
 export default function UserModal() {
     const { user, logout } = useSessionContext();
-    const { closeModal, openModal } = useModal();
+    const { closeModal } = useModal();
 
-    // if (!user) return null;
+    if (!user) return null;
 
     return (
         <ModalFrame modalName={MODAL_NAMES.user}>
