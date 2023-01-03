@@ -9,6 +9,8 @@ import React, {
     useCallback,
 } from 'react';
 
+import { getLastDayInMonth } from '@utils/calculateDate';
+
 interface DateContextData {
     yearNow: number;
     monthNow: number;
@@ -61,14 +63,21 @@ export default function DateProvider({ children }: PropsWithChildren) {
     const [dayNow, setDayNow] = useState(now.getDay());
 
     const validateDate = useCallback((year: any, month: any, date: any) => {
+        const yearNum = Number(year);
+        const monthNum = Number(month);
+        const dateNum = Number(date);
+        if (isNaN(yearNum) || isNaN(monthNum) || isNaN(dateNum)) {
+            return false;
+        }
         if (
-            isNaN(Number(year)) ||
-            isNaN(Number(month)) ||
-            isNaN(Number(date))
+            monthNum < 1 ||
+            monthNum > 12 ||
+            dateNum < 1 ||
+            dateNum > getLastDayInMonth(yearNum, monthNum)
         ) {
             return false;
         }
-        // validate the scope of year, month, date
+
         return true;
     }, []);
 

@@ -99,6 +99,7 @@ export const getTwoMonth = (
     isPrev: boolean,
 ) => {
     if (isPrev) {
+        // prev month and this month
         const { year, month } = getPrevMonth(yearNow, monthNow);
         if (year === yearNow) {
             return `${year}년 ${month}월 - ${monthNow}월`;
@@ -106,6 +107,7 @@ export const getTwoMonth = (
             return `${year}년 ${month}월 - ${yearNow}년 ${monthNow}월`;
         }
     } else {
+        // this month and next month
         const { year, month } = getNextMonth(yearNow, monthNow);
         if (year === yearNow) {
             return `${yearNow}년 ${monthNow}월 - ${month}월`;
@@ -121,10 +123,12 @@ export const getMonthInThisWeek = (
     dateNow: number,
     dayNow: number,
 ) => {
+    // two months in a week
     if (dateNow - dayNow < 1) return getTwoMonth(yearNow, monthNow, true);
     const saturdayDate = dateNow + (6 - dayNow);
     if (saturdayDate > getLastDayInMonth(yearNow, monthNow)) {
         return getTwoMonth(yearNow, monthNow, false);
     }
+    // one month in a week
     return `${yearNow}년 ${monthNow}월`;
 };
