@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 
 import WeekCalendar from '@components/WeekCalendar/WeekCalendar';
-import { CalendarType, useDateContext } from '@contexts/DateContext';
+import { CalendarType, useCalendarContext } from '@contexts/CalendarContext';
+import { useDateContext } from '@contexts/DateContext';
 
 export default function WeekTodayPage() {
-    const { changeToToday, setCalendarType } = useDateContext();
+    const { changeToToday } = useDateContext();
+    const { setCalendarType } = useCalendarContext();
 
     useEffect(() => {
         changeToToday();

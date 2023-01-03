@@ -1,7 +1,7 @@
 import React from 'react';
 
 import RedirectPage from '@components/RedirectPage';
-import { CalendarType } from '@contexts/DateContext';
+import { CalendarType } from '@contexts/CalendarContext';
 
 export default function RedirectToSchedulePage() {
     return (

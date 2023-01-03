@@ -8,12 +8,14 @@ import {
     DropDownHeader,
     useDropDown,
 } from '@components/DropDown';
-import { CalendarType, useDateContext } from '@contexts/DateContext';
+import { CalendarType, useCalendarContext } from '@contexts/CalendarContext';
+import { useDateContext } from '@contexts/DateContext';
 import dropdown_icon from '@images/dropdown_icon.svg';
 
 export default function CalendarTypeDropDown() {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
-    const { yearNow, monthNow, dateNow, calendarType } = useDateContext();
+    const { yearNow, monthNow, dateNow } = useDateContext();
+    const { calendarType } = useCalendarContext();
     const router = useRouter();
 
     const formatCalendarTypeToKr = (calendarType: CalendarType) => {

@@ -2,10 +2,12 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import WeekCalendar from '@components/WeekCalendar/WeekCalendar';
-import { CalendarType, useDateContext } from '@contexts/DateContext';
+import { CalendarType, useCalendarContext } from '@contexts/CalendarContext';
+import { useDateContext } from '@contexts/DateContext';
 
 export default function WeekPage() {
-    const { validateDate, changeFullDate, setCalendarType } = useDateContext();
+    const { validateDate, changeFullDate } = useDateContext();
+    const { setCalendarType } = useCalendarContext();
     const router = useRouter();
 
     useEffect(() => {

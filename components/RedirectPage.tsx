@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 import styles from './RedirectPage.module.scss';
 
-import { CalendarType } from '@contexts/DateContext';
+import { CalendarType } from '@contexts/CalendarContext';
 
 interface RedirectPageProps {
     calendarType: CalendarType;

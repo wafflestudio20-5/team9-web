@@ -2,10 +2,12 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import MonthCalendar from '@components/MonthCalendar/MonthCalendar';
-import { CalendarType, useDateContext } from '@contexts/DateContext';
+import { CalendarType, useCalendarContext } from '@contexts/CalendarContext';
+import { useDateContext } from '@contexts/DateContext';
 
 export default function MonthPage() {
-    const { validateDate, changeFullDate, setCalendarType } = useDateContext();
+    const { validateDate, changeFullDate } = useDateContext();
+    const { setCalendarType } = useCalendarContext();
     const router = useRouter();
 
     useEffect(() => {

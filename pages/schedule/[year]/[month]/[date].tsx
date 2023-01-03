@@ -2,10 +2,12 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import ScheduleCalendar from '@components/ScheduleCalendar/ScheduleCalendar';
-import { CalendarType, useDateContext } from '@contexts/DateContext';
+import { CalendarType, useCalendarContext } from '@contexts/CalendarContext';
+import { useDateContext } from '@contexts/DateContext';
 
 export default function SchedulePage() {
-    const { validateDate, changeFullDate, setCalendarType } = useDateContext();
+    const { validateDate, changeFullDate } = useDateContext();
+    const { setCalendarType } = useCalendarContext();
     const router = useRouter();
 
     useEffect(() => {

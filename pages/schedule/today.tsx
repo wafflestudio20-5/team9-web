@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 
 import ScheduleCalendar from '@components/ScheduleCalendar/ScheduleCalendar';
-import { CalendarType, useDateContext } from '@contexts/DateContext';
+import { CalendarType, useCalendarContext } from '@contexts/CalendarContext';
+import { useDateContext } from '@contexts/DateContext';
 
 export default function ScheduleTodayPage() {
-    const { changeToToday, setCalendarType } = useDateContext();
+    const { changeToToday } = useDateContext();
+    const { setCalendarType } = useCalendarContext();
 
     useEffect(() => {
         changeToToday();

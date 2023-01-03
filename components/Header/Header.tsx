@@ -8,7 +8,8 @@ import CalendarTypeDropDown from '@components/Header/CalendarTypeDropDown';
 import HelpDropDown from '@components/Header/HelpDropDown';
 import Searchbar from '@components/Header/Searchbar';
 import SettingsDropDown from '@components/Header/SettingsDropDown';
-import { CalendarType, useDateContext } from '@contexts/DateContext';
+import { CalendarType, useCalendarContext } from '@contexts/CalendarContext';
+import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
@@ -32,8 +33,8 @@ import {
 } from '@utils/calculateDate';
 
 export default function Header() {
-    const { yearNow, monthNow, dateNow, dayNow, calendarType } =
-        useDateContext();
+    const { yearNow, monthNow, dateNow, dayNow } = useDateContext();
+    const { calendarType } = useCalendarContext();
     const { user } = useSessionContext();
     const { openModal } = useModal();
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
