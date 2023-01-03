@@ -14,7 +14,7 @@ export default function MonthPage() {
         const isValid = validateDate(year, month, date);
         if (isValid) {
             changeFullDate(Number(year), Number(month), Number(date));
-            setCalendarType(CalendarType.day);
+            setCalendarType(CalendarType.month);
         } else {
             // redirect to NOT_FOUND page?
             // or throw 404 error?

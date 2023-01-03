@@ -14,7 +14,7 @@ export default function SchedulePage() {
         const isValid = validateDate(year, month, date);
         if (isValid) {
             changeFullDate(Number(year), Number(month), Number(date));
-            setCalendarType(CalendarType.day);
+            setCalendarType(CalendarType.schedule);
         } else {
             // redirect to NOT_FOUND page?
             // or throw 404 error?
