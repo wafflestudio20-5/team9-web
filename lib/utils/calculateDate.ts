@@ -170,7 +170,11 @@ export const getCalendarDates = (
         `${year}-${month}-${lastDateInCurrMonth}`,
     ).getDay();
     if (lastDayInCurrMonth != 6) {
-        for (i = 1; i <= 6 - lastDayInCurrMonth; i++) {
+        for (i = 1; i <= 13 - lastDayInCurrMonth; i++) {
+            dates.push(i);
+        }
+    } else {
+        for (i = 1; i <= 7; i++) {
             dates.push(i);
         }
     }
