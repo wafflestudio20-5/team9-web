@@ -159,24 +159,37 @@ export const getCalendarDates = (
             prevMonth.month,
         );
         for (i = firstDayInCurrMonth - 1; i >= 0; i--) {
-            dates.push(lastDateInPrevMonth - i);
+            dates.push({
+                year: prevMonth.year,
+                month: prevMonth.month,
+                date: lastDateInPrevMonth - i,
+            });
         }
     }
     const lastDateInCurrMonth = getLastDayInMonth(year, month);
     for (i = 1; i <= lastDateInCurrMonth; i++) {
-        dates.push(i);
+        dates.push({ year: year, month: month, date: i });
     }
     const lastDayInCurrMonth = new Date(
         `${year}-${month}-${lastDateInCurrMonth}`,
     ).getDay();
+    const nextMonth = getNextMonth(year, month);
     if (lastDayInCurrMonth != 6) {
         for (i = 1; i <= 13 - lastDayInCurrMonth; i++) {
-            dates.push(i);
+            dates.push({
+                year: nextMonth.year,
+                month: nextMonth.month,
+                date: i,
+            });
             if (dates.length == 42) break;
         }
     } else {
         for (i = 1; i <= 7; i++) {
-            dates.push(i);
+            dates.push({
+                year: nextMonth.year,
+                month: nextMonth.month,
+                date: i,
+            });
         }
     }
     return dates;

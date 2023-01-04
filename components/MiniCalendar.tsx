@@ -31,12 +31,12 @@ export default function MiniCalendar() {
     const showPrevious = () => {
         const prevMonth = getPrevMonth(yearToShow, monthToShow);
         setDayDatePair(
-            calendarDates[0] == 1
+            calendarDates[0].date == 1
                 ? {
                       date: getLastDayInMonth(prevMonth.year, prevMonth.month),
                       day: 6,
                   }
-                : { date: calendarDates[0], day: 0 },
+                : { date: calendarDates[0].date, day: 0 },
         );
         setYearToShow(prevMonth.year);
         setMonthToShow(prevMonth.month);
@@ -44,35 +44,37 @@ export default function MiniCalendar() {
     const showNext = () => {
         const nextMonth = getNextMonth(yearToShow, monthToShow);
         setDayDatePair(
-            calendarDates[-1] >= 7 // previous calendar ended with no dates from the next month
+            calendarDates[calendarDates.length - 1].date >= 7 // previous calendar ended with no dates from the next month
                 ? { date: 1, day: 0 }
-                : { date: calendarDates[-1], day: 6 },
+                : { date: calendarDates[-1].date, day: 6 },
         );
         setYearToShow(nextMonth.year);
         setMonthToShow(nextMonth.month);
     };
 
-    const getDateClassName = (date: number, index: number) => {
-        const today = new Date().getDate();
-        if (date == today) return styles.today;
-        if (date - index <= 7 && date > index) {
-            if (monthToShow == monthNow && date == dateNow) {
-                return styles.chosen;
-            }
-            return styles.currMonth;
+    const getDateClassName = (item: {
+        year: number;
+        month: number;
+        date: number;
+    }) => {
+        const today = new Date();
+        if (
+            item.year == today.getFullYear() &&
+            item.month == today.getMonth() + 1 &&
+            item.date == today.getDate()
+        ) {
+            return styles.today;
         }
         if (
-            date == dateNow &&
-            date - index > 7 &&
-            monthToShow == getNextMonth(yearNow, monthNow).month
-        )
+            item.year == yearNow &&
+            item.month == monthNow &&
+            item.date == dateNow
+        ) {
             return styles.chosen;
-        if (
-            date == dateNow &&
-            date < index &&
-            monthToShow == getPrevMonth(yearNow, monthNow).month
-        )
-            return styles.chosen;
+        }
+        if (item.month == monthToShow) {
+            return styles.currMonth;
+        }
         return styles.notCurrMonth;
     };
     return (
@@ -106,13 +108,10 @@ export default function MiniCalendar() {
                 {calendarDates.map((item, index) => {
                     return (
                         <div
-                            className={`styles.item ${getDateClassName(
-                                item,
-                                index,
-                            )}`}
+                            className={`styles.item ${getDateClassName(item)}`}
                             key={index}
                         >
-                            {item}
+                            {item.date}
                         </div>
                     );
                 })}
