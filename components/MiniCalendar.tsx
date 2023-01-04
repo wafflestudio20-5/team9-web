@@ -3,26 +3,57 @@ import { useState, useMemo } from 'react';
 import { useDateContext } from '../contexts/DateContext';
 import before_icon from '../public/images/before_icon.svg';
 import next_icon from '../public/images/next_icon.svg';
+import {
+    getPrevMonth,
+    getNextMonth,
+    getCalendarDates,
+    getLastDayInMonth,
+} from '@utils/calculateDate';
 
 export default function MiniCalendar() {
     const { yearNow, monthNow, dateNow, dayNow } = useDateContext();
     const [yearToShow, setYearToShow] = useState(yearNow);
     const [monthToShow, setMonthToShow] = useState(monthNow);
-    const monthData = useMemo(() => {}, [yearToShow, monthToShow]);
+    const [dayDatePair, setDayDatePair] = useState({
+        date: dateNow,
+        day: dayNow,
+    });
+    const calendarDates = useMemo(() => {
+        return getCalendarDates(
+            yearToShow,
+            monthToShow,
+            dayDatePair.date,
+            dayDatePair.day,
+        );
+    }, [yearToShow, monthToShow, dayDatePair]);
+    const showPrevious = () => {
+        const prevMonth = getPrevMonth(yearToShow, monthToShow);
+        setDayDatePair(
+            calendarDates[0] == 1
+                ? {
+                      date: getLastDayInMonth(prevMonth.year, prevMonth.month),
+                      day: 6,
+                  }
+                : { date: calendarDates[0], day: 0 },
+        );
+        setYearToShow(prevMonth.year);
+        setMonthToShow(prevMonth.month);
+    };
+    const showNext = () => {
+        const nextMonth = getNextMonth(yearToShow, monthToShow);
+        setDayDatePair(
+            calendarDates[-1] >= 7 // previous calendar ended with no dates from the next month
+                ? { date: 1, day: 0 }
+                : { date: calendarDates[-1], day: 6 },
+        );
+        setYearToShow(nextMonth.year);
+        setMonthToShow(nextMonth.month);
+    };
     return (
         <div>
             <div>{`${yearNow}년 ${monthNow}월`}</div>
             <div>
-                <button
-                    onClick={() => {
-                        if (monthToShow == 1) {
-                            setMonthToShow(12);
-                            setYearToShow(yearToShow - 1);
-                        } else {
-                            setMonthToShow(monthToShow - 1);
-                        }
-                    }}
-                >
+                <button onClick={showPrevious}>
                     <Image
                         src={before_icon}
                         alt="이전"
@@ -30,20 +61,15 @@ export default function MiniCalendar() {
                         height={24}
                     />
                 </button>
-                <button
-                    onClick={() => {
-                        if (monthToShow == 12) {
-                            setYearToShow(yearToShow + 1);
-                            setMonthToShow(1);
-                        } else {
-                            setMonthToShow(monthToShow + 1);
-                        }
-                    }}
-                >
+                <button onClick={showNext}>
                     <Image src={next_icon} alt="이후" width={24} height={24} />
                 </button>
             </div>
-            <div></div>
+            <div>
+                {calendarDates.map(i => {
+                    return <div>{i}</div>;
+                })}
+            </div>
         </div>
     );
 }

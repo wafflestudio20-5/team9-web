@@ -132,3 +132,47 @@ export const getMonthInThisWeek = (
     // one month in a week
     return `${yearNow}년 ${monthNow}월`;
 };
+
+export const getLastDay = (
+    year: number,
+    month: number,
+    date: number,
+    day: number,
+) => {
+    const lastDate = getLastDayInMonth(year, month);
+    return (day + lastDate - date) % 7;
+};
+
+export const getCalendarDates = (
+    year: number,
+    month: number,
+    date: number,
+    day: number,
+) => {
+    let i;
+    const dates = [];
+    const firstDayInCurrMonth = new Date(`${year}-${month}-1`).getDay();
+    if (firstDayInCurrMonth != 0) {
+        const prevMonth = getPrevMonth(year, month);
+        const lastDateInPrevMonth = getLastDayInMonth(
+            prevMonth.year,
+            prevMonth.month,
+        );
+        for (i = firstDayInCurrMonth - 1; i >= 0; i--) {
+            dates.push(lastDateInPrevMonth - i);
+        }
+    }
+    const lastDateInCurrMonth = getLastDayInMonth(year, month);
+    for (i = 1; i <= lastDateInCurrMonth; i++) {
+        dates.push(i);
+    }
+    const lastDayInCurrMonth = new Date(
+        `${year}-${month}-${lastDateInCurrMonth}`,
+    ).getDay();
+    if (lastDayInCurrMonth != 6) {
+        for (i = 1; i <= 6 - lastDayInCurrMonth; i++) {
+            dates.push(i);
+        }
+    }
+    return dates;
+};
