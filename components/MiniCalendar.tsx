@@ -51,6 +51,30 @@ export default function MiniCalendar() {
         setYearToShow(nextMonth.year);
         setMonthToShow(nextMonth.month);
     };
+
+    const getDateClassName = (date: number, index: number) => {
+        const today = new Date().getDate();
+        if (date == today) return styles.today;
+        if (date - index <= 7 && date > index) {
+            if (monthToShow == monthNow && date == dateNow) {
+                return styles.chosen;
+            }
+            return styles.currMonth;
+        }
+        if (
+            date == dateNow &&
+            date - index > 7 &&
+            monthToShow == getNextMonth(yearNow, monthNow).month
+        )
+            return styles.chosen;
+        if (
+            date == dateNow &&
+            date < index &&
+            monthToShow == getPrevMonth(yearNow, monthNow).month
+        )
+            return styles.chosen;
+        return styles.notCurrMonth;
+    };
     return (
         <div className={styles.wrapper}>
             <div className={styles.time}>
@@ -81,7 +105,13 @@ export default function MiniCalendar() {
             <div className={styles.main}>
                 {calendarDates.map((item, index) => {
                     return (
-                        <div className={styles.item} key={index}>
+                        <div
+                            className={`styles.item ${getDateClassName(
+                                item,
+                                index,
+                            )}`}
+                            key={index}
+                        >
                             {item}
                         </div>
                     );

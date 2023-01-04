@@ -66,6 +66,27 @@
     grid-template-rows: repeat(auto-fill, 1fr);
     font-size: 10px;
     height: 100%;
+
+    div {
+        border-radius: 50%;
+        :hover {
+            cursor: pointer;
+        }
+    }
+
+    .today {
+        background-color: v.$primary-blue;
+        color: white;
+    }
+
+    .chosen {
+        background-color: v.$light-blue;
+        color: v.$primary-blue;
+    }
+
+    .notCurrMonth {
+        color: v.$font-gray;
+    }
 }
 
 .item {
