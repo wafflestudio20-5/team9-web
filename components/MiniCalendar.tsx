@@ -10,6 +10,7 @@ import {
     getLastDayInMonth,
 } from '@utils/calculateDate';
 import styles from './MiniCalendar.module.scss';
+import { DAYS_ARR } from '@utils/formatDay';
 
 export default function MiniCalendar() {
     const { yearNow, monthNow, dateNow, dayNow } = useDateContext();
@@ -68,9 +69,22 @@ export default function MiniCalendar() {
                     <Image src={next_icon} alt="이후" width={24} height={24} />
                 </button>
             </div>
+            <div className={styles.header}>
+                {DAYS_ARR.map((item, index) => {
+                    return (
+                        <div className={styles.item} key={index}>
+                            {item}
+                        </div>
+                    );
+                })}
+            </div>
             <div className={styles.main}>
-                {calendarDates.map(i => {
-                    return <div>{i}</div>;
+                {calendarDates.map((item, index) => {
+                    return (
+                        <div className={styles.item} key={index}>
+                            {item}
+                        </div>
+                    );
                 })}
             </div>
         </div>

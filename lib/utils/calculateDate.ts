@@ -172,6 +172,7 @@ export const getCalendarDates = (
     if (lastDayInCurrMonth != 6) {
         for (i = 1; i <= 13 - lastDayInCurrMonth; i++) {
             dates.push(i);
+            if (dates.length == 42) break;
         }
     } else {
         for (i = 1; i <= 7; i++) {
