@@ -11,7 +11,7 @@ export default function WeekTodayPage() {
     useEffect(() => {
         changeToToday();
         setCalendarType(CalendarType.week);
-    }, [changeToToday]);
+    }, []);
 
     return <WeekCalendar />;
 }
