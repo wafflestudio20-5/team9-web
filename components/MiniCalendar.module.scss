@@ -19,7 +19,7 @@
     align-items: center;
     margin-bottom: 10px;
     margin-left: 10px;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .buttons {
@@ -57,6 +57,15 @@
     width: 100%;
     font-size: 10px;
     color: v.$font-gray;
+
+    div {
+        font-size: 12px;
+        height: 24px;
+        width: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 .main {
@@ -69,6 +78,12 @@
 
     div {
         border-radius: 50%;
+        font-size: 12px;
+        height: 24px;
+        width: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         :hover {
             cursor: pointer;
         }
@@ -87,10 +102,4 @@
     .notCurrMonth {
         color: v.$font-gray;
     }
-}
-
-.item {
-    font-size: 12px;
-    justify-self: center;
-    align-self: center;
 }

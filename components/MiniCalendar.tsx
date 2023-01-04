@@ -13,7 +13,16 @@ import styles from './MiniCalendar.module.scss';
 import { DAYS_ARR } from '@utils/formatDay';
 
 export default function MiniCalendar() {
-    const { yearNow, monthNow, dateNow, dayNow } = useDateContext();
+    const {
+        yearNow,
+        monthNow,
+        dateNow,
+        dayNow,
+        setYearNow,
+        setMonthNow,
+        setDateNow,
+        setDayNow,
+    } = useDateContext();
     const [yearToShow, setYearToShow] = useState(yearNow);
     const [monthToShow, setMonthToShow] = useState(monthNow);
     const [dayDatePair, setDayDatePair] = useState({
@@ -46,7 +55,10 @@ export default function MiniCalendar() {
         setDayDatePair(
             calendarDates[calendarDates.length - 1].date >= 7 // previous calendar ended with no dates from the next month
                 ? { date: 1, day: 0 }
-                : { date: calendarDates[-1].date, day: 6 },
+                : {
+                      date: calendarDates[calendarDates.length - 1].date,
+                      day: 6,
+                  },
         );
         setYearToShow(nextMonth.year);
         setMonthToShow(nextMonth.month);
@@ -99,7 +111,7 @@ export default function MiniCalendar() {
                 {DAYS_ARR.map((item, index) => {
                     return (
                         <div className={styles.item} key={index}>
-                            {item}
+                            <div>{item}</div>
                         </div>
                     );
                 })}
@@ -108,10 +120,16 @@ export default function MiniCalendar() {
                 {calendarDates.map((item, index) => {
                     return (
                         <div
-                            className={`styles.item ${getDateClassName(item)}`}
+                            className={getDateClassName(item)}
                             key={index}
+                            onClick={() => {
+                                setYearNow(item.year);
+                                setMonthNow(item.month);
+                                setDateNow(item.date);
+                                setDayNow(index % 7);
+                            }}
                         >
-                            {item.date}
+                            <div>{item.date}</div>
                         </div>
                     );
                 })}
