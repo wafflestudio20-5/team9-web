@@ -1,0 +1,47 @@
+@use '@styles/variables.scss' as v;
+
+.wrapper {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        'time buttons'
+        'main main';
+    padding: 15px;
+    row-gap: 10px;
+}
+
+.time {
+    grid-area: time;
+    display: flex;
+    align-items: center;
+}
+
+.buttons {
+    grid-area: buttons;
+    display: flex;
+    button {
+        background-color: white;
+        border: none;
+        border-radius: 50%;
+        overflow: hidden;
+        height: 30px;
+        width: 30px;
+        padding: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        :hover {
+            background-color: v.$background-gray;
+            cursor: pointer;
+        }
+    }
+}
+
+.main {
+    grid-area: main;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(auto-fill, 1fr);
+}

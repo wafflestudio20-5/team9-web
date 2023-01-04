@@ -9,6 +9,7 @@ import {
     getCalendarDates,
     getLastDayInMonth,
 } from '@utils/calculateDate';
+import styles from './MiniCalendar.module.scss';
 
 export default function MiniCalendar() {
     const { yearNow, monthNow, dateNow, dayNow } = useDateContext();
@@ -50,9 +51,11 @@ export default function MiniCalendar() {
         setMonthToShow(nextMonth.month);
     };
     return (
-        <div>
-            <div>{`${yearNow}년 ${monthNow}월`}</div>
-            <div>
+        <div className={styles.wrapper}>
+            <div className={styles.time}>
+                <div>{`${yearToShow}년 ${monthToShow}월`}</div>
+            </div>
+            <div className={styles.buttons}>
                 <button onClick={showPrevious}>
                     <Image
                         src={before_icon}
@@ -65,7 +68,7 @@ export default function MiniCalendar() {
                     <Image src={next_icon} alt="이후" width={24} height={24} />
                 </button>
             </div>
-            <div>
+            <div className={styles.main}>
                 {calendarDates.map(i => {
                     return <div>{i}</div>;
                 })}
