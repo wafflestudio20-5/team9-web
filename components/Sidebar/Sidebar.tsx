@@ -1,7 +1,8 @@
-import MiniCalendar from '@components/MiniCalendar';
 import React from 'react';
 
 import styles from './Sidebar.module.scss';
+
+import MiniCalendar from '@components/MiniCalendar';
 
 export default function Sidebar() {
     return (

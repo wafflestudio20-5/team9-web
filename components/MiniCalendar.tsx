@@ -1,6 +1,9 @@
 import Image from 'next/image';
-import { useState, useMemo } from 'react';
-import { useDateContext } from '../contexts/DateContext';
+import React, { useState, useMemo } from 'react';
+
+import styles from './MiniCalendar.module.scss';
+
+import { useDateContext } from '@contexts/DateContext';
 import before_icon from '@images/before_icon.svg';
 import next_icon from '@images/next_icon.svg';
 import {
@@ -9,7 +12,6 @@ import {
     getCalendarDates,
     getLastDayInMonth,
 } from '@utils/calculateDate';
-import styles from './MiniCalendar.module.scss';
 import { DAYS_ARR } from '@utils/formatDay';
 
 export default function MiniCalendar() {
