@@ -13,6 +13,8 @@ import {
     getLastDayInMonth,
 } from '@utils/calculateDate';
 import { DAYS_ARR } from '@utils/formatDay';
+import { useRouter } from 'next/router';
+import { useCalendarContext } from '@contexts/CalendarContext';
 
 export default function MiniCalendar() {
     const {
@@ -25,12 +27,14 @@ export default function MiniCalendar() {
         setDateNow,
         setDayNow,
     } = useDateContext();
+    const { calendarType } = useCalendarContext();
     const [yearToShow, setYearToShow] = useState(yearNow);
     const [monthToShow, setMonthToShow] = useState(monthNow);
     const [dayDatePair, setDayDatePair] = useState({
         date: dateNow,
         day: dayNow,
     });
+    const router = useRouter();
     const calendarDates = useMemo(() => {
         return getCalendarDates(
             yearToShow,
@@ -125,10 +129,9 @@ export default function MiniCalendar() {
                             className={getDateClassName(item)}
                             key={index}
                             onClick={() => {
-                                setYearNow(item.year);
-                                setMonthNow(item.month);
-                                setDateNow(item.date);
-                                setDayNow(index % 7);
+                                router.push(
+                                    `/${calendarType}/${item.year}/${item.month}/${item.date}`,
+                                );
                             }}
                         >
                             <div>{item.date}</div>
