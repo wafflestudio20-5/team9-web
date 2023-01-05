@@ -6,91 +6,62 @@ import styles from './MiniCalendar.module.scss';
 import { useDateContext } from '@contexts/DateContext';
 import before_icon from '@images/before_icon.svg';
 import next_icon from '@images/next_icon.svg';
-import {
-    getPrevMonth,
-    getNextMonth,
-    getCalendarDates,
-    getLastDayInMonth,
-} from '@utils/calculateDate';
 import { DAYS_ARR } from '@utils/formatDay';
 import { useRouter } from 'next/router';
 import { useCalendarContext } from '@contexts/CalendarContext';
 
 export default function MiniCalendar() {
-    const {
-        yearNow,
-        monthNow,
-        dateNow,
-        dayNow,
-        setYearNow,
-        setMonthNow,
-        setDateNow,
-        setDayNow,
-    } = useDateContext();
-    const { calendarType } = useCalendarContext();
-    const [yearToShow, setYearToShow] = useState(yearNow);
-    const [monthToShow, setMonthToShow] = useState(monthNow);
-    const [dayDatePair, setDayDatePair] = useState({
-        date: dateNow,
-        day: dayNow,
-    });
     const router = useRouter();
-    const calendarDates = useMemo(() => {
-        return getCalendarDates(
-            yearToShow,
-            monthToShow,
-            dayDatePair.date,
-            dayDatePair.day,
-        );
-    }, [yearToShow, monthToShow, dayDatePair]);
+    const { yearNow, monthNow, dateNow } = useDateContext();
+    const { calendarType } = useCalendarContext();
+    const { year, month, date } = router.query;
+    const [dateObj, setDateObj] = useState(
+        year
+            ? new Date(Number(year), Number(month) - 1, Number(date))
+            : new Date(), // for `/today` pages. (year, month, date are undefined)
+    );
+
+    const firstDay = useMemo(() => {
+        const temp = new Date(dateObj.getFullYear(), dateObj.getMonth(), 1);
+        return temp.getDay();
+    }, [dateObj]);
+
     const showPrevious = () => {
-        const prevMonth = getPrevMonth(yearToShow, monthToShow);
-        setDayDatePair(
-            calendarDates[0].date == 1
-                ? {
-                      date: getLastDayInMonth(prevMonth.year, prevMonth.month),
-                      day: 6,
-                  }
-                : { date: calendarDates[0].date, day: 0 },
-        );
-        setYearToShow(prevMonth.year);
-        setMonthToShow(prevMonth.month);
+        const newDateObj = new Date(dateObj);
+        newDateObj.setMonth(dateObj.getMonth() - 1, 1); // set datevalue to 1 to prevent date auto-correction problems
+        setDateObj(newDateObj);
     };
     const showNext = () => {
-        const nextMonth = getNextMonth(yearToShow, monthToShow);
-        setDayDatePair(
-            calendarDates[calendarDates.length - 1].date >= 7 // previous calendar ended with no dates from the next month
-                ? { date: 1, day: 0 }
-                : {
-                      date: calendarDates[calendarDates.length - 1].date,
-                      day: 6,
-                  },
-        );
-        setYearToShow(nextMonth.year);
-        setMonthToShow(nextMonth.month);
+        const newDateObj = new Date(dateObj);
+        newDateObj.setMonth(dateObj.getMonth() + 1, 1);
+        setDateObj(newDateObj);
     };
 
-    const getDateClassName = (item: {
-        year: number;
-        month: number;
-        date: number;
-    }) => {
+    const calendarDates = useMemo(() => {
+        return Array.from(Array(42).keys()).map(item => {
+            const temp = new Date(
+                dateObj.getFullYear(),
+                dateObj.getMonth(),
+                dateObj.getDate(),
+            );
+            temp.setDate(item - firstDay + 1);
+            return temp;
+        });
+    }, [dateObj]);
+
+    const getDateClassName = (item: Date) => {
         const today = new Date();
-        if (
-            item.year == today.getFullYear() &&
-            item.month == today.getMonth() + 1 &&
-            item.date == today.getDate()
-        ) {
+        if (item.toDateString() == today.toDateString()) {
             return styles.today;
         }
         if (
-            item.year == yearNow &&
-            item.month == monthNow &&
-            item.date == dateNow
+            item.getFullYear() == yearNow &&
+            item.getMonth() + 1 == monthNow &&
+            item.getDate() == dateNow
         ) {
             return styles.chosen;
         }
-        if (item.month == monthToShow) {
+        if (item.getMonth() == dateObj.getMonth()) {
             return styles.currMonth;
         }
         return styles.notCurrMonth;
@@ -98,7 +69,9 @@ export default function MiniCalendar() {
     return (
         <div className={styles.wrapper}>
             <div className={styles.time}>
-                <div>{`${yearToShow}년 ${monthToShow}월`}</div>
+                <div>{`${dateObj.getFullYear()}년 ${
+                    dateObj.getMonth() + 1
+                }월`}</div>
             </div>
             <div className={styles.buttons}>
                 <button onClick={showPrevious}>
@@ -130,11 +103,13 @@ export default function MiniCalendar() {
                             key={index}
                             onClick={() => {
                                 router.push(
-                                    `/${calendarType}/${item.year}/${item.month}/${item.date}`,
+                                    `/${calendarType}/${item.getFullYear()}/${
+                                        item.getMonth() + 1
+                                    }/${item.getDate()}`,
                                 );
                             }}
                         >
-                            <div>{item.date}</div>
+                            <div>{item.getDate()}</div>
                         </div>
                     );
                 })}
