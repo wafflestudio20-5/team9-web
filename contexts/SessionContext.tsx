@@ -79,9 +79,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         // send login request using loginInfo
         // if login success, set user and accessToken
         axios
-            .post(apiEndPoint + 'login/', loginInfo, {
-                withCredentials: true,
-            })
+            .post(apiEndPoint + 'login/', loginInfo)
             .then(response => {
                 setUser({
                     email: response.data.user.email,
@@ -109,7 +107,6 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         axios
             .post(apiEndPoint + 'logout/', {
                 refresh: refreshToken,
-                withCredentials: true,
             })
             .then(response => {
                 setUser(null);
@@ -128,9 +125,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
     const register = (registerInfo: RegisterInfo) => {
         //send register request
         axios
-            .post(apiEndPoint + 'registration/', registerInfo, {
-                withCredentials: true,
-            })
+            .post(apiEndPoint + 'registration/', registerInfo)
             .then(response => {
                 setUser({
                     email: response.data.user.email,
