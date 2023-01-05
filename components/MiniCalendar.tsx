@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { useState, useMemo } from 'react';
 import { useDateContext } from '../contexts/DateContext';
-import before_icon from '../public/images/before_icon.svg';
-import next_icon from '../public/images/next_icon.svg';
+import before_icon from '@images/before_icon.svg';
+import next_icon from '@images/next_icon.svg';
 import {
     getPrevMonth,
     getNextMonth,

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { MODAL_NAMES } from '../../contexts/ModalContext';
-import MiniCalendar from '../MiniCalendar';
-import ModalFrame from '../ModalFrame';
+import { MODAL_NAMES } from '@contexts/ModalContext';
+import MiniCalendar from '@components/MiniCalendar';
+import ModalFrame from '@components/ModalFrame';
 
 import styles from './CalendarModal.module.scss';
 
