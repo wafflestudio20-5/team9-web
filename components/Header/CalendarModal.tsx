@@ -6,7 +6,6 @@ import MiniCalendar from '@components/MiniCalendar';
 import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES } from '@contexts/ModalContext';
 
-
 export default function CalendarModal() {
     return (
         <ModalFrame modalName={MODAL_NAMES.calendar}>

@@ -1,14 +1,14 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useState, useMemo } from 'react';
 
 import styles from './MiniCalendar.module.scss';
 
+import { useCalendarContext } from '@contexts/CalendarContext';
 import { useDateContext } from '@contexts/DateContext';
 import before_icon from '@images/before_icon.svg';
 import next_icon from '@images/next_icon.svg';
 import { DAYS_ARR } from '@utils/formatDay';
-import { useRouter } from 'next/router';
-import { useCalendarContext } from '@contexts/CalendarContext';
 
 export default function MiniCalendar() {
     const router = useRouter();
