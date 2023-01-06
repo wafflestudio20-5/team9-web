@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './MonthCalendar.module.scss';
 
 import DayinMonth from '@components/MonthCalendar/DayinMonth';
-import Sidebar from '@components/Sidebar';
+import Sidebar from '@components/Sidebar/Sidebar';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import { DAYS_ARR } from '@utils/formatDay';
 
