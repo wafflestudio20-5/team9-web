@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './Sidebar.module.scss';
 
 import MiniCalendar from '@components/MiniCalendar';
+import { AddFriendsDropDown } from './AddFriendsDropDown';
 
 export default function Sidebar() {
     return (
@@ -10,6 +11,9 @@ export default function Sidebar() {
             <div>Create Button</div>
             <div className={styles.calendar}>
                 <MiniCalendar />
+            </div>
+            <div>
+                <AddFriendsDropDown />
             </div>
             <div>My Calenders</div>
             <div>Other Calenders</div>
