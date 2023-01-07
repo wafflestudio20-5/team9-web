@@ -1,16 +1,14 @@
 name: dear-j-web deploy
 
 on:
-    push:
-        branches: [feat/deploy2]
-    # pull_request:
-    #     branches:
-    #         - main
-    #     types: [closed]
+    pull_request:
+        branches:
+            - main
+        types: [closed]
 
 jobs:
     deploy:
-        # if: github.event.pull_request.merged == true
+        if: github.event.pull_request.merged == true
         runs-on: ubuntu-latest
         steps:
             - name: Git Checkout
