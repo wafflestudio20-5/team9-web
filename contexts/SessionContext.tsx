@@ -8,6 +8,7 @@ import React, {
     useCallback,
 } from 'react';
 import Swal from 'sweetalert2';
+//import keys from '../secrets.json';
 
 interface LoginInfo {
     email: string;
@@ -59,10 +60,11 @@ const SessionContext = createContext<SessionContextData>({
 });
 
 const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
+//const apiEndPoint = 'http://127.0.0.1:8000/api/v1/user/';
 
-const REACT_APP_BASE_BACKEND_URL = 'http://127.0.0.1:8000';
+//const REACT_APP_BASE_BACKEND_URL = 'http://127.0.0.1:8000';
 
-const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
+//const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
 
 export const useSessionContext = () => useContext(SessionContext);
 
@@ -146,43 +148,57 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             });
     };
 
+    // if needed...
+    // const openGoogleLoginPage = useGoogleLogin({
+    //     onSuccess: () => console.log("yay"),
+    //     onError: () => console.log("noooo"),
+    //     flow: 'auth-code',
+    //     scope: [
+    //                 'https://www.googleapis.com/auth/userinfo.email',
+    //                 'https://www.googleapis.com/auth/userinfo.profile',
+    //             ].join(' '),
+    //     ux_mode: 'redirect',
+    //     redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${googleRedirectUri}`,
+    //     select_account: true,
+    // })
+
     // referenced https://www.hacksoft.io/blog/google-oauth2-with-django-react-part-2
     const openGoogleLoginPage = useCallback(() => {
-        const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-        const redirectUri = 'api/v1/user/login/google/callback/';
+        // const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+        // const redirectUri = 'api/v1/user/login/google/callback/';
 
-        const scope = [
-            'https://www.googleapis.com/auth/userinfo.email',
-            'https://www.googleapis.com/auth/userinfo.profile',
-        ].join(' ');
+        // const scope = [
+        //     'https://www.googleapis.com/auth/userinfo.email',
+        //     'https://www.googleapis.com/auth/userinfo.profile',
+        // ].join(' ');
 
-        const params = {
-            response_type: 'code',
-            client_id: REACT_APP_GOOGLE_CLIENT_ID,
-            redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${redirectUri}`,
-            prompt: 'select_account',
-            access_type: 'offline',
-            scope,
-        };
+        // const params = {
+        //     response_type: 'code',
+        //     client_id: REACT_APP_GOOGLE_CLIENT_ID,
+        //     redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${redirectUri}`,
+        //     prompt: 'select_account',
+        //     access_type: 'offline',
+        //     scope,
+        // };
 
-        const urlParams = new URLSearchParams(params).toString();
+        // const urlParams = new URLSearchParams(params).toString();
 
-        window.location.href = `${googleAuthUrl}?${urlParams}`;
+        // window.location.href = `${googleAuthUrl}?${urlParams}`;        
     }, []);
 
     const openKakaoLoginPage = useCallback(() => {
-        const kakaoAuthUrl = 'https://kauth.kakao.com/oauth/authorize';
-        const redirectUri = 'api/v1/user/login/kakao/callback/';
+        // const kakaoAuthUrl = 'https://kauth.kakao.com/oauth/authorize';
+        // const redirectUri = 'api/v1/user/login/kakao/callback/';
 
-        const params = {
-            response_type: 'code',
-            client_id: REACT_APP_KAKAO_REST_API_KEY,
-            redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${redirectUri}`,
-        };
+        // const params = {
+        //     response_type: 'code',
+        //     client_id: REACT_APP_KAKAO_REST_API_KEY,
+        //     redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${redirectUri}`,
+        // };
 
-        const urlParams = new URLSearchParams(params).toString();
+        // const urlParams = new URLSearchParams(params).toString();
 
-        window.location.href = `${kakaoAuthUrl}?${urlParams}`;
+        // window.location.href = `${kakaoAuthUrl}?${urlParams}`;
     }, []);
 
     // functions related to refresh token may be added later
