@@ -8,7 +8,6 @@ import React, {
     useCallback,
 } from 'react';
 import Swal from 'sweetalert2';
-import keys from '../secrets.json';
 
 interface LoginInfo {
     email: string;
