@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import React, {
     createContext,
     PropsWithChildren,
@@ -8,6 +9,7 @@ import React, {
     useCallback,
 } from 'react';
 import Swal from 'sweetalert2';
+
 import keys from '../secrets.json';
 
 interface LoginInfo {
@@ -37,6 +39,13 @@ interface SessionContextData {
     register(registerInfo: RegisterInfo): void;
     openGoogleLoginPage(): void;
     openKakaoLoginPage(): void;
+    postHandleSocialLogin(postSocialLoginData: PostSocialLoginData): void;
+}
+
+interface PostSocialLoginData {
+    accessToken: string | null;
+    refreshToken: string | null;
+    error: string | null;
 }
 
 const SessionContext = createContext<SessionContextData>({
@@ -55,6 +64,9 @@ const SessionContext = createContext<SessionContextData>({
         throw new Error('SessionContext not provided');
     },
     openKakaoLoginPage() {
+        throw new Error('SessionContext not provided');
+    },
+    postHandleSocialLogin() {
         throw new Error('SessionContext not provided');
     },
 });
@@ -183,7 +195,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
 
         const urlParams = new URLSearchParams(params).toString();
 
-        window.location.href = `${googleAuthUrl}?${urlParams}`;        
+        window.location.href = `${googleAuthUrl}?${urlParams}`;
     }, []);
 
     const openKakaoLoginPage = useCallback(() => {
@@ -201,6 +213,48 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         window.location.href = `${kakaoAuthUrl}?${urlParams}`;
     }, []);
 
+    const postHandleSocialLogin = useCallback(
+        (postSocialLoginData: PostSocialLoginData) => {
+            if (postSocialLoginData.error !== null) {
+                setTimeout(function () {
+                    Swal.fire({
+                        title: postSocialLoginData.error || 'Unknown error',
+                        confirmButtonText: 'OK',
+                    });
+                }, 10);
+                return;
+            }
+            setAccessToken(postSocialLoginData.accessToken);
+            setRefreshToken(postSocialLoginData.refreshToken);
+
+            axios
+                .get(apiEndPoint + 'profile/', {
+                    headers: {
+                        Authorization: `Bearer ${postSocialLoginData.accessToken}`,
+                    },
+                })
+                .then(response => {
+                    setUser({
+                        email: response.data.email,
+                        birthdate: response.data.birthdate,
+                        username: response.data.username,
+                    });
+                    axios.defaults.headers.post['X-CSRFToken'] =
+                        response.data._csrf;
+                })
+                .catch(error => {
+                    console.log(error);
+                    setTimeout(function () {
+                        Swal.fire({
+                            title: 'Error in getting user info',
+                            confirmButtonText: 'OK',
+                        });
+                    }, 10);
+                });
+        },
+        [],
+    );
+
     // functions related to refresh token may be added later
 
     const value = useMemo(
@@ -212,6 +266,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             register,
             openGoogleLoginPage,
             openKakaoLoginPage,
+            postHandleSocialLogin,
         }),
         [user, accessToken],
     );

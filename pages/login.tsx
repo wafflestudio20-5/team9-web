@@ -1,5 +1,5 @@
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 import styles from './login.module.scss';
 
@@ -7,11 +7,32 @@ import { useSessionContext } from '@contexts/SessionContext';
 
 export default function LoginPage() {
     const router = useRouter();
-    const { login, openGoogleLoginPage, openKakaoLoginPage } =
-        useSessionContext();
+    const {
+        login,
+        openGoogleLoginPage,
+        openKakaoLoginPage,
+        postHandleSocialLogin,
+    } = useSessionContext();
 
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
+
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        if (
+            searchParams.get('error') !== null ||
+            searchParams.get('access_token') !== null ||
+            searchParams.get('refresh_token') !== null
+        ) {
+            postHandleSocialLogin({
+                accessToken: searchParams.get('access_token'),
+                refreshToken: searchParams.get('refresh_token'),
+                error: searchParams.get('error'),
+            });
+            router.push('/');
+        }
+    });
 
     return (
         <div className={styles.loginPage}>
