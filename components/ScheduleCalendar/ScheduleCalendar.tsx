@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './ScheduleCalendar.module.scss';
 
 import DayinSchedule from '@components/ScheduleCalendar/DayinSchedule';
-import Sidebar from '@components/Sidebar';
+import Sidebar from '@components/Sidebar/Sidebar';
 import { useSidebarContext } from '@contexts/SidebarContext';
 
 export default function ScheduleCalendar() {
