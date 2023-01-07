@@ -7,7 +7,8 @@ import { useSessionContext } from '@contexts/SessionContext';
 
 export default function LoginPage() {
     const router = useRouter();
-    const { login } = useSessionContext();
+    const { login, openGoogleLoginPage, openKakaoLoginPage } =
+        useSessionContext();
 
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
@@ -52,13 +53,34 @@ export default function LoginPage() {
                         <button>로그인</button>
                     </div>
                 </form>
-                <div className={styles.socialLogin}>
+                <div className={styles.socialLoginContainer}>
+                    <button
+                        className={styles.kakaoLogin}
+                        onClick={() => {
+                            openKakaoLoginPage();
+                        }}
+                    >
+                        kakao로 로그인
+                    </button>
+                    <button
+                        className={styles.googleLogin}
+                        onClick={() => {
+                            openGoogleLoginPage();
+                        }}
+                    >
+                        google로 로그인
+                    </button>
+                </div>
+                <div className={styles.register}>
                     <div className={styles.textDescription}>
-                        다른 로그인 방법을 찾으시나요?
+                        아직 계정이 없으신가요?
                     </div>
-                    <div className={styles.socialLoginButtonContainer}>
-                        <button className={styles.socialLoginButton}>
-                            소셜 로그인
+                    <div className={styles.registerButtonContainer}>
+                        <button
+                            className={styles.registerButton}
+                            onClick={() => router.push('/register')}
+                        >
+                            회원가입
                         </button>
                     </div>
                 </div>

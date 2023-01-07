@@ -6,79 +6,46 @@
     align-items: center;
     height: 80vh;
 
-    .registerBox {
+    .registerContainer {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
         width: 200px;
-        height: 300px;
         padding: 20px 10px;
         border: 1px solid v.$border-gray;
         border-radius: 10px;
         background-color: white;
+        gap: 10px;
 
-        .registerContainer {
+        .textContainer {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            justify-content: space-between;
 
-            .textContainer {
+            .textName {
                 display: flex;
-                justify-content: space-between;
-
-                .textName {
-                    display: flex;
-                    align-items: center;
-                    font-size: 10px;
-                    font-weight: bold;
-                }
-
-                .text {
-                    width: 110px;
-                    height: 22px;
-                    font-size: 10px;
-                }
+                align-items: center;
+                font-size: 10px;
+                font-weight: bold;
             }
 
-            .registerButtonContainer {
-                display: flex;
-                justify-content: flex-end;
-                button {
-                    width: 70px;
-                    height: 30px;
-                    background-color: v.$primary-blue;
-                    font-size: 10px;
-                    color: white;
-
-                    &:hover {
-                        background-color: v.$dark-blue;
-                    }
-                }
+            .text {
+                width: 110px;
+                height: 22px;
+                font-size: 10px;
             }
         }
 
-        .socialRegister {
+        .registerButtonContainer {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-
-            .textDescription {
+            justify-content: flex-end;
+            button {
+                width: 70px;
+                height: 30px;
+                background-color: v.$primary-blue;
                 font-size: 10px;
-            }
+                color: white;
 
-            .socialRegisterButtonContainer {
-                display: flex;
-                justify-content: flex-end;
-
-                button {
-                    width: 100px;
-                    height: 30px;
-                    background-color: white;
-                    font-size: 10px;
-
-                    &:hover {
-                        background-color: v.$background-gray;
-                    }
+                &:hover {
+                    background-color: v.$dark-blue;
                 }
             }
         }

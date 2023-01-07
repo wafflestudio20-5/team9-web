@@ -11,7 +11,7 @@
         flex-direction: column;
         justify-content: space-between;
         width: 200px;
-        height: 220px;
+        height: 300px;
         padding: 20px 10px;
         border: 1px solid v.$border-gray;
         border-radius: 10px;
@@ -57,7 +57,26 @@
             }
         }
 
-        .socialLogin {
+        .socialLoginContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            button {
+                height: 25px;
+                font-size: 10px;
+            }
+
+            .kakaoLogin {
+                background-color: v.$kakao-yellow;
+
+                &:hover {
+                    background-color: v.$kakao-dark-yellow;
+                }
+            }
+        }
+
+        .register {
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -66,7 +85,7 @@
                 font-size: 10px;
             }
 
-            .socialLoginButtonContainer {
+            .registerButtonContainer {
                 display: flex;
                 justify-content: flex-end;
 
