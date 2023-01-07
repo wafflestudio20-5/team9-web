@@ -13,7 +13,7 @@ export default function RegisterPage() {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword1, setUserPassword1] = useState('');
     const [userPassword2, setUserPassword2] = useState('');
-    const [userBirthday, setUserBirthday] = useState('');
+    const [userBirthdate, setUserBirthdate] = useState('');
     return (
         <div className={styles.registerPage}>
             <form
@@ -25,7 +25,7 @@ export default function RegisterPage() {
                         email: userEmail,
                         password1: userPassword1,
                         password2: userPassword2,
-                        birthday: userBirthday,
+                        birthdate: userBirthdate,
                     });
                     router.push('/');
                 }}
@@ -79,9 +79,9 @@ export default function RegisterPage() {
                     <input
                         type="date"
                         className={styles.text}
-                        value={userBirthday}
+                        value={userBirthdate}
                         onChange={e => {
-                            setUserBirthday?.(e.target.value);
+                            setUserBirthdate?.(e.target.value);
                         }}
                     />
                 </div>

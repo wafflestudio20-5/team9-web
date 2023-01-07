@@ -20,12 +20,12 @@ interface RegisterInfo {
     email: string;
     password1: string;
     password2: string;
-    birthday: string;
+    birthdate: string;
 }
 
 interface User {
     email: string;
-    birthday: string;
+    birthdate: string;
     username: string;
 }
 
@@ -59,7 +59,8 @@ const SessionContext = createContext<SessionContextData>({
     },
 });
 
-const apiEndPoint = 'http://127.0.0.1:8000/api/v1/user/';
+const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
+//const apiEndPoint = 'http://127.0.0.1:8000/api/v1/user/';
 
 const REACT_APP_BASE_BACKEND_URL = 'http://127.0.0.1:8000';
 
@@ -83,7 +84,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             .then(response => {
                 setUser({
                     email: response.data.user.email,
-                    birthday: response.data.user.birthday,
+                    birthdate: response.data.user.birthdate,
                     username: response.data.user.username,
                 });
                 setAccessToken(response.data.access_token);
@@ -129,7 +130,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             .then(response => {
                 setUser({
                     email: response.data.user.email,
-                    birthday: response.data.user.birthday,
+                    birthdate: response.data.user.birthdate,
                     username: response.data.user.username,
                 });
                 setAccessToken(response.data.access_token);
@@ -146,6 +147,20 @@ export default function SessionProvider({ children }: PropsWithChildren) {
                 }, 10);
             });
     };
+
+    // if needed...
+    // const openGoogleLoginPage = useGoogleLogin({
+    //     onSuccess: () => console.log("yay"),
+    //     onError: () => console.log("noooo"),
+    //     flow: 'auth-code',
+    //     scope: [
+    //                 'https://www.googleapis.com/auth/userinfo.email',
+    //                 'https://www.googleapis.com/auth/userinfo.profile',
+    //             ].join(' '),
+    //     ux_mode: 'redirect',
+    //     redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${googleRedirectUri}`,
+    //     select_account: true,
+    // })
 
     // referenced https://www.hacksoft.io/blog/google-oauth2-with-django-react-part-2
     const openGoogleLoginPage = useCallback(() => {
