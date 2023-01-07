@@ -24,7 +24,7 @@
     },
     "scripts": {
         "dev": "next dev",
-        "build": "next build",
+        "build": "next build && next export",
         "start": "next start",
         "prettier:fix": "npx prettier --write .",
         "lint:fix": "npx eslint --fix ."
