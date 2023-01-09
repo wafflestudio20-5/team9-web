@@ -17,14 +17,12 @@ export function AddFriendsDropDown() {
     const [selectedResults, setSelectedResults] = useState<string[]>([]);
     const [suggestions, setSuggestions] = useState<
         { pk: number; email: string }[] | null
-    >(
-        new Array(
-            { pk: 1, email: 'recent1' },
-            { pk: 2, email: 'recent2' },
-            { pk: 3, email: 'recent3' },
-            { pk: 4, email: 'recent4' },
-        ),
-    ); // for showing the most recent 4 search records
+    >([
+        { pk: 1, email: 'recent1' },
+        { pk: 2, email: 'recent2' },
+        { pk: 3, email: 'recent3' },
+        { pk: 4, email: 'recent4' },
+    ]); // for showing the most recent 4 search records
     // Specific implementation method is subject to discussion. Options include:
     // 1) GET Api when the AddFriendsDropDown component first mounts
     // 2) Save to localStorage every time a search happens -> get data from localStorage when component mounts
@@ -68,7 +66,6 @@ export function AddFriendsDropDown() {
                                 searchInput,
                             ]);
                             setSearchInput('');
-                            console.log('form submitted');
                         }}
                     >
                         <input
