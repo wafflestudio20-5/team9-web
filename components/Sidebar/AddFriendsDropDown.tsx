@@ -7,17 +7,24 @@ import {
 import { useState, useRef } from 'react';
 import styles from './AddFriendsDropDown.module.scss';
 import axios from 'axios';
+import account_default_icon from '@images/account_default_icon.svg';
+import close_icon from '@images/close_icon.svg';
+import Image from 'next/image';
 
 export function AddFriendsDropDown() {
     const { dropDownRef, openDropDown, isOpen } = useDropDown();
     const [searchInput, setSearchInput] = useState('');
     const [selectedResults, setSelectedResults] = useState<string[]>([]);
-    const [suggestions, setSuggestions] = useState<string[] | null>([
-        'last1',
-        'last2',
-        'last3',
-        'last4',
-    ]); // for showing the most recent 4 search records
+    const [suggestions, setSuggestions] = useState<
+        { pk: number; email: string }[] | null
+    >(
+        new Array(
+            { pk: 1, email: 'recent1' },
+            { pk: 2, email: 'recent2' },
+            { pk: 3, email: 'recent3' },
+            { pk: 4, email: 'recent4' },
+        ),
+    ); // for showing the most recent 4 search records
     // Specific implementation method is subject to discussion. Options include:
     // 1) GET Api when the AddFriendsDropDown component first mounts
     // 2) Save to localStorage every time a search happens -> get data from localStorage when component mounts
@@ -27,7 +34,10 @@ export function AddFriendsDropDown() {
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
+            <DropDownHeader
+                openDropDown={openDropDown}
+                style={{ display: 'flex' }}
+            >
                 <form
                     className={styles.container}
                     onSubmit={e => {
@@ -38,7 +48,24 @@ export function AddFriendsDropDown() {
                     ref={formRef}
                 >
                     {selectedResults.map((item, index) => {
-                        return <div key={index}>{`chosen ${index}`}</div>;
+                        return (
+                            <div key={index} className={styles.selected}>
+                                <Image src={account_default_icon} alt="image" />
+                                <div>{item}</div>
+                                <button
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        setSelectedResults(
+                                            selectedResults.filter(i => {
+                                                return i !== item;
+                                            }),
+                                        );
+                                    }}
+                                >
+                                    <Image src={close_icon} alt="remove" />
+                                </button>
+                            </div>
+                        );
                     })}
                     <input
                         value={searchInput}
@@ -51,15 +78,13 @@ export function AddFriendsDropDown() {
                                         `http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/search/candidate/?search=${e.target.value}`,
                                     )
                                     .then(res => setSuggestions(res.data))
-                                    .catch(() =>
-                                        setSuggestions(['no results']),
-                                    );
+                                    .catch(() => setSuggestions(null));
                             } else {
                                 setSuggestions([
-                                    'last1',
-                                    'last2',
-                                    'last3',
-                                    'last4',
+                                    { pk: 1, email: 'recent1' },
+                                    { pk: 2, email: 'recent2' },
+                                    { pk: 3, email: 'recent3' },
+                                    { pk: 4, email: 'recent4' },
                                 ]);
                             }
                         }}
@@ -75,9 +100,13 @@ export function AddFriendsDropDown() {
                 }}
             >
                 <ul>
-                    {suggestions?.map((item, index) => {
-                        return <li key={index}>{item}</li>;
-                    })}
+                    {suggestions ? (
+                        suggestions?.map(item => {
+                            return <li key={item.pk}>{item.email}</li>;
+                        })
+                    ) : (
+                        <li>No results</li>
+                    )}
                 </ul>
             </DropDownBody>
         </DropDown>

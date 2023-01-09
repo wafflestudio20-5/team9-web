@@ -12,7 +12,7 @@ export default function Sidebar() {
             <div className={styles.calendar}>
                 <MiniCalendar />
             </div>
-            <div>
+            <div className={styles.addFriends}>
                 <AddFriendsDropDown />
             </div>
             <div>My Calenders</div>

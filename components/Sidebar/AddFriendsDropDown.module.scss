@@ -2,11 +2,45 @@
 
 .container {
     background-color: v.$background-gray;
+    padding: 5px;
+    width: 200px;
+    margin-right: 5px;
+}
+
+.selected {
+    border: 2px solid #dadce0;
+    border-radius: 20px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    > img {
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+    }
+
+    div {
+        height: fit-content;
+        text-overflow: ellipsis;
+        flex-grow: 1;
+    }
+
+    button {
+        border: none;
+        background-color: transparent;
+
+        img {
+            height: 18px;
+            width: 18px;
+        }
+    }
 }
 
 .input {
     border: none;
     background-color: transparent;
+    width: 100%;
     :focus {
         border: none;
     }
