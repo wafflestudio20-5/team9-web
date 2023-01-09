@@ -28,7 +28,7 @@ export function AddFriendsDropDown() {
     // Specific implementation method is subject to discussion. Options include:
     // 1) GET Api when the AddFriendsDropDown component first mounts
     // 2) Save to localStorage every time a search happens -> get data from localStorage when component mounts
-    const formRef = useRef<HTMLFormElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
     // useRef to place suggestions dropdown directly below searchbox
     // needed b/c searchbox height changes according to the lenght of selectedResults
 
@@ -38,15 +38,7 @@ export function AddFriendsDropDown() {
                 openDropDown={openDropDown}
                 style={{ display: 'flex' }}
             >
-                <form
-                    className={styles.container}
-                    onSubmit={e => {
-                        e.preventDefault();
-                        setSelectedResults([...selectedResults, searchInput]);
-                        setSearchInput('');
-                    }}
-                    ref={formRef}
-                >
+                <div className={styles.container} ref={containerRef}>
                     {selectedResults.map((item, index) => {
                         return (
                             <div key={index} className={styles.selected}>
@@ -55,6 +47,7 @@ export function AddFriendsDropDown() {
                                 <button
                                     onClick={e => {
                                         e.preventDefault();
+                                        console.log('button clicked');
                                         setSelectedResults(
                                             selectedResults.filter(i => {
                                                 return i !== item;
@@ -67,36 +60,48 @@ export function AddFriendsDropDown() {
                             </div>
                         );
                     })}
-                    <input
-                        value={searchInput}
-                        onChange={e => {
+                    <form
+                        onSubmit={e => {
                             e.preventDefault();
-                            setSearchInput(e.target.value);
-                            if (e.target.value !== '') {
-                                axios
-                                    .get(
-                                        `http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/search/candidate/?search=${e.target.value}`,
-                                    )
-                                    .then(res => setSuggestions(res.data))
-                                    .catch(() => setSuggestions(null));
-                            } else {
-                                setSuggestions([
-                                    { pk: 1, email: 'recent1' },
-                                    { pk: 2, email: 'recent2' },
-                                    { pk: 3, email: 'recent3' },
-                                    { pk: 4, email: 'recent4' },
-                                ]);
-                            }
+                            setSelectedResults([
+                                ...selectedResults,
+                                searchInput,
+                            ]);
+                            setSearchInput('');
+                            console.log('form submitted');
                         }}
-                        className={styles.input}
-                    />
-                </form>
+                    >
+                        <input
+                            value={searchInput}
+                            onChange={e => {
+                                e.preventDefault();
+                                setSearchInput(e.target.value);
+                                if (e.target.value !== '') {
+                                    axios
+                                        .get(
+                                            `http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/search/candidate/?search=${e.target.value}`,
+                                        )
+                                        .then(res => setSuggestions(res.data))
+                                        .catch(() => setSuggestions(null));
+                                } else {
+                                    setSuggestions([
+                                        { pk: 1, email: 'recent1' },
+                                        { pk: 2, email: 'recent2' },
+                                        { pk: 3, email: 'recent3' },
+                                        { pk: 4, email: 'recent4' },
+                                    ]);
+                                }
+                            }}
+                            className={styles.input}
+                        />
+                    </form>
+                </div>
                 <button>추가</button>
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}
                 style={{
-                    top: formRef.current?.clientHeight,
+                    top: containerRef.current?.clientHeight,
                 }}
             >
                 <ul>
