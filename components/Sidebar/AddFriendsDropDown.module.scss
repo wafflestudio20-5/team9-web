@@ -1,0 +1,13 @@
+@use '@styles/variables.scss' as v;
+
+.container {
+    background-color: v.$background-gray;
+}
+
+.input {
+    border: none;
+    background-color: transparent;
+    :focus {
+        border: none;
+    }
+}
