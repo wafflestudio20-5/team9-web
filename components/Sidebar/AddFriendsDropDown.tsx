@@ -17,8 +17,13 @@ export function AddFriendsDropDown() {
         'last2',
         'last3',
         'last4',
-    ]);
+    ]); // for showing the most recent 4 search records
+    // Specific implementation method is subject to discussion. Options include:
+    // 1) GET Api when the AddFriendsDropDown component first mounts
+    // 2) Save to localStorage every time a search happens -> get data from localStorage when component mounts
     const formRef = useRef<HTMLFormElement | null>(null);
+    // useRef to place suggestions dropdown directly below searchbox
+    // needed b/c searchbox height changes according to the lenght of selectedResults
 
     return (
         <DropDown dropDownRef={dropDownRef}>
