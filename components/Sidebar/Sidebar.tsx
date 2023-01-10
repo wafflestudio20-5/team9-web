@@ -5,6 +5,8 @@ import styles from './Sidebar.module.scss';
 import MiniCalendar from '@components/MiniCalendar';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { useSidebarContext } from '@contexts/SidebarContext';
+import { Accordion } from '@components/Accordion';
+import { mapCalendarToggle } from './calendarToggle';
 
 export default function Sidebar() {
     const { isClosing } = useSidebarContext();
@@ -27,8 +29,20 @@ export default function Sidebar() {
                         buttonText="추가"
                     />
                 </div>
-                <div>My Calenders</div>
-                <div>Other Calenders</div>
+                <div>
+                    <Accordion
+                        title="내 캘린더"
+                        sequence={['Dummy 1', 'Dummy 2', 'Dummy 3']}
+                        mapFunction={mapCalendarToggle}
+                    />
+                </div>
+                <div>
+                    <Accordion
+                        title="다른 캘린더"
+                        sequence={['Dummy 1', 'Dummy 2', 'Dummy 3', 'Dummy 4']}
+                        mapFunction={mapCalendarToggle}
+                    />
+                </div>
             </div>
         </div>
     );

@@ -1,0 +1,37 @@
+.wrapper {
+    height: fit-content;
+    width: 100%;
+}
+
+.header {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    button {
+        border-color: transparent;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 25px;
+        width: 25px;
+
+        img {
+            height: 20px;
+            width: 20px;
+        }
+    }
+}
+
+.body {
+    overflow-y: hidden;
+    width: 100%;
+    &.open {
+        height: fit-content;
+    }
+    &.closed {
+        height: 0px;
+    }
+}
