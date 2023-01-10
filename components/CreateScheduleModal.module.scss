@@ -1,0 +1,135 @@
+@use '@styles/variables.scss' as v;
+
+.createScheduleModal {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 550px;
+    height: 80%;
+    max-height: 400px;
+    border: 1px solid v.$border-gray;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 1px 5px 1px v.$border-gray;
+    overflow: hidden;
+
+    .header {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        padding: 0 5px;
+        height: 36px;
+        background-color: v.$background-gray;
+
+        button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background-color: v.$background-gray;
+
+            &:hover {
+                background-color: v.$border-gray;
+            }
+        }
+    }
+
+    .body {
+        display: grid;
+        grid-template-rows: auto 36px;
+        padding: 16px;
+        height: calc(100% - 36px);
+
+        .schedule {
+            overflow: auto;
+        }
+
+        input {
+            border: none;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .title {
+            padding-left: 52px;
+            padding-bottom: 20px;
+
+            input {
+                padding: 3px;
+                width: 100%;
+                font-size: x-large;
+                border-bottom: 1px solid v.$border-gray;
+
+                &:focus {
+                    border-bottom: 2px solid v.$primary-blue;
+                }
+            }
+        }
+
+        .content {
+            > div {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            label {
+                width: 52px;
+            }
+
+            input {
+                padding-left: 3px;
+                height: 36px;
+                border-radius: 5px;
+
+                &:hover {
+                    background-color: v.$background-gray;
+                }
+
+                &:focus {
+                    border-bottom: 2px solid v.$primary-blue;
+                    background-color: v.$background-gray;
+                }
+            }
+
+            .time {
+                .inputContainer {
+                    display: flex;
+                    align-items: center;
+
+                    input {
+                        width: 100px;
+                    }
+                }
+            }
+
+            .participant,
+            .description {
+                input {
+                    flex-grow: 1;
+                }
+            }
+        }
+
+        .btnContainer {
+            text-align: right;
+
+            button {
+                padding: 0 20px;
+                height: 36px;
+                color: white;
+                background-color: v.$primary-blue;
+
+                &:hover {
+                    background-color: v.$dark-blue;
+                }
+            }
+        }
+    }
+}
