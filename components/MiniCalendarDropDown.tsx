@@ -13,7 +13,12 @@ export default function MiniCalendarDropDown({ title }: { title: string }) {
     return (
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader openDropDown={openDropDown}>
-                <input type="text" placeholder={title} onClick={openDropDown} />
+                <input
+                    type="text"
+                    placeholder={title}
+                    onClick={openDropDown}
+                    style={{ width: '120px' }}
+                />
             </DropDownHeader>
             <DropDownBody isOpen={isOpen}>
                 <div style={{ width: '250px', height: '150px' }}>

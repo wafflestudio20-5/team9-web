@@ -5,7 +5,7 @@
     top: 60px;
     left: 50%;
     transform: translateX(-50%);
-    width: 550px;
+    width: 570px;
     height: 80%;
     max-height: 500px;
     border: 1px solid v.$border-gray;
@@ -38,22 +38,14 @@
         }
     }
 
-    .body {
+    form {
         display: grid;
         grid-template-rows: auto 36px;
-        padding: 16px;
+        padding: 24px;
         height: calc(100% - 36px);
 
-        .schedule {
+        .body {
             overflow: auto;
-        }
-
-        input {
-            border: none;
-
-            &:focus {
-                outline: none;
-            }
         }
 
         .title {
@@ -64,9 +56,11 @@
                 padding: 3px;
                 width: 100%;
                 font-size: x-large;
-                border-bottom: 1px solid v.$border-gray;
+                border: none;
+                border-bottom: 2px solid v.$border-gray;
 
                 &:focus {
+                    outline: none;
                     border-bottom: 2px solid v.$primary-blue;
                 }
             }
@@ -79,53 +73,96 @@
                 margin-bottom: 10px;
             }
 
-            .description {
-                align-items: flex-start;
-
-                textarea {
-                    resize: none;
-
-                    &:focus {
-                        outline: none;
-                    }
-                }
-            }
-
             label {
-                margin-right: 2px;
-                width: 50px;
+                display: flex;
+                align-items: center;
+                width: 52px;
+                border-bottom: 2px solid white;
             }
 
             input {
-                padding-left: 3px;
+                padding-top: 3px;
+                padding-left: 5px;
                 height: 36px;
+                border: none;
                 border-radius: 5px;
+                border-bottom: 2px solid white;
 
                 &:hover {
+                    border-bottom: 2px solid v.$background-gray;
                     background-color: v.$background-gray;
                 }
 
                 &:focus {
+                    outline: none;
                     border-bottom: 2px solid v.$primary-blue;
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
                     background-color: v.$background-gray;
                 }
             }
 
             .time {
-                .inputContainer {
+                .timeInputContainer {
                     display: flex;
                     align-items: center;
 
-                    input {
-                        width: 80px;
+                    span {
+                        margin: 0 5px;
                     }
                 }
             }
 
-            .participant,
-            .description {
+            .participant {
                 input {
                     flex-grow: 1;
+                }
+            }
+
+            .publicScope {
+                margin-bottom: 5px;
+
+                input {
+                    width: 100px;
+                }
+            }
+
+            .hideDetails {
+                margin-bottom: 20px;
+                padding-left: 52px;
+                font-size: small;
+
+                input {
+                    height: 16px;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                label {
+                    width: auto;
+                    border: none;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .description {
+                align-items: flex-start;
+
+                textarea {
+                    padding: 5px;
+                    resize: none;
+                    border: 2px solid v.$border-gray;
+                    border-radius: 5px;
+
+                    &:focus {
+                        outline: none;
+                        border: 2px solid v.$primary-blue;
+                    }
                 }
             }
         }

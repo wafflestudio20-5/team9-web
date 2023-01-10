@@ -9,17 +9,30 @@ import PublicScopeDropDown from '@components/PublicScopeDropDown';
 import TimeDropDown from '@components/TimeDropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import close_icon from '@images/close_icon.svg';
-
-type PublicScope = '전체공개' | '일부공개' | '비공개';
+import lock_icon from '@images/lock_icon.svg';
+import people_icon from '@images/people_icon.svg';
+import text_icon from '@images/text_icon.svg';
+import time_icon from '@images/time_icon.svg';
 
 export default function CreateScheduleModal() {
     const { closeModal } = useModal();
+    const [title, setTitle] = useState('');
     const [startTime, setStartTime] = useState({ hour: 0, minute: 0 });
     const [endtTime, setEndTime] = useState({ hour: 0, minute: 0 });
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [publicScope, setPublicScope] = useState<string>('');
     const [hideDetails, setHideDetails] = useState(false);
+    const [description, setDescription] = useState('');
+
+    const cancelCreateSchedule = () => {
+        closeModal(MODAL_NAMES.createSchedule);
+        // alert (double check cancel)
+    };
+
+    const submitCreateScheduleForm = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    };
 
     return (
         <ModalFrame modalName={MODAL_NAMES.createSchedule}>
@@ -28,7 +41,7 @@ export default function CreateScheduleModal() {
                     <button
                         type="button"
                         className={styles.close}
-                        onClick={() => closeModal(MODAL_NAMES.createSchedule)}
+                        onClick={cancelCreateSchedule}
                     >
                         <Image
                             src={close_icon}
@@ -37,15 +50,26 @@ export default function CreateScheduleModal() {
                         />
                     </button>
                 </div>
-                <div className={styles.body}>
-                    <div className={styles.schedule}>
+                <form onSubmit={submitCreateScheduleForm}>
+                    <div className={styles.body}>
                         <div className={styles.title}>
-                            <input type="text" placeholder="제목 추가" />
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
+                                placeholder="제목 추가"
+                            />
                         </div>
                         <div className={styles.content}>
                             <div className={styles.time}>
-                                <label>icon</label>
-                                <div className={styles.inputContainer}>
+                                <label>
+                                    <Image
+                                        src={time_icon}
+                                        alt="date_time"
+                                        width={24}
+                                    />
+                                </label>
+                                <div className={styles.timeInputContainer}>
                                     <MiniCalendarDropDown title="시작 날짜" />
                                     <TimeDropDown
                                         title="시작 시간"
@@ -62,11 +86,23 @@ export default function CreateScheduleModal() {
                                 </div>
                             </div>
                             <div className={styles.participant}>
-                                <label>icon</label>
+                                <label>
+                                    <Image
+                                        src={people_icon}
+                                        alt="participant"
+                                        width={24}
+                                    />
+                                </label>
                                 <input type="text" placeholder="참석자" />
                             </div>
                             <div className={styles.publicScope}>
-                                <label>icon</label>
+                                <label>
+                                    <Image
+                                        src={lock_icon}
+                                        alt="public_scope"
+                                        width={24}
+                                    />
+                                </label>
                                 <PublicScopeDropDown
                                     scope={publicScope}
                                     setScope={setPublicScope}
@@ -77,17 +113,29 @@ export default function CreateScheduleModal() {
                                     type="checkbox"
                                     id="hideDetails"
                                     checked={hideDetails}
-                                    onClick={() => setHideDetails(!hideDetails)}
+                                    onChange={() =>
+                                        setHideDetails(!hideDetails)
+                                    }
                                 />
                                 <label htmlFor="hideDetails">
                                     세부 일정 비공개
                                 </label>
                             </div>
                             <div className={styles.description}>
-                                <label>icon</label>
+                                <label>
+                                    <Image
+                                        src={text_icon}
+                                        alt="description"
+                                        width={24}
+                                    />
+                                </label>
                                 <textarea
-                                    cols={50}
+                                    cols={57}
                                     rows={5}
+                                    value={description}
+                                    onChange={e =>
+                                        setDescription(e.target.value)
+                                    }
                                     placeholder="일정에 대한 설명을 간략히 적어주세요."
                                 />
                             </div>
@@ -96,7 +144,7 @@ export default function CreateScheduleModal() {
                     <div className={styles.btnContainer}>
                         <button className={styles.save}>저장</button>
                     </div>
-                </div>
+                </form>
             </div>
         </ModalFrame>
     );

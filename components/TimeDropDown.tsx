@@ -52,6 +52,8 @@ export default function TimeDropDown({
                     value={formatTime(time.hour, time.minute, false)}
                     onClick={openDropDown}
                     placeholder={title}
+                    readOnly
+                    style={{ width: '75px' }}
                 />
             </DropDownHeader>
             <DropDownBody
