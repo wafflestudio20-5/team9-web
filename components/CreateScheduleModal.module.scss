@@ -79,8 +79,21 @@
                 margin-bottom: 10px;
             }
 
+            .description {
+                align-items: flex-start;
+
+                textarea {
+                    resize: none;
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+
             label {
-                width: 52px;
+                margin-right: 2px;
+                width: 50px;
             }
 
             input {

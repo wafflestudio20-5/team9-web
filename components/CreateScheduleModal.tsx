@@ -50,7 +50,11 @@ export default function CreateScheduleModal() {
                             </div>
                             <div className={styles.description}>
                                 <label>icon</label>
-                                <input type="text" placeholder="설명" />
+                                <textarea
+                                    cols={50}
+                                    rows={5}
+                                    placeholder="일정에 대한 설명을 간략히 적어주세요."
+                                />
                             </div>
                         </div>
                     </div>
