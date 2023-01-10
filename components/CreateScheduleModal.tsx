@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 
 import styles from './CreateScheduleModal.module.scss';
 
@@ -11,6 +11,10 @@ import close_icon from '@images/close_icon.svg';
 
 export default function CreateScheduleModal() {
     const { closeModal } = useModal();
+    const [startTime, setStartTime] = useState({ hour: 0, minute: 0 });
+    const [endtTime, setEndTime] = useState({ hour: 0, minute: 0 });
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     return (
         <ModalFrame modalName={MODAL_NAMES.createSchedule}>
@@ -38,10 +42,18 @@ export default function CreateScheduleModal() {
                                 <label>icon</label>
                                 <div className={styles.inputContainer}>
                                     <MiniCalendarDropDown title="시작 날짜" />
-                                    <TimeDropDown title="시작 시간" />
+                                    <TimeDropDown
+                                        title="시작 시간"
+                                        time={startTime}
+                                        setTime={setStartTime}
+                                    />
                                     <span>-</span>
                                     <MiniCalendarDropDown title="종료 날짜" />
-                                    <TimeDropDown title="시작 시간" />
+                                    <TimeDropDown
+                                        title="시작 시간"
+                                        time={endtTime}
+                                        setTime={setEndTime}
+                                    />
                                 </div>
                             </div>
                             <div className={styles.participant}>
