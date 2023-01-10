@@ -12,7 +12,7 @@ import close_icon from '@images/close_icon.svg';
 import Image from 'next/image';
 
 export function AddFriendsDropDown() {
-    const { dropDownRef, openDropDown, isOpen } = useDropDown();
+    const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
     const [searchInput, setSearchInput] = useState('');
     const [selectedResults, setSelectedResults] = useState<string[]>([]);
     const [suggestions, setSuggestions] = useState<
@@ -30,6 +30,12 @@ export function AddFriendsDropDown() {
     // useRef to place suggestions dropdown directly below searchbox
     // needed b/c searchbox height changes according to the lenght of selectedResults
 
+    const handleSubmit = () => {
+        setSelectedResults([...selectedResults, searchInput]);
+        setSearchInput('');
+        closeDropDown();
+    };
+
     return (
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader
@@ -45,7 +51,6 @@ export function AddFriendsDropDown() {
                                 <button
                                     onClick={e => {
                                         e.preventDefault();
-                                        console.log('button clicked');
                                         setSelectedResults(
                                             selectedResults.filter(i => {
                                                 return i !== item;
@@ -61,11 +66,7 @@ export function AddFriendsDropDown() {
                     <form
                         onSubmit={e => {
                             e.preventDefault();
-                            setSelectedResults([
-                                ...selectedResults,
-                                searchInput,
-                            ]);
-                            setSearchInput('');
+                            handleSubmit();
                         }}
                     >
                         <input
@@ -78,7 +79,9 @@ export function AddFriendsDropDown() {
                                         .get(
                                             `http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/search/candidate/?search=${e.target.value}`,
                                         )
-                                        .then(res => setSuggestions(res.data))
+                                        .then(res =>
+                                            setSuggestions(res.data.results),
+                                        )
                                         .catch(() => setSuggestions(null));
                                 } else {
                                     setSuggestions([
@@ -103,8 +106,12 @@ export function AddFriendsDropDown() {
             >
                 <ul>
                     {suggestions ? (
-                        suggestions?.map(item => {
-                            return <li key={item.pk}>{item.email}</li>;
+                        suggestions.slice(0, 4)?.map(item => {
+                            return (
+                                <li key={item.pk} onClick={handleSubmit}>
+                                    {item.email}
+                                </li>
+                            );
                         })
                     ) : (
                         <li>No results</li>
