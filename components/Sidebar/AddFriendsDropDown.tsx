@@ -4,7 +4,7 @@ import {
     DropDownBody,
     useDropDown,
 } from '@components/DropDown';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styles from './AddFriendsDropDown.module.scss';
 import axios from 'axios';
 import account_default_icon from '@images/account_default_icon.svg';
@@ -50,13 +50,16 @@ export function AddFriendsDropDown() {
                 } else return [item];
             };
             setStored(newSearchRecord());
-            setSuggestions(newSearchRecord());
         }
         setSearchInput('');
         closeDropDown();
     };
 
-    console.log(stored);
+    useEffect(() => {
+        if (stored !== undefined) {
+            setSuggestions(stored);
+        }
+    }, [stored]);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
@@ -92,6 +95,9 @@ export function AddFriendsDropDown() {
                             value={searchInput}
                             onChange={e => {
                                 e.preventDefault();
+                                if (!isOpen) {
+                                    openDropDown();
+                                }
                                 setSearchInput(e.target.value);
                                 if (e.target.value !== '') {
                                     axios
