@@ -10,19 +10,25 @@ import axios from 'axios';
 import account_default_icon from '@images/account_default_icon.svg';
 import close_icon from '@images/close_icon.svg';
 import Image from 'next/image';
+import useLocalStorage from '@hooks/useLocalStorage';
+
+interface UserData {
+    pk: number;
+    username: string;
+    email: string;
+}
 
 export function AddFriendsDropDown() {
     const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
+    const { stored, setStored } = useLocalStorage<UserData[] | null>(
+        'searchRecord_addFriend',
+        null,
+    );
     const [searchInput, setSearchInput] = useState('');
-    const [selectedResults, setSelectedResults] = useState<string[]>([]);
-    const [suggestions, setSuggestions] = useState<
-        { pk: number; email: string }[] | null
-    >([
-        { pk: 1, email: 'recent1' },
-        { pk: 2, email: 'recent2' },
-        { pk: 3, email: 'recent3' },
-        { pk: 4, email: 'recent4' },
-    ]); // for showing the most recent 4 search records
+    const [selectedResults, setSelectedResults] = useState<UserData[]>([]);
+    const [suggestions, setSuggestions] = useState<UserData[] | null>(
+        stored ? stored : null,
+    ); // for showing the most recent 4 search records
     // Specific implementation method is subject to discussion. Options include:
     // 1) GET Api when the AddFriendsDropDown component first mounts
     // 2) Save to localStorage every time a search happens -> get data from localStorage when component mounts
@@ -30,25 +36,37 @@ export function AddFriendsDropDown() {
     // useRef to place suggestions dropdown directly below searchbox
     // needed b/c searchbox height changes according to the lenght of selectedResults
 
-    const handleSubmit = () => {
-        setSelectedResults([...selectedResults, searchInput]);
+    const handleSubmit = (item: UserData | null) => {
+        console.log(item);
+        if (item) {
+            setSelectedResults([...selectedResults, item]);
+            const newSearchRecord = () => {
+                if (stored) {
+                    const sliced = stored.filter(i => {
+                        return i.pk !== item.pk;
+                    });
+                    sliced.push(item);
+                    return sliced.slice(-4);
+                } else return [item];
+            };
+            setStored(newSearchRecord());
+            setSuggestions(newSearchRecord());
+        }
         setSearchInput('');
         closeDropDown();
     };
-    console.log(suggestions);
+
+    console.log(stored);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader
-                openDropDown={openDropDown}
-                style={{ display: 'flex' }}
-            >
+            <DropDownHeader openDropDown={() => {}} style={{ display: 'flex' }}>
                 <div className={styles.container} ref={containerRef}>
                     {selectedResults.map((item, index) => {
                         return (
                             <div key={index} className={styles.selected}>
                                 <Image src={account_default_icon} alt="image" />
-                                <div>{item}</div>
+                                <div>{item['username']}</div>
                                 <button
                                     onClick={e => {
                                         e.preventDefault();
@@ -67,7 +85,7 @@ export function AddFriendsDropDown() {
                     <form
                         onSubmit={e => {
                             e.preventDefault();
-                            handleSubmit();
+                            handleSubmit(suggestions ? suggestions[0] : null);
                         }}
                     >
                         <input
@@ -89,14 +107,10 @@ export function AddFriendsDropDown() {
                                         )
                                         .catch(() => setSuggestions(null));
                                 } else {
-                                    setSuggestions([
-                                        { pk: 1, email: 'recent1' },
-                                        { pk: 2, email: 'recent2' },
-                                        { pk: 3, email: 'recent3' },
-                                        { pk: 4, email: 'recent4' },
-                                    ]);
+                                    setSuggestions(stored ? stored : null);
                                 }
                             }}
+                            onClick={openDropDown}
                             className={styles.input}
                         />
                     </form>
@@ -113,7 +127,10 @@ export function AddFriendsDropDown() {
                     {suggestions ? (
                         suggestions.slice(0, 4)?.map(item => {
                             return (
-                                <li key={item.pk} onClick={handleSubmit}>
+                                <li
+                                    key={item.pk}
+                                    onClick={() => handleSubmit(item)}
+                                >
                                     {item.email}
                                 </li>
                             );
