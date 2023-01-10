@@ -5,9 +5,12 @@ import styles from './CreateScheduleModal.module.scss';
 
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
+import PublicScopeDropDown from '@components/PublicScopeDropDown';
 import TimeDropDown from '@components/TimeDropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import close_icon from '@images/close_icon.svg';
+
+type PublicScope = '전체공개' | '일부공개' | '비공개';
 
 export default function CreateScheduleModal() {
     const { closeModal } = useModal();
@@ -15,6 +18,8 @@ export default function CreateScheduleModal() {
     const [endtTime, setEndTime] = useState({ hour: 0, minute: 0 });
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [publicScope, setPublicScope] = useState<string>('');
+    const [hideDetails, setHideDetails] = useState(false);
 
     return (
         <ModalFrame modalName={MODAL_NAMES.createSchedule}>
@@ -59,6 +64,24 @@ export default function CreateScheduleModal() {
                             <div className={styles.participant}>
                                 <label>icon</label>
                                 <input type="text" placeholder="참석자" />
+                            </div>
+                            <div className={styles.publicScope}>
+                                <label>icon</label>
+                                <PublicScopeDropDown
+                                    scope={publicScope}
+                                    setScope={setPublicScope}
+                                />
+                            </div>
+                            <div className={styles.hideDetails}>
+                                <input
+                                    type="checkbox"
+                                    id="hideDetails"
+                                    checked={hideDetails}
+                                    onClick={() => setHideDetails(!hideDetails)}
+                                />
+                                <label htmlFor="hideDetails">
+                                    세부 일정 비공개
+                                </label>
                             </div>
                             <div className={styles.description}>
                                 <label>icon</label>
