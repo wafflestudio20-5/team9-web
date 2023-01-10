@@ -42,6 +42,7 @@ interface DropDownBodyProps {
         right?: string;
         width?: string;
         height?: string;
+        overflow?: string;
     };
     children: React.ReactNode;
 }
