@@ -10,9 +10,8 @@ export default function Sidebar() {
     const { isClosing } = useSidebarContext();
     const sendFollowRequest = (item: UserDataForSearch) => {
         axios.post(
-            'https://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/network/',
+            'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/network/',
             { followee: { pk: item.pk } },
-            { withCredentials: true },
         );
     };
     return (
