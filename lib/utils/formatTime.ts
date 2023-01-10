@@ -5,6 +5,7 @@ export const formatTime = (hour: number, minute: number, is24Hour: boolean) => {
             '0',
         )}:00`;
     }
+
     let half;
     if (hour < 12) {
         if (hour === 0) hour = 12;
