@@ -1,7 +1,18 @@
+.open {
+    animation: soft-expand 300ms;
+}
+.closing {
+    animation: soft-collapse 300ms;
+}
+
 .wrapper {
     width: 256px;
     display: flex;
     flex-direction: column;
+
+    div {
+        white-space: nowrap;
+    }
 }
 
 .calendar {
@@ -10,4 +21,22 @@
 
 .addFriends {
     align-self: center;
+}
+
+@keyframes soft-expand {
+    from {
+        width: 0;
+    }
+    to {
+        width: 256px;
+    }
+}
+
+@keyframes soft-collapse {
+    from {
+        width: 256px;
+    }
+    to {
+        width: 0px;
+    }
 }
