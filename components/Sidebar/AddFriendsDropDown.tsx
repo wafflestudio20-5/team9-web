@@ -35,6 +35,7 @@ export function AddFriendsDropDown() {
         setSearchInput('');
         closeDropDown();
     };
+    console.log(suggestions);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
@@ -80,7 +81,11 @@ export function AddFriendsDropDown() {
                                             `http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/search/candidate/?search=${e.target.value}`,
                                         )
                                         .then(res =>
-                                            setSuggestions(res.data.results),
+                                            res.data.results.length !== 0
+                                                ? setSuggestions(
+                                                      res.data.results,
+                                                  )
+                                                : setSuggestions(null),
                                         )
                                         .catch(() => setSuggestions(null));
                                 } else {
