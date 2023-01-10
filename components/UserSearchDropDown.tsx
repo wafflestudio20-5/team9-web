@@ -11,30 +11,29 @@ import account_default_icon from '@images/account_default_icon.svg';
 import close_icon from '@images/close_icon.svg';
 import Image from 'next/image';
 import useLocalStorage from '@hooks/useLocalStorage';
-
-interface UserData {
-    pk: number;
-    username: string;
-    email: string;
-}
+import updateSequence from '@utils/updateSequence';
 
 interface UserSearchDropDownProps {
-    toExecute: Function;
+    toExecute: (item: UserDataForSearch) => void;
+    buttonText: string;
     width?: string; // custom width when used elsewhere
 }
 
 export function UserSearchDropDown({
     toExecute,
+    buttonText,
     width,
 }: UserSearchDropDownProps) {
     const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
-    const { stored, setStored } = useLocalStorage<UserData[] | null>(
+    const { stored, setStored } = useLocalStorage<UserDataForSearch[] | null>(
         'searchRecord_addFriend',
         null,
     );
     const [searchInput, setSearchInput] = useState('');
-    const [selectedResults, setSelectedResults] = useState<UserData[]>([]);
-    const [suggestions, setSuggestions] = useState<UserData[] | null>(
+    const [selectedResults, setSelectedResults] = useState<
+        UserDataForSearch[] | null
+    >([]);
+    const [suggestions, setSuggestions] = useState<UserDataForSearch[] | null>(
         stored ? stored : null, // handle undefined
     );
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -63,20 +62,26 @@ export function UserSearchDropDown({
         }
     };
 
-    const handleSubmit = (item: UserData | null) => {
-        console.log(item);
+    const handleSubmit = (item: UserDataForSearch | null) => {
         if (item) {
-            setSelectedResults([...selectedResults, item]);
-            const newSearchRecord = () => {
-                if (stored) {
-                    const sliced = stored.filter(i => {
-                        return i.pk !== item.pk;
-                    });
-                    sliced.push(item);
-                    return sliced.slice(-4);
-                } else return [item];
-            };
-            setStored(newSearchRecord());
+            const newSelectedResults = updateSequence<UserDataForSearch>({
+                sequence: selectedResults,
+                getUniqueKey: x => {
+                    return x.pk;
+                },
+                itemToAdd: item,
+                sorted: false,
+            });
+            setSelectedResults(newSelectedResults);
+            const newSearchRecord = updateSequence<UserDataForSearch>({
+                sequence: stored,
+                getUniqueKey: x => {
+                    return x.pk;
+                },
+                itemToAdd: item,
+                maxLength: 4,
+            });
+            setStored(newSearchRecord);
         }
         setSearchInput('');
         closeDropDown();
@@ -88,6 +93,13 @@ export function UserSearchDropDown({
         }
     }, [stored]);
 
+    const executeAction = () => {
+        if (selectedResults) {
+            selectedResults.map(item => toExecute(item));
+        }
+        setSelectedResults(null);
+    };
+
     return (
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader openDropDown={() => {}} style={{ display: 'flex' }}>
@@ -97,7 +109,7 @@ export function UserSearchDropDown({
                     ref={containerRef}
                     style={{ width: width }}
                 >
-                    {selectedResults.map((item, index) => {
+                    {selectedResults?.map((item, index) => {
                         return (
                             <div key={index} className={styles.selected}>
                                 <Image src={account_default_icon} alt="image" />
@@ -135,7 +147,7 @@ export function UserSearchDropDown({
                         />
                     </form>
                 </div>
-                <button>추가</button>
+                <button onClick={executeAction}>{buttonText}</button>
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}
