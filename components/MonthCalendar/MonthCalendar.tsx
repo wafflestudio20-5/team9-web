@@ -2,6 +2,7 @@ import React from 'react';
 
 import styles from './MonthCalendar.module.scss';
 
+import CreateScheduleButton from '@components/CreateScheduleButton';
 import DayinMonth from '@components/MonthCalendar/DayinMonth';
 import Sidebar from '@components/Sidebar/Sidebar';
 import { useSidebarContext } from '@contexts/SidebarContext';
@@ -53,7 +54,7 @@ export default function MonthCalendar() {
 
     return (
         <div className={styles.wrapper}>
-            {isOpen && <Sidebar />}
+            {isOpen ? <Sidebar /> : <CreateScheduleButton />}
             <div className={styles.monthHolder}>
                 <div className={styles.headrow}>
                     {DAYS_ARR.map((item, index) => {
