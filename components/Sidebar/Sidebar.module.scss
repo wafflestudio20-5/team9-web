@@ -1,7 +1,10 @@
 .open {
+    overflow-x: hidden;
     animation: soft-expand 300ms;
 }
 .closing {
+    overflow-x: hidden;
+    width: 0px;
     animation: soft-collapse 300ms;
 }
 
