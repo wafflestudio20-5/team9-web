@@ -11,8 +11,9 @@
 
 .dropDownBody {
     position: absolute;
-    top: 45px;
+    top: 43px;
     left: 0px;
+    z-index: 200;
     border: 1px solid v.$border-gray;
     background-color: white;
     box-shadow: 0 5px 8px 3px v.$border-gray;

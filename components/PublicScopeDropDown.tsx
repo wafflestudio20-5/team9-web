@@ -32,10 +32,11 @@ export default function PublicScopeDropDown({
                     value={scope}
                     onClick={openDropDown}
                     placeholder="공개 설정"
+                    readOnly
                 />
             </DropDownHeader>
             <DropDownBody isOpen={isOpen}>
-                <ul>
+                <ul style={{ width: '100px' }}>
                     {Object.values(PublicScope).map(value => (
                         <li
                             key={value}
