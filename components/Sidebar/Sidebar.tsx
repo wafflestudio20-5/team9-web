@@ -38,9 +38,10 @@ export default function Sidebar() {
                     <MiniCalendar />
                 </div>
                 <div className={styles.addFriends}>
+                    <div>친구 추가</div>
                     <UserSearchDropDown
                         toExecute={sendFollowRequest}
-                        buttonText="추가"
+                        buttonText="요청"
                     />
                 </div>
                 <div className={styles.accordions}>

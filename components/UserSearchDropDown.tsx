@@ -107,7 +107,7 @@ export function UserSearchDropDown({
                 <div
                     className={styles.container}
                     ref={containerRef}
-                    style={{ width: width }}
+                    style={width ? { width: width } : { flexGrow: 1 }}
                 >
                     {selectedResults?.map((item, index) => {
                         return (
@@ -144,6 +144,7 @@ export function UserSearchDropDown({
                             // openDropDown only called when clicking the input area
                             // (excludes instances of clicking selectedResults items)
                             className={styles.input}
+                            placeholder="사용자 검색..."
                         />
                     </form>
                 </div>
