@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import styles from './Accordion.module.scss';
 
 interface AccordionProps {
-    addAble: boolean;
+    addAble?: boolean;
     title: string;
     sequence: any[];
     mapFunction: (value: any, index: number, array: any[]) => React.ReactNode;
