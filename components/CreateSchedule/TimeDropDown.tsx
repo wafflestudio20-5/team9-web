@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 
 import {
     DropDown,
@@ -8,21 +8,16 @@ import {
 } from '@components/DropDown';
 import { formatTime } from '@utils/formatTime';
 
-interface Time {
-    hour: number;
-    minute: number;
-}
-
 interface TimeDropDownProps {
     title: string;
-    time: Time;
-    setTime: Dispatch<SetStateAction<Time>>;
+    date: Date;
+    setDate(newDate: Date): void;
 }
 
 export default function TimeDropDown({
     title,
-    time,
-    setTime,
+    date,
+    setDate,
 }: TimeDropDownProps) {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
 
@@ -44,12 +39,26 @@ export default function TimeDropDown({
         return times;
     };
 
+    const changeTime = (newTime: number[]) => {
+        const hour = newTime[0];
+        const minute = newTime[1];
+        const newDate = new Date(date);
+        newDate.setHours(hour);
+        newDate.setMinutes(minute);
+        setDate(newDate);
+        closeDropDown();
+    };
+
     return (
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader openDropDown={openDropDown}>
                 <input
                     type="text"
-                    value={formatTime(time.hour, time.minute, false)}
+                    value={formatTime(
+                        date.getHours(),
+                        date.getMinutes(),
+                        false,
+                    )}
                     onClick={openDropDown}
                     placeholder={title}
                     readOnly
@@ -66,16 +75,15 @@ export default function TimeDropDown({
                 }}
             >
                 <ul>
-                    {getTimeList().map((t, i) => {
+                    {getTimeList().map((time, i) => {
                         return (
                             <li
                                 key={i}
                                 onClick={() => {
-                                    setTime({ hour: t[0], minute: t[1] });
-                                    closeDropDown();
+                                    changeTime(time);
                                 }}
                             >
-                                {formatTime(t[0], t[1], false)}
+                                {formatTime(time[0], time[1], false)}
                             </li>
                         );
                     })}
