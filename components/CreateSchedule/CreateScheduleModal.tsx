@@ -7,6 +7,7 @@ import PublicScopeDropDown from '@components/CreateSchedule/PublicScopeDropDown'
 import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
+import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
@@ -15,12 +16,17 @@ import text_icon from '@images/text_icon.svg';
 import time_icon from '@images/time_icon.svg';
 
 export default function CreateScheduleModal() {
+    const { yearNow, monthNow, dateNow } = useDateContext();
     const { closeModal } = useModal();
     const [title, setTitle] = useState('');
     const [startTime, setStartTime] = useState({ hour: 0, minute: 0 });
     const [endtTime, setEndTime] = useState({ hour: 0, minute: 0 });
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState(
+        new Date(yearNow, monthNow - 1, dateNow),
+    );
+    const [endDate, setEndDate] = useState(
+        new Date(yearNow, monthNow - 1, dateNow),
+    );
     const [publicScope, setPublicScope] = useState<string>('');
     const [hideDetails, setHideDetails] = useState(false);
     const [description, setDescription] = useState('');
@@ -70,14 +76,22 @@ export default function CreateScheduleModal() {
                                     />
                                 </label>
                                 <div className={styles.timeInputContainer}>
-                                    <MiniCalendarDropDown title="시작 날짜" />
+                                    <MiniCalendarDropDown
+                                        title="시작 날짜"
+                                        date={startDate}
+                                        setDate={setStartDate}
+                                    />
                                     <TimeDropDown
                                         title="시작 시간"
                                         time={startTime}
                                         setTime={setStartTime}
                                     />
                                     <span>-</span>
-                                    <MiniCalendarDropDown title="종료 날짜" />
+                                    <MiniCalendarDropDown
+                                        title="종료 날짜"
+                                        date={endDate}
+                                        setDate={setEndDate}
+                                    />
                                     <TimeDropDown
                                         title="시작 시간"
                                         time={endtTime}
