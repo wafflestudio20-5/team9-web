@@ -11,7 +11,7 @@
 
 .dropDownBody {
     position: absolute;
-    top: 43px;
+    top: 45px;
     left: 0px;
     z-index: 200;
     border: 1px solid v.$border-gray;
@@ -30,7 +30,7 @@
 
     ul {
         padding: 8px 0;
-        width: 160px;
+        width: 100%;
     }
 
     ul:not(:last-child) {

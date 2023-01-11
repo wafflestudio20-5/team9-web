@@ -58,9 +58,14 @@ export default function TimeDropDown({
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}
-                style={{ height: '150px', overflow: 'auto' }}
+                style={{
+                    top: '40px',
+                    height: '150px',
+                    overflow: 'auto',
+                    width: '115px',
+                }}
             >
-                <ul style={{ width: '100px' }}>
+                <ul>
                     {getTimeList().map((t, i) => {
                         return (
                             <li
