@@ -17,12 +17,14 @@ interface UserSearchDropDownProps {
     toExecute: (item: UserDataForSearch) => void;
     buttonText: string;
     width?: string; // custom width when used elsewhere
+    underlineColor?: string;
 }
 
 export function UserSearchDropDown({
     toExecute,
     buttonText,
     width,
+    underlineColor,
 }: UserSearchDropDownProps) {
     const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
     const { stored, setStored } = useLocalStorage<UserDataForSearch[] | null>(
@@ -36,6 +38,7 @@ export function UserSearchDropDown({
     const [suggestions, setSuggestions] = useState<UserDataForSearch[] | null>(
         stored ? stored : null, // handle undefined
     );
+    const [underline, setUnderline] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     // useRef to place suggestions dropdown directly below searchbox
     // needed b/c searchbox height changes according to the lenght of selectedResults
@@ -140,20 +143,33 @@ export function UserSearchDropDown({
                             onChange={e => {
                                 handleChange(e);
                             }}
-                            onClick={openDropDown}
-                            // openDropDown only called when clicking the input area
-                            // (excludes instances of clicking selectedResults items)
                             className={styles.input}
                             placeholder="사용자 검색..."
+                            onFocus={() => {
+                                setUnderline(true);
+                                openDropDown();
+                            }}
+                            onBlur={() => {
+                                setUnderline(false);
+                            }}
                         />
                     </form>
+                    <div
+                        className={
+                            underline
+                                ? `${styles.underline} ${styles.expand}`
+                                : `${styles.underline}`
+                        }
+                        style={{ backgroundColor: underlineColor }}
+                    />
                 </div>
                 <button onClick={executeAction}>{buttonText}</button>
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}
                 style={{
-                    top: containerRef.current?.clientHeight,
+                    top: containerRef.current?.offsetHeight,
+                    width: containerRef.current?.offsetWidth,
                 }}
             >
                 <ul>

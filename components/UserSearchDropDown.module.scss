@@ -2,9 +2,11 @@
 
 .container {
     background-color: v.$background-gray;
-    padding: 6px 12px 6px 12px;
+    padding-top: 6px;
     margin-right: 5px;
     border-radius: 3px;
+    display: flex;
+    flex-direction: column;
 }
 
 .selected {
@@ -14,6 +16,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    margin: 0px 12px 5px 12px;
     > img {
         height: 20px;
         width: 20px;
@@ -29,6 +32,9 @@
     button {
         border: none;
         background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         img {
             height: 18px;
@@ -41,7 +47,20 @@
     border: none;
     background-color: transparent;
     width: 100%;
-    :focus {
-        border: none;
+    margin: 0px 12px 0px 12px;
+    &:focus {
+        outline: none;
+    }
+}
+
+.underline {
+    background-color: v.$primary-blue;
+    margin-top: 3px;
+    height: 3px;
+    width: 0px;
+    align-self: center;
+    &.expand {
+        width: 100%;
+        transition: width 300ms;
     }
 }
