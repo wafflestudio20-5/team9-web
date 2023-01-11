@@ -7,21 +7,21 @@ import {
     useDropDown,
 } from '@components/DropDown';
 
-interface PublicScopeDropDownProps {
+interface SharingScopeDropDownProps {
     scope: string;
     setScope: Dispatch<SetStateAction<string>>;
 }
 
-enum PublicScope {
+enum SharingScope {
     public = '전체공개',
     friend = '친구공개',
     private = '비공개',
 }
 
-export default function PublicScopeDropDown({
+export default function SharingScopeDropDown({
     scope,
     setScope,
-}: PublicScopeDropDownProps) {
+}: SharingScopeDropDownProps) {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
 
     return (
@@ -40,7 +40,7 @@ export default function PublicScopeDropDown({
                 style={{ width: '100px', top: '40px' }}
             >
                 <ul>
-                    {Object.values(PublicScope).map(value => (
+                    {Object.values(SharingScope).map(value => (
                         <li
                             key={value}
                             onClick={() => {
