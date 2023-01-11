@@ -1,7 +1,9 @@
-import React, { ReactNode, useState, useEffect } from 'react';
-import styles from './ColoredCheckbox.module.scss';
-import white_check_icon from '@images/white_check_icon.svg';
 import Image from 'next/image';
+import React, { ReactNode, useState, useEffect } from 'react';
+
+import styles from './ColoredCheckbox.module.scss';
+
+import white_check_icon from '@images/white_check_icon.svg';
 
 interface CustomCheckboxProps {
     state: boolean;

@@ -1,6 +1,8 @@
-import ColoredCheckbox from '@components/ColoredCheckbox';
-import styles from './calendarToggle.module.scss';
 import React, { useState } from 'react';
+
+import styles from './calendarToggle.module.scss';
+
+import ColoredCheckbox from '@components/ColoredCheckbox';
 
 interface CalendarDataForToggle {
     pk: number;

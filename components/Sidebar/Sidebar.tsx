@@ -1,14 +1,15 @@
-import React from 'react';
 import axios, { AxiosError } from 'axios';
-import styles from './Sidebar.module.scss';
+import React from 'react';
 import Swal from 'sweetalert2';
 
+import { mapCalendarToggle } from './calendarToggle';
+import styles from './Sidebar.module.scss';
+
+import { Accordion } from '@components/Accordion';
 import MiniCalendar from '@components/MiniCalendar';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
-import { useSidebarContext } from '@contexts/SidebarContext';
-import { Accordion } from '@components/Accordion';
-import { mapCalendarToggle } from './calendarToggle';
 import { useSessionContext } from '@contexts/SessionContext';
+import { useSidebarContext } from '@contexts/SidebarContext';
 
 export default function Sidebar() {
     const { isClosing } = useSidebarContext();

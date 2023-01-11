@@ -1,9 +1,11 @@
 import Image from 'next/image';
-import expand_icon from '@images/expand_icon.svg';
-import collapse_icon from '@images/collapse_icon.svg';
-import add_icon from '@images/add_icon.svg';
 import React, { useRef, useState, useEffect } from 'react';
+
 import styles from './Accordion.module.scss';
+
+import add_icon from '@images/add_icon.svg';
+import collapse_icon from '@images/collapse_icon.svg';
+import expand_icon from '@images/expand_icon.svg';
 
 interface AccordionProps {
     addAble?: boolean;

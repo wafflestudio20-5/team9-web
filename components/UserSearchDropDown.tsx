@@ -1,16 +1,18 @@
+import axios from 'axios';
+import Image from 'next/image';
+import React, { useState, useRef, useEffect } from 'react';
+
+import styles from './UserSearchDropDown.module.scss';
+
 import {
     DropDown,
     DropDownHeader,
     DropDownBody,
     useDropDown,
 } from '@components/DropDown';
-import { useState, useRef, useEffect } from 'react';
-import styles from './UserSearchDropDown.module.scss';
-import axios from 'axios';
+import useLocalStorage from '@hooks/useLocalStorage';
 import account_default_icon from '@images/account_default_icon.svg';
 import close_icon from '@images/close_icon.svg';
-import Image from 'next/image';
-import useLocalStorage from '@hooks/useLocalStorage';
 import updateSequence from '@utils/updateSequence';
 
 interface UserSearchDropDownProps {
@@ -105,7 +107,12 @@ export function UserSearchDropDown({
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={() => {}} style={{ display: 'flex' }}>
+            <DropDownHeader
+                openDropDown={() => {
+                    return null;
+                }}
+                style={{ display: 'flex' }}
+            >
                 {/* openDropDown does nothing here to prevent dropdown expanding when removing items from selectedResults */}
                 <div
                     className={styles.container}
