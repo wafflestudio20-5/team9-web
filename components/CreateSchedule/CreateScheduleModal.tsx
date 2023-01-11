@@ -18,16 +18,16 @@ import time_icon from '@images/time_icon.svg';
 export default function CreateScheduleModal() {
     const { yearNow, monthNow, dateNow } = useDateContext();
     const { closeModal } = useModal();
-    const [title, setTitle] = useState('');
-    const [startDate, setStartDate] = useState(
+    const [title, setTitle] = useState<string>('');
+    const [startDate, setStartDate] = useState<Date>(
         new Date(yearNow, monthNow - 1, dateNow),
     );
-    const [endDate, setEndDate] = useState(
+    const [endDate, setEndDate] = useState<Date>(
         new Date(yearNow, monthNow - 1, dateNow),
     );
     const [publicScope, setPublicScope] = useState<string>('');
-    const [hideDetails, setHideDetails] = useState(false);
-    const [description, setDescription] = useState('');
+    const [hideDetails, setHideDetails] = useState<boolean>(false);
+    const [description, setDescription] = useState<string>('');
 
     const changeStartDate = (newDate: Date) => {
         if (newDate > endDate) {
