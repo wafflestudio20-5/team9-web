@@ -35,8 +35,11 @@ export default function PublicScopeDropDown({
                     readOnly
                 />
             </DropDownHeader>
-            <DropDownBody isOpen={isOpen}>
-                <ul style={{ width: '100px' }}>
+            <DropDownBody
+                isOpen={isOpen}
+                style={{ width: '100px', top: '40px' }}
+            >
+                <ul>
                     {Object.values(PublicScope).map(value => (
                         <li
                             key={value}

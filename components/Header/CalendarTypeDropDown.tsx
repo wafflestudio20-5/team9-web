@@ -59,7 +59,7 @@ export default function CalendarTypeDropDown() {
                     />
                 </button>
             </DropDownHeader>
-            <DropDownBody isOpen={isOpen}>
+            <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>
                 <ul>
                     <li onClick={() => changeCalendarType(CalendarType.day)}>
                         <span>일</span>

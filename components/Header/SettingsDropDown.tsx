@@ -19,7 +19,7 @@ export default function SettingsDropDown() {
                     <Image src={settings_icon} height={24} alt="settings" />
                 </button>
             </DropDownHeader>
-            <DropDownBody isOpen={isOpen}>
+            <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>
                 <ul>
                     <li>설정</li>
                     <li>휴지통</li>
