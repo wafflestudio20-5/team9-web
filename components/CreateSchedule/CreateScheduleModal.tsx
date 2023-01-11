@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 
 import styles from './CreateScheduleModal.module.scss';
 
+import PublicScopeDropDown from '@components/CreateSchedule/PublicScopeDropDown';
+import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
-import PublicScopeDropDown from '@components/PublicScopeDropDown';
-import TimeDropDown from '@components/TimeDropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';

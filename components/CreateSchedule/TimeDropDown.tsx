@@ -60,9 +60,9 @@ export default function TimeDropDown({
                 isOpen={isOpen}
                 style={{
                     top: '40px',
+                    width: '115px',
                     height: '150px',
                     overflow: 'auto',
-                    width: '115px',
                 }}
             >
                 <ul>
