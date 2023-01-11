@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import styles from './CreateScheduleModal.module.scss';
 
-import PublicScopeDropDown from '@components/CreateSchedule/PublicScopeDropDown';
+import SharingScopeDropDown from '@components/CreateSchedule/SharingScopeDropDown';
 import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
@@ -25,7 +25,7 @@ export default function CreateScheduleModal() {
     const [endDate, setEndDate] = useState<Date>(
         new Date(yearNow, monthNow - 1, dateNow),
     );
-    const [publicScope, setPublicScope] = useState<string>('');
+    const [sharingcScope, setSharingScope] = useState<string>('');
     const [hideDetails, setHideDetails] = useState<boolean>(false);
     const [description, setDescription] = useState<string>('');
 
@@ -123,7 +123,7 @@ export default function CreateScheduleModal() {
                                 </label>
                                 <input type="text" placeholder="참석자" />
                             </div>
-                            <div className={styles.publicScope}>
+                            <div className={styles.sharingScope}>
                                 <label>
                                     <Image
                                         src={lock_icon}
@@ -131,9 +131,9 @@ export default function CreateScheduleModal() {
                                         width={24}
                                     />
                                 </label>
-                                <PublicScopeDropDown
-                                    scope={publicScope}
-                                    setScope={setPublicScope}
+                                <SharingScopeDropDown
+                                    scope={sharingcScope}
+                                    setScope={setSharingScope}
                                 />
                             </div>
                             <div className={styles.hideDetails}>
