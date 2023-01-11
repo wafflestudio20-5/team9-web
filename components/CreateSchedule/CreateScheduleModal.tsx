@@ -31,6 +31,22 @@ export default function CreateScheduleModal() {
     const [hideDetails, setHideDetails] = useState(false);
     const [description, setDescription] = useState('');
 
+    const changeStartDate = (newDate: Date) => {
+        if (newDate > endDate) {
+            // TODO: alert
+            return;
+        }
+        setStartDate(newDate);
+    };
+
+    const changeEndDate = (newDate: Date) => {
+        if (newDate < startDate) {
+            // TODO: alert
+            return;
+        }
+        setEndDate(newDate);
+    };
+
     const cancelCreateSchedule = () => {
         // TODO: alert (for double checking)
         closeModal(MODAL_NAMES.createSchedule);
@@ -79,23 +95,23 @@ export default function CreateScheduleModal() {
                                     <MiniCalendarDropDown
                                         title="시작 날짜"
                                         date={startDate}
-                                        setDate={setStartDate}
+                                        setDate={changeStartDate}
                                     />
                                     <TimeDropDown
                                         title="시작 시간"
-                                        time={startTime}
-                                        setTime={setStartTime}
+                                        date={startDate}
+                                        setDate={changeStartDate}
                                     />
                                     <span>-</span>
                                     <MiniCalendarDropDown
                                         title="종료 날짜"
                                         date={endDate}
-                                        setDate={setEndDate}
+                                        setDate={changeEndDate}
                                     />
                                     <TimeDropDown
                                         title="시작 시간"
-                                        time={endtTime}
-                                        setTime={setEndTime}
+                                        date={endDate}
+                                        setDate={changeEndDate}
                                     />
                                 </div>
                             </div>
