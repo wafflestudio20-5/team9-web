@@ -1,0 +1,27 @@
+@use '@styles/variables.scss' as v;
+
+.backdrop {
+    border-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+        border-radius: 50%;
+        background-color: v.$background-gray;
+    }
+}
+
+.box {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all ease-in-out 200ms;
+}
+
+.check {
+    height: 100%;
+    width: 100%;
+}
