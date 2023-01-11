@@ -97,8 +97,8 @@ export default function CreateScheduleModal() {
                                     />
                                     <TimeDropDown
                                         title="시작 시간"
-                                        date={startDate}
-                                        setDate={changeStartDate}
+                                        time={startDate}
+                                        setTime={changeStartDate}
                                     />
                                     <span>-</span>
                                     <MiniCalendarDropDown
@@ -108,8 +108,8 @@ export default function CreateScheduleModal() {
                                     />
                                     <TimeDropDown
                                         title="시작 시간"
-                                        date={endDate}
-                                        setDate={changeEndDate}
+                                        time={endDate}
+                                        setTime={changeEndDate}
                                     />
                                 </div>
                             </div>

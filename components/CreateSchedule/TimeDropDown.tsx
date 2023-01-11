@@ -10,14 +10,14 @@ import { formatTime } from '@utils/formatTime';
 
 interface TimeDropDownProps {
     title: string;
-    date: Date;
-    setDate(newDate: Date): void;
+    time: Date;
+    setTime(newTime: Date): void;
 }
 
 export default function TimeDropDown({
     title,
-    date,
-    setDate,
+    time,
+    setTime,
 }: TimeDropDownProps) {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
 
@@ -28,25 +28,18 @@ export default function TimeDropDown({
         const minutes = Array(4)
             .fill(0)
             .map((v, i) => i * 15);
-        const times: number[][] = [];
+        const times: Date[] = [];
 
         hours.forEach(h => {
             minutes.forEach(m => {
-                times.push([h, m]);
+                const newDate = new Date(time);
+                newDate.setHours(h);
+                newDate.setMinutes(m);
+                times.push(newDate);
             });
         });
 
         return times;
-    };
-
-    const changeTime = (newTime: number[]) => {
-        const hour = newTime[0];
-        const minute = newTime[1];
-        const newDate = new Date(date);
-        newDate.setHours(hour);
-        newDate.setMinutes(minute);
-        setDate(newDate);
-        closeDropDown();
     };
 
     return (
@@ -54,11 +47,7 @@ export default function TimeDropDown({
             <DropDownHeader openDropDown={openDropDown}>
                 <input
                     type="text"
-                    value={formatTime(
-                        date.getHours(),
-                        date.getMinutes(),
-                        false,
-                    )}
+                    value={formatTime(time)}
                     onClick={openDropDown}
                     placeholder={title}
                     readOnly
@@ -75,15 +64,16 @@ export default function TimeDropDown({
                 }}
             >
                 <ul>
-                    {getTimeList().map((time, i) => {
+                    {getTimeList().map((newTime, i) => {
                         return (
                             <li
                                 key={i}
                                 onClick={() => {
-                                    changeTime(time);
+                                    setTime(newTime);
+                                    closeDropDown();
                                 }}
                             >
-                                {formatTime(time[0], time[1], false)}
+                                {formatTime(newTime)}
                             </li>
                         );
                     })}
