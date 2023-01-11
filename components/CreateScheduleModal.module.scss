@@ -6,7 +6,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 570px;
-    height: 80%;
+    height: 80vh;
     max-height: 500px;
     border: 1px solid v.$border-gray;
     border-radius: 10px;
@@ -40,12 +40,12 @@
 
     form {
         display: grid;
-        grid-template-rows: auto 36px;
-        padding: 24px;
+        grid-template-rows: auto 60px;
         height: calc(100% - 36px);
 
         .body {
             overflow: auto;
+            padding: 24px;
         }
 
         .title {
@@ -168,7 +168,9 @@
         }
 
         .btnContainer {
+            padding: 12px 24px;
             text-align: right;
+            border-top: 1px solid v.$border-gray;
 
             button {
                 padding: 0 20px;
