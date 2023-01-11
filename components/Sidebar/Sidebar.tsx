@@ -1,6 +1,7 @@
 import React from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import styles from './Sidebar.module.scss';
+import Swal from 'sweetalert2';
 
 import MiniCalendar from '@components/MiniCalendar';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
@@ -13,11 +14,28 @@ export default function Sidebar() {
     const { isClosing } = useSidebarContext();
     const { accessToken } = useSessionContext();
     const sendFollowRequest = (item: UserDataForSearch) => {
-        axios.post(
-            'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/network/',
-            { followee: { pk: item.pk } },
-            { headers: { Authorization: `Bearer ${accessToken}` } },
-        );
+        axios
+            .post(
+                'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/network/',
+                { followee: { pk: item.pk } },
+                { headers: { Authorization: `Bearer ${accessToken}` } },
+            )
+            .catch(err => {
+                const alertText = (err: Error | AxiosError) => {
+                    if (axios.isAxiosError(err)) {
+                        if (err.response?.status == 401) {
+                            return '로그인해야 합니다.';
+                        }
+                        return `Error Code: ${err.response?.status}\nError Message: ${err.response?.data.detail}`;
+                    }
+                    return err.toString();
+                };
+                Swal.fire({
+                    title: '친구 요청을 보낼 수 없습니다.',
+                    text: alertText(err),
+                    confirmButtonText: '확인',
+                });
+            });
     };
 
     const dummyMyCalendars = [
