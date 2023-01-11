@@ -18,56 +18,29 @@ export function Accordion({
     sequence,
     mapFunction,
 }: AccordionProps) {
-    // stages = ['initial', 'opening', 'opened', 'closing'];
-    const [stage, setStage] = useState('initial');
     const [isOpen, setIsOpen] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
     const bodyHolderRef = useRef<HTMLDivElement | null>(null);
     const openAccordion = () => {
-        setStage('initial');
         setIsOpen(true);
-        setStage('opening');
-        setTimeout(() => {
-            setStage('open');
-        }, 1000);
     };
     const closeAccordion = () => {
-        setStage('closing');
+        setIsClosing(true);
         setTimeout(() => {
-            setStage('initial');
+            setIsClosing(false);
             setIsOpen(false);
-        }, 300);
+        }, 500);
     };
     const getClassname = () => {
-        switch (stage) {
-            case 'initial':
-                return `${styles.body} ${styles.initial}`;
-            case 'opening':
-                return `${styles.body} ${styles.opening}`;
-            case 'open':
-                return `${styles.body} ${styles.open}`;
-            case 'closing':
-                return `${styles.body} ${styles.closing}`;
-            default:
-                return `${styles.body} ${styles.closed}`;
+        if (isClosing) {
+            return `${styles.body} ${styles.closing}`;
         }
+        if (isOpen) {
+            return `${styles.body} ${styles.open}`;
+        }
+        return `${styles.body}`;
     };
-    // useEffect(() => {
-    //     setIsOpen(getOpenStatus());
-    // }, [stage]);
-    // const getOpenStatus = () => {
-    //     switch (stage) {
-    //         case 'initial':
-    //             return true;
-    //         case 'opening':
-    //             return true;
-    //         case 'open':
-    //             return true;
-    //         case 'closing':
-    //             return false;
-    //         default:
-    //             return false;
-    //     }
-    // };
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>
@@ -84,19 +57,18 @@ export function Accordion({
                     />
                 </button>
             </div>
-            {isOpen && (
-                <div className={getClassname()}>
-                    <div
-                        style={{
-                            height: bodyHolderRef.current?.clientHeight,
-                        }}
-                    >
-                        <div className={styles.holder} ref={bodyHolderRef}>
-                            {sequence.map(mapFunction)}
-                        </div>
+            {
+                <div
+                    className={getClassname()}
+                    style={{
+                        height: isOpen ? 'auto' : 0,
+                    }}
+                >
+                    <div className={styles.holder} ref={bodyHolderRef}>
+                        {sequence.map(mapFunction)}
                     </div>
                 </div>
-            )}
+            }
         </div>
     );
 }

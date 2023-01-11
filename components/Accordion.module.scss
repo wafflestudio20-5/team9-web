@@ -28,39 +28,35 @@
 .body {
     overflow-y: hidden;
 
-    &.initial {
-        max-height: 0vh;
-    }
-
-    &.opening {
-        max-height: 100vh;
-        animation: soft-expand 300ms;
-    }
-
     &.open {
-        max-height: 100vh;
+        animation: soft-expand 500ms;
     }
 
     &.closing {
-        max-height: 0vh;
-        animation: soft-collapse 300ms;
+        max-height: 0px;
+        animation: soft-collapse 500ms;
     }
 }
 
 @keyframes soft-expand {
     from {
-        max-height: 0vh;
+        max-height: 0px;
     }
     to {
-        max-height: 100vh;
+        max-height: 250px;
     }
 }
 
 @keyframes soft-collapse {
     from {
-        max-height: 100vh;
+        max-height: 250px;
     }
     to {
-        max-height: 0vh;
+        max-height: 0px;
     }
+}
+
+.holder {
+    max-height: 250px;
+    overflow-y: auto;
 }
