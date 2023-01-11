@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './MonthCalendar.module.scss';
 
-import CreateScheduleButton from '@components/CreateScheduleButton';
+import CreateScheduleButton from '@components/CreateSchedule/CreateScheduleButton';
 import DayinMonth from '@components/MonthCalendar/DayinMonth';
 import Sidebar from '@components/Sidebar/Sidebar';
 import { useSidebarContext } from '@contexts/SidebarContext';

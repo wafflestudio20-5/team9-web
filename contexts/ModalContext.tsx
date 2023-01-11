@@ -8,7 +8,7 @@ import React, {
     useState,
 } from 'react';
 
-import CreateScheduleModal from '@components/CreateScheduleModal';
+import CreateScheduleModal from '@components/CreateSchedule/CreateScheduleModal';
 import CalendarModal from '@components/Header/CalendarModal';
 import SearchDetailsModal from '@components/Header/SearchDetailsModal';
 import UserModal from '@components/Header/UserModal';
