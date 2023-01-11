@@ -10,6 +10,7 @@ interface AccordionProps {
     title: string;
     sequence: any[];
     mapFunction: (value: any, index: number, array: any[]) => React.ReactNode;
+    style?: { wrapper?: React.CSSProperties; title?: React.CSSProperties };
 }
 
 export function Accordion({
@@ -17,6 +18,7 @@ export function Accordion({
     title,
     sequence,
     mapFunction,
+    style,
 }: AccordionProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
@@ -42,9 +44,12 @@ export function Accordion({
     };
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.header}>
-                <span>{title}</span>
+        <div className={styles.wrapper} style={style?.wrapper}>
+            <div
+                className={styles.header}
+                onClick={isOpen ? closeAccordion : openAccordion}
+            >
+                <span style={style?.title}>{title}</span>
                 {addAble && (
                     <button>
                         <Image src={add_icon} alt="add" />

@@ -43,18 +43,24 @@ export default function Sidebar() {
                         buttonText="추가"
                     />
                 </div>
-                <div>
+                <div className={styles.accordions}>
                     <Accordion
                         title="내 캘린더"
                         sequence={dummyMyCalendars}
                         mapFunction={mapCalendarToggle}
+                        style={{
+                            title: { marginLeft: '20px' },
+                        }}
                     />
                 </div>
-                <div>
+                <div className={styles.accordions}>
                     <Accordion
                         title="다른 캘린더"
                         sequence={dummyOtherCalendars}
                         mapFunction={mapCalendarToggle}
+                        style={{
+                            title: { marginLeft: '20px' },
+                        }}
                     />
                 </div>
             </div>

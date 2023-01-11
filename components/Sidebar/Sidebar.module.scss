@@ -26,6 +26,12 @@
     align-self: center;
 }
 
+.accordions {
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+}
+
 @keyframes soft-expand {
     from {
         width: 0;
