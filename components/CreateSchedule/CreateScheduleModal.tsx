@@ -19,8 +19,6 @@ export default function CreateScheduleModal() {
     const { yearNow, monthNow, dateNow } = useDateContext();
     const { closeModal } = useModal();
     const [title, setTitle] = useState('');
-    const [startTime, setStartTime] = useState({ hour: 0, minute: 0 });
-    const [endtTime, setEndTime] = useState({ hour: 0, minute: 0 });
     const [startDate, setStartDate] = useState(
         new Date(yearNow, monthNow - 1, dateNow),
     );

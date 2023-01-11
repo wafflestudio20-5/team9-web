@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useState, useMemo, Dispatch, SetStateAction } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import styles from './MiniCalendar.module.scss';
 
