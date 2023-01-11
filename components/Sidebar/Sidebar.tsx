@@ -19,6 +19,17 @@ export default function Sidebar() {
             { headers: { Authorization: `Bearer ${accessToken}` } },
         );
     };
+
+    const dummyMyCalendars = [
+        { pk: 101, name: 'My Calendar 1' },
+        { pk: 102, name: 'My Calendar 2' },
+    ];
+    const dummyOtherCalendars = [
+        { pk: 301, name: 'Other Calendar 1' },
+        { pk: 302, name: 'Other Calendar 2' },
+        { pk: 303, name: 'Other Calendar 3' },
+        { pk: 304, name: 'Other Calendar 4' },
+    ];
     return (
         <div className={isClosing ? `${styles.closing}` : `${styles.open}`}>
             <div className={styles.wrapper}>
@@ -35,14 +46,14 @@ export default function Sidebar() {
                 <div>
                     <Accordion
                         title="내 캘린더"
-                        sequence={['Dummy 1', 'Dummy 2', 'Dummy 3']}
+                        sequence={dummyMyCalendars}
                         mapFunction={mapCalendarToggle}
                     />
                 </div>
                 <div>
                     <Accordion
                         title="다른 캘린더"
-                        sequence={['Dummy 1', 'Dummy 2', 'Dummy 3', 'Dummy 4']}
+                        sequence={dummyOtherCalendars}
                         mapFunction={mapCalendarToggle}
                     />
                 </div>

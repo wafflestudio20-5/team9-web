@@ -27,11 +27,40 @@
 
 .body {
     overflow-y: hidden;
-    width: 100%;
-    &.open {
-        height: fit-content;
+
+    &.initial {
+        max-height: 0vh;
     }
-    &.closed {
-        height: 0px;
+
+    &.opening {
+        max-height: 100vh;
+        animation: soft-expand 300ms;
+    }
+
+    &.open {
+        max-height: 100vh;
+    }
+
+    &.closing {
+        max-height: 0vh;
+        animation: soft-collapse 300ms;
+    }
+}
+
+@keyframes soft-expand {
+    from {
+        max-height: 0vh;
+    }
+    to {
+        max-height: 100vh;
+    }
+}
+
+@keyframes soft-collapse {
+    from {
+        max-height: 100vh;
+    }
+    to {
+        max-height: 0vh;
     }
 }
