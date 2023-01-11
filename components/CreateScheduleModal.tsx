@@ -26,8 +26,8 @@ export default function CreateScheduleModal() {
     const [description, setDescription] = useState('');
 
     const cancelCreateSchedule = () => {
+        // TODO: alert (for double checking)
         closeModal(MODAL_NAMES.createSchedule);
-        // alert (double check cancel)
     };
 
     const submitCreateScheduleForm = (e: React.FormEvent<HTMLFormElement>) => {
