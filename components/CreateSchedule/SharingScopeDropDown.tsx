@@ -12,7 +12,7 @@ interface SharingScopeDropDownProps {
     setScope: Dispatch<SetStateAction<string>>;
 }
 
-enum SharingScope {
+export enum SharingScope {
     public = '전체공개',
     friend = '친구공개',
     private = '비공개',
