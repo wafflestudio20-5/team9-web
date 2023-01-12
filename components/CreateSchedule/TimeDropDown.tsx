@@ -21,26 +21,14 @@ export default function TimeDropDown({
 }: TimeDropDownProps) {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
 
-    const getTimeList = () => {
-        const hours = Array(24)
+    const getTimeList = () =>
+        Array(24 * 4)
             .fill(0)
-            .map((v, i) => i);
-        const minutes = Array(4)
-            .fill(0)
-            .map((v, i) => i * 15);
-        const times: Date[] = [];
-
-        hours.forEach(h => {
-            minutes.forEach(m => {
+            .map((v, i) => {
                 const newDate = new Date(time);
-                newDate.setHours(h);
-                newDate.setMinutes(m);
-                times.push(newDate);
+                newDate.setHours(0, i * 15);
+                return newDate;
             });
-        });
-
-        return times;
-    };
 
     return (
         <DropDown dropDownRef={dropDownRef}>
