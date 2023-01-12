@@ -35,15 +35,7 @@ export function DropDownHeader({
 
 interface DropDownBodyProps {
     isOpen: boolean;
-    style?: {
-        top?: string;
-        bottom?: string;
-        left?: string;
-        right?: string;
-        width?: string;
-        height?: string;
-        overflow?: string;
-    };
+    style?: React.CSSProperties;
     children: React.ReactNode;
 }
 
