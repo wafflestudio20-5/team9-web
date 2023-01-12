@@ -106,7 +106,7 @@ export default function MiniCalendarDropDown({
                         }월`}</div>
                     </div>
                     <div className={styles.buttons}>
-                        <button onClick={showPrevious}>
+                        <button onClick={showPrevious} type="button">
                             <Image
                                 src={before_icon}
                                 alt="이전"
@@ -114,7 +114,7 @@ export default function MiniCalendarDropDown({
                                 height={24}
                             />
                         </button>
-                        <button onClick={showNext}>
+                        <button onClick={showNext} type="button">
                             <Image
                                 src={next_icon}
                                 alt="이후"
