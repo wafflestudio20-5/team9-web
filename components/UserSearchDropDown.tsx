@@ -40,10 +40,26 @@ export function UserSearchDropDown({
     const [suggestions, setSuggestions] = useState<UserDataForSearch[] | null>(
         stored ? stored : null, // handle undefined
     );
-    const [underline, setUnderline] = useState(false);
+    const [isFocused, setIsFocused] = useState(false); // true if input box is focused
     const containerRef = useRef<HTMLDivElement | null>(null);
     // useRef to place suggestions dropdown directly below searchbox
     // needed b/c searchbox height changes according to the lenght of selectedResults
+
+    useEffect(() => {
+        if (stored !== undefined) {
+            setSuggestions(stored);
+        }
+    }, [stored]);
+
+    useEffect(() => {
+        if (isFocused) {
+            if (!isOpen) {
+                openDropDown();
+            }
+        } else {
+            closeDropDown();
+        }
+    }, [isFocused]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -91,12 +107,6 @@ export function UserSearchDropDown({
         setSearchInput('');
         closeDropDown();
     };
-
-    useEffect(() => {
-        if (stored !== undefined) {
-            setSuggestions(stored);
-        }
-    }, [stored]);
 
     const executeAction = () => {
         if (selectedResults) {
@@ -153,17 +163,16 @@ export function UserSearchDropDown({
                             className={styles.input}
                             placeholder="사용자 검색..."
                             onFocus={() => {
-                                setUnderline(true);
-                                openDropDown();
+                                setIsFocused(true);
                             }}
                             onBlur={() => {
-                                setUnderline(false);
+                                setIsFocused(false);
                             }}
                         />
                     </form>
                     <div
                         className={
-                            underline
+                            isFocused
                                 ? `${styles.underline} ${styles.expand}`
                                 : `${styles.underline}`
                         }
