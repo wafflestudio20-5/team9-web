@@ -22,7 +22,7 @@
             "@utils/*": ["lib/utils/*"],
             "@images/*": ["public/images/*"],
             "@styles/*": ["styles/*"],
-            "@hooks/*": ["hooks/*"]
+            "@hooks/*": ["lib/hooks/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
