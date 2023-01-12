@@ -5,22 +5,19 @@ import Swal from 'sweetalert2';
 import { mapCalendarToggle } from './CalendarToggle';
 import styles from './Sidebar.module.scss';
 
+import { followRequestAPI } from '@apis/social';
 import { Accordion } from '@components/Accordion';
 import MiniCalendar from '@components/MiniCalendar';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
+import { UserDataForSearch } from '@customTypes/UserTypes';
 
 export default function Sidebar() {
     const { isClosing } = useSidebarContext();
     const { accessToken } = useSessionContext();
     const sendFollowRequest = (item: UserDataForSearch) => {
-        axios
-            .post(
-                'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/network/',
-                { followee: { pk: item.pk } },
-                { headers: { Authorization: `Bearer ${accessToken}` } },
-            )
+        followRequestAPI(item.pk, accessToken)
             .then(() => {
                 Swal.fire({
                     icon: 'success',

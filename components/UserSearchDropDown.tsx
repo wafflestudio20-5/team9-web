@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import styles from './UserSearchDropDown.module.scss';
 
+import { searchUserAPI } from '@apis/social';
 import {
     DropDown,
     DropDownHeader,
@@ -90,10 +91,7 @@ export function UserSearchDropDown({
         setSearchInput(e.target.value);
         if (e.target.value !== '') {
             // if there is input for search, send axios request for search results
-            axios
-                .get(
-                    `http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/search/candidate/?search=${e.target.value}`,
-                )
+            searchUserAPI(e.target.value)
                 .then(res =>
                     res.data.results.length !== 0
                         ? setSuggestions(res.data.results.slice(0, 4))

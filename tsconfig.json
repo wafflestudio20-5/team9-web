@@ -19,11 +19,12 @@
         "paths": {
             "@components/*": ["components/*"],
             "@contexts/*": ["contexts/*"],
+            "@apis/*": ["lib/apis/*"],
+            "@customTypes/*": ["lib/customTypes/*"],
+            "@hooks/*": ["lib/hooks/*"],
             "@utils/*": ["lib/utils/*"],
             "@images/*": ["public/images/*"],
-            "@styles/*": ["styles/*"],
-            "@hooks/*": ["lib/hooks/*"],
-            "@customTypes/*": ["lib/customTypes/*"]
+            "@styles/*": ["styles/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
