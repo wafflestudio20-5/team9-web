@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import React from 'react';
 import Swal from 'sweetalert2';
 
-import { mapCalendarToggle } from './calendarToggle';
+import { mapCalendarToggle } from './CalendarToggle';
 import styles from './Sidebar.module.scss';
 
 import { Accordion } from '@components/Accordion';
@@ -21,6 +21,13 @@ export default function Sidebar() {
                 { followee: { pk: item.pk } },
                 { headers: { Authorization: `Bearer ${accessToken}` } },
             )
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: '친구 요청을 보냈습니다.',
+                    confirmButtonText: '확인',
+                });
+            })
             .catch(err => {
                 const alertText = (err: Error | AxiosError) => {
                     if (axios.isAxiosError(err)) {
