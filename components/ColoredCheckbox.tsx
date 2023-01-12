@@ -18,16 +18,17 @@ function DefaultChild() {
 }
 
 export default function ColoredCheckbox({
-    state,
-    setState,
-    color,
-    size,
-    children,
+    state, // state to be affected by checkbox toggle
+    setState, // setstateaction for changing the state
+    color, // color of the border & background when checked
+    size, // size of the check'box'. diff from the size of the ColoredCheckbox component (the latter includes shadows)
+    children, // optional parameter for element to show inside toggle. If not provided, use default check icon
 }: CustomCheckboxProps) {
     return (
         <div
             className={styles.backdrop}
             style={{
+                // shadow element that's slightly larger than the size of the actual box
                 height: `${size.size * 1.7}${size.unit}`,
                 width: `${size.size * 1.7}${size.unit}`,
             }}

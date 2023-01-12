@@ -29,32 +29,52 @@ export function UserSearchDropDown({
     underlineColor,
 }: UserSearchDropDownProps) {
     const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
+
     const { stored, setStored } = useLocalStorage<UserDataForSearch[] | null>(
         'searchRecord_addFriend',
         null,
     );
+    // state variables for saving search records in localStorage
+
     const [searchInput, setSearchInput] = useState('');
+    // controlled input
+
     const [selectedResults, setSelectedResults] = useState<
         UserDataForSearch[] | null
     >([]);
+    // items selected before pressing the final button and executing whatever function that needs to be executed
+    // displayed in the container as rounded rectangular items
+    // conceptually similar to staging files
+
     const [suggestions, setSuggestions] = useState<UserDataForSearch[] | null>(
         stored ? stored : null, // handle undefined
-    );
-    const [isFocused, setIsFocused] = useState(false); // true if input box is focused
+    ); // suggestions for the dropdown.
+    // only stores the upmost 4 values, as only up to 4 suggestions are displayed at once
+
+    const [isFocused, setIsFocused] = useState(false);
+    // true if input box is focused
+
     const containerRef = useRef<HTMLDivElement | null>(null);
     // useRef to place suggestions dropdown directly below searchbox
-    // needed b/c searchbox height changes according to the lenght of selectedResults
+    // needed b/c searchbox height and width changes
+    // see below where this ref is used for more details
 
     useEffect(() => {
+        // set suggestions to match stored search records when 'stored' changes
+        // this is equivalent to the union of the following two instances:
+        // 1) component mounts and stored is initialized
+        // 2) user submits input box (== makes a search entry)
         if (stored !== undefined) {
             setSuggestions(stored);
         }
     }, [stored]);
 
     useEffect(() => {
+        // always keep dropdown open if focused on the input box
         if (isFocused) {
             if (!isOpen) {
                 openDropDown();
+                // only run if isOpen was previously false b/c openDropDown = setIsOpen(!isOpen)
             }
         } else {
             closeDropDown();
@@ -68,13 +88,14 @@ export function UserSearchDropDown({
         }
         setSearchInput(e.target.value);
         if (e.target.value !== '') {
+            // if there is input for search, send axios request for search results
             axios
                 .get(
                     `http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/social/search/candidate/?search=${e.target.value}`,
                 )
                 .then(res =>
                     res.data.results.length !== 0
-                        ? setSuggestions(res.data.results)
+                        ? setSuggestions(res.data.results.slice(0, 4))
                         : setSuggestions(null),
                 )
                 .catch(() => setSuggestions(null));
@@ -84,14 +105,22 @@ export function UserSearchDropDown({
     };
 
     const handleSubmit = (item: UserDataForSearch | null) => {
+        // executed on submitting of input text, either by pressing Enter or clicking on a suggestion
         if (item) {
+            // update selectedResults and searchRecord using updateSequence function
+            // updateSequence: checks if item to add is already in the given list.
+            //                  if not included, add to the end of the list
+            //                  if included & sorted = true(default), bring the item to the end of the list
+            //                  if included & sorted = false, simply return previous list
+            // see 'lib/utils/updateSequence.ts' for more details
             const newSelectedResults = updateSequence<UserDataForSearch>({
-                sequence: selectedResults,
+                sequence: selectedResults, // sequence to update
                 getUniqueKey: x => {
+                    // function that gets unique key for mapping
                     return x.pk;
                 },
-                itemToAdd: item,
-                sorted: false,
+                itemToAdd: item, // item to be added to the sequence
+                sorted: false, // if item is already in the sequence, do not change its position
             });
             setSelectedResults(newSelectedResults);
             const newSearchRecord = updateSequence<UserDataForSearch>({
@@ -100,7 +129,8 @@ export function UserSearchDropDown({
                     return x.pk;
                 },
                 itemToAdd: item,
-                maxLength: 4,
+                maxLength: 4, // optional parameter: maximum length of the new sequence
+                // only save the recent 4 searches to localStorage
             });
             setStored(newSearchRecord);
         }
@@ -109,6 +139,7 @@ export function UserSearchDropDown({
     };
 
     const executeAction = () => {
+        // apply function provided through parameters on each item selected
         if (selectedResults) {
             selectedResults.map(item => toExecute(item));
         }
@@ -119,17 +150,25 @@ export function UserSearchDropDown({
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader
                 openDropDown={() => {
+                    // openDropDown does nothing here to prevent dropdown expanding when removing items from selectedResults
                     return null;
                 }}
                 style={{ display: 'flex' }}
             >
-                {/* openDropDown does nothing here to prevent dropdown expanding when removing items from selectedResults */}
+                {/* Large container. Area with gray background. Holds all selected(staged) items + input box */}
                 <div
                     className={styles.container}
                     ref={containerRef}
-                    style={width ? { width: width } : { flexGrow: 1 }}
+                    style={
+                        width ? { width: width } : { flexGrow: 1 }
+                        // if width is provided, fit to specified width
+                        // otherwise, expand horizontally to fill all space available(flexGrow)
+                    }
                 >
                     {selectedResults?.map((item, index) => {
+                        // display rounded rectangles for each item selected (staged)
+                        // TODO after profile pictures are added:
+                        //          get profile picture with UserData and pass that to Image src prop
                         return (
                             <div key={index} className={styles.selected}>
                                 <Image src={account_default_icon} alt="image" />
@@ -141,6 +180,8 @@ export function UserSearchDropDown({
                                             selectedResults.filter(i => {
                                                 return i !== item;
                                             }),
+                                            // Remove button: on click,
+                                            // remove this item from selectedResults
                                         );
                                     }}
                                 >
@@ -151,6 +192,8 @@ export function UserSearchDropDown({
                     })}
                     <form
                         onSubmit={e => {
+                            // submitting the input box only (pressing Enter)
+                            // is different from pressing the rightmost button for executing provided functions
                             e.preventDefault();
                             handleSubmit(suggestions ? suggestions[0] : null);
                         }}
@@ -172,6 +215,7 @@ export function UserSearchDropDown({
                     </form>
                     <div
                         className={
+                            // thick underline with animations!
                             isFocused
                                 ? `${styles.underline} ${styles.expand}`
                                 : `${styles.underline}`
@@ -179,11 +223,19 @@ export function UserSearchDropDown({
                         style={{ backgroundColor: underlineColor }}
                     />
                 </div>
+                {/* Rightmost button for executing final function (ex.sending friend request API call) */}
                 <button onClick={executeAction}>{buttonText}</button>
             </DropDownHeader>
+            {/* DropDownBody displays suggestions -> either autocomplete for input search or the most recent 4 searches */}
             <DropDownBody
                 isOpen={isOpen}
                 style={{
+                    // need to be positioned directly below the gray-background container,
+                    // which has dynamic height according to the number of items in SelectedResults
+                    // also, width must match the width of the container specified above,
+                    // which is also dynamic depending on the specified width / width set to the UserSearchDropDown comp. as a whole
+                    // Thus, use ref and offsetHeight/offsetWidth to get that value
+                    // 'offset~' and not 'client~' to include borders etc.
                     top: containerRef.current?.offsetHeight,
                     width: containerRef.current?.offsetWidth,
                 }}

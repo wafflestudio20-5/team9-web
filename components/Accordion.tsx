@@ -16,15 +16,14 @@ interface AccordionProps {
 }
 
 export function Accordion({
-    addAble,
-    title,
-    sequence,
-    mapFunction,
-    style,
+    addAble, // can users add items directly to the accordion? (default : false)
+    title, // title of the accordion, always displayed.
+    sequence, // sequence of data
+    mapFunction, // function returning an ReactNode for each item(datum) in sequence(data)
+    style, // optional CSS Properties for more custom styling
 }: AccordionProps) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [isClosing, setIsClosing] = useState(false);
-    const bodyHolderRef = useRef<HTMLDivElement | null>(null);
+    const [isOpen, setIsOpen] = useState(false); // is the accordion closed?
+    const [isClosing, setIsClosing] = useState(false); // is the accordion closing? (for animation purposes)
     const openAccordion = () => {
         setIsOpen(true);
     };
@@ -52,7 +51,7 @@ export function Accordion({
                 onClick={isOpen ? closeAccordion : openAccordion}
             >
                 <span style={style?.title}>{title}</span>
-                {addAble && (
+                {addAble && ( // false by default
                     <button>
                         <Image src={add_icon} alt="add" />
                     </button>
@@ -71,7 +70,7 @@ export function Accordion({
                         height: isOpen ? 'auto' : 0,
                     }}
                 >
-                    <div className={styles.holder} ref={bodyHolderRef}>
+                    <div className={styles.holder}>
                         {sequence.map(mapFunction)}
                     </div>
                 </div>
