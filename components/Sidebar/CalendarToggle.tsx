@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import styles from './calendarToggle.module.scss';
+import styles from './CalendarToggle.module.scss';
 
 import ColoredCheckbox from '@components/ColoredCheckbox';
 
