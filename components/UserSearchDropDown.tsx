@@ -14,6 +14,7 @@ import useLocalStorage from '@hooks/useLocalStorage';
 import account_default_icon from '@images/account_default_icon.svg';
 import close_icon from '@images/close_icon.svg';
 import updateSequence from '@utils/updateSequence';
+import { UserDataForSearch } from '@customTypes/UserTypes';
 
 interface UserSearchDropDownProps {
     toExecute: (item: UserDataForSearch) => void;
