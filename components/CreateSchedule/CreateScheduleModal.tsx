@@ -81,7 +81,10 @@ export default function CreateScheduleModal() {
                         />
                     </button>
                 </div>
-                <form onSubmit={submitCreateScheduleForm}>
+                <form
+                    className={styles.createScheduleForm}
+                    onSubmit={submitCreateScheduleForm}
+                >
                     <div className={styles.body}>
                         <div className={styles.title}>
                             <input
