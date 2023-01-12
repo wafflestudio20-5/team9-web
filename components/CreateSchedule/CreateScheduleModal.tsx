@@ -63,6 +63,8 @@ export default function CreateScheduleModal() {
 
     const submitCreateScheduleForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        // if all inputs are valid
+        closeModal(MODAL_NAMES.createSchedule);
     };
 
     return (
