@@ -31,13 +31,17 @@ export default function CreateScheduleModal() {
     const [endDate, setEndDate] = useState<Date>(
         new Date(yearNow, monthNow - 1, dateNow),
     );
-    const [sharingcScope, setSharingScope] = useState<string>('');
+    const [sharingScope, setSharingScope] = useState<string>('');
     const [hideDetails, setHideDetails] = useState<boolean>(false);
     const [description, setDescription] = useState<string>('');
     const [dateValidity, setDateValidity] = useState({
         isValid: true,
         message: '',
     });
+    const isHideDisabled = useMemo(
+        () => sharingScope === SharingScope.private,
+        [sharingScope],
+    );
 
     const validateDate = (isValid: boolean, msg: string) => {
         if (isValid) {
@@ -63,15 +67,6 @@ export default function CreateScheduleModal() {
         const isValid = validateDate(newDate >= startDate, msg);
         if (isValid) setEndDate(newDate);
     };
-
-    const disableHideOption = () =>
-        useMemo(() => {
-            if (sharingcScope === SharingScope.private) {
-                setHideDetails(true);
-                return true;
-            }
-            return false;
-        }, [sharingcScope]);
 
     const cancelCreateSchedule = () => {
         // TODO: alert (for double checking)
@@ -109,9 +104,11 @@ export default function CreateScheduleModal() {
                             <input
                                 type="text"
                                 value={title}
+                                id="title"
                                 onChange={e => setTitle(e.target.value)}
                                 placeholder="제목 추가"
                             />
+                            <label htmlFor="title"></label>
                         </div>
                         <div className={styles.content}>
                             <div className={styles.time}>
@@ -172,7 +169,7 @@ export default function CreateScheduleModal() {
                                     />
                                 </label>
                                 <SharingScopeDropDown
-                                    scope={sharingcScope}
+                                    scope={sharingScope}
                                     setScope={setSharingScope}
                                 />
                             </div>
@@ -180,11 +177,11 @@ export default function CreateScheduleModal() {
                                 <input
                                     type="checkbox"
                                     id="hideDetails"
-                                    checked={hideDetails}
+                                    checked={hideDetails || isHideDisabled}
                                     onChange={() =>
                                         setHideDetails(!hideDetails)
                                     }
-                                    disabled={disableHideOption()}
+                                    disabled={isHideDisabled}
                                 />
                                 <label htmlFor="hideDetails">
                                     세부 일정 비공개
