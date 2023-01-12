@@ -1,9 +1,11 @@
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import styles from './CreateScheduleModal.module.scss';
 
-import SharingScopeDropDown from '@components/CreateSchedule/SharingScopeDropDown';
+import SharingScopeDropDown, {
+    SharingScope,
+} from '@components/CreateSchedule/SharingScopeDropDown';
 import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
@@ -44,6 +46,15 @@ export default function CreateScheduleModal() {
         }
         setEndDate(newDate);
     };
+
+    const disableHideOption = () =>
+        useMemo(() => {
+            if (sharingcScope === SharingScope.private) {
+                setHideDetails(true);
+                return true;
+            }
+            return false;
+        }, [sharingcScope]);
 
     const cancelCreateSchedule = () => {
         // TODO: alert (for double checking)
@@ -144,6 +155,7 @@ export default function CreateScheduleModal() {
                                     onChange={() =>
                                         setHideDetails(!hideDetails)
                                     }
+                                    disabled={disableHideOption()}
                                 />
                                 <label htmlFor="hideDetails">
                                     세부 일정 비공개
