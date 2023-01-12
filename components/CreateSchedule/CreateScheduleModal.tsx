@@ -17,6 +17,10 @@ import people_icon from '@images/people_icon.svg';
 import text_icon from '@images/text_icon.svg';
 import time_icon from '@images/time_icon.svg';
 
+function ErrorMessage({ children }: { children: React.ReactNode }) {
+    return <span className={styles.errorMessage}>{children}</span>;
+}
+
 export default function CreateScheduleModal() {
     const { yearNow, monthNow, dateNow } = useDateContext();
     const { closeModal } = useModal();
@@ -30,21 +34,34 @@ export default function CreateScheduleModal() {
     const [sharingcScope, setSharingScope] = useState<string>('');
     const [hideDetails, setHideDetails] = useState<boolean>(false);
     const [description, setDescription] = useState<string>('');
+    const [dateValidity, setDateValidity] = useState({
+        isValid: true,
+        message: '',
+    });
+
+    const validateDate = (isValid: boolean, msg: string) => {
+        if (isValid) {
+            setDateValidity({ isValid: true, message: '' });
+            return true;
+        } else {
+            setDateValidity({ isValid: false, message: msg });
+            setTimeout(() => {
+                setDateValidity({ isValid: true, message: '' });
+            }, 2000);
+            return false;
+        }
+    };
 
     const changeStartDate = (newDate: Date) => {
-        if (newDate > endDate) {
-            // TODO: alert
-            return;
-        }
-        setStartDate(newDate);
+        const msg = '시작 일시는 종료 일시 이전이어야 합니다.';
+        const isValid = validateDate(newDate <= endDate, msg);
+        if (isValid) setStartDate(newDate);
     };
 
     const changeEndDate = (newDate: Date) => {
-        if (newDate < startDate) {
-            // TODO: alert
-            return;
-        }
-        setEndDate(newDate);
+        const msg = '종료 일시는 시작 일시 이후여야 합니다.';
+        const isValid = validateDate(newDate >= startDate, msg);
+        if (isValid) setEndDate(newDate);
     };
 
     const disableHideOption = () =>
@@ -98,36 +115,43 @@ export default function CreateScheduleModal() {
                         </div>
                         <div className={styles.content}>
                             <div className={styles.time}>
-                                <label>
-                                    <Image
-                                        src={time_icon}
-                                        alt="date_time"
-                                        width={24}
-                                    />
-                                </label>
-                                <div className={styles.timeInputContainer}>
-                                    <MiniCalendarDropDown
-                                        title="시작 날짜"
-                                        date={startDate}
-                                        changeDate={changeStartDate}
-                                    />
-                                    <TimeDropDown
-                                        title="시작 시간"
-                                        time={startDate}
-                                        changeTime={changeStartDate}
-                                    />
-                                    <span>-</span>
-                                    <MiniCalendarDropDown
-                                        title="종료 날짜"
-                                        date={endDate}
-                                        changeDate={changeEndDate}
-                                    />
-                                    <TimeDropDown
-                                        title="시작 시간"
-                                        time={endDate}
-                                        changeTime={changeEndDate}
-                                    />
+                                <div>
+                                    <label>
+                                        <Image
+                                            src={time_icon}
+                                            alt="date_time"
+                                            width={24}
+                                        />
+                                    </label>
+                                    <div className={styles.timeInputContainer}>
+                                        <MiniCalendarDropDown
+                                            title="시작 날짜"
+                                            date={startDate}
+                                            changeDate={changeStartDate}
+                                        />
+                                        <TimeDropDown
+                                            title="시작 시간"
+                                            time={startDate}
+                                            changeTime={changeStartDate}
+                                        />
+                                        <span>-</span>
+                                        <MiniCalendarDropDown
+                                            title="종료 날짜"
+                                            date={endDate}
+                                            changeDate={changeEndDate}
+                                        />
+                                        <TimeDropDown
+                                            title="시작 시간"
+                                            time={endDate}
+                                            changeTime={changeEndDate}
+                                        />
+                                    </div>
                                 </div>
+                                {!dateValidity.isValid && (
+                                    <ErrorMessage>
+                                        {dateValidity.message}
+                                    </ErrorMessage>
+                                )}
                             </div>
                             <div className={styles.participant}>
                                 <label>

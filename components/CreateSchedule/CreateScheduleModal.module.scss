@@ -103,12 +103,20 @@
             }
         }
 
-        .timeInputContainer {
-            display: flex;
-            align-items: center;
+        .time {
+            display: block;
 
-            span {
-                margin: 0 5px;
+            > div {
+                display: flex;
+            }
+
+            .timeInputContainer {
+                display: flex;
+                align-items: center;
+
+                span {
+                    margin: 0 5px;
+                }
             }
         }
 
@@ -180,4 +188,10 @@
             }
         }
     }
+}
+
+.errorMessage {
+    padding-left: 55px;
+    color: tomato;
+    font-size: small;
 }
