@@ -11,13 +11,13 @@ import { formatTime } from '@utils/formatTime';
 interface TimeDropDownProps {
     title: string;
     time: Date;
-    setTime(newTime: Date): void;
+    changeTime(newTime: Date): void;
 }
 
 export default function TimeDropDown({
     title,
     time,
-    setTime,
+    changeTime,
 }: TimeDropDownProps) {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
 
@@ -69,7 +69,7 @@ export default function TimeDropDown({
                             <li
                                 key={i}
                                 onClick={() => {
-                                    setTime(newTime);
+                                    changeTime(newTime);
                                     closeDropDown();
                                 }}
                             >
