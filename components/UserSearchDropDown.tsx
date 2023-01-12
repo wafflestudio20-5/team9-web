@@ -232,7 +232,7 @@ export function UserSearchDropDown({
                     width: containerRef.current?.offsetWidth,
                 }}
             >
-                <ul>
+                <ul className={styles.suggestions}>
                     {suggestions ? (
                         suggestions.slice(0, 4)?.map(item => {
                             return (
@@ -266,7 +266,7 @@ const SelectedResultItem = ({
     return (
         <div key={index} className={styles.selected}>
             <Image src={account_default_icon} alt="image" />
-            <div>{item['username']}</div>
+            <div>{item.username}</div>
             <button onClick={onClick}>
                 <Image src={close_icon} alt="remove" />
             </button>
@@ -283,7 +283,13 @@ const SuggestionItem = ({
 }) => {
     return (
         <li key={item.pk} onClick={onClick}>
-            {item.email}
+            <div className={styles.suggestion}>
+                <Image src={account_default_icon} alt="image" />
+                <div>
+                    <div className={styles.username}>{item.username}</div>
+                    <div className={styles.email}>{item.email}</div>
+                </div>
+            </div>
         </li>
     );
 };

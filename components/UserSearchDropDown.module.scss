@@ -64,3 +64,32 @@
         transition: width 300ms;
     }
 }
+
+.suggestions {
+    padding: 0px;
+    margin: 0px;
+    li {
+        padding: 0px;
+    }
+}
+.suggestion {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px 8px 10px;
+    height: 100%;
+    width: 100%;
+
+    img {
+        height: 30px;
+        width: 30px;
+    }
+    .username {
+        font-size: 14px;
+        overflow-x: ellipsis;
+    }
+    .email {
+        font-size: 12px;
+        color: v.$font-gray;
+        overflow-x: ellipsis;
+    }
+}
