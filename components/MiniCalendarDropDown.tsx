@@ -16,13 +16,13 @@ import { DAYS_ARR } from '@utils/formatDay';
 interface MiniCalendarDropDownProps {
     title: string;
     date: Date;
-    setDate(newDate: Date): void;
+    changeDate(newDate: Date): void;
 }
 
 export default function MiniCalendarDropDown({
     title,
     date,
-    setDate,
+    changeDate,
 }: MiniCalendarDropDownProps) {
     const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
 
@@ -74,10 +74,10 @@ export default function MiniCalendarDropDown({
         return styles.notCurrMonth;
     };
 
-    const changeDate = (newDate: Date) => {
+    const onChangeDate = (newDate: Date) => {
         newDate.setHours(date.getHours());
         newDate.setMinutes(date.getMinutes());
-        setDate(newDate);
+        changeDate(newDate);
         closeDropDown();
     };
 
@@ -139,7 +139,7 @@ export default function MiniCalendarDropDown({
                                     className={getDateClassName(item)}
                                     key={index}
                                     onClick={() => {
-                                        changeDate(item);
+                                        onChangeDate(item);
                                     }}
                                 >
                                     <div>{item.getDate()}</div>
