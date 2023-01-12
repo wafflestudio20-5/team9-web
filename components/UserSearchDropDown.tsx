@@ -165,28 +165,21 @@ export function UserSearchDropDown({
                     }
                 >
                     {selectedResults?.map((item, index) => {
-                        // display rounded rectangles for each item selected (staged)
-                        // TODO after profile pictures are added:
-                        //          get profile picture with UserData and pass that to Image src prop
                         return (
-                            <div key={index} className={styles.selected}>
-                                <Image src={account_default_icon} alt="image" />
-                                <div>{item['username']}</div>
-                                <button
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        setSelectedResults(
-                                            selectedResults.filter(i => {
-                                                return i !== item;
-                                            }),
-                                            // Remove button: on click,
-                                            // remove this item from selectedResults
-                                        );
-                                    }}
-                                >
-                                    <Image src={close_icon} alt="remove" />
-                                </button>
-                            </div>
+                            <SelectedResultItem
+                                item={item}
+                                index={index}
+                                onClick={e => {
+                                    e.preventDefault();
+                                    setSelectedResults(
+                                        selectedResults.filter(i => {
+                                            return i !== item;
+                                        }),
+                                        // Remove button: on click,
+                                        // remove this item from selectedResults
+                                    );
+                                }}
+                            />
                         );
                     })}
                     <form
@@ -243,12 +236,10 @@ export function UserSearchDropDown({
                     {suggestions ? (
                         suggestions.slice(0, 4)?.map(item => {
                             return (
-                                <li
-                                    key={item.pk}
+                                <SuggestionItem
+                                    item={item}
                                     onClick={() => handleSubmit(item)}
-                                >
-                                    {item.email}
-                                </li>
+                                />
                             );
                         })
                     ) : (
@@ -259,3 +250,40 @@ export function UserSearchDropDown({
         </DropDown>
     );
 }
+
+const SelectedResultItem = ({
+    item,
+    index,
+    onClick,
+}: {
+    item: UserDataForSearch;
+    index: number;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}) => {
+    // display rounded rectangles for each item selected (staged)
+    // TODO after profile pictures are added:
+    //          get profile picture with UserData and pass that to Image src prop
+    return (
+        <div key={index} className={styles.selected}>
+            <Image src={account_default_icon} alt="image" />
+            <div>{item['username']}</div>
+            <button onClick={onClick}>
+                <Image src={close_icon} alt="remove" />
+            </button>
+        </div>
+    );
+};
+
+const SuggestionItem = ({
+    item,
+    onClick,
+}: {
+    item: UserDataForSearch;
+    onClick: (e: React.MouseEvent<HTMLLIElement>) => void;
+}) => {
+    return (
+        <li key={item.pk} onClick={onClick}>
+            {item.email}
+        </li>
+    );
+};
