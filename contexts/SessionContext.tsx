@@ -59,8 +59,7 @@ const SessionContext = createContext<SessionContextData>({
     },
 });
 
-const apiEndPoint =
-    'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/';
+const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
 //const apiEndPoint = 'http://127.0.0.1:8000/api/v1/user/';
 
 //const REACT_APP_BASE_BACKEND_URL = 'http://127.0.0.1:8000';
@@ -167,10 +166,12 @@ export default function SessionProvider({ children }: PropsWithChildren) {
     const openGoogleLoginPage = useCallback(() => {
         // const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
         // const redirectUri = 'api/v1/user/login/google/callback/';
+
         // const scope = [
         //     'https://www.googleapis.com/auth/userinfo.email',
         //     'https://www.googleapis.com/auth/userinfo.profile',
         // ].join(' ');
+
         // const params = {
         //     response_type: 'code',
         //     client_id: REACT_APP_GOOGLE_CLIENT_ID,
@@ -179,19 +180,24 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         //     access_type: 'offline',
         //     scope,
         // };
+
         // const urlParams = new URLSearchParams(params).toString();
-        // window.location.href = `${googleAuthUrl}?${urlParams}`;
+
+        // window.location.href = `${googleAuthUrl}?${urlParams}`;        
     }, []);
 
     const openKakaoLoginPage = useCallback(() => {
         // const kakaoAuthUrl = 'https://kauth.kakao.com/oauth/authorize';
         // const redirectUri = 'api/v1/user/login/kakao/callback/';
+
         // const params = {
         //     response_type: 'code',
         //     client_id: REACT_APP_KAKAO_REST_API_KEY,
         //     redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${redirectUri}`,
         // };
+
         // const urlParams = new URLSearchParams(params).toString();
+
         // window.location.href = `${kakaoAuthUrl}?${urlParams}`;
     }, []);
 
