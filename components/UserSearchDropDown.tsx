@@ -164,11 +164,11 @@ export function UserSearchDropDown({
                         // otherwise, expand horizontally to fill all space available(flexGrow)
                     }
                 >
-                    {selectedResults?.map((item, index) => {
+                    {selectedResults?.map(item => {
                         return (
                             <SelectedResultItem
+                                key={item.pk}
                                 item={item}
-                                index={index}
                                 onClick={e => {
                                     e.preventDefault();
                                     setSelectedResults(
@@ -237,6 +237,7 @@ export function UserSearchDropDown({
                         suggestions.slice(0, 4)?.map(item => {
                             return (
                                 <SuggestionItem
+                                    key={item.pk}
                                     item={item}
                                     onClick={() => handleSubmit(item)}
                                 />
@@ -253,18 +254,16 @@ export function UserSearchDropDown({
 
 const SelectedResultItem = ({
     item,
-    index,
     onClick,
 }: {
     item: UserDataForSearch;
-    index: number;
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }) => {
     // display rounded rectangles for each item selected (staged)
     // TODO after profile pictures are added:
     //          get profile picture with UserData and pass that to Image src prop
     return (
-        <div key={index} className={styles.selected}>
+        <div className={styles.selected}>
             <Image src={account_default_icon} alt="image" />
             <div>{item.username}</div>
             <button onClick={onClick}>
@@ -282,7 +281,7 @@ const SuggestionItem = ({
     onClick: (e: React.MouseEvent<HTMLLIElement>) => void;
 }) => {
     return (
-        <li key={item.pk} onClick={onClick}>
+        <li onClick={onClick}>
             <div className={styles.suggestion}>
                 <Image src={account_default_icon} alt="image" />
                 <div>
