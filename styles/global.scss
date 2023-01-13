@@ -9,6 +9,19 @@ body {
 * {
     box-sizing: border-box;
     font-family: 'Nanum Gothic', sans-serif;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: v.$border-gray;
+
+        &:hover {
+            background-color: v.$font-gray;
+        }
+    }
 }
 
 a {

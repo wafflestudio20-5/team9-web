@@ -19,7 +19,7 @@ export default function HelpDropDown() {
                     <Image src={help_icon} height={24} alt="help" />
                 </button>
             </DropDownHeader>
-            <DropDownBody isOpen={isOpen}>
+            <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>
                 <ul>
                     <li>도움말</li>
                     <li>학습 센터</li>
