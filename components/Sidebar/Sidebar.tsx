@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useMemo } from 'react';
 import Swal from 'sweetalert2';
 
 import { mapCalendarToggle } from './CalendarToggle';
@@ -9,13 +10,22 @@ import { followRequestAPI } from '@apis/social';
 import { Accordion } from '@components/Accordion';
 import MiniCalendar from '@components/MiniCalendar';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
+import { useCalendarContext } from '@contexts/CalendarContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 
 export default function Sidebar() {
+    const router = useRouter();
+    const { year, month, date } = router.query;
     const { isClosing } = useSidebarContext();
     const { accessToken } = useSessionContext();
+    const { calendarType } = useCalendarContext();
+    const dateObjNow = useMemo(() => {
+        return year
+            ? new Date(Number(year), Number(month) - 1, Number(date))
+            : new Date();
+    }, [year, month, date]);
     const sendFollowRequest = (item: UserDataForSearch) => {
         followRequestAPI(item.pk, accessToken)
             .then(() => {
@@ -58,7 +68,16 @@ export default function Sidebar() {
             <div className={styles.wrapper}>
                 <div>Create Button</div>
                 <div className={styles.calendar}>
-                    <MiniCalendar />
+                    <MiniCalendar
+                        dateVariable={dateObjNow}
+                        onDateClickFunction={date => {
+                            router.push(
+                                `/${calendarType}/${date?.getFullYear()}/${
+                                    date.getMonth() + 1
+                                }/${date.getDate()}`,
+                            );
+                        }}
+                    />
                 </div>
                 <div className={styles.addFriends}>
                     <div>친구 추가</div>

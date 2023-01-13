@@ -1,25 +1,22 @@
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React, { useState, useMemo } from 'react';
 
 import styles from './MiniCalendar.module.scss';
 
-import { useCalendarContext } from '@contexts/CalendarContext';
-import { useDateContext } from '@contexts/DateContext';
 import before_icon from '@images/before_icon.svg';
 import next_icon from '@images/next_icon.svg';
 import { DAYS_ARR } from '@utils/formatDay';
 
-export default function MiniCalendar() {
-    const router = useRouter();
-    const { yearNow, monthNow, dateNow } = useDateContext();
-    const { calendarType } = useCalendarContext();
-    const { year, month, date } = router.query;
-    const [dateObj, setDateObj] = useState(
-        year
-            ? new Date(Number(year), Number(month) - 1, Number(date))
-            : new Date(), // for `/today` pages. (year, month, date are undefined)
-    );
+interface MiniCalendarProps {
+    dateVariable: Date;
+    onDateClickFunction: (e: Date) => void;
+}
+
+export default function MiniCalendar({
+    dateVariable,
+    onDateClickFunction,
+}: MiniCalendarProps) {
+    const [dateObj, setDateObj] = useState(dateVariable);
 
     const firstDay = useMemo(() => {
         const temp = new Date(dateObj.getFullYear(), dateObj.getMonth(), 1);
@@ -54,11 +51,7 @@ export default function MiniCalendar() {
         if (item.toDateString() == today.toDateString()) {
             return styles.today;
         }
-        if (
-            item.getFullYear() == yearNow &&
-            item.getMonth() + 1 == monthNow &&
-            item.getDate() == dateNow
-        ) {
+        if (item.toDateString() == dateVariable.toDateString()) {
             return styles.chosen;
         }
         if (item.getMonth() == dateObj.getMonth()) {
@@ -74,7 +67,7 @@ export default function MiniCalendar() {
                 }월`}</div>
             </div>
             <div className={styles.buttons}>
-                <button onClick={showPrevious}>
+                <button onClick={showPrevious} type="button">
                     <Image
                         src={before_icon}
                         alt="이전"
@@ -82,7 +75,7 @@ export default function MiniCalendar() {
                         height={24}
                     />
                 </button>
-                <button onClick={showNext}>
+                <button onClick={showNext} type="button">
                     <Image src={next_icon} alt="이후" width={24} height={24} />
                 </button>
             </div>
@@ -102,11 +95,7 @@ export default function MiniCalendar() {
                             className={getDateClassName(item)}
                             key={index}
                             onClick={() => {
-                                router.push(
-                                    `/${calendarType}/${item.getFullYear()}/${
-                                        item.getMonth() + 1
-                                    }/${item.getDate()}`,
-                                );
+                                onDateClickFunction(item);
                             }}
                         >
                             <div>{item.getDate()}</div>
