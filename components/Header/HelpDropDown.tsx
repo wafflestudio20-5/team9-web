@@ -21,7 +21,7 @@ export default function HelpDropDown() {
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={toggleDropDown}>
+            <DropDownHeader controlDropDown={toggleDropDown}>
                 <button
                     ref={dropDownHeaderButtonRef}
                     onBlur={maintainFocus}

@@ -18,20 +18,20 @@ export function DropDown({ dropDownRef, children }: DropDownProps) {
 }
 
 interface DropDownHeaderProps {
-    openDropDown(): void;
+    controlDropDown(): void;
     style?: React.CSSProperties;
     children: React.ReactNode;
 }
 
 export function DropDownHeader({
-    openDropDown,
+    controlDropDown,
     style,
     children,
 }: DropDownHeaderProps) {
     return (
         <div
             className={styles.dropDownHeader}
-            onClick={openDropDown}
+            onClick={controlDropDown}
             style={style}
         >
             {children}

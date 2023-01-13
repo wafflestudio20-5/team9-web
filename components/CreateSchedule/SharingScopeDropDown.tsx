@@ -33,7 +33,7 @@ export default function SharingScopeDropDown({
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={toggleDropDown}>
+            <DropDownHeader controlDropDown={toggleDropDown}>
                 <input
                     type="text"
                     value={scope}

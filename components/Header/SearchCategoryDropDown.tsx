@@ -24,7 +24,7 @@ export default function SearchCategoryDropDown() {
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
+            <DropDownHeader controlDropDown={openDropDown}>
                 <button
                     type="button"
                     onClick={openDropDown}

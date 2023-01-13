@@ -54,7 +54,7 @@ export default function CalendarTypeDropDown() {
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={toggleDropDown}>
+            <DropDownHeader controlDropDown={toggleDropDown}>
                 <button ref={dropDownHeaderButtonRef} onBlur={maintainFocus}>
                     <span style={{ whiteSpace: 'nowrap' }}>
                         {formatCalendarTypeToKr(calendarType)}

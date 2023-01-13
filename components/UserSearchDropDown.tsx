@@ -159,7 +159,7 @@ export function UserSearchDropDown({
                 //     // openDropDown does nothing here to prevent dropdown expanding when removing items from selectedResults
                 //     return null;
                 // }}
-                openDropDown={openDropDown}
+                controlDropDown={openDropDown}
                 style={{ display: 'flex' }}
             >
                 {/* Large container. Area with gray background. Holds all selected(staged) items + input box */}

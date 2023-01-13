@@ -37,7 +37,7 @@ export default function MiniCalendarDropDown({
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={toggleDropDown}>
+            <DropDownHeader controlDropDown={toggleDropDown}>
                 <input
                     type="text"
                     value={`${date.getFullYear()}년 ${

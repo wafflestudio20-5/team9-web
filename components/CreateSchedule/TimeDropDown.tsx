@@ -39,7 +39,7 @@ export default function TimeDropDown({
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={toggleDropDown}>
+            <DropDownHeader controlDropDown={toggleDropDown}>
                 <input
                     type="text"
                     value={formatTime(time)}
