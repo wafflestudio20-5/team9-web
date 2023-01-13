@@ -94,12 +94,8 @@ export default function MiniCalendar({
                         <div
                             className={getDateClassName(item)}
                             key={index}
-                            data-datestring={item.toString()} // div dataset can only store string value
-                            onClick={e => {
-                                const date = new Date(
-                                    e.currentTarget.dataset.datestring!,
-                                ); // restore string value to date object
-                                onDateClickFunction(date);
+                            onClick={() => {
+                                onDateClickFunction(item);
                             }}
                         >
                             <div>{item.getDate()}</div>
