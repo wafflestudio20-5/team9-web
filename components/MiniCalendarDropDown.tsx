@@ -19,7 +19,14 @@ export default function MiniCalendarDropDown({
     date,
     changeDate,
 }: MiniCalendarDropDownProps) {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const {
+        isOpen,
+        dropDownRef,
+        dropDownHeaderInputRef,
+        closeDropDown,
+        toggleDropDown,
+        maintainFocus,
+    } = useDropDown();
 
     const onChangeDate = (newDate: Date) => {
         newDate.setHours(date.getHours());
@@ -30,15 +37,16 @@ export default function MiniCalendarDropDown({
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
+            <DropDownHeader openDropDown={toggleDropDown}>
                 <input
                     type="text"
                     value={`${date.getFullYear()}년 ${
                         date.getMonth() + 1
                     }월 ${date.getDate()}일`}
-                    onClick={openDropDown}
                     placeholder={title}
                     readOnly
+                    ref={dropDownHeaderInputRef}
+                    onBlur={maintainFocus}
                     style={{ width: '120px' }}
                 />
             </DropDownHeader>

@@ -58,16 +58,10 @@ export function DropDownBody({ isOpen, style, children }: DropDownBodyProps) {
 
 export function useDropDown() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isFocused, setIsFocused] = useState<boolean>(false);
     const dropDownRef = useRef<HTMLDivElement>(null);
-
-    const onClickOuterArea = (e: MouseEvent) => {
-        if (
-            dropDownRef.current !== null &&
-            !dropDownRef.current.contains(e.target as Node)
-        ) {
-            setIsOpen(false);
-        }
-    };
+    const dropDownHeaderButtonRef = useRef<HTMLButtonElement>(null);
+    const dropDownHeaderInputRef = useRef<HTMLInputElement>(null);
 
     const openDropDown = () => {
         setIsOpen(true);
@@ -81,14 +75,69 @@ export function useDropDown() {
         setIsOpen(!isOpen);
     };
 
+    const maintainFocus = () => {
+        console.log('maintain', dropDownHeaderButtonRef);
+        if (isOpen) {
+            console.log('focus', dropDownHeaderButtonRef);
+            dropDownHeaderButtonRef.current?.focus();
+            dropDownHeaderInputRef.current?.focus();
+        } else {
+            dropDownHeaderButtonRef.current?.blur();
+            dropDownHeaderInputRef.current?.blur();
+        }
+    };
+
+    const toggleFocus = () => {
+        if (isFocused) {
+            dropDownHeaderButtonRef.current?.blur();
+            setIsFocused(false);
+        } else {
+            dropDownHeaderButtonRef.current?.focus();
+            setIsFocused(true);
+        }
+    };
+
+    const onClickOuterArea = (e: MouseEvent) => {
+        console.log('click', dropDownHeaderButtonRef);
+        if (dropDownRef.current === null) return;
+
+        if (dropDownRef.current.contains(e.target as Node)) {
+            dropDownHeaderButtonRef.current?.focus();
+            dropDownHeaderInputRef.current?.focus();
+        } else {
+            console.log('outer', dropDownHeaderButtonRef);
+            closeDropDown();
+        }
+    };
+
+    useEffect(() => {
+        if (isFocused) {
+            openDropDown();
+        } else {
+            closeDropDown();
+        }
+    }, [isFocused]);
+
     useEffect(() => {
         if (isOpen) {
             window.addEventListener('click', onClickOuterArea);
         }
+
+        maintainFocus();
         return () => {
             window.removeEventListener('click', onClickOuterArea);
         };
     }, [isOpen]);
 
-    return { dropDownRef, isOpen, openDropDown, closeDropDown, toggleDropDown };
+    return {
+        isOpen,
+        dropDownRef,
+        dropDownHeaderButtonRef,
+        dropDownHeaderInputRef,
+        openDropDown,
+        closeDropDown,
+        toggleDropDown,
+        maintainFocus,
+        toggleFocus,
+    };
 }

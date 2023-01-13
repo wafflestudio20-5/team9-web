@@ -10,12 +10,23 @@ import {
 import help_icon from '@images/help_icon.svg';
 
 export default function HelpDropDown() {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const {
+        isOpen,
+        dropDownRef,
+        dropDownHeaderButtonRef,
+        toggleDropDown,
+        closeDropDown,
+        maintainFocus,
+    } = useDropDown();
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
-                <button onClick={openDropDown}>
+            <DropDownHeader openDropDown={toggleDropDown}>
+                <button
+                    ref={dropDownHeaderButtonRef}
+                    onBlur={maintainFocus}
+                    className="helpbutton"
+                >
                     <Image src={help_icon} height={24} alt="help" />
                 </button>
             </DropDownHeader>

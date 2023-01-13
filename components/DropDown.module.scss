@@ -9,6 +9,12 @@
     height: 100%;
 }
 
+.dropDownHeader {
+    &:focus {
+        background-color: tomato;
+    }
+}
+
 .dropDownBody {
     position: absolute;
     top: 45px;

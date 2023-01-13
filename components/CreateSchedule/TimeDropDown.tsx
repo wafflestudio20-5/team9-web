@@ -19,7 +19,14 @@ export default function TimeDropDown({
     time,
     changeTime,
 }: TimeDropDownProps) {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const {
+        isOpen,
+        dropDownRef,
+        dropDownHeaderInputRef,
+        closeDropDown,
+        toggleDropDown,
+        maintainFocus,
+    } = useDropDown();
 
     const getTimeList = () =>
         Array(24 * 4)
@@ -32,13 +39,14 @@ export default function TimeDropDown({
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
+            <DropDownHeader openDropDown={toggleDropDown}>
                 <input
                     type="text"
                     value={formatTime(time)}
-                    onClick={openDropDown}
                     placeholder={title}
                     readOnly
+                    ref={dropDownHeaderInputRef}
+                    onBlur={maintainFocus}
                     style={{ width: '75px' }}
                 />
             </DropDownHeader>

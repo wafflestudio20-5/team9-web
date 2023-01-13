@@ -22,17 +22,25 @@ export default function SharingScopeDropDown({
     scope,
     setScope,
 }: SharingScopeDropDownProps) {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const {
+        isOpen,
+        dropDownRef,
+        dropDownHeaderInputRef,
+        closeDropDown,
+        toggleDropDown,
+        maintainFocus,
+    } = useDropDown();
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
+            <DropDownHeader openDropDown={toggleDropDown}>
                 <input
                     type="text"
                     value={scope}
-                    onClick={openDropDown}
                     placeholder="공개 설정"
                     readOnly
+                    ref={dropDownHeaderInputRef}
+                    onBlur={maintainFocus}
                 />
             </DropDownHeader>
             <DropDownBody
