@@ -70,11 +70,15 @@ export function useDropDown() {
     };
 
     const openDropDown = () => {
-        setIsOpen(!isOpen);
+        setIsOpen(true);
     };
 
     const closeDropDown = () => {
         setIsOpen(false);
+    };
+
+    const toggleDropDown = () => {
+        setIsOpen(!isOpen);
     };
 
     useEffect(() => {
@@ -86,5 +90,5 @@ export function useDropDown() {
         };
     }, [isOpen]);
 
-    return { dropDownRef, isOpen, openDropDown, closeDropDown };
+    return { dropDownRef, isOpen, openDropDown, closeDropDown, toggleDropDown };
 }
