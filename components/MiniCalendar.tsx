@@ -67,7 +67,7 @@ export default function MiniCalendar({
                 }월`}</div>
             </div>
             <div className={styles.buttons}>
-                <button onClick={showPrevious}>
+                <button onClick={showPrevious} type="button">
                     <Image
                         src={before_icon}
                         alt="이전"
@@ -75,7 +75,7 @@ export default function MiniCalendar({
                         height={24}
                     />
                 </button>
-                <button onClick={showNext}>
+                <button onClick={showNext} type="button">
                     <Image src={next_icon} alt="이후" width={24} height={24} />
                 </button>
             </div>
@@ -94,12 +94,8 @@ export default function MiniCalendar({
                         <div
                             className={getDateClassName(item)}
                             key={index}
-                            data-datestring={item.toString()} // div dataset can only store string value
-                            onClick={e => {
-                                const date = new Date(
-                                    e.currentTarget.dataset.datestring!,
-                                ); // restore string value to date object
-                                onDateClickFunction(date);
+                            onClick={() => {
+                                onDateClickFunction(item);
                             }}
                         >
                             <div>{item.getDate()}</div>
