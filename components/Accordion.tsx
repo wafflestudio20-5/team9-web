@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import styles from './Accordion.module.scss';
 

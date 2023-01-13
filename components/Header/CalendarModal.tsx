@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 
 import styles from './CalendarModal.module.scss';
 
-import { useCalendarContext } from '@contexts/CalendarContext';
 import MiniCalendar from '@components/MiniCalendar';
 import ModalFrame from '@components/ModalFrame';
+import { useCalendarContext } from '@contexts/CalendarContext';
 import { MODAL_NAMES } from '@contexts/ModalContext';
 
 export default function CalendarModal() {
