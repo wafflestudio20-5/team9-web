@@ -19,15 +19,21 @@ export function DropDown({ dropDownRef, children }: DropDownProps) {
 
 interface DropDownHeaderProps {
     openDropDown(): void;
+    style?: React.CSSProperties;
     children: React.ReactNode;
 }
 
 export function DropDownHeader({
     openDropDown,
+    style,
     children,
 }: DropDownHeaderProps) {
     return (
-        <div className={styles.dropDownHeader} onClick={openDropDown}>
+        <div
+            className={styles.dropDownHeader}
+            onClick={openDropDown}
+            style={style}
+        >
             {children}
         </div>
     );
@@ -35,14 +41,7 @@ export function DropDownHeader({
 
 interface DropDownBodyProps {
     isOpen: boolean;
-    style?: {
-        top?: string;
-        bottom?: string;
-        left?: string;
-        right?: string;
-        width?: string;
-        height?: string;
-    };
+    style?: React.CSSProperties;
     children: React.ReactNode;
 }
 

@@ -1,0 +1,12 @@
+@use '@styles/variables.scss' as v;
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding-left: 13px;
+    &:hover {
+        background-color: v.$background-gray;
+        cursor: pointer;
+    }
+}

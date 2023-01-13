@@ -1,9 +1,55 @@
+.open {
+    overflow-x: hidden;
+    animation: soft-expand 300ms;
+}
+.closing {
+    overflow-x: hidden;
+    width: 0px;
+    animation: soft-collapse 300ms;
+}
+
 .wrapper {
     width: 256px;
     display: flex;
     flex-direction: column;
+
+    div {
+        white-space: nowrap;
+    }
 }
 
 .calendar {
     height: 250px;
+}
+
+.addFriends {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 14px;
+    margin: 10px 5px 10px 20px;
+}
+
+.accordions {
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+}
+
+@keyframes soft-expand {
+    from {
+        width: 0;
+    }
+    to {
+        width: 256px;
+    }
+}
+
+@keyframes soft-collapse {
+    from {
+        width: 256px;
+    }
+    to {
+        width: 0px;
+    }
 }
