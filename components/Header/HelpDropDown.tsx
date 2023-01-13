@@ -21,9 +21,11 @@ export default function HelpDropDown() {
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>
                 <ul>
-                    <li>도움말</li>
-                    <li>학습 센터</li>
-                    <li>업데이트</li>
+                    {['도움말', '학습센터', '업데이트'].map((v, i) => (
+                        <li key={i} onClick={closeDropDown}>
+                            {v}
+                        </li>
+                    ))}
                 </ul>
                 <ul>
                     <li>J에게 의견 보내기</li>

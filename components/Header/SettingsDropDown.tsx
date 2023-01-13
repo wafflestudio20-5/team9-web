@@ -21,15 +21,15 @@ export default function SettingsDropDown() {
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>
                 <ul>
-                    <li>설정</li>
-                    <li>휴지통</li>
+                    <li onClick={closeDropDown}>설정</li>
+                    <li onClick={closeDropDown}>휴지통</li>
                 </ul>
                 <ul>
-                    <li>밀도 및 색상</li>
-                    <li>인쇄</li>
+                    <li onClick={closeDropDown}>밀도 및 색상</li>
+                    <li onClick={closeDropDown}>인쇄</li>
                 </ul>
                 <ul>
-                    <li>부가기능 설치하기</li>
+                    <li onClick={closeDropDown}>부가기능 설치하기</li>
                 </ul>
             </DropDownBody>
         </DropDown>
