@@ -6,7 +6,7 @@ import {
     DropDownHeader,
     useDropDown,
 } from '@components/DropDown';
-import MiniCalendar from './MiniCalendar';
+import MiniCalendar from '@components/MiniCalendar';
 
 interface MiniCalendarDropDownProps {
     title: string;
