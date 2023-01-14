@@ -107,8 +107,6 @@ export default function CreateScheduleModal() {
                                 id="title"
                                 onChange={e => setTitle(e.target.value)}
                                 placeholder="제목 추가"
-                                onFocus={() => console.log('title focused')}
-                                onBlur={() => console.log('title blurred')}
                             />
                             <label htmlFor="title"></label>
                         </div>
