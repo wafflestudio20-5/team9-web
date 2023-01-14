@@ -25,11 +25,7 @@ export default function SearchCategoryDropDown() {
     return (
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader controlDropDown={openDropDown}>
-                <button
-                    type="button"
-                    onClick={openDropDown}
-                    style={buttonStyle}
-                >
+                <button type="button" style={buttonStyle}>
                     <span>{category}</span>
                     <Image
                         src={dropdown_icon}
@@ -38,7 +34,7 @@ export default function SearchCategoryDropDown() {
                     />
                 </button>
             </DropDownHeader>
-            <DropDownBody isOpen={isOpen}>
+            <DropDownBody isOpen={isOpen} style={{ width: '125px' }}>
                 <ul>
                     <li onClick={changeCategory}>사용 중인 캘린더</li>
                     <li onClick={changeCategory}>전체 캘린더</li>

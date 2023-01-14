@@ -22,11 +22,7 @@ export default function HelpDropDown() {
     return (
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader controlDropDown={toggleDropDown}>
-                <button
-                    ref={dropDownHeaderButtonRef}
-                    onBlur={maintainFocus}
-                    className="helpbutton"
-                >
+                <button ref={dropDownHeaderButtonRef} onBlur={maintainFocus}>
                     <Image src={help_icon} height={24} alt="help" />
                 </button>
             </DropDownHeader>

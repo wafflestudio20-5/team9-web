@@ -10,16 +10,15 @@
 }
 
 .dropDownHeader {
-    &:focus {
-        background-color: tomato;
-    }
+    position: relative;
+    z-index: 160;
 }
 
 .dropDownBody {
     position: absolute;
     top: 45px;
     left: 0px;
-    z-index: 200;
+    z-index: 150;
     border: 1px solid v.$border-gray;
     background-color: white;
     box-shadow: 0 5px 8px 3px v.$border-gray;
@@ -31,7 +30,6 @@
         opacity: 0;
         visibility: hidden;
         transform: translateY(-20px);
-        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
     }
 
     ul {

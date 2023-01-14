@@ -22,11 +22,7 @@ export default function SettingsDropDown() {
     return (
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader controlDropDown={toggleDropDown}>
-                <button
-                    ref={dropDownHeaderButtonRef}
-                    onBlur={maintainFocus}
-                    className="settingsbutton"
-                >
+                <button ref={dropDownHeaderButtonRef} onBlur={maintainFocus}>
                     <Image src={settings_icon} height={24} alt="settings" />
                 </button>
             </DropDownHeader>

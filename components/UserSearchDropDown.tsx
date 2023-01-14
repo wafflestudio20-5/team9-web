@@ -29,14 +29,7 @@ export function UserSearchDropDown({
     width,
     underlineColor,
 }: UserSearchDropDownProps) {
-    const {
-        dropDownRef,
-        openDropDown,
-        closeDropDown,
-        isOpen,
-        dropDownHeaderInputRef,
-        maintainFocus,
-    } = useDropDown();
+    const { isOpen, dropDownRef, openDropDown, closeDropDown } = useDropDown();
 
     const { stored, setStored } = useLocalStorage<UserDataForSearch[] | null>(
         'searchRecord_addFriend',
@@ -204,8 +197,6 @@ export function UserSearchDropDown({
                             }}
                             className={styles.input}
                             placeholder="사용자 검색..."
-                            ref={dropDownHeaderInputRef}
-                            onBlur={maintainFocus}
                         />
                     </form>
                     <div

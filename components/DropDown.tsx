@@ -60,7 +60,6 @@ export function useDropDown() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dropDownRef = useRef<HTMLDivElement>(null);
     const dropDownHeaderButtonRef = useRef<HTMLButtonElement>(null);
-    const dropDownHeaderInputRef = useRef<HTMLInputElement>(null);
 
     const openDropDown = () => {
         setIsOpen(true);
@@ -74,21 +73,22 @@ export function useDropDown() {
         setIsOpen(!isOpen);
     };
 
+    const focusHeaderButton = () => {
+        dropDownHeaderButtonRef.current?.focus();
+    };
+
+    const blurHeaderButton = () => {
+        dropDownHeaderButtonRef.current?.blur();
+    };
+
     const maintainFocus = () => {
-        if (isOpen) {
-            dropDownHeaderButtonRef.current?.focus();
-            dropDownHeaderInputRef.current?.focus();
-        } else {
-            dropDownHeaderButtonRef.current?.blur();
-            dropDownHeaderInputRef.current?.blur();
-        }
+        if (isOpen) focusHeaderButton();
     };
 
     const onClickOuterArea = (e: MouseEvent) => {
         if (dropDownRef.current === null) return;
-
         if (dropDownRef.current.contains(e.target as Node)) {
-            maintainFocus();
+            focusHeaderButton();
         } else {
             closeDropDown();
         }
@@ -97,8 +97,9 @@ export function useDropDown() {
     useEffect(() => {
         if (isOpen) {
             window.addEventListener('click', onClickOuterArea);
+        } else {
+            blurHeaderButton();
         }
-        maintainFocus();
 
         return () => {
             window.removeEventListener('click', onClickOuterArea);
@@ -109,7 +110,6 @@ export function useDropDown() {
         isOpen,
         dropDownRef,
         dropDownHeaderButtonRef,
-        dropDownHeaderInputRef,
         openDropDown,
         closeDropDown,
         toggleDropDown,
