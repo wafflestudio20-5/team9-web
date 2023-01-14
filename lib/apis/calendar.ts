@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { apiEndPoint } from './endpoint';
 
+import { Schedule } from '@customTypes/ScheduleTypes';
+
 const CalendarAPI = axios.create({
     baseURL: `${apiEndPoint}/calendar`,
     withCredentials: true,
@@ -13,21 +15,13 @@ interface CalendarURLParams {
     to: string;
 }
 
-interface Schedule {
-    title: string;
-    start_at: string;
-    end_at: string;
-    description: string;
-    participants?: { pk: number }[];
-}
-
 const getURLWithParams = (urlParams: CalendarURLParams) =>
     `?email=${urlParams.email}&from=${urlParams.from}&to=${urlParams.to}`;
 
 export const createScheduleAPI = (
     urlParams: CalendarURLParams,
     newSchedule: Schedule,
-    accessToken: string,
+    accessToken: string | null,
 ) =>
     CalendarAPI.post(
         `/schedule/?email=${urlParams.email}&from=${urlParams.from}&to=${urlParams.to}`,
@@ -58,7 +52,7 @@ export const editScheduleAPI = (
     urlParams: CalendarURLParams,
     pk: number,
     newSchedule: Schedule,
-    accessToken: string,
+    accessToken: string | null,
 ) =>
     CalendarAPI.patch(
         `/schedule/${pk}/?email=${urlParams.email}&from=${urlParams.from}&to=${urlParams.to}`,
@@ -69,7 +63,7 @@ export const editScheduleAPI = (
 export const deleteScheduleAPI = (
     urlParams: CalendarURLParams,
     pk: number,
-    accessToken: string,
+    accessToken: string | null,
 ) =>
     CalendarAPI.delete(
         `/schedule/${pk}/?email=${urlParams.email}&from=${urlParams.from}&to=${urlParams.to}`,
