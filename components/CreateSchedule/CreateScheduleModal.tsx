@@ -108,7 +108,10 @@ export default function CreateScheduleModal() {
     };
 
     return (
-        <ModalFrame modalName={MODAL_NAMES.createSchedule}>
+        <ModalFrame
+            modalName={MODAL_NAMES.createSchedule}
+            onClickBackDrop={cancelCreateSchedule}
+        >
             <div className={styles.createScheduleModal}>
                 <div className={styles.header}>
                     <button
