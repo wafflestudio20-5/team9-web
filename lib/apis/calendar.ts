@@ -21,6 +21,9 @@ interface Schedule {
     participants?: { pk: number }[];
 }
 
+const getURLWithParams = (urlParams: CalendarURLParams) =>
+    `?email=${urlParams.email}&from=${urlParams.from}&to=${urlParams.to}`;
+
 export const createScheduleAPI = (
     urlParams: CalendarURLParams,
     newSchedule: Schedule,
