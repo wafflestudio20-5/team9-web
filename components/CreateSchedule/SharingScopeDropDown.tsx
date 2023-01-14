@@ -41,7 +41,7 @@ export default function SharingScopeDropDown({
                 isOpen={isOpen}
                 style={{ width: '100px', top: '40px', zIndex: 130 }}
             >
-                <ul>
+                <ul style={{ padding: '0' }}>
                     {Object.values(SharingScope).map(value => (
                         <li
                             key={value}

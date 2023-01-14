@@ -50,7 +50,7 @@ export default function TimeDropDown({
                     overflow: 'auto',
                 }}
             >
-                <ul>
+                <ul style={{ padding: '0' }}>
                     {getTimeList().map((newTime, i) => {
                         return (
                             <li
