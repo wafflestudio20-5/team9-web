@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useRef } from 'react';
 
 import {
     useDropDown,
@@ -10,19 +10,19 @@ import {
 import settings_icon from '@images/settings_icon.svg';
 
 export default function SettingsDropDown() {
+    const triggerRef = useRef<HTMLButtonElement>(null);
     const {
         isOpen,
         dropDownRef,
-        dropDownHeaderButtonRef,
         closeDropDown,
         toggleDropDown,
         maintainFocus,
-    } = useDropDown();
+    } = useDropDown(triggerRef);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader controlDropDown={toggleDropDown}>
-                <button ref={dropDownHeaderButtonRef} onBlur={maintainFocus}>
+                <button ref={triggerRef} onBlur={maintainFocus}>
                     <Image src={settings_icon} height={24} alt="settings" />
                 </button>
             </DropDownHeader>

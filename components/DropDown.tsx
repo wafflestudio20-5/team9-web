@@ -56,28 +56,23 @@ export function DropDownBody({ isOpen, style, children }: DropDownBodyProps) {
     );
 }
 
-export function useDropDown() {
+export function useDropDown(triggerRef?: React.RefObject<HTMLElement>) {
     /**
-     * pass `dropDownRef` as props to <DropDown> component (to detect outer area clicks)
-     * pass `openDropDown` or `toggleDropDown` as `controlDropDown` props to <DropDownHeader> component
+     * pass `dropDownRef` to props of <DropDown> component (to detect outer area clicks)
+     * pass `openDropDown` or `toggleDropDown` to `controlDropDown` props of <DropDownHeader> component
      *      then you can open or toggle dropdown by clicking dropdown header
-     * pass `isOpen` as props to <DropDownBody> component (to activate or deactivate dropdown)
+     * pass `isOpen` to props of <DropDownBody> component (to activate or deactivate dropdown)
      *
      * (optional)
-     * if you want to keep focus on your dropdown trigger button,
-     *      1) pass `dropDownHeaderButtonRef` below as `ref` props to your trigger button
-     *      2) and pass `maintainFocus` function below as `onBlur` props to your trigger button
-     *      caution! trigger button should be <button> element
-     * if you want to keep focus on your dropdown trigger input,
-     *      1) pass `dropDownHeaderInputRef` below as `ref` props to your trigger input
-     *      2) and pass `maintainFocus` function below as `onBlur` props to your trigger input
-     *      caution! trigger input should be <input> element
+     * if you want to keep focus on your dropdown trigger element,
+     *      1) create your ref object
+     *      2) pass it to `ref` props of your trigger element
+     *      3) pass it to parameter(`triggerRef`) of `useDropDown`
+     *      4) pass `maintainFocus` function below to `onBlur` props of your trigger element
      */
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dropDownRef = useRef<HTMLDivElement>(null);
-    const dropDownHeaderButtonRef = useRef<HTMLButtonElement>(null); // ref for dropdown trigger <button> element
-    const dropDownHeaderInputRef = useRef<HTMLInputElement>(null); // ref for dropdown trigger <input> element
 
     const openDropDown = () => {
         setIsOpen(true);
@@ -91,21 +86,19 @@ export function useDropDown() {
         setIsOpen(!isOpen);
     };
 
-    // focus the dropdown trigger element(button or input) in dropdown header
-    const focusHeader = () => {
-        dropDownHeaderButtonRef.current?.focus();
-        dropDownHeaderInputRef.current?.focus();
+    // focus the dropdown trigger element in dropdown header
+    const focusTriggerElement = () => {
+        triggerRef?.current?.focus();
     };
 
-    // blur the dropdown trigger element(button or input) in dropdown header
-    const blurHeader = () => {
-        dropDownHeaderButtonRef.current?.blur();
-        dropDownHeaderInputRef.current?.blur();
+    // blur the dropdown trigger element in dropdown header
+    const blurTriggerElement = () => {
+        triggerRef?.current?.blur();
     };
 
-    // keep focus on the dropdown trigger element(button or input) in dropdown header
+    // keep focus on the dropdown trigger element in dropdown header
     const maintainFocus = () => {
-        if (isOpen) focusHeader();
+        if (isOpen) focusTriggerElement();
     };
 
     const onClickOuterArea = (e: MouseEvent) => {
@@ -113,7 +106,7 @@ export function useDropDown() {
 
         // if clicked area is included in dropdown, keep focus on the trigger element
         if (dropDownRef.current.contains(e.target as Node)) {
-            focusHeader();
+            focusTriggerElement();
         } else {
             closeDropDown();
         }
@@ -123,7 +116,7 @@ export function useDropDown() {
         if (isOpen) {
             window.addEventListener('click', onClickOuterArea);
         } else {
-            blurHeader();
+            blurTriggerElement();
         }
 
         return () => {
@@ -134,8 +127,6 @@ export function useDropDown() {
     return {
         isOpen,
         dropDownRef,
-        dropDownHeaderButtonRef,
-        dropDownHeaderInputRef,
         openDropDown,
         closeDropDown,
         toggleDropDown,
