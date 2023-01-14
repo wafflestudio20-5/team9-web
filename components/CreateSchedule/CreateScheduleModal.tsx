@@ -1,9 +1,11 @@
+import axios from 'axios';
 import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
 import Swal from 'sweetalert2';
 
 import styles from './CreateScheduleModal.module.scss';
 
+import { createScheduleAPI } from '@apis/calendar';
 import SharingScopeDropDown, {
     SharingScope,
 } from '@components/CreateSchedule/SharingScopeDropDown';
@@ -12,17 +14,28 @@ import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
+import { useSessionContext } from '@contexts/SessionContext';
+import { Schedule } from '@customTypes/ScheduleTypes';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
 import people_icon from '@images/people_icon.svg';
 import text_icon from '@images/text_icon.svg';
 import time_icon from '@images/time_icon.svg';
+import { formatFullDate } from '@utils/formatDate';
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 2500,
+});
 
 function ErrorMessage({ message }: { message: string }) {
     return <span className={styles.errorMessage}>{message}</span>;
 }
 
 export default function CreateScheduleModal() {
+    const { user, accessToken } = useSessionContext();
     const { yearNow, monthNow, dateNow } = useDateContext();
     const { closeModal } = useModal();
     const [title, setTitle] = useState<string>('');
@@ -43,6 +56,8 @@ export default function CreateScheduleModal() {
         () => sharingScope === SharingScope.private,
         [sharingScope],
     );
+
+    if (!user) return;
 
     const validateDate = (isValid: boolean, msg: string) => {
         if (isValid) {
@@ -69,19 +84,22 @@ export default function CreateScheduleModal() {
         if (isValid) setEndDate(newDate);
     };
 
+    const warningAlert = () =>
+        Swal.fire({
+            title: '작성 중인 일정을 삭제하시겠습니까?',
+            text: '변경사항이 저장되지 않았습니다.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '삭제',
+            confirmButtonColor: '#1a73e8',
+            cancelButtonText: '취소',
+            cancelButtonColor: '#000000',
+            reverseButtons: true,
+        });
+
     const cancelCreateSchedule = () => {
         if (title || sharingScope || description) {
-            Swal.fire({
-                title: '작성 중인 일정을 삭제하시겠습니까?',
-                text: '변경사항이 저장되지 않았습니다.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: '삭제',
-                confirmButtonColor: '#1a73e8',
-                cancelButtonText: '취소',
-                cancelButtonColor: '#000000',
-                reverseButtons: true,
-            }).then(result => {
+            warningAlert().then(result => {
                 if (result.isConfirmed) {
                     closeModal(MODAL_NAMES.createSchedule);
                 }
@@ -91,20 +109,70 @@ export default function CreateScheduleModal() {
         }
     };
 
-    const submitCreateScheduleForm = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        // if all inputs are valid
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top',
-            showConfirmButton: false,
-            timer: 2000,
-        });
+    const successAlert = () => {
         Toast.fire({
             icon: 'success',
             title: '일정이 추가되었습니다.',
         });
-        closeModal(MODAL_NAMES.createSchedule);
+    };
+
+    const errorAlert = (message: string) => {
+        Toast.fire({
+            icon: 'error',
+            title: message,
+        });
+    };
+
+    const validateScheduleData = () => {
+        if (!title) {
+            return { isValid: false, message: '제목을 적어주세요.' };
+        } else if (!sharingScope) {
+            return { isValid: false, message: '공개 범위를 설정해주세요.' };
+        } else if (!description) {
+            return { isValid: false, message: '설명을 적어주세요.' };
+        } else {
+            return { isValid: true, message: '' };
+        }
+    };
+
+    const submitCreateScheduleForm = async (
+        e: React.FormEvent<HTMLFormElement>,
+    ) => {
+        e.preventDefault();
+        const { isValid, message } = validateScheduleData();
+        if (!isValid) {
+            errorAlert(message);
+            return;
+        }
+
+        const urlParams = {
+            email: user?.email,
+            from: formatFullDate(startDate),
+            to: formatFullDate(endDate),
+        };
+        const newSchedule: Schedule = {
+            title: title,
+            start_at: formatFullDate(startDate, true),
+            end_at: formatFullDate(endDate, true),
+            description: description,
+        };
+
+        try {
+            const res = await createScheduleAPI(
+                urlParams,
+                newSchedule,
+                accessToken,
+            );
+            successAlert();
+            closeModal(MODAL_NAMES.createSchedule);
+        } catch (error) {
+            console.log(error);
+            if (axios.isAxiosError(error)) {
+                errorAlert(error.response?.data.message);
+            } else {
+                errorAlert('일정 생성을 생성하지 못했습니다.');
+            }
+        }
     };
 
     return (
