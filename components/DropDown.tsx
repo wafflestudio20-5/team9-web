@@ -68,11 +68,16 @@ export function useDropDown() {
      *      1) pass `dropDownHeaderButtonRef` below as `ref` props to your trigger button
      *      2) and pass `maintainFocus` function below as `onBlur` props to your trigger button
      *      caution! trigger button should be <button> element
+     * if you want to keep focus on your dropdown trigger input,
+     *      1) pass `dropDownHeaderInputRef` below as `ref` props to your trigger input
+     *      2) and pass `maintainFocus` function below as `onBlur` props to your trigger input
+     *      caution! trigger input should be <input> element
      */
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dropDownRef = useRef<HTMLDivElement>(null);
     const dropDownHeaderButtonRef = useRef<HTMLButtonElement>(null); // ref for dropdown trigger <button> element
+    const dropDownHeaderInputRef = useRef<HTMLInputElement>(null); // ref for dropdown trigger <input> element
 
     const openDropDown = () => {
         setIsOpen(true);
@@ -86,27 +91,29 @@ export function useDropDown() {
         setIsOpen(!isOpen);
     };
 
-    // focus the button element(dropdown trigger) in dropdown header
-    const focusHeaderButton = () => {
+    // focus the dropdown trigger element(button or input) in dropdown header
+    const focusHeader = () => {
         dropDownHeaderButtonRef.current?.focus();
+        dropDownHeaderInputRef.current?.focus();
     };
 
-    // blur the trigger button element(dropdown trigger) in dropdown header
-    const blurHeaderButton = () => {
+    // blur the dropdown trigger element(button or input) in dropdown header
+    const blurHeader = () => {
         dropDownHeaderButtonRef.current?.blur();
+        dropDownHeaderInputRef.current?.blur();
     };
 
-    // keep focus on the button element(dropdown trigger) in dropdown header
+    // keep focus on the dropdown trigger element(button or input) in dropdown header
     const maintainFocus = () => {
-        if (isOpen) focusHeaderButton();
+        if (isOpen) focusHeader();
     };
 
     const onClickOuterArea = (e: MouseEvent) => {
         if (dropDownRef.current === null) return;
 
-        // if clicked area is included in dropdown, keep focus on the trigger button
+        // if clicked area is included in dropdown, keep focus on the trigger element
         if (dropDownRef.current.contains(e.target as Node)) {
-            focusHeaderButton();
+            focusHeader();
         } else {
             closeDropDown();
         }
@@ -116,7 +123,7 @@ export function useDropDown() {
         if (isOpen) {
             window.addEventListener('click', onClickOuterArea);
         } else {
-            blurHeaderButton();
+            blurHeader();
         }
 
         return () => {
@@ -128,6 +135,7 @@ export function useDropDown() {
         isOpen,
         dropDownRef,
         dropDownHeaderButtonRef,
+        dropDownHeaderInputRef,
         openDropDown,
         closeDropDown,
         toggleDropDown,

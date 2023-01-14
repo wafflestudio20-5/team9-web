@@ -29,7 +29,7 @@ export function UserSearchDropDown({
     width,
     underlineColor,
 }: UserSearchDropDownProps) {
-    const { isOpen, dropDownRef, openDropDown, closeDropDown } = useDropDown();
+    const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
 
     const { stored, setStored } = useLocalStorage<UserDataForSearch[] | null>(
         'searchRecord_addFriend',

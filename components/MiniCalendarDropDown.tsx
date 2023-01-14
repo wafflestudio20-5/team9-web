@@ -19,7 +19,7 @@ export default function MiniCalendarDropDown({
     date,
     changeDate,
 }: MiniCalendarDropDownProps) {
-    const { isOpen, dropDownRef, closeDropDown, openDropDown } = useDropDown();
+    const { isOpen, dropDownRef, openDropDown, closeDropDown } = useDropDown();
 
     const onChangeDate = (newDate: Date) => {
         newDate.setHours(date.getHours());
