@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
+import Swal from 'sweetalert2';
 
 import styles from './CreateScheduleModal.module.scss';
 
@@ -69,13 +70,40 @@ export default function CreateScheduleModal() {
     };
 
     const cancelCreateSchedule = () => {
-        // TODO: alert (for double checking)
-        closeModal(MODAL_NAMES.createSchedule);
+        if (title || sharingScope || description) {
+            Swal.fire({
+                title: '작성 중인 일정을 삭제하시겠습니까?',
+                text: '변경사항이 저장되지 않았습니다.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '삭제',
+                confirmButtonColor: '#1a73e8',
+                cancelButtonText: '취소',
+                cancelButtonColor: '#000000',
+                reverseButtons: true,
+            }).then(result => {
+                if (result.isConfirmed) {
+                    closeModal(MODAL_NAMES.createSchedule);
+                }
+            });
+        } else {
+            closeModal(MODAL_NAMES.createSchedule);
+        }
     };
 
     const submitCreateScheduleForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // if all inputs are valid
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+        });
+        Toast.fire({
+            icon: 'success',
+            title: '일정이 추가되었습니다.',
+        });
         closeModal(MODAL_NAMES.createSchedule);
     };
 
