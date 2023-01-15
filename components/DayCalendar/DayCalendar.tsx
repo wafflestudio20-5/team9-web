@@ -9,11 +9,14 @@ import { useSidebarContext } from '@contexts/SidebarContext';
 
 export default function DayCalendar() {
     const { isOpen } = useSidebarContext();
-    const { dateNow, dayNow } = useDateContext();
+    const { yearNow, monthNow, dateNow } = useDateContext();
     return (
         <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <></>}
-            <DayComponent isToday={true} date={dateNow} day={dayNow} />
+            <DayComponent
+                isToday={true}
+                date={new Date(yearNow, monthNow, dateNow)}
+            />
         </div>
     );
 }

@@ -8,11 +8,9 @@ import { DAYS_ARR } from '@utils/formatDay';
 export default function DayComponent({
     isToday,
     date,
-    day,
 }: {
     isToday: boolean;
-    date: number;
-    day: number;
+    date: Date;
 }) {
     const { calendarType } = useCalendarContext();
     const twentyFourHours: Array<number> = Array.from(
@@ -42,8 +40,10 @@ export default function DayComponent({
         <div className={styles.dayContentHolder}>
             <div className={getHeadType()}>
                 <div className={styles.dayHolder}>
-                    <div className={styles.dayText}>{DAYS_ARR[day]}</div>
-                    <div className={getDateType()}>{date}</div>
+                    <div className={styles.dayText}>
+                        {DAYS_ARR[date.getDay()]}
+                    </div>
+                    <div className={getDateType()}>{date.getDate()}</div>
                 </div>
             </div>
             <div className={styles.mainSchedules}>
