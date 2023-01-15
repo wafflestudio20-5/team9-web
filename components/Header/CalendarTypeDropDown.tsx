@@ -13,14 +13,13 @@ import { useDateContext } from '@contexts/DateContext';
 import dropdown_icon from '@images/dropdown_icon.svg';
 
 export default function CalendarTypeDropDown() {
-    const triggerRef = useRef<HTMLButtonElement>(null);
     const {
         dropDownRef,
         isOpen,
         closeDropDown,
         toggleDropDown,
         maintainFocus,
-    } = useDropDown(triggerRef);
+    } = useDropDown();
     const { yearNow, monthNow, dateNow } = useDateContext();
     const { calendarType } = useCalendarContext();
     const router = useRouter();
@@ -54,8 +53,8 @@ export default function CalendarTypeDropDown() {
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader controlDropDown={toggleDropDown}>
-                <button ref={triggerRef} onBlur={maintainFocus}>
+            <DropDownHeader>
+                <button onClick={toggleDropDown} onBlur={maintainFocus}>
                     <span style={{ whiteSpace: 'nowrap' }}>
                         {formatCalendarTypeToKr(calendarType)}
                     </span>

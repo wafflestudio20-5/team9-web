@@ -24,7 +24,7 @@
     box-shadow: 0 5px 8px 3px v.$border-gray;
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    transition: all 0.3s ease;
 
     &.closed {
         opacity: 0;

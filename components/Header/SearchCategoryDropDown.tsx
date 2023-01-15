@@ -10,7 +10,13 @@ import {
 import dropdown_icon from '@images/dropdown_icon.svg';
 
 export default function SearchCategoryDropDown() {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const {
+        dropDownRef,
+        isOpen,
+        toggleDropDown,
+        closeDropDown,
+        maintainFocus,
+    } = useDropDown();
     const [category, setCategory] = useState<string>('사용 중인 캘린더');
 
     const changeCategory = () => {
@@ -24,8 +30,13 @@ export default function SearchCategoryDropDown() {
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader controlDropDown={openDropDown}>
-                <button type="button" style={buttonStyle}>
+            <DropDownHeader>
+                <button
+                    type="button"
+                    style={buttonStyle}
+                    onClick={toggleDropDown}
+                    onBlur={maintainFocus}
+                >
                     <span>{category}</span>
                     <Image
                         src={dropdown_icon}
