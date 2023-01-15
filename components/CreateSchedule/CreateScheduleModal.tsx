@@ -57,8 +57,6 @@ export default function CreateScheduleModal() {
         [sharingScope],
     );
 
-    if (!user) return;
-
     const validateDate = (isValid: boolean, msg: string) => {
         if (isValid) {
             setDateValidity({ isValid: true, message: '' });
@@ -139,6 +137,11 @@ export default function CreateScheduleModal() {
         e: React.FormEvent<HTMLFormElement>,
     ) => {
         e.preventDefault();
+        if (!user) {
+            errorAlert('로그인을 먼저 해주세요.');
+            return;
+        }
+
         const { isValid, message } = validateScheduleData();
         if (!isValid) {
             errorAlert(message);
@@ -146,7 +149,7 @@ export default function CreateScheduleModal() {
         }
 
         const urlParams = {
-            email: user?.email,
+            pk: user.pk,
             from: formatFullDate(startDate),
             to: formatFullDate(endDate),
         };
@@ -158,15 +161,10 @@ export default function CreateScheduleModal() {
         };
 
         try {
-            const res = await createScheduleAPI(
-                urlParams,
-                newSchedule,
-                accessToken,
-            );
+            await createScheduleAPI(urlParams, newSchedule, accessToken);
             successAlert();
             closeModal(MODAL_NAMES.createSchedule);
         } catch (error) {
-            console.log(error);
             if (axios.isAxiosError(error)) {
                 errorAlert(error.response?.data.message);
             } else {
