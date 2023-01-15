@@ -1,20 +1,9 @@
 @use '@styles/variables.scss' as v;
 
 .dayContentHolder {
-    flex-grow: 1;
-
-    .headRowInDay {
+    .headRow {
         display: flex;
         justify-content: flex-start;
-        flex: 1;
-        width: auto;
-    }
-
-    .headRowInWeek {
-        display: flex;
-        justify-content: center;
-        flex: 1;
-        width: auto;
     }
 
     .dayHolder {
@@ -35,7 +24,6 @@
 
         .dayNotTodayNumber {
             height: 24px;
-            width: 24px;
         }
     }
 
@@ -51,4 +39,6 @@
             border-bottom: 1px v.$border-gray solid;
         }
     }
+
+    border-right: 1px solid v.$border-gray;
 }

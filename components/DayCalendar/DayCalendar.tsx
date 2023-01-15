@@ -13,10 +13,12 @@ export default function DayCalendar() {
     return (
         <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <></>}
-            <DayComponent
-                isToday={true}
-                date={new Date(yearNow, monthNow, dateNow)}
-            />
+            <div className={styles.dayHolder}>
+                <DayComponent
+                    isToday={true}
+                    date={new Date(yearNow, monthNow, dateNow)}
+                />
+            </div>
         </div>
     );
 }

@@ -13,18 +13,11 @@ export default function DayComponent({
     date: Date;
 }) {
     const { calendarType } = useCalendarContext();
+
     const twentyFourHours: Array<number> = Array.from(
         { length: 24 },
         (v, i) => i + 1,
     );
-
-    const getHeadType = () => {
-        if (calendarType === 'month') {
-            return styles.headRowInWeek;
-        } else if (calendarType === 'day') {
-            return styles.headRowInDay;
-        }
-    };
 
     // get type of date
     // draw blue circle when date is 'today'
@@ -38,7 +31,7 @@ export default function DayComponent({
 
     return (
         <div className={styles.dayContentHolder}>
-            <div className={getHeadType()}>
+            <div className={styles.headRow}>
                 <div className={styles.dayHolder}>
                     <div className={styles.dayText}>
                         {DAYS_ARR[date.getDay()]}

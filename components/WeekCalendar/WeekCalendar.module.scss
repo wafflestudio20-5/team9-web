@@ -7,7 +7,9 @@
     justify-content: stretch;
 }
 
-.dayHolder {
-    border-left: 1px solid v.$border-gray;
+.weekHolder {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     flex: 1;
+    border-left: 1px solid v.$border-gray;
 }
