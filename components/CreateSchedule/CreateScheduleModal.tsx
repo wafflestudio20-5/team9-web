@@ -57,6 +57,8 @@ export default function CreateScheduleModal() {
         [sharingScope],
     );
 
+    if (!user) return;
+
     const validateDate = (isValid: boolean, msg: string) => {
         if (isValid) {
             setDateValidity({ isValid: true, message: '' });
