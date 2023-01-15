@@ -6,16 +6,14 @@ import Swal from 'sweetalert2';
 import styles from './CreateScheduleModal.module.scss';
 
 import { createScheduleAPI } from '@apis/calendar';
-import ProtectionLevelDropDown, {
-    ProtectionLevel,
-} from '@components/CreateSchedule/ProtectionLevelDropDown';
+import ProtectionLevelDropDown from '@components/CreateSchedule/ProtectionLevelDropDown';
 import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
-import { Schedule } from '@customTypes/ScheduleTypes';
+import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
 import people_icon from '@images/people_icon.svg';
@@ -45,7 +43,9 @@ export default function CreateScheduleModal() {
     const [endDate, setEndDate] = useState<Date>(
         new Date(yearNow, monthNow - 1, dateNow),
     );
-    const [protectionLevel, setProtectionLevel] = useState<string>('');
+    const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
+        ProtectionLevel.pulbic,
+    );
     const [hideDetails, setHideDetails] = useState<boolean>(false);
     const [description, setDescription] = useState<string>('');
     const [dateValidity, setDateValidity] = useState({
@@ -160,6 +160,7 @@ export default function CreateScheduleModal() {
             start_at: formatFullDate(startDate, true),
             end_at: formatFullDate(endDate, true),
             description: description,
+            protection_level: protectionLevel,
         };
 
         try {
@@ -259,11 +260,11 @@ export default function CreateScheduleModal() {
                                 </label>
                                 <input type="text" placeholder="참석자" />
                             </div>
-                            <div className={styles.sharingScope}>
+                            <div className={styles.protectionLevel}>
                                 <label>
                                     <Image
                                         src={lock_icon}
-                                        alt="public_scope"
+                                        alt="protection_level"
                                         width={24}
                                     />
                                 </label>

@@ -6,16 +6,14 @@ import {
     DropDownHeader,
     useDropDown,
 } from '@components/DropDown';
+import {
+    ProtectionLevel,
+    ProtectionLevelText,
+} from '@customTypes/ScheduleTypes';
 
 interface ProtectionLevelDropDownProps {
-    protectionLevel: string;
-    setProtectionLevel: Dispatch<SetStateAction<string>>;
-}
-
-export enum ProtectionLevel {
-    public = '전체공개',
-    follower = '친구공개',
-    private = '비공개',
+    protectionLevel: ProtectionLevel;
+    setProtectionLevel: Dispatch<SetStateAction<ProtectionLevel>>;
 }
 
 export default function ProtectionLevelDropDown({
@@ -35,7 +33,7 @@ export default function ProtectionLevelDropDown({
             <DropDownHeader style={{ zIndex: 140 }}>
                 <input
                     type="text"
-                    value={protectionLevel}
+                    value={ProtectionLevelText[protectionLevel]}
                     placeholder="공개 설정"
                     readOnly
                     onClick={toggleDropDown}
@@ -47,15 +45,15 @@ export default function ProtectionLevelDropDown({
                 style={{ width: '100px', top: '40px', zIndex: 130 }}
             >
                 <ul style={{ padding: '0' }}>
-                    {Object.values(ProtectionLevel).map(value => (
+                    {Object.keys(ProtectionLevelText).map(lev => (
                         <li
-                            key={value}
+                            key={lev}
                             onClick={() => {
-                                setProtectionLevel(value);
+                                setProtectionLevel(Number(lev));
                                 closeDropDown();
                             }}
                         >
-                            {value}
+                            {ProtectionLevelText[Number(lev)]}
                         </li>
                     ))}
                 </ul>
