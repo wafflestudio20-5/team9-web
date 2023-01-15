@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { Axios, AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import React, {
     createContext,
@@ -36,10 +36,19 @@ interface SessionContextData {
     accessToken: string | null;
     login(loginInfo: LoginInfo): void;
     logout(): void;
-    register(registerInfo: RegisterInfo): void;
+    register(registerInfo: RegisterInfo): Promise<RegisterErrorData>;
     openGoogleLoginPage(): void;
     openKakaoLoginPage(): void;
     postHandleSocialLogin(postSocialLoginData: PostSocialLoginData): void;
+}
+
+interface RegisterErrorData {
+    error: boolean;
+    username: string;
+    email: string;
+    password1: string;
+    password2: string;
+    birthdate: string;
 }
 
 interface PostSocialLoginData {
@@ -135,29 +144,101 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             });
     };
 
-    const register = (registerInfo: RegisterInfo) => {
+    const register = async (registerInfo: RegisterInfo) => {
         //send register request
-        axios
-            .post(apiEndPoint + 'registration/', registerInfo)
-            .then(response => {
-                setUser({
-                    email: response.data.user.email,
-                    birthdate: response.data.user.birthdate,
-                    username: response.data.user.username,
-                });
-                setAccessToken(response.data.access_token);
-                setRefreshToken(response.data.refresh_token);
-                axios.defaults.headers.post['X-CSRFToken'] =
-                    response.data._csrf;
-            })
-            .catch(error => {
-                setTimeout(function () {
-                    Swal.fire({
-                        title: 'Cannot register',
-                        confirmButtonText: 'OK',
-                    });
-                }, 10);
+
+        try {
+            const response = await axios.post(
+                apiEndPoint + 'registration/',
+                registerInfo,
+            );
+            setUser({
+                email: response.data.user.email,
+                birthdate: response.data.user.birthdate,
+                username: response.data.user.username,
             });
+            setAccessToken(response.data.access_token);
+            setRefreshToken(response.data.refresh_token);
+            axios.defaults.headers.post['X-CSRFToken'] = response.data._csrf;
+            return {
+                error: false,
+                username: '',
+                email: '',
+                password1: '',
+                password2: '',
+                birthdate: '',
+            };
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    error: true,
+                    username: error.response?.data.username || '',
+                    email: error.response?.data.email || '',
+                    password1: error.response?.data.password1 || '',
+                    password2: error.response?.data.password2 || '',
+                    birthdate: error.response?.data.birthdate || '',
+                };
+            }
+
+            //unknown error
+            return {
+                error: true,
+                username: '',
+                email: '',
+                password1: '',
+                password2: '',
+                birthdate: '',
+            };
+        }
+
+        // axios
+        //     .post(apiEndPoint + 'registration/', registerInfo)
+        //     .then(response => {
+        //         setUser({
+        //             email: response.data.user.email,
+        //             birthdate: response.data.user.birthdate,
+        //             username: response.data.user.username,
+        //         });
+        //         setAccessToken(response.data.access_token);
+        //         setRefreshToken(response.data.refresh_token);
+        //         axios.defaults.headers.post['X-CSRFToken'] =
+        //             response.data._csrf;
+        //         return ({
+        //             error: false,
+        //             username: "",
+        //             email: "",
+        //             password1: "",
+        //             password2: "",
+        //             birthdate: "",
+        //         })
+        //     })
+        //     .catch(error => {
+        //         console.log(error.response.data);
+        //         return ({
+        //             error: true,
+        //             username: error.response.data.username || "",
+        //             email: error.response.data.email || "",
+        //             password1: error.response.data.password1 || "",
+        //             password2: error.response.data.password2 || "",
+        //             birthdate: error.response.data.birthdate || "",
+        //         })
+        //         // setTimeout(function () {
+        //         //     Swal.fire({
+        //         //         title: 'Cannot register',
+        //         //         confirmButtonText: 'OK',
+        //         //     });
+        //         // }, 10);
+        //     });
+
+        // // something wrong happened, but uncatched
+        // return ({
+        //     error: true,
+        //     username: "",
+        //     email: "",
+        //     password1: "",
+        //     password2: "",
+        //     birthdate: "",
+        // })
     };
 
     // if needed...

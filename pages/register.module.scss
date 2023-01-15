@@ -16,21 +16,32 @@
         background-color: white;
         gap: 10px;
 
-        .textContainer {
+        .textErrorContainer {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 3px;
 
-            .textName {
+            .textContainer {
                 display: flex;
-                align-items: center;
-                font-size: 10px;
-                font-weight: bold;
+                justify-content: space-between;
+
+                .textName {
+                    display: flex;
+                    align-items: center;
+                    font-size: 10px;
+                    font-weight: bold;
+                }
+
+                .text {
+                    width: 110px;
+                    height: 22px;
+                    font-size: 10px;
+                }
             }
 
-            .text {
-                width: 110px;
-                height: 22px;
-                font-size: 10px;
+            .error {
+                color: red;
+                font-size: 7px;
             }
         }
 
