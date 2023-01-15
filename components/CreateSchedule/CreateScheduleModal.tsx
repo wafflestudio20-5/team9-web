@@ -6,9 +6,9 @@ import Swal from 'sweetalert2';
 import styles from './CreateScheduleModal.module.scss';
 
 import { createScheduleAPI } from '@apis/calendar';
-import SharingScopeDropDown, {
-    SharingScope,
-} from '@components/CreateSchedule/SharingScopeDropDown';
+import ProtectionLevelDropDown, {
+    ProtectionLevel,
+} from '@components/CreateSchedule/ProtectionLevelDropDown';
 import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
@@ -45,7 +45,7 @@ export default function CreateScheduleModal() {
     const [endDate, setEndDate] = useState<Date>(
         new Date(yearNow, monthNow - 1, dateNow),
     );
-    const [sharingScope, setSharingScope] = useState<string>('');
+    const [protectionLevel, setProtectionLevel] = useState<string>('');
     const [hideDetails, setHideDetails] = useState<boolean>(false);
     const [description, setDescription] = useState<string>('');
     const [dateValidity, setDateValidity] = useState({
@@ -53,8 +53,8 @@ export default function CreateScheduleModal() {
         message: '',
     });
     const isHideDisabled = useMemo(
-        () => sharingScope === SharingScope.private,
-        [sharingScope],
+        () => protectionLevel === ProtectionLevel.private,
+        [protectionLevel],
     );
 
     if (!user) return;
@@ -98,7 +98,7 @@ export default function CreateScheduleModal() {
         });
 
     const cancelCreateSchedule = () => {
-        if (title || sharingScope || description) {
+        if (title || protectionLevel || description) {
             warningAlert().then(result => {
                 if (result.isConfirmed) {
                     closeModal(MODAL_NAMES.createSchedule);
@@ -126,7 +126,7 @@ export default function CreateScheduleModal() {
     const validateScheduleData = () => {
         if (!title) {
             return { isValid: false, message: '제목을 적어주세요.' };
-        } else if (!sharingScope) {
+        } else if (!protectionLevel) {
             return { isValid: false, message: '공개 범위를 설정해주세요.' };
         } else if (!description) {
             return { isValid: false, message: '설명을 적어주세요.' };
@@ -267,9 +267,9 @@ export default function CreateScheduleModal() {
                                         width={24}
                                     />
                                 </label>
-                                <SharingScopeDropDown
-                                    scope={sharingScope}
-                                    setScope={setSharingScope}
+                                <ProtectionLevelDropDown
+                                    protectionLevel={protectionLevel}
+                                    setProtectionLevel={setProtectionLevel}
                                 />
                             </div>
                             <div className={styles.hideDetails}>

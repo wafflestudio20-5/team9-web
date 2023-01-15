@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useRef } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import {
     DropDown,
@@ -7,21 +7,21 @@ import {
     useDropDown,
 } from '@components/DropDown';
 
-interface SharingScopeDropDownProps {
-    scope: string;
-    setScope: Dispatch<SetStateAction<string>>;
+interface ProtectionLevelDropDownProps {
+    protectionLevel: string;
+    setProtectionLevel: Dispatch<SetStateAction<string>>;
 }
 
-export enum SharingScope {
+export enum ProtectionLevel {
     public = '전체공개',
-    friend = '친구공개',
+    follower = '친구공개',
     private = '비공개',
 }
 
-export default function SharingScopeDropDown({
-    scope,
-    setScope,
-}: SharingScopeDropDownProps) {
+export default function ProtectionLevelDropDown({
+    protectionLevel,
+    setProtectionLevel,
+}: ProtectionLevelDropDownProps) {
     const {
         isOpen,
         dropDownRef,
@@ -35,7 +35,7 @@ export default function SharingScopeDropDown({
             <DropDownHeader style={{ zIndex: 140 }}>
                 <input
                     type="text"
-                    value={scope}
+                    value={protectionLevel}
                     placeholder="공개 설정"
                     readOnly
                     onClick={toggleDropDown}
@@ -47,11 +47,11 @@ export default function SharingScopeDropDown({
                 style={{ width: '100px', top: '40px', zIndex: 130 }}
             >
                 <ul style={{ padding: '0' }}>
-                    {Object.values(SharingScope).map(value => (
+                    {Object.values(ProtectionLevel).map(value => (
                         <li
                             key={value}
                             onClick={() => {
-                                setScope(value);
+                                setProtectionLevel(value);
                                 closeDropDown();
                             }}
                         >
