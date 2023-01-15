@@ -161,6 +161,7 @@ export default function CreateScheduleModal() {
             end_at: formatFullDate(endDate, true),
             description: description,
             protection_level: protectionLevel,
+            show_content: !hideDetails,
         };
 
         try {
