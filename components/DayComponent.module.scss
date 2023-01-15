@@ -24,13 +24,16 @@
         align-items: center;
         width: 40px;
 
-        .dayText {
-        }
-        .dayNumber {
+        .dayTodayNumber {
             color: white;
             border-radius: 50%;
             border-color: transparent;
             background-color: v.$primary-blue;
+            height: 24px;
+            width: 24px;
+        }
+
+        .dayNotTodayNumber {
             height: 24px;
             width: 24px;
         }
