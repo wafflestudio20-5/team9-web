@@ -8,7 +8,7 @@ const CalendarAPI = axios.create({
     baseURL: `${apiEndPoint}/calendar/schedule`,
 });
 
-interface CalendarURLParams {
+export interface CalendarURLParams {
     pk: number;
     from: string;
     to: string;

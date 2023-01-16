@@ -1,18 +1,15 @@
-import axios from 'axios';
 import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
 
-import styles from './CreateScheduleModal.module.scss';
+import styles from './ScheduleModal.module.scss';
 
-import { createScheduleAPI } from '@apis/calendar';
+import { CalendarURLParams } from '@apis/calendar';
 import ProtectionLevelDropDown from '@components/CreateSchedule/ProtectionLevelDropDown';
 import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
-import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
-import { useSessionContext } from '@contexts/SessionContext';
 import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 import close_icon from '@images/close_icon.svg';
@@ -20,14 +17,14 @@ import lock_icon from '@images/lock_icon.svg';
 import people_icon from '@images/people_icon.svg';
 import text_icon from '@images/text_icon.svg';
 import time_icon from '@images/time_icon.svg';
-import { errorToast, successToast, warningModal } from '@utils/customAlert';
+import { errorToast, warningModal } from '@utils/customAlert';
 import { formatFullDate } from '@utils/formatDate';
 
 function ErrorMessage({ message }: { message: string }) {
     return <span className={styles.errorMessage}>{message}</span>;
 }
 
-interface initSchedule {
+export interface InitSchedule {
     title: string;
     startDate: Date;
     endDate: Date;
@@ -37,23 +34,30 @@ interface initSchedule {
     participants: { pk: number }[];
 }
 
-export default function CreateScheduleModal() {
-    const { user, accessToken } = useSessionContext();
-    const { yearNow, monthNow, dateNow } = useDateContext();
+interface ScheduleModalProps {
+    userPk: number;
+    initSchedule: InitSchedule;
+    requestScheduleUpdate(
+        newSchedule: Schedule,
+        urlParams: CalendarURLParams,
+    ): void;
+}
+
+export default function ScheduleModal({
+    userPk,
+    initSchedule,
+    requestScheduleUpdate,
+}: ScheduleModalProps) {
     const { closeModal } = useModal();
-    const [title, setTitle] = useState<string>('');
-    const [startDate, setStartDate] = useState<Date>(
-        new Date(yearNow, monthNow - 1, dateNow),
+    const [title, setTitle] = useState(initSchedule.title);
+    const [startDate, setStartDate] = useState(initSchedule.startDate);
+    const [endDate, setEndDate] = useState(initSchedule.endDate);
+    const [protectionLevel, setProtectionLevel] = useState(
+        initSchedule.protectionLevel,
     );
-    const [endDate, setEndDate] = useState<Date>(
-        new Date(yearNow, monthNow - 1, dateNow),
-    );
-    const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
-        ProtectionLevel.pulbic,
-    );
-    const [hideDetails, setHideDetails] = useState<boolean>(false);
-    const [description, setDescription] = useState<string>('');
-    const [participants, setParticipants] = useState<{ pk: number }[]>([]);
+    const [hideDetails, setHideDetails] = useState(initSchedule.hideDetails);
+    const [description, setDescription] = useState(initSchedule.description);
+    const [participants, setParticipants] = useState(initSchedule.participants);
     const [dateValidity, setDateValidity] = useState({
         isValid: true,
         message: '',
@@ -92,7 +96,7 @@ export default function CreateScheduleModal() {
         setParticipants(prev => [...prev, { pk: participant.pk }]);
     };
 
-    const cancelCreateSchedule = () => {
+    const cancelSchedule = () => {
         if (title) {
             const warningContent = {
                 title: '작성 중인 일정을 삭제하시겠습니까?',
@@ -101,32 +105,27 @@ export default function CreateScheduleModal() {
             };
             warningModal(warningContent).then(result => {
                 if (result.isConfirmed) {
-                    closeModal(MODAL_NAMES.createSchedule);
+                    closeModal(MODAL_NAMES.schedule);
                 }
             });
         } else {
-            closeModal(MODAL_NAMES.createSchedule);
+            closeModal(MODAL_NAMES.schedule);
         }
     };
 
-    const submitCreateScheduleForm = async (
-        e: React.FormEvent<HTMLFormElement>,
-    ) => {
+    const submitScheduleForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!user) {
-            errorToast('로그인을 먼저 해주세요.');
-            return;
-        }
         if (!title) {
             errorToast('제목을 적어주세요.');
             return;
         }
 
         const urlParams = {
-            pk: user.pk,
+            pk: userPk,
             from: formatFullDate(startDate),
             to: formatFullDate(endDate),
         };
+
         const newSchedule: Schedule = {
             title: title,
             start_at: formatFullDate(startDate, true),
@@ -137,31 +136,21 @@ export default function CreateScheduleModal() {
             participants: participants,
         };
 
-        try {
-            await createScheduleAPI(urlParams, newSchedule, accessToken);
-            successToast('일정이 추가되었습니다.');
-            closeModal(MODAL_NAMES.createSchedule);
-        } catch (error) {
-            const message = '일정을 생성하지 못했습니다.';
-            if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message ?? message);
-            } else {
-                errorToast(message);
-            }
-        }
+        requestScheduleUpdate(newSchedule, urlParams);
+        closeModal(MODAL_NAMES.schedule);
     };
 
     return (
         <ModalFrame
-            modalName={MODAL_NAMES.createSchedule}
-            onClickBackDrop={cancelCreateSchedule}
+            modalName={MODAL_NAMES.schedule}
+            onClickBackDrop={cancelSchedule}
         >
-            <div className={styles.createScheduleModal}>
+            <div className={styles.scheduleModal}>
                 <div className={styles.header}>
                     <button
                         type="button"
                         className={styles.close}
-                        onClick={cancelCreateSchedule}
+                        onClick={cancelSchedule}
                     >
                         <Image
                             src={close_icon}
@@ -171,8 +160,8 @@ export default function CreateScheduleModal() {
                     </button>
                 </div>
                 <form
-                    className={styles.createScheduleForm}
-                    onSubmit={submitCreateScheduleForm}
+                    className={styles.scheduleForm}
+                    onSubmit={submitScheduleForm}
                 >
                     <div className={styles.body}>
                         <div className={styles.title}>
