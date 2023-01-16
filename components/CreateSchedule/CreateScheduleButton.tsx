@@ -6,6 +6,7 @@ import styles from './CreateScheduleButton.module.scss';
 
 import { CalendarURLParams, createScheduleAPI } from '@apis/calendar';
 import { InitSchedule } from '@components/ScheduleModal';
+import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
@@ -23,11 +24,12 @@ export default function CreateScheduleButton({
 }: CreateScheduleButtonProps) {
     const { openModal } = useModal();
     const { user, accessToken } = useSessionContext();
+    const { yearNow, monthNow, dateNow } = useDateContext();
 
     const initSchedule: InitSchedule = {
         title: '',
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: new Date(yearNow, monthNow, dateNow),
+        endDate: new Date(yearNow, monthNow, dateNow),
         protectionLevel: ProtectionLevel.pulbic,
         hideDetails: false,
         description: '',
@@ -64,7 +66,7 @@ export default function CreateScheduleButton({
             onClick={() =>
                 openModal(MODAL_NAMES.schedule, {
                     initSchedule,
-                    requestSchedule: createSchedule,
+                    requestScheduleUpdate: createSchedule,
                 })
             }
             style={style}

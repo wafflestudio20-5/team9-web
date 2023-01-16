@@ -18,16 +18,22 @@ import updateSequence from '@utils/updateSequence';
 
 interface UserSearchDropDownProps {
     toExecute: (item: UserDataForSearch) => void;
+    interceptItem?: (item: UserDataForSearch, state: 'add' | 'remove') => void;
     buttonText: string;
     width?: string; // custom width when used elsewhere
     underlineColor?: string;
+    resetOnExecution?: boolean;
+    submitButtonNotRequired?: boolean;
 }
 
 export function UserSearchDropDown({
     toExecute,
+    interceptItem,
     buttonText,
     width,
     underlineColor,
+    resetOnExecution,
+    submitButtonNotRequired,
 }: UserSearchDropDownProps) {
     const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
 
@@ -52,9 +58,6 @@ export function UserSearchDropDown({
     ); // suggestions for the dropdown.
     // only stores the upmost 4 values, as only up to 4 suggestions are displayed at once
 
-    // const [isFocused, setIsFocused] = useState(false);
-    // true if input box is focused
-
     const containerRef = useRef<HTMLDivElement | null>(null);
     // useRef to place suggestions dropdown directly below searchbox
     // needed b/c searchbox height and width changes
@@ -69,18 +72,6 @@ export function UserSearchDropDown({
             setSuggestions(stored);
         }
     }, [stored]);
-
-    // useEffect(() => {
-    //     // always keep dropdown open if focused on the input box
-    //     if (isFocused) {
-    //         if (!isOpen) {
-    //             openDropDown();
-    //             // only run if isOpen was previously false b/c openDropDown = setIsOpen(!isOpen)
-    //         }
-    //     } else {
-    //         closeDropDown();
-    //     }
-    // }, [isFocused]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -131,6 +122,7 @@ export function UserSearchDropDown({
                 // only save the recent 4 searches to localStorage
             });
             setStored(newSearchRecord);
+            if (interceptItem) interceptItem(item, 'add');
         }
         setSearchInput('');
         closeDropDown();
@@ -141,41 +133,48 @@ export function UserSearchDropDown({
         if (selectedResults) {
             selectedResults.map(item => toExecute(item));
         }
-        setSelectedResults(null);
+        if (resetOnExecution) {
+            setSelectedResults(null);
+        }
+
         closeDropDown();
     };
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader style={{ display: 'flex' }}>
+            <DropDownHeader style={{ display: 'flex', zIndex: 140 }}>
                 {/* Large container. Area with gray background. Holds all selected(staged) items + input box */}
                 <div
                     className={styles.container}
                     ref={containerRef}
                     style={
-                        width ? { width: width } : { flexGrow: 1 }
+                        width ? { width: width } : { width: '100%' }
                         // if width is provided, fit to specified width
                         // otherwise, expand horizontally to fill all space available(flexGrow)
                     }
                 >
-                    {selectedResults?.map(item => {
-                        return (
-                            <SelectedResultItem
-                                key={item.pk}
-                                item={item}
-                                onClick={e => {
-                                    e.preventDefault();
-                                    setSelectedResults(
-                                        selectedResults.filter(i => {
-                                            return i !== item;
-                                        }),
-                                        // Remove button: on click,
-                                        // remove this item from selectedResults
-                                    );
-                                }}
-                            />
-                        );
-                    })}
+                    <div className={styles.searchedResultWrapper}>
+                        {selectedResults?.map(item => {
+                            return (
+                                <SelectedResultItem
+                                    key={item.pk}
+                                    item={item}
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        setSelectedResults(
+                                            selectedResults.filter(
+                                                i => i !== item,
+                                            ),
+                                            // Remove button: on click,
+                                            // remove this item from selectedResults
+                                        );
+                                        if (interceptItem)
+                                            interceptItem(item, 'remove');
+                                    }}
+                                />
+                            );
+                        })}
+                    </div>
                     <form
                         onSubmit={e => {
                             // submitting the input box only (pressing Enter)
@@ -192,9 +191,6 @@ export function UserSearchDropDown({
                             className={styles.input}
                             placeholder="사용자 검색..."
                             onFocus={openDropDown}
-                            // onBlur={() => {
-                            //     setIsFocused(false);
-                            // }}
                         />
                     </form>
                     <div
@@ -208,7 +204,11 @@ export function UserSearchDropDown({
                     />
                 </div>
                 {/* Rightmost button for executing final function (ex.sending friend request API call) */}
-                <button onClick={executeAction}>{buttonText}</button>
+                {submitButtonNotRequired ? (
+                    <></>
+                ) : (
+                    <button onClick={executeAction}>{buttonText}</button>
+                )}
             </DropDownHeader>
             {/* DropDownBody displays suggestions -> either autocomplete for input search or the most recent 4 searches */}
             <DropDownBody
@@ -222,6 +222,7 @@ export function UserSearchDropDown({
                     // 'offset~' and not 'client~' to include borders etc.
                     top: containerRef.current?.offsetHeight,
                     width: containerRef.current?.offsetWidth,
+                    zIndex: 130,
                 }}
             >
                 <ul className={styles.suggestions}>

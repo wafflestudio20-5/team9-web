@@ -30,7 +30,7 @@ export default function ProtectionLevelDropDown({
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader style={{ zIndex: 140 }}>
+            <DropDownHeader style={{ zIndex: 120 }}>
                 <input
                     type="text"
                     value={ProtectionLevelText[protectionLevel]}
@@ -43,7 +43,7 @@ export default function ProtectionLevelDropDown({
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}
-                style={{ width: '100px', top: '40px', zIndex: 130 }}
+                style={{ width: '100px', top: '40px', zIndex: 110 }}
             >
                 <ul style={{ padding: '0' }}>
                     {Object.keys(ProtectionLevelText).map(lev => (

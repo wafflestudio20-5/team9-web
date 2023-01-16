@@ -7,6 +7,12 @@
     border-radius: 3px;
     display: flex;
     flex-direction: column;
+    max-width: calc(100% - 40px);
+}
+
+.searchedResultWrapper {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .selected {
@@ -16,7 +22,8 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    margin: 0px 12px 5px 12px;
+    margin: 0px 8px 5px 8px;
+    max-width: calc(100% - 16px);
     > img {
         height: 20px;
         width: 20px;
@@ -26,10 +33,14 @@
     div {
         height: fit-content;
         text-overflow: ellipsis;
-        flex-grow: 1;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     button {
+        margin: 0 5px;
+        padding: 0;
+        border-radius: 50%;
         border: none;
         background-color: transparent;
         display: flex;

@@ -37,7 +37,7 @@ export interface InitSchedule {
 interface ScheduleModalProps {
     userPk: number;
     initSchedule: InitSchedule;
-    requestSchedule(
+    requestScheduleUpdate(
         urlParams: CalendarURLParams,
         newSchedule: Schedule,
     ): Promise<boolean>;
@@ -46,7 +46,7 @@ interface ScheduleModalProps {
 export default function ScheduleModal({
     userPk,
     initSchedule,
-    requestSchedule,
+    requestScheduleUpdate,
 }: ScheduleModalProps) {
     const { closeModal } = useModal();
     const [title, setTitle] = useState(initSchedule.title);
@@ -92,11 +92,22 @@ export default function ScheduleModal({
         if (isValid) setEndDate(newDate);
     };
 
-    const addParticipants = (participant: UserDataForSearch) => {
-        setParticipants(prev => [...prev, { pk: participant.pk }]);
+    const updateParticipants = (
+        participant: UserDataForSearch,
+        state: 'add' | 'remove',
+    ) => {
+        if (state === 'add') {
+            const isDuplicate = participants.some(p => p.pk === participant.pk);
+            if (!isDuplicate) participants.push({ pk: participant.pk });
+        } else if (state === 'remove') {
+            const filteredList = participants.filter(
+                p => p.pk !== participant.pk,
+            );
+            setParticipants(filteredList);
+        }
     };
 
-    const cancelSchedule = () => {
+    const cancelScheduleUpdate = () => {
         if (title) {
             const warningContent = {
                 title: '작성 중인 일정을 삭제하시겠습니까?',
@@ -113,7 +124,7 @@ export default function ScheduleModal({
         }
     };
 
-    const submitSchedule = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const submitScheduleUpdate = async () => {
         if (!title) {
             errorToast('제목을 적어주세요.');
             return;
@@ -135,21 +146,24 @@ export default function ScheduleModal({
             participants: participants,
         };
 
-        const isSuccessful = await requestSchedule(urlParams, newSchedule);
+        const isSuccessful = await requestScheduleUpdate(
+            urlParams,
+            newSchedule,
+        );
         if (isSuccessful) closeModal(MODAL_NAMES.schedule);
     };
 
     return (
         <ModalFrame
             modalName={MODAL_NAMES.schedule}
-            onClickBackDrop={cancelSchedule}
+            onClickBackDrop={cancelScheduleUpdate}
         >
             <div className={styles.scheduleModal}>
                 <div className={styles.header}>
                     <button
                         type="button"
                         className={styles.close}
-                        onClick={cancelSchedule}
+                        onClick={cancelScheduleUpdate}
                     >
                         <Image
                             src={close_icon}
@@ -219,8 +233,11 @@ export default function ScheduleModal({
                                     />
                                 </label>
                                 <UserSearchDropDown
-                                    toExecute={addParticipants}
+                                    toExecute={item => null}
+                                    interceptItem={updateParticipants}
                                     buttonText="추가"
+                                    width="400px"
+                                    submitButtonNotRequired={true}
                                 />
                             </div>
                             <div className={styles.protectionLevel}>
@@ -273,7 +290,7 @@ export default function ScheduleModal({
                     <div className={styles.btnContainer}>
                         <button
                             className={styles.save}
-                            onClick={submitSchedule}
+                            onClick={submitScheduleUpdate}
                         >
                             저장
                         </button>
