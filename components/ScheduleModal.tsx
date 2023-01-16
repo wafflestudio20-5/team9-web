@@ -4,7 +4,11 @@ import React, { useState, useMemo } from 'react';
 
 import styles from './ScheduleModal.module.scss';
 
-import { CalendarURLParams, createScheduleAPI } from '@apis/calendar';
+import {
+    CalendarURLParams,
+    createScheduleAPI,
+    editScheduleAPI,
+} from '@apis/calendar';
 import ProtectionLevelDropDown from '@components/CreateSchedule/ProtectionLevelDropDown';
 import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
@@ -171,6 +175,25 @@ export default function ScheduleModal({
         }
     };
 
+    const editSchdule = async (
+        urlParams: CalendarURLParams,
+        newSchedule: Schedule,
+    ) => {
+        try {
+            await editScheduleAPI(urlParams, newSchedule, accessToken);
+            successToast('일정이 수정되었습니다.');
+            return true;
+        } catch (error) {
+            const message = '일정을 수정하지 못했습니다.';
+            if (axios.isAxiosError(error)) {
+                errorToast(error.response?.data.message ?? message);
+            } else {
+                errorToast(message);
+            }
+            return false;
+        }
+    };
+
     const submitScheduleUpdate = async () => {
         if (!user) {
             errorToast('로그인을 먼저 해주세요.');
@@ -200,7 +223,7 @@ export default function ScheduleModal({
         const isSuccessful =
             taskType === 'create'
                 ? await createSchedule(urlParams, newSchedule)
-                : false;
+                : await editSchdule(urlParams, newSchedule);
         if (isSuccessful) closeModal(MODAL_NAMES.schedule);
     };
 
