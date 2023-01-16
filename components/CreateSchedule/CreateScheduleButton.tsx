@@ -34,15 +34,19 @@ export default function CreateScheduleButton({
         participants: [],
     };
 
-    const requestScheduleUpdate = async (
-        newSchedule: Schedule,
+    const createSchedule = async (
         urlParams: CalendarURLParams,
+        newSchedule: Schedule,
     ) => {
-        if (!user) return;
+        if (!user) {
+            errorToast('로그인을 먼저 해주세요.');
+            return false;
+        }
 
         try {
             await createScheduleAPI(urlParams, newSchedule, accessToken);
             successToast('일정이 추가되었습니다.');
+            return true;
         } catch (error) {
             const message = '일정을 생성하지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -50,6 +54,7 @@ export default function CreateScheduleButton({
             } else {
                 errorToast(message);
             }
+            return false;
         }
     };
 
@@ -59,7 +64,7 @@ export default function CreateScheduleButton({
             onClick={() =>
                 openModal(MODAL_NAMES.schedule, {
                     initSchedule,
-                    requestScheduleUpdate,
+                    requestSchedule: createSchedule,
                 })
             }
             style={style}

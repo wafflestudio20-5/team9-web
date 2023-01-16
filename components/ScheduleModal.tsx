@@ -37,16 +37,16 @@ export interface InitSchedule {
 interface ScheduleModalProps {
     userPk: number;
     initSchedule: InitSchedule;
-    requestScheduleUpdate(
-        newSchedule: Schedule,
+    requestSchedule(
         urlParams: CalendarURLParams,
-    ): void;
+        newSchedule: Schedule,
+    ): Promise<boolean>;
 }
 
 export default function ScheduleModal({
     userPk,
     initSchedule,
-    requestScheduleUpdate,
+    requestSchedule,
 }: ScheduleModalProps) {
     const { closeModal } = useModal();
     const [title, setTitle] = useState(initSchedule.title);
@@ -113,8 +113,7 @@ export default function ScheduleModal({
         }
     };
 
-    const submitScheduleForm = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const submitSchedule = async (e: React.MouseEvent<HTMLButtonElement>) => {
         if (!title) {
             errorToast('제목을 적어주세요.');
             return;
@@ -136,8 +135,8 @@ export default function ScheduleModal({
             participants: participants,
         };
 
-        requestScheduleUpdate(newSchedule, urlParams);
-        closeModal(MODAL_NAMES.schedule);
+        const isSuccessful = await requestSchedule(urlParams, newSchedule);
+        if (isSuccessful) closeModal(MODAL_NAMES.schedule);
     };
 
     return (
@@ -159,10 +158,7 @@ export default function ScheduleModal({
                         />
                     </button>
                 </div>
-                <form
-                    className={styles.scheduleForm}
-                    onSubmit={submitScheduleForm}
-                >
+                <div className={styles.scheduleForm}>
                     <div className={styles.body}>
                         <div className={styles.title}>
                             <input
@@ -275,9 +271,14 @@ export default function ScheduleModal({
                         </div>
                     </div>
                     <div className={styles.btnContainer}>
-                        <button className={styles.save}>저장</button>
+                        <button
+                            className={styles.save}
+                            onClick={submitSchedule}
+                        >
+                            저장
+                        </button>
                     </div>
-                </form>
+                </div>
             </div>
         </ModalFrame>
     );
