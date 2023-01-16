@@ -2,7 +2,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
 
-import styles from './ScheduleModal.module.scss';
+import styles from './EditableScheduleModal.module.scss';
 
 import {
     CalendarURLParams,
@@ -46,7 +46,7 @@ interface ScheduleModalProps {
     taskType: 'create' | 'edit';
 }
 
-export default function ScheduleModal({
+export default function EditableScheduleModal({
     initSchedule,
     taskType,
 }: ScheduleModalProps) {
@@ -148,11 +148,11 @@ export default function ScheduleModal({
             };
             warningModal(warningContent).then(result => {
                 if (result.isConfirmed) {
-                    closeModal(MODAL_NAMES.schedule);
+                    closeModal(MODAL_NAMES.editableSchedule);
                 }
             });
         } else {
-            closeModal(MODAL_NAMES.schedule);
+            closeModal(MODAL_NAMES.editableSchedule);
         }
     };
 
@@ -224,12 +224,12 @@ export default function ScheduleModal({
             taskType === 'create'
                 ? await createSchedule(urlParams, newSchedule)
                 : await editSchdule(urlParams, newSchedule);
-        if (isSuccessful) closeModal(MODAL_NAMES.schedule);
+        if (isSuccessful) closeModal(MODAL_NAMES.editableSchedule);
     };
 
     return (
         <ModalFrame
-            modalName={MODAL_NAMES.schedule}
+            modalName={MODAL_NAMES.editableSchedule}
             onClickBackDrop={cancelScheduleUpdate}
         >
             <div className={styles.scheduleModal}>

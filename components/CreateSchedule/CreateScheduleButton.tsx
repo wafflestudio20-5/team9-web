@@ -21,7 +21,7 @@ export default function CreateScheduleButton({
         <div
             className={styles.createScheduleButton}
             onClick={() =>
-                openModal(MODAL_NAMES.schedule, {
+                openModal(MODAL_NAMES.editableSchedule, {
                     taskType: 'create',
                 })
             }
