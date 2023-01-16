@@ -107,8 +107,25 @@ export default function ScheduleModal({
         }
     };
 
+    const detectChange = () => {
+        if (
+            title === initSchedule.title &&
+            startDate === initSchedule.startDate &&
+            endDate === initSchedule.endDate &&
+            description === initSchedule.description &&
+            protectionLevel === initSchedule.protectionLevel &&
+            hideDetails === initSchedule.hideDetails &&
+            JSON.stringify(participants) ===
+                JSON.stringify(initSchedule.participants)
+        ) {
+            return false;
+        }
+        return true;
+    };
+
     const cancelScheduleUpdate = () => {
-        if (title) {
+        const isChanged = detectChange();
+        if (isChanged) {
             const warningContent = {
                 title: '작성 중인 일정을 삭제하시겠습니까?',
                 text: '변경사항이 저장되지 않았습니다.',
