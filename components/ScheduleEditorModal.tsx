@@ -2,7 +2,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
 
-import styles from './EditableScheduleModal.module.scss';
+import styles from './ScheduleEditorModal.module.scss';
 
 import {
     CalendarURLParams,
@@ -41,15 +41,15 @@ export interface InitSchedule {
     participants: { pk: number }[];
 }
 
-interface ScheduleModalProps {
+interface ScheduleEditorModalProps {
     initSchedule?: InitSchedule;
     taskType: 'create' | 'edit';
 }
 
-export default function EditableScheduleModal({
+export default function ScheduleEditorModal({
     initSchedule,
     taskType,
-}: ScheduleModalProps) {
+}: ScheduleEditorModalProps) {
     const { closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
     const { yearNow, monthNow, dateNow } = useDateContext();
@@ -148,11 +148,11 @@ export default function EditableScheduleModal({
             };
             warningModal(warningContent).then(result => {
                 if (result.isConfirmed) {
-                    closeModal(MODAL_NAMES.editableSchedule);
+                    closeModal(MODAL_NAMES.ScheduleEditor);
                 }
             });
         } else {
-            closeModal(MODAL_NAMES.editableSchedule);
+            closeModal(MODAL_NAMES.ScheduleEditor);
         }
     };
 
@@ -224,15 +224,15 @@ export default function EditableScheduleModal({
             taskType === 'create'
                 ? await createSchedule(urlParams, newSchedule)
                 : await editSchdule(urlParams, newSchedule);
-        if (isSuccessful) closeModal(MODAL_NAMES.editableSchedule);
+        if (isSuccessful) closeModal(MODAL_NAMES.ScheduleEditor);
     };
 
     return (
         <ModalFrame
-            modalName={MODAL_NAMES.editableSchedule}
+            modalName={MODAL_NAMES.ScheduleEditor}
             onClickBackDrop={cancelScheduleUpdate}
         >
-            <div className={styles.scheduleModal}>
+            <div className={styles.scheduleEditorModal}>
                 <div className={styles.header}>
                     <button
                         type="button"
