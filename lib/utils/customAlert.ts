@@ -22,15 +22,15 @@ export const errorToast = (message: string) =>
 export const warningModal = (warningContent: {
     title: string;
     text: string;
-    confirmButtonText: string;
+    confirmButtonText?: string;
 }) =>
     Swal.fire({
         title: warningContent.title,
         text: warningContent.text,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: warningContent.confirmButtonText,
-        confirmButtonColor: '#1a73e8', // to be modified
+        confirmButtonText: warningContent.confirmButtonText ?? '확인',
+        // confirmButtonColor: '#color', // to be modified
         cancelButtonText: '취소',
-        cancelButtonColor: '#000000', // to be modified
+        // cancelButtonColor: '#color', // to be modified
     });

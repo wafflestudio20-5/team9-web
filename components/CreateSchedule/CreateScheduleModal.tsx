@@ -9,10 +9,12 @@ import ProtectionLevelDropDown from '@components/CreateSchedule/ProtectionLevelD
 import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
+import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
+import { UserDataForSearch } from '@customTypes/UserTypes';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
 import people_icon from '@images/people_icon.svg';
@@ -41,6 +43,7 @@ export default function CreateScheduleModal() {
     );
     const [hideDetails, setHideDetails] = useState<boolean>(false);
     const [description, setDescription] = useState<string>('');
+    const [participants, setParticipants] = useState<{ pk: number }[]>([]);
     const [dateValidity, setDateValidity] = useState({
         isValid: true,
         message: '',
@@ -75,6 +78,10 @@ export default function CreateScheduleModal() {
         const msg = '종료 일시는 시작 일시 이후여야 합니다.';
         const isValid = validateDate(newDate >= startDate, msg);
         if (isValid) setEndDate(newDate);
+    };
+
+    const addParticipants = (participant: UserDataForSearch) => {
+        setParticipants(prev => [...prev, { pk: participant.pk }]);
     };
 
     const cancelCreateSchedule = () => {
@@ -115,6 +122,7 @@ export default function CreateScheduleModal() {
             description: description,
             protection_level: protectionLevel,
             show_content: !hideDetails,
+            participants: participants,
         };
 
         try {
@@ -122,10 +130,11 @@ export default function CreateScheduleModal() {
             successToast('일정이 추가되었습니다.');
             closeModal(MODAL_NAMES.createSchedule);
         } catch (error) {
+            const message = '일정을 생성하지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message);
+                errorToast(error.response?.data.message ?? message);
             } else {
-                errorToast('일정을 생성하지 못했습니다.');
+                errorToast(message);
             }
         }
     };
@@ -136,7 +145,10 @@ export default function CreateScheduleModal() {
             onClickBackDrop={cancelCreateSchedule}
         >
             <div className={styles.createScheduleModal}>
-                <div className={styles.header}>
+                <div
+                    className={styles.header}
+                    onClick={() => console.log(participants)}
+                >
                     <button
                         type="button"
                         className={styles.close}
@@ -212,7 +224,10 @@ export default function CreateScheduleModal() {
                                         width={24}
                                     />
                                 </label>
-                                <input type="text" placeholder="참석자" />
+                                <UserSearchDropDown
+                                    toExecute={addParticipants}
+                                    buttonText="추가"
+                                />
                             </div>
                             <div className={styles.protectionLevel}>
                                 <label>
