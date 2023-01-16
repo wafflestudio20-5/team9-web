@@ -48,6 +48,7 @@ export default function MiniCalendarDropDown({
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
                 />
+                <span className="underline" />
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}

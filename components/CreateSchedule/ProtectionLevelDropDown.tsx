@@ -39,6 +39,7 @@ export default function ProtectionLevelDropDown({
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
                 />
+                <span className="underline" />
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}

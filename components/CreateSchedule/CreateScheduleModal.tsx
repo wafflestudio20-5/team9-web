@@ -174,7 +174,7 @@ export default function CreateScheduleModal() {
                                 onChange={e => setTitle(e.target.value)}
                                 placeholder="제목 추가"
                             />
-                            <label htmlFor="title"></label>
+                            <span className={styles.underline} />
                         </div>
                         <div className={styles.content}>
                             <div className={styles.time}>
@@ -197,7 +197,7 @@ export default function CreateScheduleModal() {
                                             time={startDate}
                                             changeTime={changeStartDate}
                                         />
-                                        <span>-</span>
+                                        <span className={styles.dash}>-</span>
                                         <MiniCalendarDropDown
                                             title="종료 날짜"
                                             date={endDate}

@@ -41,6 +41,7 @@ export default function TimeDropDown({
             <DropDownHeader>
                 <input
                     type="text"
+                    id={title}
                     value={formatTime(time)}
                     placeholder={title}
                     readOnly
@@ -48,6 +49,7 @@ export default function TimeDropDown({
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
                 />
+                <span className="underline" />
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}
