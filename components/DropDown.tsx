@@ -66,8 +66,9 @@ export function useDropDown() {
         setIsOpen(true);
     };
 
-    const closeDropDown = () => {
+    const closeDropDown = (triggerRef?: React.RefObject<HTMLElement>) => {
         setIsOpen(false);
+        triggerRef?.current?.blur();
     };
 
     const toggleDropDown = (e: React.MouseEvent<HTMLElement>) => {

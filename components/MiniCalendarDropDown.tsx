@@ -26,12 +26,13 @@ export default function MiniCalendarDropDown({
         closeDropDown,
         maintainFocus,
     } = useDropDown();
+    const triggerRef = useRef<HTMLInputElement>(null);
 
     const onChangeDate = (newDate: Date) => {
         newDate.setHours(date.getHours());
         newDate.setMinutes(date.getMinutes());
         changeDate(newDate);
-        closeDropDown();
+        closeDropDown(triggerRef);
     };
 
     return (
@@ -47,6 +48,7 @@ export default function MiniCalendarDropDown({
                     style={{ width: '120px' }}
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
+                    ref={triggerRef}
                 />
             </DropDownHeader>
             <DropDownBody

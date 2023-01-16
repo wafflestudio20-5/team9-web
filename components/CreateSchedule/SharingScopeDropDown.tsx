@@ -29,6 +29,7 @@ export default function SharingScopeDropDown({
         closeDropDown,
         maintainFocus,
     } = useDropDown();
+    const triggerRef = useRef<HTMLInputElement>(null);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
@@ -40,6 +41,7 @@ export default function SharingScopeDropDown({
                     readOnly
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
+                    ref={triggerRef}
                 />
             </DropDownHeader>
             <DropDownBody
@@ -52,7 +54,7 @@ export default function SharingScopeDropDown({
                             key={value}
                             onClick={() => {
                                 setScope(value);
-                                closeDropDown();
+                                closeDropDown(triggerRef);
                             }}
                         >
                             {value}
