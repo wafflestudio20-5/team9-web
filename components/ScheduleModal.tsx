@@ -1,15 +1,18 @@
+import axios from 'axios';
 import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
 
 import styles from './ScheduleModal.module.scss';
 
-import { CalendarURLParams } from '@apis/calendar';
+import { CalendarURLParams, createScheduleAPI } from '@apis/calendar';
 import ProtectionLevelDropDown from '@components/CreateSchedule/ProtectionLevelDropDown';
 import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
+import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
+import { useSessionContext } from '@contexts/SessionContext';
 import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 import close_icon from '@images/close_icon.svg';
@@ -17,7 +20,7 @@ import lock_icon from '@images/lock_icon.svg';
 import people_icon from '@images/people_icon.svg';
 import text_icon from '@images/text_icon.svg';
 import time_icon from '@images/time_icon.svg';
-import { errorToast, warningModal } from '@utils/customAlert';
+import { errorToast, successToast, warningModal } from '@utils/customAlert';
 import { formatFullDate } from '@utils/formatDate';
 
 function ErrorMessage({ message }: { message: string }) {
@@ -35,29 +38,36 @@ export interface InitSchedule {
 }
 
 interface ScheduleModalProps {
-    userPk: number;
-    initSchedule: InitSchedule;
-    requestScheduleUpdate(
-        urlParams: CalendarURLParams,
-        newSchedule: Schedule,
-    ): Promise<boolean>;
+    initSchedule?: InitSchedule;
+    taskType: 'create' | 'edit';
 }
 
 export default function ScheduleModal({
-    userPk,
     initSchedule,
-    requestScheduleUpdate,
+    taskType,
 }: ScheduleModalProps) {
     const { closeModal } = useModal();
-    const [title, setTitle] = useState(initSchedule.title);
-    const [startDate, setStartDate] = useState(initSchedule.startDate);
-    const [endDate, setEndDate] = useState(initSchedule.endDate);
-    const [protectionLevel, setProtectionLevel] = useState(
-        initSchedule.protectionLevel,
+    const { user, accessToken } = useSessionContext();
+    const { yearNow, monthNow, dateNow } = useDateContext();
+    const [title, setTitle] = useState(initSchedule?.title || '');
+    const [startDate, setStartDate] = useState(
+        initSchedule?.startDate || new Date(yearNow, monthNow, dateNow),
     );
-    const [hideDetails, setHideDetails] = useState(initSchedule.hideDetails);
-    const [description, setDescription] = useState(initSchedule.description);
-    const [participants, setParticipants] = useState(initSchedule.participants);
+    const [endDate, setEndDate] = useState(
+        initSchedule?.endDate || new Date(yearNow, monthNow, dateNow),
+    );
+    const [protectionLevel, setProtectionLevel] = useState(
+        initSchedule?.protectionLevel || ProtectionLevel.pulbic,
+    );
+    const [hideDetails, setHideDetails] = useState(
+        initSchedule?.hideDetails || false,
+    );
+    const [description, setDescription] = useState(
+        initSchedule?.description || '',
+    );
+    const [participants, setParticipants] = useState(
+        initSchedule?.participants || [],
+    );
     const [dateValidity, setDateValidity] = useState({
         isValid: true,
         message: '',
@@ -108,6 +118,7 @@ export default function ScheduleModal({
     };
 
     const detectChange = () => {
+        if (!initSchedule) return false;
         if (
             title === initSchedule.title &&
             startDate === initSchedule.startDate &&
@@ -141,14 +152,37 @@ export default function ScheduleModal({
         }
     };
 
+    const createSchedule = async (
+        urlParams: CalendarURLParams,
+        newSchedule: Schedule,
+    ) => {
+        try {
+            await createScheduleAPI(urlParams, newSchedule, accessToken);
+            successToast('일정이 추가되었습니다.');
+            return true;
+        } catch (error) {
+            const message = '일정을 생성하지 못했습니다.';
+            if (axios.isAxiosError(error)) {
+                errorToast(error.response?.data.message ?? message);
+            } else {
+                errorToast(message);
+            }
+            return false;
+        }
+    };
+
     const submitScheduleUpdate = async () => {
+        if (!user) {
+            errorToast('로그인을 먼저 해주세요.');
+            return;
+        }
         if (!title) {
             errorToast('제목을 적어주세요.');
             return;
         }
 
         const urlParams = {
-            pk: userPk,
+            pk: user.pk,
             from: formatFullDate(startDate),
             to: formatFullDate(endDate),
         };
@@ -163,10 +197,10 @@ export default function ScheduleModal({
             participants: participants,
         };
 
-        const isSuccessful = await requestScheduleUpdate(
-            urlParams,
-            newSchedule,
-        );
+        const isSuccessful =
+            taskType === 'create'
+                ? await createSchedule(urlParams, newSchedule)
+                : false;
         if (isSuccessful) closeModal(MODAL_NAMES.schedule);
     };
 
