@@ -8,7 +8,6 @@ import React, {
     useState,
 } from 'react';
 
-import CreateScheduleModal from '@components/CreateSchedule/CreateScheduleModal';
 import MiniCalendarModal from '@components/Header/MiniCalendarModal';
 import SearchDetailsModal from '@components/Header/SearchDetailsModal';
 import UserModal from '@components/Header/UserModal';
@@ -22,7 +21,6 @@ export enum MODAL_NAMES {
     searchDetails = 'searchDetails',
     login = 'login',
     register = 'register',
-    // createSchedule = 'createSchedule',
     schedule = 'schedule',
 }
 
@@ -31,7 +29,6 @@ const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
     [MODAL_NAMES.user]: UserModal,
     [MODAL_NAMES.miniCalendar]: MiniCalendarModal,
     [MODAL_NAMES.searchDetails]: SearchDetailsModal,
-    // [MODAL_NAMES.createSchedule]: CreateScheduleModal,
     [MODAL_NAMES.schedule]: ScheduleModal,
 };
 
