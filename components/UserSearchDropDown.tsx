@@ -52,9 +52,6 @@ export function UserSearchDropDown({
     ); // suggestions for the dropdown.
     // only stores the upmost 4 values, as only up to 4 suggestions are displayed at once
 
-    // const [isFocused, setIsFocused] = useState(false);
-    // true if input box is focused
-
     const containerRef = useRef<HTMLDivElement | null>(null);
     // useRef to place suggestions dropdown directly below searchbox
     // needed b/c searchbox height and width changes
@@ -69,18 +66,6 @@ export function UserSearchDropDown({
             setSuggestions(stored);
         }
     }, [stored]);
-
-    // useEffect(() => {
-    //     // always keep dropdown open if focused on the input box
-    //     if (isFocused) {
-    //         if (!isOpen) {
-    //             openDropDown();
-    //             // only run if isOpen was previously false b/c openDropDown = setIsOpen(!isOpen)
-    //         }
-    //     } else {
-    //         closeDropDown();
-    //     }
-    // }, [isFocused]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -192,9 +177,6 @@ export function UserSearchDropDown({
                             className={styles.input}
                             placeholder="사용자 검색..."
                             onFocus={openDropDown}
-                            // onBlur={() => {
-                            //     setIsFocused(false);
-                            // }}
                         />
                     </form>
                     <div
