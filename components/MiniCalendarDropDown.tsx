@@ -19,20 +19,20 @@ export default function MiniCalendarDropDown({
     date,
     changeDate,
 }: MiniCalendarDropDownProps) {
+    const triggerRef = useRef<HTMLInputElement>(null);
     const {
         isOpen,
         dropDownRef,
         toggleDropDown,
         closeDropDown,
         maintainFocus,
-    } = useDropDown();
-    const triggerRef = useRef<HTMLInputElement>(null);
+    } = useDropDown(triggerRef);
 
     const onChangeDate = (newDate: Date) => {
         newDate.setHours(date.getHours());
         newDate.setMinutes(date.getMinutes());
         changeDate(newDate);
-        closeDropDown(triggerRef);
+        closeDropDown();
     };
 
     return (

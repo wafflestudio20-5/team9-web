@@ -47,7 +47,7 @@ export function DropDownBody({ isOpen, style, children }: DropDownBodyProps) {
     );
 }
 
-export function useDropDown() {
+export function useDropDown(triggerRef?: React.RefObject<HTMLElement>) {
     /**
      * pass `dropDownRef` to props of <DropDown> component (to detect outer area clicks)
      * pass `openDropDown` or `toggleDropDown` where you want (maybe to your trigger element)
@@ -57,7 +57,7 @@ export function useDropDown() {
      * if you want to keep focus on your dropdown trigger element,
      *     1) pass `maintainFocus` function below to `onBlur` props of your trigger element
      *     2) create your triggerRef (using `useRef` of React) and pass it to `ref` props of your trigger element
-     *     3) pass your triggerRef as a parameter of `closeModal`
+     *     3) pass your triggerRef as a parameter of `useDropDown`
      * CAUTION! if you use this option, you shouldn't pass `toggleDropDown` to `onFocus` props
      */
 
@@ -68,7 +68,7 @@ export function useDropDown() {
         setIsOpen(true);
     };
 
-    const closeDropDown = (triggerRef?: React.RefObject<HTMLElement>) => {
+    const closeDropDown = () => {
         setIsOpen(false);
         triggerRef?.current?.blur();
     };

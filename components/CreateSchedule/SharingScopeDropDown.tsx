@@ -22,14 +22,14 @@ export default function SharingScopeDropDown({
     scope,
     setScope,
 }: SharingScopeDropDownProps) {
+    const triggerRef = useRef<HTMLInputElement>(null);
     const {
         isOpen,
         dropDownRef,
         toggleDropDown,
         closeDropDown,
         maintainFocus,
-    } = useDropDown();
-    const triggerRef = useRef<HTMLInputElement>(null);
+    } = useDropDown(triggerRef);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
@@ -54,7 +54,7 @@ export default function SharingScopeDropDown({
                             key={value}
                             onClick={() => {
                                 setScope(value);
-                                closeDropDown(triggerRef);
+                                closeDropDown();
                             }}
                         >
                             {value}

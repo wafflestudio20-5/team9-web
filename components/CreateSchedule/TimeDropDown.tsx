@@ -19,14 +19,14 @@ export default function TimeDropDown({
     time,
     changeTime,
 }: TimeDropDownProps) {
+    const triggerRef = useRef<HTMLInputElement>(null);
     const {
         isOpen,
         dropDownRef,
         toggleDropDown,
         closeDropDown,
         maintainFocus,
-    } = useDropDown();
-    const triggerRef = useRef<HTMLInputElement>(null);
+    } = useDropDown(triggerRef);
 
     const getTimeList = () =>
         Array(24 * 4)
@@ -67,7 +67,7 @@ export default function TimeDropDown({
                                 key={i}
                                 onClick={() => {
                                     changeTime(newTime);
-                                    closeDropDown(triggerRef);
+                                    closeDropDown();
                                 }}
                             >
                                 {formatTime(newTime)}
