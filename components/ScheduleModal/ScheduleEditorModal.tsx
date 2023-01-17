@@ -110,8 +110,9 @@ export default function ScheduleEditorModal({
     const detectChange = () => {
         if (
             title === initSchedule.title &&
-            startDate === new Date(initSchedule.start_at) &&
-            endDate === new Date(initSchedule.end_at) &&
+            startDate.toString() ===
+                new Date(initSchedule.start_at).toString() &&
+            endDate.toString() === new Date(initSchedule.end_at).toString() &&
             description === initSchedule.description &&
             protectionLevel === initSchedule.protection_level &&
             hideDetails === !initSchedule.show_content &&
