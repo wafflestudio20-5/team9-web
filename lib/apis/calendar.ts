@@ -14,8 +14,17 @@ export interface CalendarURLParams {
     to: string;
 }
 
+export interface CalendarURLParamsEmail {
+    email: string;
+    from: string;
+    to: string;
+}
+
 const getCommonURLWithParams = (urlParams: CalendarURLParams) =>
     `?pk=${urlParams.pk}&from=${urlParams.from}&to=${urlParams.to}`;
+
+const getCommonURLWithEmail = (urlParams: CalendarURLParamsEmail) =>
+    `?email=${urlParams.email}&from=${urlParams.from}&to=${urlParams.to}`;
 
 export const createScheduleAPI = (
     newSchedule: Schedule,
@@ -31,6 +40,14 @@ export const getEntireScheduleAPI = (
     accessToken: string | null,
 ) =>
     CalendarAPI.get(`/${getCommonURLWithParams(urlParams)}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+export const getEntireScheduleAPIEmail = (
+    urlParams: CalendarURLParamsEmail,
+    accessToken: string | null,
+) =>
+    CalendarAPI.get(`/${getCommonURLWithEmail(urlParams)}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -51,6 +68,18 @@ export const editScheduleAPI = (
 ) =>
     CalendarAPI.patch(
         `/${scheduleId}/${getCommonURLWithParams(urlParams)}`,
+        newSchedule,
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+    );
+
+export const editScheduleAPIEmail = (
+    scheduleId: number,
+    newSchedule: Schedule,
+    urlParams: CalendarURLParamsEmail,
+    accessToken: string | null,
+) =>
+    CalendarAPI.patch(
+        `/${scheduleId}/${getCommonURLWithEmail(urlParams)}`,
         newSchedule,
         { headers: { Authorization: `Bearer ${accessToken}` } },
     );

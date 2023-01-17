@@ -5,13 +5,12 @@
     top: 60px;
     left: 50%;
     transform: translateX(-50%);
-    width: 400px;
-    height: 400px;
-    background-color: tomato;
+    width: 550px; // temp
     border: 1px solid v.$border-gray;
     border-radius: 10px;
     background-color: white;
     box-shadow: 0 1px 5px 1px v.$border-gray;
+    overflow: hidden;
 }
 
 .header {
@@ -29,5 +28,66 @@
         height: 30px;
         border: none;
         border-radius: 50%;
+    }
+}
+
+.body {
+    padding: 12px 36px;
+
+    .title {
+        display: flex;
+        align-items: center;
+        margin: 0;
+
+        .color {
+            margin-left: 3px;
+            margin-right: 33px;
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+        }
+    }
+
+    > div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        height: 36px;
+
+        .icon {
+            display: flex;
+            align-items: center;
+            width: 54px;
+            flex-shrink: 0;
+        }
+    }
+
+    .date {
+        margin-left: 52px;
+        gap: 5px;
+        font-size: small;
+
+        .dash {
+            margin: 0 5px;
+        }
+    }
+
+    .description {
+        align-items: flex-start;
+        height: fit-content;
+        max-height: 150px;
+        overflow: auto;
+
+        p {
+            margin: 0;
+            padding-top: 2px;
+        }
+    }
+
+    .protectionLevel {
+        .hideDetails {
+            margin-left: 5px;
+            font-size: small;
+        }
     }
 }
