@@ -100,20 +100,6 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
         if (isDeleted) closeModal(MODAL_NAMES.schedule);
     };
 
-    const schedule2: FullSchedule = {
-        id: 100,
-        title: 'test',
-        description: 'testdes',
-        start_at: '2022-01-12 00:00:00',
-        end_at: '2022-01-13 00:15:00',
-        participants: [],
-        created_at: '',
-        updated_at: '',
-        created_by: 7,
-        protection_level: 2,
-        show_content: true,
-    };
-
     return (
         <ModalFrame modalName={MODAL_NAMES.schedule}>
             <div className={styles.scheduleModal}>
@@ -121,7 +107,7 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
                     <button
                         onClick={() =>
                             openModal(MODAL_NAMES.scheduleEditor, {
-                                initSchedule: schedule2,
+                                initSchedule,
                                 taskType: 'create',
                             })
                         }
