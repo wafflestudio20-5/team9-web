@@ -9,10 +9,10 @@ import {
     createScheduleAPI,
     editScheduleAPI,
 } from '@apis/calendar';
-import ProtectionLevelDropDown from '@components/CreateSchedule/ProtectionLevelDropDown';
-import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
+import ProtectionLevelDropDown from '@components/ScheduleModal/ProtectionLevelDropDown';
+import TimeDropDown from '@components/ScheduleModal/TimeDropDown';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';

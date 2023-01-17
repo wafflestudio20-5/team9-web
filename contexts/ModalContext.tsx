@@ -11,8 +11,8 @@ import React, {
 import MiniCalendarModal from '@components/Header/MiniCalendarModal';
 import SearchDetailsModal from '@components/Header/SearchDetailsModal';
 import UserModal from '@components/Header/UserModal';
-import ScheduleEditorModal from '@components/ScheduleEditorModal';
-import ScheduleModal from '@components/ScheduleModal';
+import ScheduleEditorModal from '@components/ScheduleModal/ScheduleEditorModal';
+import ScheduleModal from '@components/ScheduleModal/ScheduleModal';
 
 // Add modal name to MODAL_NAMES (to prevent hard coding)
 // key and value should be the same
