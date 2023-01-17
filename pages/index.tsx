@@ -3,7 +3,7 @@ import React from 'react';
 import { CalendarURLParams, getEntireScheduleAPI } from '@apis/calendar';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
-import { FullSchedule } from '@customTypes/CalendarTypes';
+import { FullSchedule } from '@customTypes/ScheduleTypes';
 
 export default function HomePage() {
     const { openModal } = useModal();

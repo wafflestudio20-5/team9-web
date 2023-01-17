@@ -13,7 +13,7 @@ import {
     Participant,
     ProtectionLevelText,
     Schedule,
-} from '@customTypes/CalendarTypes';
+} from '@customTypes/ScheduleTypes';
 import close_icon from '@images/close_icon.svg';
 import delete_icon from '@images/delete_icon.svg';
 import edit_icon from '@images/edit_icon.svg';

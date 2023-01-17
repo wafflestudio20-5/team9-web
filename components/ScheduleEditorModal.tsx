@@ -6,14 +6,8 @@ import styles from './ScheduleEditorModal.module.scss';
 
 import {
     CalendarURLParams,
-    CalendarURLParamsEmail,
     createScheduleAPI,
-    deleteScheduleAPI,
     editScheduleAPI,
-    editScheduleAPIEmail,
-    getEntireScheduleAPI,
-    getEntireScheduleAPIEmail,
-    getParticularScheduleAPI,
 } from '@apis/calendar';
 import ProtectionLevelDropDown from '@components/CreateSchedule/ProtectionLevelDropDown';
 import TimeDropDown from '@components/CreateSchedule/TimeDropDown';
@@ -22,11 +16,7 @@ import ModalFrame from '@components/ModalFrame';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
-import {
-    ProtectionLevel,
-    Schedule,
-    FullSchedule,
-} from '@customTypes/CalendarTypes';
+import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
@@ -49,7 +39,7 @@ export default function ScheduleEditorModal({
     initSchedule,
     taskType,
 }: ScheduleEditorModalProps) {
-    const { openModal, closeModal } = useModal();
+    const { closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
     const [title, setTitle] = useState<string>(initSchedule.title);
     const [startDate, setStartDate] = useState<Date>(
@@ -252,82 +242,6 @@ export default function ScheduleEditorModal({
         if (isSuccessful) closeModal(MODAL_NAMES.scheduleEditor);
     };
 
-    const getSchedules = async () => {
-        // if (!user) return;
-        const urlParams: CalendarURLParamsEmail = {
-            email: 'chansol1024@naver.com',
-            from: '2023-01-18',
-            to: '2023-01-18',
-        };
-        try {
-            const res = await getEntireScheduleAPIEmail(urlParams, accessToken);
-            console.log(res.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const particular = async () => {
-        const urlParams: CalendarURLParams = {
-            pk: 7,
-            from: '2023-01-18',
-            to: '2023-01-18',
-        };
-        try {
-            const res = await getParticularScheduleAPI(
-                34,
-                urlParams,
-                accessToken,
-            );
-            console.log(res.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const edit = async () => {
-        const urlParams: CalendarURLParamsEmail = {
-            email: 'chansol1024@naver.com',
-            from: '2023-01-18',
-            to: '2023-01-18',
-        };
-        const newSchedule = {
-            title: 'Test Schedule 2',
-            start_at: '2023-01-18 00:00:00',
-            end_at: '2023-01-18 00:00:00',
-            description: 'Test description 2',
-            participants: [],
-            protection_level: 1,
-            show_content: true,
-        };
-        try {
-            const res = await editScheduleAPIEmail(
-                34,
-                newSchedule,
-                urlParams,
-                accessToken,
-            );
-            console.log(res.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const delScheul = async () => {
-        const urlParams: CalendarURLParams = {
-            pk: 7,
-            from: '2023-01-18',
-            to: '2023-01-18',
-        };
-
-        try {
-            const res = await deleteScheduleAPI(33, urlParams, accessToken);
-            console.log(res.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     return (
         <ModalFrame
             modalName={MODAL_NAMES.scheduleEditor}
@@ -335,10 +249,6 @@ export default function ScheduleEditorModal({
         >
             <div className={styles.scheduleEditorModal}>
                 <div className={styles.header}>
-                    <button onClick={getSchedules}>가져오기</button>
-                    <button onClick={particular}>특정</button>
-                    <button onClick={delScheul}>삭제</button>
-                    <button onClick={edit}>수정</button>
                     <button
                         type="button"
                         className={styles.close}

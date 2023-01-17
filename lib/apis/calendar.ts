@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { apiEndPoint } from './endpoint';
 
-import { Schedule } from '@customTypes/CalendarTypes';
+import { Schedule } from '@customTypes/ScheduleTypes';
 
 const CalendarAPI = axios.create({
     baseURL: `${apiEndPoint}/calendar/schedule`,
@@ -23,9 +23,6 @@ export interface CalendarURLParamsEmail {
 const getCommonURLWithParams = (urlParams: CalendarURLParams) =>
     `?pk=${urlParams.pk}&from=${urlParams.from}&to=${urlParams.to}`;
 
-const getCommonURLWithEmail = (urlParams: CalendarURLParamsEmail) =>
-    `?email=${urlParams.email}&from=${urlParams.from}&to=${urlParams.to}`;
-
 export const createScheduleAPI = (
     newSchedule: Schedule,
     urlParams: CalendarURLParams,
@@ -40,14 +37,6 @@ export const getEntireScheduleAPI = (
     accessToken: string | null,
 ) =>
     CalendarAPI.get(`/${getCommonURLWithParams(urlParams)}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-    });
-
-export const getEntireScheduleAPIEmail = (
-    urlParams: CalendarURLParamsEmail,
-    accessToken: string | null,
-) =>
-    CalendarAPI.get(`/${getCommonURLWithEmail(urlParams)}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -68,18 +57,6 @@ export const editScheduleAPI = (
 ) =>
     CalendarAPI.patch(
         `/${scheduleId}/${getCommonURLWithParams(urlParams)}`,
-        newSchedule,
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-    );
-
-export const editScheduleAPIEmail = (
-    scheduleId: number,
-    newSchedule: Schedule,
-    urlParams: CalendarURLParamsEmail,
-    accessToken: string | null,
-) =>
-    CalendarAPI.patch(
-        `/${scheduleId}/${getCommonURLWithEmail(urlParams)}`,
         newSchedule,
         { headers: { Authorization: `Bearer ${accessToken}` } },
     );

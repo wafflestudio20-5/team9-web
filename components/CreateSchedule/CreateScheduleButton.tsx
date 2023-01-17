@@ -5,7 +5,7 @@ import styles from './CreateScheduleButton.module.scss';
 
 import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
-import { ProtectionLevel, Schedule } from '@customTypes/CalendarTypes';
+import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
 import add_icon from '@images/add_icon.svg';
 
 interface CreateScheduleButtonProps {
