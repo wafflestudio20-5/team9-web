@@ -149,11 +149,11 @@ export default function ScheduleEditorModal({
             };
             warningModal(warningContent).then(result => {
                 if (result.isConfirmed) {
-                    closeModal(MODAL_NAMES.ScheduleEditor);
+                    closeModal(MODAL_NAMES.scheduleEditor);
                 }
             });
         } else {
-            closeModal(MODAL_NAMES.ScheduleEditor);
+            closeModal(MODAL_NAMES.scheduleEditor);
         }
     };
 
@@ -239,12 +239,12 @@ export default function ScheduleEditorModal({
                 break;
         }
 
-        if (isSuccessful) closeModal(MODAL_NAMES.ScheduleEditor);
+        if (isSuccessful) closeModal(MODAL_NAMES.scheduleEditor);
     };
 
     return (
         <ModalFrame
-            modalName={MODAL_NAMES.ScheduleEditor}
+            modalName={MODAL_NAMES.scheduleEditor}
             onClickBackDrop={cancelScheduleUpdate}
         >
             <div className={styles.scheduleEditorModal}>
