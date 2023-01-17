@@ -17,7 +17,7 @@ import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
-import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
+import { ProtectionLevel, Schedule } from '@customTypes/CalendarTypes';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
@@ -31,19 +31,8 @@ function ErrorMessage({ message }: { message: string }) {
     return <span className={styles.errorMessage}>{message}</span>;
 }
 
-export interface InitSchedule {
-    id: number;
-    title: string;
-    startDate: Date;
-    endDate: Date;
-    protectionLevel: ProtectionLevel;
-    hideDetails: boolean;
-    description: string;
-    participants: { pk: number }[];
-}
-
 interface ScheduleEditorModalProps {
-    initSchedule?: InitSchedule;
+    initSchedule: Schedule;
     taskType: 'create' | 'edit';
 }
 
@@ -53,25 +42,22 @@ export default function ScheduleEditorModal({
 }: ScheduleEditorModalProps) {
     const { closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
-    const { yearNow, monthNow, dateNow } = useDateContext();
-    const [title, setTitle] = useState(initSchedule?.title || '');
-    const [startDate, setStartDate] = useState(
-        initSchedule?.startDate || new Date(yearNow, monthNow, dateNow),
+    const [title, setTitle] = useState<string>(initSchedule.title);
+    const [startDate, setStartDate] = useState<Date>(
+        new Date(initSchedule.start_at),
     );
-    const [endDate, setEndDate] = useState(
-        initSchedule?.endDate || new Date(yearNow, monthNow, dateNow),
+    const [endDate, setEndDate] = useState<Date>(new Date(initSchedule.end_at));
+    const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
+        initSchedule.protection_level,
     );
-    const [protectionLevel, setProtectionLevel] = useState(
-        initSchedule?.protectionLevel || ProtectionLevel.pulbic,
+    const [hideDetails, setHideDetails] = useState<boolean>(
+        !initSchedule.show_content,
     );
-    const [hideDetails, setHideDetails] = useState(
-        initSchedule?.hideDetails || false,
+    const [description, setDescription] = useState<string>(
+        initSchedule.description ?? '',
     );
-    const [description, setDescription] = useState(
-        initSchedule?.description || '',
-    );
-    const [participants, setParticipants] = useState(
-        initSchedule?.participants || [],
+    const [participants, setParticipants] = useState<{ pk: number }[]>(
+        initSchedule.participants ?? [],
     );
     const [dateValidity, setDateValidity] = useState({
         isValid: true,
@@ -123,14 +109,13 @@ export default function ScheduleEditorModal({
     };
 
     const detectChange = () => {
-        if (!initSchedule) return false;
         if (
             title === initSchedule.title &&
-            startDate === initSchedule.startDate &&
-            endDate === initSchedule.endDate &&
+            startDate === new Date(initSchedule.start_at) &&
+            endDate === new Date(initSchedule.end_at) &&
             description === initSchedule.description &&
-            protectionLevel === initSchedule.protectionLevel &&
-            hideDetails === initSchedule.hideDetails &&
+            protectionLevel === initSchedule.protection_level &&
+            hideDetails === !initSchedule.show_content &&
             JSON.stringify(participants) ===
                 JSON.stringify(initSchedule.participants)
         ) {
@@ -162,8 +147,13 @@ export default function ScheduleEditorModal({
         urlParams: CalendarURLParams,
     ) => {
         try {
-            await createScheduleAPI(newSchedule, urlParams, accessToken);
+            const res = await createScheduleAPI(
+                newSchedule,
+                urlParams,
+                accessToken,
+            );
             successToast('일정이 추가되었습니다.');
+            console.log(res.data);
             return true;
         } catch (error) {
             const message = '일정을 생성하지 못했습니다.';

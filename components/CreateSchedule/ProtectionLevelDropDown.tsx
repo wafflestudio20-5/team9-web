@@ -9,7 +9,7 @@ import {
 import {
     ProtectionLevel,
     ProtectionLevelText,
-} from '@customTypes/ScheduleTypes';
+} from '@customTypes/CalendarTypes';
 
 interface ProtectionLevelDropDownProps {
     protectionLevel: ProtectionLevel;
