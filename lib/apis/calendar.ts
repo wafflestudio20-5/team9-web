@@ -18,8 +18,8 @@ const getCommonURLWithParams = (urlParams: CalendarURLParams) =>
     `?pk=${urlParams.pk}&from=${urlParams.from}&to=${urlParams.to}`;
 
 export const createScheduleAPI = (
-    urlParams: CalendarURLParams,
     newSchedule: Schedule,
+    urlParams: CalendarURLParams,
     accessToken: string | null,
 ) =>
     CalendarAPI.post(`/${getCommonURLWithParams(urlParams)}`, newSchedule, {
@@ -35,29 +35,31 @@ export const getEntireScheduleAPI = (
     });
 
 export const getParticularScheduleAPI = (
+    scheduleId: number,
     urlParams: CalendarURLParams,
     accessToken: string | null,
 ) =>
-    CalendarAPI.get(`/${urlParams.pk}/${getCommonURLWithParams(urlParams)}`, {
+    CalendarAPI.get(`/${scheduleId}/${getCommonURLWithParams(urlParams)}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
 export const editScheduleAPI = (
-    urlParams: CalendarURLParams,
+    scheduleId: number,
     newSchedule: Schedule,
+    urlParams: CalendarURLParams,
     accessToken: string | null,
 ) =>
     CalendarAPI.patch(
-        `/${urlParams.pk}/${getCommonURLWithParams(urlParams)}`,
+        `/${scheduleId}/${getCommonURLWithParams(urlParams)}`,
         newSchedule,
         { headers: { Authorization: `Bearer ${accessToken}` } },
     );
 
 export const deleteScheduleAPI = (
+    scheduleId: number,
     urlParams: CalendarURLParams,
     accessToken: string | null,
 ) =>
-    CalendarAPI.delete(
-        `/${urlParams.pk}/${getCommonURLWithParams(urlParams)}`,
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-    );
+    CalendarAPI.delete(`/${scheduleId}/${getCommonURLWithParams(urlParams)}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });

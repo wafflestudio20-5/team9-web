@@ -32,6 +32,7 @@ function ErrorMessage({ message }: { message: string }) {
 }
 
 export interface InitSchedule {
+    id: number;
     title: string;
     startDate: Date;
     endDate: Date;
@@ -157,11 +158,11 @@ export default function ScheduleEditorModal({
     };
 
     const createSchedule = async (
-        urlParams: CalendarURLParams,
         newSchedule: Schedule,
+        urlParams: CalendarURLParams,
     ) => {
         try {
-            await createScheduleAPI(urlParams, newSchedule, accessToken);
+            await createScheduleAPI(newSchedule, urlParams, accessToken);
             successToast('일정이 추가되었습니다.');
             return true;
         } catch (error) {
@@ -176,11 +177,17 @@ export default function ScheduleEditorModal({
     };
 
     const editSchdule = async (
-        urlParams: CalendarURLParams,
+        scheduleId: number,
         newSchedule: Schedule,
+        urlParams: CalendarURLParams,
     ) => {
         try {
-            await editScheduleAPI(urlParams, newSchedule, accessToken);
+            await editScheduleAPI(
+                scheduleId,
+                newSchedule,
+                urlParams,
+                accessToken,
+            );
             successToast('일정이 수정되었습니다.');
             return true;
         } catch (error) {
@@ -220,10 +227,18 @@ export default function ScheduleEditorModal({
             participants: participants,
         };
 
-        const isSuccessful =
-            taskType === 'create'
-                ? await createSchedule(urlParams, newSchedule)
-                : await editSchdule(urlParams, newSchedule);
+        let isSuccessful = false;
+        switch (taskType) {
+            case 'create':
+                isSuccessful = await createSchedule(newSchedule, urlParams);
+                break;
+            case 'edit':
+                isSuccessful = initSchedule?.id
+                    ? await editSchdule(initSchedule.id, newSchedule, urlParams)
+                    : false;
+                break;
+        }
+
         if (isSuccessful) closeModal(MODAL_NAMES.ScheduleEditor);
     };
 
