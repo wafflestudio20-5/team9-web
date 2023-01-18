@@ -26,7 +26,7 @@ const getCommonURLWithParams = (urlParams: CalendarURLParams) =>
 
 // temp (will be removed after merging backend pr)
 const getCommonURLWithParamsEmail = (urlParams: CalendarURLParamsEmail) =>
-    `?meail=${urlParams.email}&from=${urlParams.from}&to=${urlParams.to}`;
+    `?email=${urlParams.email}&from=${urlParams.from}&to=${urlParams.to}`;
 
 export const createScheduleAPI = (
     newSchedule: Schedule,
