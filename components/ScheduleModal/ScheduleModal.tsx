@@ -21,6 +21,7 @@ import lock_icon from '@images/lock_icon.svg';
 import people_icon from '@images/people_icon.svg';
 import text_icon from '@images/text_icon.svg';
 import { errorToast, successToast, warningModal } from '@utils/customAlert';
+import { formatDayToKr } from '@utils/formatDay';
 import { formatTime } from '@utils/formatTime';
 
 interface ScheduleModalProps {
@@ -83,6 +84,26 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
         if (isDeleted) closeModal(MODAL_NAMES.schedule);
     };
 
+    const collapseScheduleEndDateTime = (startDate: Date, endDate: Date) => {
+        if (startDate.toString() === endDate.toString()) return '';
+
+        let result = formatTime(endDate);
+
+        if (startDate.getDate() !== endDate.getDate()) {
+            result = `${endDate.getDate()}일(${formatDayToKr(
+                endDate.getDay(),
+            )}) ${result}`;
+        }
+        if (startDate.getMonth() + 1 !== endDate.getMonth() + 1) {
+            result = `${endDate.getMonth() + 1}월 ${result}`;
+        }
+        if (startDate.getFullYear() !== endDate.getFullYear()) {
+            result = `${endDate.getFullYear()}년 ${result}`;
+        }
+
+        return result;
+    };
+
     return (
         <ModalFrame modalName={MODAL_NAMES.schedule}>
             <div className={styles.scheduleModal}>
@@ -133,64 +154,81 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
                             className={styles.color}
                             style={{ backgroundColor: 'burlywood' }}
                         />
-                        {schedule.title}
+                        {user?.pk !== schedule.created_by &&
+                        !schedule.show_content
+                            ? '바쁨'
+                            : schedule.title}
                     </h2>
                     <div className={styles.date}>
                         <span>
                             {startDate.getFullYear()}년{' '}
-                            {startDate.getMonth() + 1}월 {startDate.getDate()}일
+                            {startDate.getMonth() + 1}월 {startDate.getDate()}
+                            일({formatDayToKr(startDate.getDay())}){' '}
+                            {formatTime(startDate)}
                         </span>
-                        <span>{formatTime(startDate)}</span>
-                        <span className={styles.dash}>-</span>
+                        {startDate.toString() !== endDate.toString() && (
+                            <span className={styles.dash}>-</span>
+                        )}
                         <span>
-                            {endDate.getFullYear()}년 {endDate.getMonth() + 1}월{' '}
-                            {endDate.getDate()}일
+                            {collapseScheduleEndDateTime(startDate, endDate)}
                         </span>
-                        <span>{formatTime(endDate)}</span>
                     </div>
-                    {schedule.participants?.length ? (
-                        <div className={styles.participants}>
-                            <div className={styles.icon}>
-                                <Image
-                                    src={people_icon}
-                                    width={24}
-                                    alt="participants"
-                                />
-                            </div>
-                            <div>asdf</div>
-                        </div>
-                    ) : (
+                    {user?.pk !== schedule.created_by &&
+                    !schedule.show_content ? (
                         <></>
-                    )}
-                    {schedule.description && (
-                        <div className={styles.description}>
-                            <div className={styles.icon}>
-                                <Image
-                                    src={text_icon}
-                                    width={24}
-                                    alt="description"
-                                />
-                            </div>
-                            <p>{schedule.description}</p>
-                        </div>
-                    )}
-                    <div className={styles.protectionLevel}>
-                        <div className={styles.icon}>
-                            <Image
-                                src={lock_icon}
-                                width={24}
-                                alt="protection_level"
-                            />
-                        </div>
-                        <div>
-                            {ProtectionLevelText[schedule.protection_level]}
-                            {schedule.show_content || (
-                                <span className={styles.hideDetails}>
-                                    (세부사항 비공개)
-                                </span>
+                    ) : (
+                        <>
+                            {schedule.participants?.length && (
+                                <div className={styles.participants}>
+                                    <div className={styles.icon}>
+                                        <Image
+                                            src={people_icon}
+                                            width={24}
+                                            alt="participants"
+                                        />
+                                    </div>
+                                    <div>asdf</div>
+                                </div>
                             )}
-                        </div>
-                    </div>
+                            {schedule.description && (
+                                <div className={styles.description}>
+                                    <div className={styles.icon}>
+                                        <Image
+                                            src={text_icon}
+                                            width={24}
+                                            alt="description"
+                                        />
+                                    </div>
+                                    <p>{schedule.description}</p>
+                                </div>
+                            )}
+                            {user?.pk === schedule.created_by && (
+                                <div className={styles.protectionLevel}>
+                                    <div className={styles.icon}>
+                                        <Image
+                                            src={lock_icon}
+                                            width={24}
+                                            alt="protection_level"
+                                        />
+                                    </div>
+                                    <div>
+                                        {
+                                            ProtectionLevelText[
+                                                schedule.protection_level
+                                            ]
+                                        }
+                                        {schedule.show_content || (
+                                            <span
+                                                className={styles.hideDetails}
+                                            >
+                                                (세부사항 비공개)
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </>
+                    )}
                 </div>
             </div>
         </ModalFrame>

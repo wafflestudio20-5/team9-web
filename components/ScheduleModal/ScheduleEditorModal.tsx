@@ -16,7 +16,11 @@ import TimeDropDown from '@components/ScheduleModal/TimeDropDown';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
-import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
+import {
+    FullSchedule,
+    ProtectionLevel,
+    Schedule,
+} from '@customTypes/ScheduleTypes';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
@@ -39,7 +43,7 @@ export default function ScheduleEditorModal({
     initSchedule,
     taskType,
 }: ScheduleEditorModalProps) {
-    const { closeModal } = useModal();
+    const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
     const titleRef = useRef<HTMLInputElement>(null);
     const [title, setTitle] = useState<string>(initSchedule.title);
@@ -230,6 +234,22 @@ export default function ScheduleEditorModal({
         titleRef.current?.focus();
     }, []);
 
+    const openopen = () => {
+        const initSchedule: FullSchedule = {
+            id: 18,
+            title: 'hello world',
+            created_by: 7,
+            created_at: '2022-2020',
+            updated_at: '',
+            description: 'asf',
+            start_at: '2023-01-12 9:30',
+            end_at: '2023-01-13 9:30',
+            show_content: true,
+            protection_level: 2,
+        };
+        openModal(MODAL_NAMES.schedule, { schedule: initSchedule });
+    };
+
     return (
         <ModalFrame
             modalName={MODAL_NAMES.scheduleEditor}
@@ -237,6 +257,7 @@ export default function ScheduleEditorModal({
         >
             <div className={styles.scheduleEditorModal}>
                 <div className={styles.header}>
+                    <button onClick={openopen}>dddd</button>
                     <button
                         type="button"
                         className={styles.close}
