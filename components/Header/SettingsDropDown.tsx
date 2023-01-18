@@ -10,18 +10,23 @@ import {
 import settings_icon from '@images/settings_icon.svg';
 
 export default function SettingsDropDown() {
+    const triggerRef = useRef<HTMLButtonElement>(null);
     const {
         isOpen,
         dropDownRef,
         closeDropDown,
         toggleDropDown,
         maintainFocus,
-    } = useDropDown();
+    } = useDropDown(triggerRef);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
             <DropDownHeader>
-                <button onClick={toggleDropDown} onBlur={maintainFocus}>
+                <button
+                    ref={triggerRef}
+                    onClick={toggleDropDown}
+                    onBlur={maintainFocus}
+                >
                     <Image src={settings_icon} height={24} alt="settings" />
                 </button>
             </DropDownHeader>

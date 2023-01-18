@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 
 import {
     DropDown,
@@ -20,13 +20,14 @@ export default function ProtectionLevelDropDown({
     protectionLevel,
     setProtectionLevel,
 }: ProtectionLevelDropDownProps) {
+    const triggerRef = useRef<HTMLInputElement>(null);
     const {
         isOpen,
         dropDownRef,
         toggleDropDown,
         closeDropDown,
         maintainFocus,
-    } = useDropDown();
+    } = useDropDown(triggerRef);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
@@ -38,6 +39,7 @@ export default function ProtectionLevelDropDown({
                     readOnly
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
+                    ref={triggerRef}
                 />
                 <span className="underline" />
             </DropDownHeader>
