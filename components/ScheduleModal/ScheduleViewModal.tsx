@@ -2,7 +2,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import React, { useMemo } from 'react';
 
-import styles from './ScheduleModal.module.scss';
+import styles from './ScheduleViewModal.module.scss';
 
 import { deleteScheduleAPI } from '@apis/calendar';
 import ModalFrame from '@components/ModalFrame';
@@ -41,7 +41,7 @@ interface ScheduleModalProps {
     schedule: FullSchedule;
 }
 
-export default function ScheduleModal({ schedule }: ScheduleModalProps) {
+export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
     const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
     const startDate = useMemo(() => new Date(schedule.start_at), [schedule]);
@@ -94,7 +94,7 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
         if (!isConfirmed) return;
 
         const isDeleted = await deleteSchedule(schedule.id, accessToken);
-        if (isDeleted) closeModal(MODAL_NAMES.schedule);
+        if (isDeleted) closeModal(MODAL_NAMES.scheduleView);
     };
 
     const collapseScheduleEndDateTime = (startDate: Date, endDate: Date) => {
@@ -118,8 +118,8 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
     };
 
     return (
-        <ModalFrame modalName={MODAL_NAMES.schedule}>
-            <div className={styles.scheduleModal}>
+        <ModalFrame modalName={MODAL_NAMES.scheduleView}>
+            <div className={styles.scheduleViewModal}>
                 <div className={styles.header}>
                     {user?.pk === schedule.created_by && (
                         <>
@@ -152,7 +152,7 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
                     )}
                     <button
                         className={styles.close}
-                        onClick={() => closeModal(MODAL_NAMES.schedule)}
+                        onClick={() => closeModal(MODAL_NAMES.scheduleView)}
                     >
                         <Image
                             src={close_icon}

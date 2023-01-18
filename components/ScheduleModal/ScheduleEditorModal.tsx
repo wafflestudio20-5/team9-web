@@ -255,7 +255,7 @@ export default function ScheduleEditorModal({
     }, []);
 
     const testScheduleViewModal = (initSchedule: FullSchedule) => {
-        openModal(MODAL_NAMES.schedule, { schedule: initSchedule });
+        openModal(MODAL_NAMES.scheduleView, { schedule: initSchedule });
     };
 
     const testGetEntireSchedule = async () => {
@@ -296,7 +296,6 @@ export default function ScheduleEditorModal({
                 <div className={styles.header}>
                     <button onClick={testGetEntireSchedule}>전체</button>
                     <button onClick={testGetParticularSchedule}>특정</button>
-                    <button>일정뷰</button>
                     <button
                         type="button"
                         className={styles.close}

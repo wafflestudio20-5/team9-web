@@ -12,7 +12,7 @@ import MiniCalendarModal from '@components/Header/MiniCalendarModal';
 import SearchDetailsModal from '@components/Header/SearchDetailsModal';
 import UserModal from '@components/Header/UserModal';
 import ScheduleEditorModal from '@components/ScheduleModal/ScheduleEditorModal';
-import ScheduleModal from '@components/ScheduleModal/ScheduleModal';
+import ScheduleViewModal from '@components/ScheduleModal/ScheduleViewModal';
 
 // Add modal name to MODAL_NAMES (to prevent hard coding)
 // key and value should be the same
@@ -22,7 +22,7 @@ export enum MODAL_NAMES {
     searchDetails = 'searchDetails',
     login = 'login',
     register = 'register',
-    schedule = 'schedule',
+    scheduleView = 'scheduleView',
     scheduleEditor = 'scheduleEditor',
 }
 
@@ -31,7 +31,7 @@ const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
     [MODAL_NAMES.user]: UserModal,
     [MODAL_NAMES.miniCalendar]: MiniCalendarModal,
     [MODAL_NAMES.searchDetails]: SearchDetailsModal,
-    [MODAL_NAMES.schedule]: ScheduleModal,
+    [MODAL_NAMES.scheduleView]: ScheduleViewModal,
     [MODAL_NAMES.scheduleEditor]: ScheduleEditorModal,
 };
 
