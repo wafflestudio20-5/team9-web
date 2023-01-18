@@ -1,6 +1,60 @@
 @use './variables.scss' as v;
 @import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Nanum+Gothic:wght@400;700;800&display=swap');
 
+:root{
+    --syrup-strawberry: #b13b16
+    --syrup-chocolate: #6b4c0f
+    --syrup-honey: #ddac4d
+    --waffle-background: #f9f7f3
+    --sidebar-background: #fcfbf9
+    --header-background: #fdfcfb;
+    --grid-line: #ffffff
+    --structure: #b6aaa0
+    --text-datesPrimary: #2f1900
+    --text-datesSecondary: #85898d
+    --text-other: #3e4042
+    --icons: #606368
+    --today-blueberry: #5f40ba
+    --stroke-header: #c8c9cc
+    --fill-sidebar: #f0f0f0
+}
+
+:root[data-theme="light"]{
+    --syrup-strawberry: #b13b16
+    --syrup-chocolate: #6b4c0f
+    --syrup-honey: #ddac4d
+    --waffle-background: #f9f7f3
+    --sidebar-background: #fcfbf9
+    --header-background: #fdfcfb;
+    --grid-line: #ffffff
+    --structure: #b6aaa0
+    --text-datesPrimary: #2f1900
+    --text-datesSecondary: #85898d
+    --text-other: #3e4042
+    --icons: #606368
+    --today-blueberry: #5f40ba
+    --stroke-header: #c8c9cc
+    --fill-sidebar: #f0f0f0
+}
+
+:root[data-theme="dark"]{
+    --syrup-strawberry: #ebb5ad
+    --syrup-chocolate: #bc9978
+    --syrup-honey: #edc881
+    --waffle-background: #0d0d0d
+    --sidebar-background: #141414
+    --header-background: #242424;
+    --grid-line: #0d0d0d
+    --structure: #b6aaa0
+    --text-datesPrimary: #ffffff
+    --text-datesSecondary: #85898d
+    --text-other: #eef2f5
+    --icons: #a9acb0
+    --today-blueberry: #6f50c3
+    --stroke-header: #f8f8fa
+    --fill-sidebar: #e2e0e0
+}
+
 body {
     margin: 0;
     padding: 0;

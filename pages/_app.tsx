@@ -7,24 +7,27 @@ import DateProvider from '@contexts/DateContext';
 import ModalProvider, { ModalContainer } from '@contexts/ModalContext';
 import SessionProvider from '@contexts/SessionContext';
 import SidebarProvider from '@contexts/SidebarContext';
+import ThemeProvider from '@contexts/ThemeContext';
 import '@styles/global.scss';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
     return (
         <>
-            <SessionProvider>
-                <CalendarProvider>
-                    <DateProvider>
-                        <ModalProvider>
-                            <SidebarProvider>
-                                <Header />
-                                <Component {...pageProps} />
-                                <ModalContainer />
-                            </SidebarProvider>
-                        </ModalProvider>
-                    </DateProvider>
-                </CalendarProvider>
-            </SessionProvider>
+            <ThemeProvider>
+                <SessionProvider>
+                    <CalendarProvider>
+                        <DateProvider>
+                            <ModalProvider>
+                                <SidebarProvider>
+                                    <Header />
+                                    <Component {...pageProps} />
+                                    <ModalContainer />
+                                </SidebarProvider>
+                            </ModalProvider>
+                        </DateProvider>
+                    </CalendarProvider>
+                </SessionProvider>
+            </ThemeProvider>
         </>
     );
 }

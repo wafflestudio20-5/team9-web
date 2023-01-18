@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useRef } from 'react';
 
 import {
@@ -18,6 +19,7 @@ export default function SettingsDropDown() {
         toggleDropDown,
         maintainFocus,
     } = useDropDown(triggerRef);
+    const router = useRouter();
 
     return (
         <DropDown dropDownRef={dropDownRef}>
@@ -32,7 +34,13 @@ export default function SettingsDropDown() {
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>
                 <ul>
-                    <li onClick={closeDropDown}>설정</li>
+                    <li
+                        onClick={() => {
+                            router.push('/settings');
+                        }}
+                    >
+                        설정
+                    </li>
                     <li onClick={closeDropDown}>휴지통</li>
                 </ul>
                 <ul>
