@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
 
@@ -11,11 +10,11 @@ import {
     DropDownBody,
     useDropDown,
 } from '@components/DropDown';
+import { UserDataForSearch } from '@customTypes/UserTypes';
 import useLocalStorage from '@hooks/useLocalStorage';
 import account_default_icon from '@images/account_default_icon.svg';
 import close_icon from '@images/close_icon.svg';
 import updateSequence from '@utils/updateSequence';
-import { UserDataForSearch } from '@customTypes/UserTypes';
 
 interface UserSearchDropDownProps {
     toExecute: (item: UserDataForSearch) => void;
@@ -53,9 +52,6 @@ export function UserSearchDropDown({
     ); // suggestions for the dropdown.
     // only stores the upmost 4 values, as only up to 4 suggestions are displayed at once
 
-    const [isFocused, setIsFocused] = useState(false);
-    // true if input box is focused
-
     const containerRef = useRef<HTMLDivElement | null>(null);
     // useRef to place suggestions dropdown directly below searchbox
     // needed b/c searchbox height and width changes
@@ -70,18 +66,6 @@ export function UserSearchDropDown({
             setSuggestions(stored);
         }
     }, [stored]);
-
-    useEffect(() => {
-        // always keep dropdown open if focused on the input box
-        if (isFocused) {
-            if (!isOpen) {
-                openDropDown();
-                // only run if isOpen was previously false b/c openDropDown = setIsOpen(!isOpen)
-            }
-        } else {
-            closeDropDown();
-        }
-    }, [isFocused]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -143,17 +127,12 @@ export function UserSearchDropDown({
             selectedResults.map(item => toExecute(item));
         }
         setSelectedResults(null);
+        closeDropDown();
     };
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader
-                openDropDown={() => {
-                    // openDropDown does nothing here to prevent dropdown expanding when removing items from selectedResults
-                    return null;
-                }}
-                style={{ display: 'flex' }}
-            >
+            <DropDownHeader style={{ display: 'flex' }}>
                 {/* Large container. Area with gray background. Holds all selected(staged) items + input box */}
                 <div
                     className={styles.container}
@@ -197,18 +176,13 @@ export function UserSearchDropDown({
                             }}
                             className={styles.input}
                             placeholder="사용자 검색..."
-                            onFocus={() => {
-                                setIsFocused(true);
-                            }}
-                            onBlur={() => {
-                                setIsFocused(false);
-                            }}
+                            onFocus={openDropDown}
                         />
                     </form>
                     <div
                         className={
                             // thick underline with animations!
-                            isFocused
+                            isOpen
                                 ? `${styles.underline} ${styles.expand}`
                                 : `${styles.underline}`
                         }

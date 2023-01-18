@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import {
     DropDown,
@@ -19,7 +19,14 @@ export default function TimeDropDown({
     time,
     changeTime,
 }: TimeDropDownProps) {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const triggerRef = useRef<HTMLInputElement>(null);
+    const {
+        isOpen,
+        dropDownRef,
+        toggleDropDown,
+        closeDropDown,
+        maintainFocus,
+    } = useDropDown(triggerRef);
 
     const getTimeList = () =>
         Array(24 * 4)
@@ -32,14 +39,16 @@ export default function TimeDropDown({
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
+            <DropDownHeader>
                 <input
                     type="text"
                     value={formatTime(time)}
-                    onClick={openDropDown}
                     placeholder={title}
                     readOnly
                     style={{ width: '75px' }}
+                    onClick={toggleDropDown}
+                    onBlur={maintainFocus}
+                    ref={triggerRef}
                 />
             </DropDownHeader>
             <DropDownBody
@@ -51,7 +60,7 @@ export default function TimeDropDown({
                     overflow: 'auto',
                 }}
             >
-                <ul>
+                <ul style={{ padding: '0' }}>
                     {getTimeList().map((newTime, i) => {
                         return (
                             <li

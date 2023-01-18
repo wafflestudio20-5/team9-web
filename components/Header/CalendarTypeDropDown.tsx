@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useRef } from 'react';
 
 import {
     DropDown,
@@ -13,7 +13,14 @@ import { useDateContext } from '@contexts/DateContext';
 import dropdown_icon from '@images/dropdown_icon.svg';
 
 export default function CalendarTypeDropDown() {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const {
+        dropDownRef,
+        isOpen,
+        closeDropDown,
+        toggleDropDown,
+        maintainFocus,
+    } = useDropDown(triggerRef);
     const { yearNow, monthNow, dateNow } = useDateContext();
     const { calendarType } = useCalendarContext();
     const router = useRouter();
@@ -47,8 +54,12 @@ export default function CalendarTypeDropDown() {
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
-                <button>
+            <DropDownHeader>
+                <button
+                    ref={triggerRef}
+                    onClick={toggleDropDown}
+                    onBlur={maintainFocus}
+                >
                     <span style={{ whiteSpace: 'nowrap' }}>
                         {formatCalendarTypeToKr(calendarType)}
                     </span>

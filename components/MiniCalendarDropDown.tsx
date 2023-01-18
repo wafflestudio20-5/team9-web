@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import {
     DropDown,
@@ -19,7 +19,14 @@ export default function MiniCalendarDropDown({
     date,
     changeDate,
 }: MiniCalendarDropDownProps) {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const triggerRef = useRef<HTMLInputElement>(null);
+    const {
+        isOpen,
+        dropDownRef,
+        toggleDropDown,
+        closeDropDown,
+        maintainFocus,
+    } = useDropDown(triggerRef);
 
     const onChangeDate = (newDate: Date) => {
         newDate.setHours(date.getHours());
@@ -30,16 +37,18 @@ export default function MiniCalendarDropDown({
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
+            <DropDownHeader>
                 <input
                     type="text"
                     value={`${date.getFullYear()}년 ${
                         date.getMonth() + 1
                     }월 ${date.getDate()}일`}
-                    onClick={openDropDown}
                     placeholder={title}
                     readOnly
                     style={{ width: '120px' }}
+                    onClick={toggleDropDown}
+                    onBlur={maintainFocus}
+                    ref={triggerRef}
                 />
             </DropDownHeader>
             <DropDownBody

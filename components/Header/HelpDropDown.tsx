@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useRef } from 'react';
 
 import {
     useDropDown,
@@ -10,20 +10,33 @@ import {
 import help_icon from '@images/help_icon.svg';
 
 export default function HelpDropDown() {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const {
+        isOpen,
+        dropDownRef,
+        toggleDropDown,
+        closeDropDown,
+        maintainFocus,
+    } = useDropDown(triggerRef);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
-                <button onClick={openDropDown}>
+            <DropDownHeader>
+                <button
+                    ref={triggerRef}
+                    onClick={toggleDropDown}
+                    onBlur={maintainFocus}
+                >
                     <Image src={help_icon} height={24} alt="help" />
                 </button>
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>
                 <ul>
-                    <li>도움말</li>
-                    <li>학습 센터</li>
-                    <li>업데이트</li>
+                    {['도움말', '학습센터', '업데이트'].map((v, i) => (
+                        <li key={i} onClick={closeDropDown}>
+                            {v}
+                        </li>
+                    ))}
                 </ul>
                 <ul>
                     <li>J에게 의견 보내기</li>

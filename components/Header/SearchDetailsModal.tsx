@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styles from './SearchDetailsModal.module.scss';
 
-import CalendarDropDown from '@components/Header/CalendarDropDown';
 import SearchCategoryDropDown from '@components/Header/SearchCategoryDropDown';
+import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES } from '@contexts/ModalContext';
 
@@ -23,6 +23,17 @@ function InputTextLayout({ id, label, placeholder }: InputTextLayoutProps) {
 }
 
 export default function SearchDetailsModal() {
+    const [startDate, setStartDate] = useState<Date>(new Date());
+    const [endDate, setEndDate] = useState<Date>(new Date());
+
+    const changeStartDate = (newDate: Date) => {
+        setStartDate(newDate);
+    };
+
+    const changeEndDate = (newDate: Date) => {
+        setEndDate(newDate);
+    };
+
     return (
         <ModalFrame modalName={MODAL_NAMES.searchDetails}>
             <div className={styles.searchDetailsModal}>
@@ -56,11 +67,19 @@ export default function SearchDetailsModal() {
                     <div>
                         <label htmlFor="category">날짜:</label>
                         <div className={styles.calendar}>
-                            <CalendarDropDown title="시작 날짜" />
+                            <MiniCalendarDropDown
+                                title="시작 날짜"
+                                date={startDate}
+                                changeDate={changeStartDate}
+                            />
                         </div>
                         <span className={styles.dash}>-</span>
                         <div className={styles.calendar}>
-                            <CalendarDropDown title="종료 날짜" />
+                            <MiniCalendarDropDown
+                                title="종료 날짜"
+                                date={endDate}
+                                changeDate={changeEndDate}
+                            />
                         </div>
                     </div>
                     <div className={styles.btnContainer}>

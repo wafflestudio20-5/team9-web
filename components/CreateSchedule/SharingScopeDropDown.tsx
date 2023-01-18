@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 
 import {
     DropDown,
@@ -22,24 +22,33 @@ export default function SharingScopeDropDown({
     scope,
     setScope,
 }: SharingScopeDropDownProps) {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const triggerRef = useRef<HTMLInputElement>(null);
+    const {
+        isOpen,
+        dropDownRef,
+        toggleDropDown,
+        closeDropDown,
+        maintainFocus,
+    } = useDropDown(triggerRef);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
+            <DropDownHeader style={{ zIndex: 140 }}>
                 <input
                     type="text"
                     value={scope}
-                    onClick={openDropDown}
                     placeholder="공개 설정"
                     readOnly
+                    onClick={toggleDropDown}
+                    onBlur={maintainFocus}
+                    ref={triggerRef}
                 />
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}
-                style={{ width: '100px', top: '40px' }}
+                style={{ width: '100px', top: '40px', zIndex: 130 }}
             >
-                <ul>
+                <ul style={{ padding: '0' }}>
                     {Object.values(SharingScope).map(value => (
                         <li
                             key={value}

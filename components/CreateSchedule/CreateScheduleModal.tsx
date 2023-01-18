@@ -17,8 +17,8 @@ import people_icon from '@images/people_icon.svg';
 import text_icon from '@images/text_icon.svg';
 import time_icon from '@images/time_icon.svg';
 
-function ErrorMessage({ children }: { children: React.ReactNode }) {
-    return <span className={styles.errorMessage}>{children}</span>;
+function ErrorMessage({ message }: { message: string }) {
+    return <span className={styles.errorMessage}>{message}</span>;
 }
 
 export default function CreateScheduleModal() {
@@ -145,9 +145,9 @@ export default function CreateScheduleModal() {
                                     </div>
                                 </div>
                                 {!dateValidity.isValid && (
-                                    <ErrorMessage>
-                                        {dateValidity.message}
-                                    </ErrorMessage>
+                                    <ErrorMessage
+                                        message={dateValidity.message}
+                                    />
                                 )}
                             </div>
                             <div className={styles.participant}>

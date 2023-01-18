@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 
 import styles from './ColoredCheckbox.module.scss';
 

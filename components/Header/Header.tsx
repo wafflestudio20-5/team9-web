@@ -200,7 +200,7 @@ export default function Header() {
                         <button
                             className={isOpen ? styles.inactive : undefined}
                             onClick={() =>
-                                !isOpen && openModal(MODAL_NAMES.calendar)
+                                !isOpen && openModal(MODAL_NAMES.miniCalendar)
                             }
                         >
                             {getSelectedDate()}
