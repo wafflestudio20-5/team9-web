@@ -16,11 +16,7 @@ import TimeDropDown from '@components/ScheduleModal/TimeDropDown';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
-import {
-    FullSchedule,
-    ProtectionLevel,
-    Schedule,
-} from '@customTypes/ScheduleTypes';
+import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
@@ -43,7 +39,7 @@ export default function ScheduleEditorModal({
     initSchedule,
     taskType,
 }: ScheduleEditorModalProps) {
-    const { openModal, closeModal } = useModal();
+    const { closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
     const titleRef = useRef<HTMLInputElement>(null);
     const [title, setTitle] = useState<string>(initSchedule.title);
@@ -78,23 +74,20 @@ export default function ScheduleEditorModal({
             return true;
         } else {
             setDateValidity({ isValid: false, message: msg });
-            setTimeout(() => {
-                setDateValidity({ isValid: true, message: '' });
-            }, 2000);
             return false;
         }
     };
 
     const changeStartDate = (newDate: Date) => {
         const msg = '시작 일시는 종료 일시 이전이어야 합니다.';
-        const isValid = validateDate(newDate <= endDate, msg);
-        if (isValid) setStartDate(newDate);
+        validateDate(newDate <= endDate, msg);
+        setStartDate(newDate);
     };
 
     const changeEndDate = (newDate: Date) => {
         const msg = '종료 일시는 시작 일시 이후여야 합니다.';
-        const isValid = validateDate(newDate >= startDate, msg);
-        if (isValid) setEndDate(newDate);
+        validateDate(newDate >= startDate, msg);
+        setEndDate(newDate);
     };
 
     const updateParticipants = (
@@ -129,7 +122,7 @@ export default function ScheduleEditorModal({
         return true;
     };
 
-    const cancelScheduleUpdate = () => {
+    const cancelScheduleForm = () => {
         const isChanged = detectChange();
         if (isChanged) {
             const warningContent = {
@@ -194,12 +187,21 @@ export default function ScheduleEditorModal({
         }
     };
 
-    const submitScheduleUpdate = async () => {
+    const validateScheduleForm = () => {
         if (!title) {
             errorToast('제목을 적어주세요.');
             titleRef.current?.focus();
-            return;
+            return false;
+        } else if (!dateValidity.isValid) {
+            errorToast(dateValidity.message);
+            return false;
         }
+        return true;
+    };
+
+    const submitScheduleForm = async () => {
+        const isValid = validateScheduleForm();
+        if (!isValid) return;
 
         const newSchedule: Schedule = {
             title: title,
@@ -234,34 +236,17 @@ export default function ScheduleEditorModal({
         titleRef.current?.focus();
     }, []);
 
-    const openopen = () => {
-        const initSchedule: FullSchedule = {
-            id: 18,
-            title: 'hello world',
-            created_by: 7,
-            created_at: '2022-2020',
-            updated_at: '',
-            description: 'asf',
-            start_at: '2023-01-12 9:30',
-            end_at: '2023-01-13 9:30',
-            show_content: true,
-            protection_level: 2,
-        };
-        openModal(MODAL_NAMES.schedule, { schedule: initSchedule });
-    };
-
     return (
         <ModalFrame
             modalName={MODAL_NAMES.scheduleEditor}
-            onClickBackDrop={cancelScheduleUpdate}
+            onClickBackDrop={cancelScheduleForm}
         >
             <div className={styles.scheduleEditorModal}>
                 <div className={styles.header}>
-                    <button onClick={openopen}>dddd</button>
                     <button
                         type="button"
                         className={styles.close}
-                        onClick={cancelScheduleUpdate}
+                        onClick={cancelScheduleForm}
                     >
                         <Image
                             src={close_icon}
@@ -389,7 +374,7 @@ export default function ScheduleEditorModal({
                     <div className={styles.btnContainer}>
                         <button
                             className={styles.save}
-                            onClick={submitScheduleUpdate}
+                            onClick={submitScheduleForm}
                         >
                             저장
                         </button>
