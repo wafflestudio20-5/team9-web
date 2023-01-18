@@ -54,6 +54,7 @@
     }
 
     .loginBox {
+        z-index: 10;
         grid-area: loginContent;
         display: flex;
         flex-direction: column;
