@@ -6,8 +6,11 @@ import styles from './ScheduleEditorModal.module.scss';
 
 import {
     CalendarURLParams,
+    CalendarURLParamsEmail,
     createScheduleAPI,
     editScheduleAPI,
+    getEntireScheduleAPIEmail,
+    getParticularScheduleAPI,
 } from '@apis/calendar';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
@@ -16,7 +19,11 @@ import TimeDropDown from '@components/ScheduleModal/TimeDropDown';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
-import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
+import {
+    ProtectionLevel,
+    Schedule,
+    FullSchedule,
+} from '@customTypes/ScheduleTypes';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
@@ -39,7 +46,7 @@ export default function ScheduleEditorModal({
     initSchedule,
     taskType,
 }: ScheduleEditorModalProps) {
-    const { closeModal } = useModal();
+    const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
     const titleRef = useRef<HTMLInputElement>(null);
     const [title, setTitle] = useState<string>(initSchedule.title);
@@ -153,7 +160,12 @@ export default function ScheduleEditorModal({
         };
 
         try {
-            await createScheduleAPI(newSchedule, urlParams, accessToken);
+            const res = await createScheduleAPI(
+                newSchedule,
+                urlParams,
+                accessToken,
+            );
+            console.log(res.data);
             successToast('일정이 추가되었습니다.');
             return true;
         } catch (error) {
@@ -173,7 +185,12 @@ export default function ScheduleEditorModal({
         accessToken: string | null,
     ) => {
         try {
-            await editScheduleAPI(scheduleId, newSchedule, accessToken);
+            const res = await editScheduleAPI(
+                scheduleId,
+                newSchedule,
+                accessToken,
+            );
+            console.log(res);
             successToast('일정이 수정되었습니다.');
             return true;
         } catch (error) {
@@ -210,7 +227,7 @@ export default function ScheduleEditorModal({
             description: description,
             protection_level: protectionLevel,
             show_content: !hideDetails,
-            participants: participants,
+            participants: participants, // comment out this to test edit schedule
         };
 
         let isSuccessful = false;
@@ -229,12 +246,46 @@ export default function ScheduleEditorModal({
                 break;
         }
 
+        // comment out this to test other apis
         if (isSuccessful) closeModal(MODAL_NAMES.scheduleEditor);
     };
 
     useEffect(() => {
         titleRef.current?.focus();
     }, []);
+
+    const testScheduleViewModal = (initSchedule: FullSchedule) => {
+        openModal(MODAL_NAMES.schedule, { schedule: initSchedule });
+    };
+
+    const testGetEntireSchedule = async () => {
+        if (!user) return;
+
+        const urlParams: CalendarURLParamsEmail = {
+            email: user.email,
+            from: formatFullDate(startDate),
+            to: formatFullDate(endDate),
+        };
+
+        try {
+            const res = await getEntireScheduleAPIEmail(urlParams, accessToken);
+            console.log(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const testGetParticularSchedule = async () => {
+        // write the schedule id you want to get at description textarea in the ScheduleEditorModal
+        const scheduleId = Number(description);
+        try {
+            const res = await getParticularScheduleAPI(scheduleId, accessToken);
+            console.log(res.data);
+            testScheduleViewModal(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <ModalFrame
@@ -243,6 +294,9 @@ export default function ScheduleEditorModal({
         >
             <div className={styles.scheduleEditorModal}>
                 <div className={styles.header}>
+                    <button onClick={testGetEntireSchedule}>전체</button>
+                    <button onClick={testGetParticularSchedule}>특정</button>
+                    <button>일정뷰</button>
                     <button
                         type="button"
                         className={styles.close}

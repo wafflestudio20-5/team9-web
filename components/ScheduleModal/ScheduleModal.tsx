@@ -191,7 +191,7 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
                         <></>
                     ) : (
                         <>
-                            {schedule.participants?.length && (
+                            {schedule.participants?.length ? (
                                 <div className={styles.participants}>
                                     <div className={styles.icon}>
                                         <Image
@@ -209,7 +209,7 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
                                         ))}
                                     </ul>
                                 </div>
-                            )}
+                            ) : null}
                             {schedule.description && (
                                 <div className={styles.description}>
                                     <div className={styles.icon}>
