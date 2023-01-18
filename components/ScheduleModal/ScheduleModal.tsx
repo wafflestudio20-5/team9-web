@@ -14,6 +14,7 @@ import {
     ProtectionLevelText,
     Schedule,
 } from '@customTypes/ScheduleTypes';
+import account_default_icon from '@images/account_default_icon.svg';
 import close_icon from '@images/close_icon.svg';
 import delete_icon from '@images/delete_icon.svg';
 import edit_icon from '@images/edit_icon.svg';
@@ -23,6 +24,18 @@ import text_icon from '@images/text_icon.svg';
 import { errorToast, successToast, warningModal } from '@utils/customAlert';
 import { formatDayToKr } from '@utils/formatDay';
 import { formatTime } from '@utils/formatTime';
+
+function ParticipantItem({ participant }: { participant: Participant }) {
+    return (
+        <li className={styles.participant}>
+            <Image src={account_default_icon} width={24} alt="participant" />
+            <div>
+                <span>{participant.username}</span>
+                <span className={styles.email}>{participant.email}</span>
+            </div>
+        </li>
+    );
+}
 
 interface ScheduleModalProps {
     schedule: FullSchedule;
@@ -187,7 +200,14 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
                                             alt="participants"
                                         />
                                     </div>
-                                    <div>asdf</div>
+                                    <ul>
+                                        {schedule.participants.map((p, i) => (
+                                            <ParticipantItem
+                                                participant={p}
+                                                key={i}
+                                            />
+                                        ))}
+                                    </ul>
                                 </div>
                             )}
                             {schedule.description && (

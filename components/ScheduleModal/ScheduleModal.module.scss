@@ -72,15 +72,42 @@
         }
     }
 
+    .participants {
+        align-items: flex-start;
+        height: fit-content;
+
+        ul {
+            flex-grow: 1;
+            max-height: 150px;
+            overflow: auto;
+        }
+    }
+
+    .participant {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        gap: 5px;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .email {
+            font-size: small;
+        }
+    }
+
     .description {
         align-items: flex-start;
         height: fit-content;
-        max-height: 150px;
-        overflow: auto;
 
         p {
             margin: 0;
-            padding-top: 2px;
+            padding-top: 1px;
+            max-height: 150px;
+            overflow: auto;
         }
     }
 
