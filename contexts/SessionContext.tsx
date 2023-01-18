@@ -81,9 +81,11 @@ const SessionContext = createContext<SessionContextData>({
 });
 
 //const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
-const apiEndPoint = 'http://127.0.0.1:8000/api/v1/user/';
+const apiEndPoint =
+    'http://ec2-13-124-64-149.ap-northeast-2.compute.amazonaws.com/api/v1/user/';
 
-const REACT_APP_BASE_BACKEND_URL = 'http://127.0.0.1:8000';
+const REACT_APP_BASE_BACKEND_URL =
+    'http://ec2-13-124-64-149.ap-northeast-2.compute.amazonaws.com';
 
 const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
 
@@ -190,70 +192,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
                 birthdate: '',
             };
         }
-
-        // axios
-        //     .post(apiEndPoint + 'registration/', registerInfo)
-        //     .then(response => {
-        //         setUser({
-        //             email: response.data.user.email,
-        //             birthdate: response.data.user.birthdate,
-        //             username: response.data.user.username,
-        //         });
-        //         setAccessToken(response.data.access_token);
-        //         setRefreshToken(response.data.refresh_token);
-        //         axios.defaults.headers.post['X-CSRFToken'] =
-        //             response.data._csrf;
-        //         return ({
-        //             error: false,
-        //             username: "",
-        //             email: "",
-        //             password1: "",
-        //             password2: "",
-        //             birthdate: "",
-        //         })
-        //     })
-        //     .catch(error => {
-        //         console.log(error.response.data);
-        //         return ({
-        //             error: true,
-        //             username: error.response.data.username || "",
-        //             email: error.response.data.email || "",
-        //             password1: error.response.data.password1 || "",
-        //             password2: error.response.data.password2 || "",
-        //             birthdate: error.response.data.birthdate || "",
-        //         })
-        //         // setTimeout(function () {
-        //         //     Swal.fire({
-        //         //         title: 'Cannot register',
-        //         //         confirmButtonText: 'OK',
-        //         //     });
-        //         // }, 10);
-        //     });
-
-        // // something wrong happened, but uncatched
-        // return ({
-        //     error: true,
-        //     username: "",
-        //     email: "",
-        //     password1: "",
-        //     password2: "",
-        //     birthdate: "",
-        // })
     };
-
-    // if needed...
-    // const openGoogleLoginPage = useGoogleLogin({
-    //     onSuccess: () => console.log("yay"),
-    //     onError: () => console.log("noooo"),
-    //     flow: 'auth-code',
-    //     scope: [
-    //                 'https://www.googleapis.com/auth/userinfo.email',
-    //                 'https://www.googleapis.com/auth/userinfo.profile',
-    //             ].join(' '),
-    //     ux_mode: 'redirect',
-    //     redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${googleRedirectUri}`,
-    //     select_account: true,
-    // })
 
     // referenced https://www.hacksoft.io/blog/google-oauth2-with-django-react-part-2
     const openGoogleLoginPage = useCallback(() => {
