@@ -1,13 +1,16 @@
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import styles from './register.module.scss';
+import ModalFrame from './ModalFrame';
+import styles from './RegisterModal.module.scss';
 
+import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 
-export default function RegisterPage() {
+export default function RegisterModal() {
     const router = useRouter();
     const { register } = useSessionContext();
+    const { closeModal } = useModal();
 
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
@@ -22,7 +25,7 @@ export default function RegisterPage() {
     const [errorUserBirthdate, setErrorUserBirthdate] = useState('');
 
     return (
-        <div className={styles.registerPage}>
+        <ModalFrame modalName={MODAL_NAMES.register}>
             <form
                 className={styles.registerContainer}
                 onSubmit={e => {
@@ -35,7 +38,7 @@ export default function RegisterPage() {
                         birthdate: userBirthdate,
                     }).then(result => {
                         if (result.error === false) {
-                            router.push('/');
+                            closeModal(MODAL_NAMES.register);
                         } else {
                             setErrorUserName(result.username);
                             setErrorUserEmail(result.email);
@@ -120,6 +123,6 @@ export default function RegisterPage() {
                     <button>회원가입</button>
                 </div>
             </form>
-        </div>
+        </ModalFrame>
     );
 }

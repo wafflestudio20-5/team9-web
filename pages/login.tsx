@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 
 import styles from './login.module.scss';
 
+import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import googleLogo from '@images/google_logo.svg';
 import kakaoLogo from '@images/kakao_logo.svg';
-
 
 export default function LoginPage() {
     const router = useRouter();
@@ -17,6 +17,7 @@ export default function LoginPage() {
         openKakaoLoginPage,
         postHandleSocialLogin,
     } = useSessionContext();
+    const { openModal } = useModal();
 
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
@@ -124,7 +125,7 @@ export default function LoginPage() {
                         </div>
                         <button
                             className={styles.registerButton}
-                            onClick={() => router.push('/register')}
+                            onClick={() => openModal(MODAL_NAMES.register)}
                         >
                             회원가입
                         </button>
