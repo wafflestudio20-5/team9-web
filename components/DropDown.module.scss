@@ -9,27 +9,32 @@
     height: 100%;
 }
 
+.dropDownHeader {
+    position: relative;
+    z-index: 160;
+}
+
 .dropDownBody {
     position: absolute;
     top: 45px;
     left: 0px;
+    z-index: 150;
     border: 1px solid v.$border-gray;
     background-color: white;
     box-shadow: 0 5px 8px 3px v.$border-gray;
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    transition: all 0.3s ease;
 
     &.closed {
         opacity: 0;
         visibility: hidden;
         transform: translateY(-20px);
-        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
     }
 
     ul {
         padding: 8px 0;
-        width: 160px;
+        width: 100%;
     }
 
     ul:not(:last-child) {
@@ -39,7 +44,7 @@
     li {
         display: flex;
         justify-content: space-between;
-        padding: 8px 15px;
+        padding: 10px 15px;
         font-size: small;
         cursor: pointer;
 

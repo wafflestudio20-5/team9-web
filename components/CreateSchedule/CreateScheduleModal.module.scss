@@ -1,0 +1,205 @@
+@use '@styles/variables.scss' as v;
+
+.createScheduleModal {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 570px;
+    height: 80vh;
+    max-height: 500px;
+    border: 1px solid v.$border-gray;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 1px 5px 1px v.$border-gray;
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding: 0 5px;
+    height: 36px;
+    background-color: v.$background-gray;
+
+    button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+        background-color: v.$background-gray;
+
+        &:hover {
+            background-color: v.$border-gray;
+        }
+    }
+}
+
+.createScheduleForm {
+    display: grid;
+    grid-template-rows: auto 60px;
+    height: calc(100% - 36px);
+}
+
+.body {
+    overflow: auto;
+    padding: 24px;
+}
+
+.title {
+    padding-left: 52px;
+    padding-bottom: 20px;
+
+    input {
+        padding: 3px;
+        width: 100%;
+        font-size: x-large;
+        border: none;
+        border-bottom: 2px solid v.$border-gray;
+
+        &:focus {
+            outline: none;
+            border-bottom: 2px solid v.$primary-blue;
+        }
+    }
+}
+
+.content {
+    > div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        width: 52px;
+        border-bottom: 2px solid white;
+    }
+
+    input {
+        padding-top: 3px;
+        padding-left: 5px;
+        height: 36px;
+        border: none;
+        border-radius: 5px;
+        border-bottom: 2px solid white;
+
+        &:hover {
+            border-bottom: 2px solid v.$background-gray;
+            background-color: v.$background-gray;
+        }
+
+        &:focus {
+            outline: none;
+            border-bottom: 2px solid v.$primary-blue;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            background-color: v.$background-gray;
+        }
+    }
+
+    .time {
+        display: block;
+
+        > div {
+            display: flex;
+        }
+
+        .timeInputContainer {
+            display: flex;
+            align-items: center;
+
+            span {
+                margin: 0 5px;
+            }
+        }
+    }
+
+    .participant input {
+        flex-grow: 1;
+    }
+
+    .sharingScope {
+        margin-bottom: 5px;
+
+        input {
+            width: 100px;
+        }
+    }
+
+    .hideDetails {
+        margin-bottom: 20px;
+        padding-left: 52px;
+        font-size: small;
+
+        input {
+            height: 16px;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &:disabled {
+                cursor: default;
+
+                & + label {
+                    cursor: default;
+                }
+            }
+        }
+
+        label {
+            width: auto;
+            border: none;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .description {
+        align-items: flex-start;
+
+        textarea {
+            padding: 5px;
+            resize: none;
+            border: 2px solid v.$border-gray;
+            border-radius: 5px;
+
+            &:focus {
+                outline: none;
+                border: 2px solid v.$primary-blue;
+            }
+        }
+    }
+}
+
+.btnContainer {
+    padding: 12px 24px;
+    text-align: right;
+    border-top: 1px solid v.$border-gray;
+
+    button {
+        padding: 0 20px;
+        height: 36px;
+        color: white;
+        background-color: v.$primary-blue;
+
+        &:hover {
+            background-color: v.$dark-blue;
+        }
+    }
+}
+
+.errorMessage {
+    padding-left: 55px;
+    color: tomato;
+    font-size: small;
+}

@@ -1,0 +1,34 @@
+@use '@styles/variables.scss' as v;
+
+.createScheduleButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    width: 56px;
+    height: 56px;
+    border: 1px solid v.$border-gray;
+    border-radius: 50%;
+    background-color: transparent;
+    box-shadow: 0 1px 3px 1px v.$border-gray;
+    text-align: center;
+
+    &::after {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        box-shadow: 0 5px 7px 2px v.$border-gray;
+        transition: opacity 0.3s ease-in-out;
+        opacity: 0;
+        content: '';
+        cursor: pointer;
+    }
+
+    &:hover::after {
+        opacity: 1;
+    }
+}

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
     useDropDown,
@@ -10,7 +10,14 @@ import {
 import dropdown_icon from '@images/dropdown_icon.svg';
 
 export default function SearchCategoryDropDown() {
-    const { dropDownRef, isOpen, openDropDown, closeDropDown } = useDropDown();
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const {
+        dropDownRef,
+        isOpen,
+        toggleDropDown,
+        closeDropDown,
+        maintainFocus,
+    } = useDropDown(triggerRef);
     const [category, setCategory] = useState<string>('사용 중인 캘린더');
 
     const changeCategory = () => {
@@ -24,11 +31,13 @@ export default function SearchCategoryDropDown() {
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader openDropDown={openDropDown}>
+            <DropDownHeader>
                 <button
                     type="button"
-                    onClick={openDropDown}
                     style={buttonStyle}
+                    ref={triggerRef}
+                    onClick={toggleDropDown}
+                    onBlur={maintainFocus}
                 >
                     <span>{category}</span>
                     <Image
@@ -38,7 +47,7 @@ export default function SearchCategoryDropDown() {
                     />
                 </button>
             </DropDownHeader>
-            <DropDownBody isOpen={isOpen}>
+            <DropDownBody isOpen={isOpen} style={{ width: '125px' }}>
                 <ul>
                     <li onClick={changeCategory}>사용 중인 캘린더</li>
                     <li onClick={changeCategory}>전체 캘린더</li>

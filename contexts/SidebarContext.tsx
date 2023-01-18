@@ -10,6 +10,7 @@ interface SidebarContextData {
     isOpen: boolean;
     openSidebar(): void;
     closeSidebar(): void;
+    isClosing: boolean;
 }
 
 const SidebarContext = createContext<SidebarContextData>({
@@ -20,31 +21,29 @@ const SidebarContext = createContext<SidebarContextData>({
     closeSidebar() {
         throw new Error('SidebarContext not provided');
     },
+    isClosing: false,
 });
 
 export const useSidebarContext = () => useContext(SidebarContext);
 
 function SidebarProvider({ children }: PropsWithChildren) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [isOpening, setIsOpening] = useState<boolean>(false);
     const [isClosing, setIsClosing] = useState<boolean>(false);
 
     const openSidebar = () => {
-        // TO BE MODIFIED: function for opening sidebar
-        // gradual animatino for sidebar & main page width
-        // + change "Create" button style
         setIsOpen(true);
     };
     const closeSidebar = () => {
-        // TO BE MODIFIED: function for opening sidebar
-        // gradual animatino for sidebar & main page width
-        // + change "Create" button style
-        setIsOpen(false);
+        setIsClosing(true);
+        setTimeout(() => {
+            setIsClosing(false);
+            setIsOpen(false);
+        }, 300);
     };
 
     const value = useMemo(
-        () => ({ isOpen, openSidebar, closeSidebar }),
-        [isOpen],
+        () => ({ isOpen, isClosing, openSidebar, closeSidebar }),
+        [isOpen, isClosing],
     );
 
     return (
