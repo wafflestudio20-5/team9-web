@@ -1,9 +1,13 @@
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import styles from './login.module.scss';
 
 import { useSessionContext } from '@contexts/SessionContext';
+import googleLogo from '@images/google_logo.svg';
+import kakaoLogo from '@images/kakao_logo.svg';
+
 
 export default function LoginPage() {
     const router = useRouter();
@@ -56,7 +60,7 @@ export default function LoginPage() {
                         }}
                     >
                         <div className={styles.textContainer}>
-                            <div className={styles.textName}>이메일:</div>
+                            <div className={styles.textName}>이메일</div>
                             <input
                                 type="text"
                                 className={styles.text}
@@ -67,7 +71,7 @@ export default function LoginPage() {
                             />
                         </div>
                         <div className={styles.textContainer}>
-                            <div className={styles.textName}>비밀번호:</div>
+                            <div className={styles.textName}>비밀번호</div>
                             <input
                                 type="password"
                                 className={styles.text}
@@ -81,6 +85,11 @@ export default function LoginPage() {
                             <button>로그인</button>
                         </div>
                     </form>
+                    <div className={styles.divider}>
+                        <div className={styles.dividerLine}></div>
+                        <div className={styles.text}>또는 소셜 로그인</div>
+                        <div className={styles.dividerLine}></div>
+                    </div>
                     <div className={styles.socialLoginContainer}>
                         <button
                             className={styles.kakaoLogin}
@@ -88,7 +97,12 @@ export default function LoginPage() {
                                 openKakaoLoginPage();
                             }}
                         >
-                            kakao로 로그인
+                            <Image
+                                src={kakaoLogo}
+                                alt="kakaoLogo"
+                                height={13}
+                            />
+                            <div className={styles.text}>Kakao로 로그인</div>
                         </button>
                         <button
                             className={styles.googleLogin}
@@ -96,21 +110,24 @@ export default function LoginPage() {
                                 openGoogleLoginPage();
                             }}
                         >
-                            google로 로그인
+                            <Image
+                                src={googleLogo}
+                                alt="googleLogo"
+                                height={13}
+                            />
+                            <div className={styles.text}>Google로 로그인</div>
                         </button>
                     </div>
                     <div className={styles.register}>
                         <div className={styles.textDescription}>
                             아직 계정이 없으신가요?
                         </div>
-                        <div className={styles.registerButtonContainer}>
-                            <button
-                                className={styles.registerButton}
-                                onClick={() => router.push('/register')}
-                            >
-                                회원가입
-                            </button>
-                        </div>
+                        <button
+                            className={styles.registerButton}
+                            onClick={() => router.push('/register')}
+                        >
+                            회원가입
+                        </button>
                     </div>
                 </div>
             </div>

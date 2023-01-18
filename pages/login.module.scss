@@ -59,9 +59,10 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        align-items: center;
         width: 100%;
         height: 100%;
-        padding: 20px 10px;
+        padding: 35px 10px;
         background-color: white;
 
         .loginContainer {
@@ -71,19 +72,26 @@
 
             .textContainer {
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-end;
+                gap: 10px;
 
                 .textName {
                     display: flex;
                     align-items: center;
-                    font-size: 10px;
-                    font-weight: bold;
+
+                    // font-family: 'Noto Sans KR';
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 17px;
                 }
 
                 .text {
-                    width: 110px;
-                    height: 22px;
-                    font-size: 10px;
+                    width: 246px;
+                    height: 40px;
+                    font-size: 17px;
+
+                    background: v.$login-input;
+                    border: none;
                 }
             }
 
@@ -91,16 +99,32 @@
                 display: flex;
                 justify-content: flex-end;
                 button {
-                    width: 50px;
-                    height: 30px;
-                    background-color: v.$primary-blue;
-                    font-size: 10px;
+                    width: 85px;
+                    height: 45px;
+                    background-color: v.$login-register-submit;
+                    font-size: 17px;
                     color: white;
+                    border: none;
+                    border-radius: 3px;
 
                     &:hover {
-                        background-color: v.$dark-blue;
+                        background-color: v.$login-register-submit-hover;
                     }
                 }
+            }
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            .dividerLine {
+                width: 100px;
+                height: 0px;
+                border: 1px solid v.$login-divider-text;
+            }
+            .text {
+                color: v.$login-divider-text;
             }
         }
 
@@ -110,8 +134,14 @@
             gap: 5px;
 
             button {
-                height: 25px;
-                font-size: 10px;
+                display: flex;
+                height: 40px;
+                width: 195px;
+                font-size: 14px;
+                align-items: center;
+                justify-content: space-around;
+
+                border: 1px solid #585858;
             }
 
             .kakaoLogin {
@@ -125,27 +155,19 @@
 
         .register {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            gap: 50px;
 
             .textDescription {
-                font-size: 10px;
+                font-size: 14px;
+                color: #3c4043;
             }
 
-            .registerButtonContainer {
-                display: flex;
-                justify-content: flex-end;
-
-                button {
-                    width: 100px;
-                    height: 30px;
-                    background-color: white;
-                    font-size: 10px;
-
-                    &:hover {
-                        background-color: v.$background-gray;
-                    }
-                }
+            button {
+                font-size: 14px;
+                color: #3c4043;
+                text-decoration-line: underline;
+                border: none;
             }
         }
     }
