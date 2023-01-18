@@ -121,9 +121,10 @@
             .dividerLine {
                 width: 100px;
                 height: 0px;
-                border: 1px solid v.$login-divider-text;
+                border: 0.5px solid v.$login-divider-text;
             }
             .text {
+                font-size: 12px;
                 color: v.$login-divider-text;
             }
         }
