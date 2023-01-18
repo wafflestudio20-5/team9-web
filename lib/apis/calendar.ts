@@ -21,19 +21,13 @@ export interface CalendarURLParamsEmail {
     to: string;
 }
 
-const getCommonURLWithParams = (urlParams: CalendarURLParams) =>
-    `?pk=${urlParams.pk}&from=${urlParams.from}&to=${urlParams.to}`;
-
-// temp (will be removed after merging backend pr)
-const getCommonURLWithParamsEmail = (urlParams: CalendarURLParamsEmail) =>
-    `?email=${urlParams.email}&from=${urlParams.from}&to=${urlParams.to}`;
-
 export const createScheduleAPI = (
     newSchedule: Schedule,
     urlParams: CalendarURLParams,
     accessToken: string | null,
 ) =>
-    CalendarAPI.post(`/${getCommonURLWithParams(urlParams)}`, newSchedule, {
+    CalendarAPI.post('/', newSchedule, {
+        params: urlParams,
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -41,7 +35,8 @@ export const getEntireScheduleAPI = (
     urlParams: CalendarURLParams,
     accessToken: string | null,
 ) =>
-    CalendarAPI.get(`/${getCommonURLWithParams(urlParams)}`, {
+    CalendarAPI.get('/', {
+        params: urlParams,
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -50,7 +45,8 @@ export const getEntireScheduleAPIEmail = (
     urlParams: CalendarURLParamsEmail,
     accessToken: string | null,
 ) =>
-    CalendarAPI.get(`/${getCommonURLWithParamsEmail(urlParams)}`, {
+    CalendarAPI.get('/', {
+        params: urlParams,
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 

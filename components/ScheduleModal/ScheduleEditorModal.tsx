@@ -48,7 +48,7 @@ export default function ScheduleEditorModal({
     );
     const [endDate, setEndDate] = useState<Date>(new Date(initSchedule.end_at));
     const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
-        initSchedule.protection_level || 1,
+        initSchedule.protection_level,
     );
     const [hideDetails, setHideDetails] = useState<boolean>(
         !initSchedule.show_content,
@@ -67,11 +67,6 @@ export default function ScheduleEditorModal({
         () => protectionLevel === ProtectionLevel.private,
         [protectionLevel],
     );
-
-    if (!user) {
-        errorToast('로그인을 먼저 해주세요.');
-        return <></>;
-    }
 
     const validateDate = (isValid: boolean, msg: string) => {
         if (isValid) {
@@ -152,6 +147,8 @@ export default function ScheduleEditorModal({
         newSchedule: Schedule,
         accessToken: string | null,
     ) => {
+        if (!user) return false;
+
         const urlParams: CalendarURLParams = {
             pk: user.pk,
             from: formatFullDate(startDate),
