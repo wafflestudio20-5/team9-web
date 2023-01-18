@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Image from 'next/image';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 
 import styles from './ScheduleEditorModal.module.scss';
 
@@ -41,6 +41,7 @@ export default function ScheduleEditorModal({
 }: ScheduleEditorModalProps) {
     const { closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
+    const titleRef = useRef<HTMLInputElement>(null);
     const [title, setTitle] = useState<string>(initSchedule.title);
     const [startDate, setStartDate] = useState<Date>(
         new Date(initSchedule.start_at),
@@ -66,6 +67,11 @@ export default function ScheduleEditorModal({
         () => protectionLevel === ProtectionLevel.private,
         [protectionLevel],
     );
+
+    if (!user) {
+        errorToast('로그인을 먼저 해주세요.');
+        return <></>;
+    }
 
     const validateDate = (isValid: boolean, msg: string) => {
         if (isValid) {
@@ -144,17 +150,17 @@ export default function ScheduleEditorModal({
 
     const createSchedule = async (
         newSchedule: Schedule,
-        urlParams: CalendarURLParams,
         accessToken: string | null,
     ) => {
+        const urlParams: CalendarURLParams = {
+            pk: user.pk,
+            from: formatFullDate(startDate),
+            to: formatFullDate(endDate),
+        };
+
         try {
-            const res = await createScheduleAPI(
-                newSchedule,
-                urlParams,
-                accessToken,
-            );
+            await createScheduleAPI(newSchedule, urlParams, accessToken);
             successToast('일정이 추가되었습니다.');
-            console.log(res.data);
             return true;
         } catch (error) {
             const message = '일정을 생성하지 못했습니다.';
@@ -170,16 +176,10 @@ export default function ScheduleEditorModal({
     const editSchdule = async (
         scheduleId: number,
         newSchedule: Schedule,
-        urlParams: CalendarURLParams,
         accessToken: string | null,
     ) => {
         try {
-            await editScheduleAPI(
-                scheduleId,
-                newSchedule,
-                urlParams,
-                accessToken,
-            );
+            await editScheduleAPI(scheduleId, newSchedule, accessToken);
             successToast('일정이 수정되었습니다.');
             return true;
         } catch (error) {
@@ -194,20 +194,11 @@ export default function ScheduleEditorModal({
     };
 
     const submitScheduleUpdate = async () => {
-        if (!user) {
-            errorToast('로그인을 먼저 해주세요.');
-            return;
-        }
         if (!title) {
             errorToast('제목을 적어주세요.');
+            titleRef.current?.focus();
             return;
         }
-
-        const urlParams = {
-            pk: user.pk,
-            from: formatFullDate(startDate),
-            to: formatFullDate(endDate),
-        };
 
         const newSchedule: Schedule = {
             title: title,
@@ -222,18 +213,13 @@ export default function ScheduleEditorModal({
         let isSuccessful = false;
         switch (taskType) {
             case 'create':
-                isSuccessful = await createSchedule(
-                    newSchedule,
-                    urlParams,
-                    accessToken,
-                );
+                isSuccessful = await createSchedule(newSchedule, accessToken);
                 break;
             case 'edit':
                 isSuccessful = initSchedule?.id
                     ? await editSchdule(
                           initSchedule.id,
                           newSchedule,
-                          urlParams,
                           accessToken,
                       )
                     : false;
@@ -242,6 +228,10 @@ export default function ScheduleEditorModal({
 
         if (isSuccessful) closeModal(MODAL_NAMES.scheduleEditor);
     };
+
+    useEffect(() => {
+        titleRef.current?.focus();
+    }, []);
 
     return (
         <ModalFrame
@@ -271,6 +261,7 @@ export default function ScheduleEditorModal({
                                 id="title"
                                 onChange={e => setTitle(e.target.value)}
                                 placeholder="제목 추가"
+                                ref={titleRef}
                             />
                             <span className={styles.underline} />
                         </div>

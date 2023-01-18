@@ -14,6 +14,7 @@ export interface CalendarURLParams {
     to: string;
 }
 
+// temp (will be removed after merging backend pr)
 export interface CalendarURLParamsEmail {
     email: string;
     from: string;
@@ -55,31 +56,25 @@ export const getEntireScheduleAPIEmail = (
 
 export const getParticularScheduleAPI = (
     scheduleId: number,
-    urlParams: CalendarURLParams,
     accessToken: string | null,
 ) =>
-    CalendarAPI.get(`/${scheduleId}/${getCommonURLWithParams(urlParams)}`, {
+    CalendarAPI.get(`/${scheduleId}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-// 500 error (have to discuss with backend)
 export const editScheduleAPI = (
     scheduleId: number,
     newSchedule: Schedule,
-    urlParams: CalendarURLParams,
     accessToken: string | null,
 ) =>
-    CalendarAPI.patch(
-        `/${scheduleId}/${getCommonURLWithParams(urlParams)}`,
-        newSchedule,
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-    );
+    CalendarAPI.patch(`/${scheduleId}/`, newSchedule, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
 
 export const deleteScheduleAPI = (
     scheduleId: number,
-    urlParams: CalendarURLParams,
     accessToken: string | null,
 ) =>
-    CalendarAPI.delete(`/${scheduleId}/${getCommonURLWithParams(urlParams)}`, {
+    CalendarAPI.delete(`/${scheduleId}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });

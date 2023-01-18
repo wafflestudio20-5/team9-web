@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 
 import styles from './ScheduleModal.module.scss';
 
-import { CalendarURLParams, deleteScheduleAPI } from '@apis/calendar';
+import { deleteScheduleAPI } from '@apis/calendar';
 import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
@@ -53,11 +53,10 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
 
     const deleteSchedule = async (
         scheduleId: number,
-        urlParams: CalendarURLParams,
         accessToken: string | null,
     ) => {
         try {
-            await deleteScheduleAPI(scheduleId, urlParams, accessToken);
+            await deleteScheduleAPI(scheduleId, accessToken);
             successToast('일정을 삭제했습니다.');
             return true;
         } catch (error) {
@@ -72,11 +71,6 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
     };
 
     const onClickDelete = async () => {
-        if (!user) {
-            errorToast('로그인을 먼저 해주세요.');
-            return;
-        }
-
         const { isConfirmed } = await warningModal({
             title: '일정을 삭제하시겠습니까?',
             text: '삭제된 일정은 복원할 수 없습니다.',
@@ -85,18 +79,7 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
 
         if (!isConfirmed) return;
 
-        const urlParams: CalendarURLParams = {
-            pk: user.pk,
-            from: schedule.start_at,
-            to: schedule.end_at,
-        };
-
-        const isDeleted = await deleteSchedule(
-            schedule.id,
-            urlParams,
-            accessToken,
-        );
-
+        const isDeleted = await deleteSchedule(schedule.id, accessToken);
         if (isDeleted) closeModal(MODAL_NAMES.schedule);
     };
 
@@ -104,32 +87,35 @@ export default function ScheduleModal({ schedule }: ScheduleModalProps) {
         <ModalFrame modalName={MODAL_NAMES.schedule}>
             <div className={styles.scheduleModal}>
                 <div className={styles.header}>
-                    <button
-                        onClick={() =>
-                            openModal(MODAL_NAMES.scheduleEditor, {
-                                initSchedule,
-                                taskType: 'create',
-                            })
-                        }
-                    ></button>
-                    <button
-                        className={styles.edit}
-                        onClick={() =>
-                            openModal(MODAL_NAMES.scheduleEditor, {
-                                initSchedule,
-                                taskType: 'edit',
-                            })
-                        }
-                    >
-                        <Image src={edit_icon} width={18} alt="edit_schedule" />
-                    </button>
-                    <button className={styles.delete} onClick={onClickDelete}>
-                        <Image
-                            src={delete_icon}
-                            width={18}
-                            alt="delete_schedule"
-                        />
-                    </button>
+                    {user?.pk === schedule.created_by && (
+                        <>
+                            <button
+                                className={styles.edit}
+                                onClick={() =>
+                                    openModal(MODAL_NAMES.scheduleEditor, {
+                                        initSchedule,
+                                        taskType: 'edit',
+                                    })
+                                }
+                            >
+                                <Image
+                                    src={edit_icon}
+                                    width={18}
+                                    alt="edit_schedule"
+                                />
+                            </button>
+                            <button
+                                className={styles.delete}
+                                onClick={onClickDelete}
+                            >
+                                <Image
+                                    src={delete_icon}
+                                    width={18}
+                                    alt="delete_schedule"
+                                />
+                            </button>
+                        </>
+                    )}
                     <button
                         className={styles.close}
                         onClick={() => closeModal(MODAL_NAMES.schedule)}
