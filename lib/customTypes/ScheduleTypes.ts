@@ -41,6 +41,7 @@ export enum RecurType {
     none,
     day,
     week,
+    ordinal,
     month,
     year,
     custom,
