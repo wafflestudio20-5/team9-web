@@ -15,6 +15,7 @@ import {
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import ProtectionLevelDropDown from '@components/ScheduleModal/ProtectionLevelDropDown';
+import RecurrenceDropDown from '@components/ScheduleModal/RecurrenceDropDown';
 import TimeDropDown from '@components/ScheduleModal/TimeDropDown';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
@@ -24,6 +25,8 @@ import {
     Schedule,
     FullSchedule,
     Participant,
+    RecurType,
+    Recurrence,
 } from '@customTypes/ScheduleTypes';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
@@ -54,6 +57,13 @@ export default function ScheduleEditorModal({
         new Date(initSchedule.start_at),
     );
     const [endDate, setEndDate] = useState<Date>(new Date(initSchedule.end_at));
+    const [recurrence, setRecurrence] = useState<Recurrence>({
+        isRecurrent: false,
+        cronjob: '',
+        endDate: '',
+        type: RecurType.none,
+        content: '반복 안 함',
+    });
     const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
         initSchedule.protection_level,
     );
@@ -313,44 +323,59 @@ export default function ScheduleEditorModal({
                             <span className={styles.underline} />
                         </div>
                         <div className={styles.content}>
-                            <div className={styles.time}>
+                            <div className={styles.dateTime}>
+                                <label>
+                                    <Image
+                                        src={time_icon}
+                                        alt="date_time"
+                                        width={24}
+                                    />
+                                </label>
                                 <div>
-                                    <label>
-                                        <Image
-                                            src={time_icon}
-                                            alt="date_time"
-                                            width={24}
-                                        />
-                                    </label>
-                                    <div className={styles.timeInputContainer}>
-                                        <MiniCalendarDropDown
-                                            title="시작 날짜"
+                                    <div className={styles.dateTimeContent}>
+                                        <div
+                                            className={
+                                                styles.timeInputContainer
+                                            }
+                                        >
+                                            <MiniCalendarDropDown
+                                                title="시작 날짜"
+                                                date={startDate}
+                                                changeDate={changeStartDate}
+                                            />
+                                            <TimeDropDown
+                                                title="시작 시간"
+                                                time={startDate}
+                                                changeTime={changeStartDate}
+                                            />
+                                            <span className={styles.dash}>
+                                                -
+                                            </span>
+                                            <MiniCalendarDropDown
+                                                title="종료 날짜"
+                                                date={endDate}
+                                                changeDate={changeEndDate}
+                                            />
+                                            <TimeDropDown
+                                                title="시작 시간"
+                                                time={endDate}
+                                                changeTime={changeEndDate}
+                                            />
+                                        </div>
+                                        {!dateValidity.isValid && (
+                                            <ErrorMessage
+                                                message={dateValidity.message}
+                                            />
+                                        )}
+                                    </div>
+                                    <div className={styles.recurrence}>
+                                        <RecurrenceDropDown
                                             date={startDate}
-                                            changeDate={changeStartDate}
-                                        />
-                                        <TimeDropDown
-                                            title="시작 시간"
-                                            time={startDate}
-                                            changeTime={changeStartDate}
-                                        />
-                                        <span className={styles.dash}>-</span>
-                                        <MiniCalendarDropDown
-                                            title="종료 날짜"
-                                            date={endDate}
-                                            changeDate={changeEndDate}
-                                        />
-                                        <TimeDropDown
-                                            title="시작 시간"
-                                            time={endDate}
-                                            changeTime={changeEndDate}
+                                            recurrence={recurrence}
+                                            setRecurrence={setRecurrence}
                                         />
                                     </div>
                                 </div>
-                                {!dateValidity.isValid && (
-                                    <ErrorMessage
-                                        message={dateValidity.message}
-                                    />
-                                )}
                             </div>
                             <div className={styles.participants}>
                                 <label>
@@ -369,7 +394,7 @@ export default function ScheduleEditorModal({
                                     palceHolder="참가자 추가"
                                 />
                             </div>
-                            <div className={styles.protectionLevel}>
+                            <div className={styles.public}>
                                 <label>
                                     <Image
                                         src={lock_icon}
@@ -377,25 +402,30 @@ export default function ScheduleEditorModal({
                                         width={24}
                                     />
                                 </label>
-                                <ProtectionLevelDropDown
-                                    protectionLevel={protectionLevel}
-                                    setProtectionLevel={setProtectionLevel}
-                                />
+                                <div>
+                                    <ProtectionLevelDropDown
+                                        protectionLevel={protectionLevel}
+                                        setProtectionLevel={setProtectionLevel}
+                                    />
+                                    <div className={styles.hideDetails}>
+                                        <input
+                                            type="checkbox"
+                                            id="hideDetails"
+                                            checked={
+                                                hideDetails || isHideDisabled
+                                            }
+                                            onChange={() =>
+                                                setHideDetails(!hideDetails)
+                                            }
+                                            disabled={isHideDisabled}
+                                        />
+                                        <label htmlFor="hideDetails">
+                                            세부 일정 비공개
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                            <div className={styles.hideDetails}>
-                                <input
-                                    type="checkbox"
-                                    id="hideDetails"
-                                    checked={hideDetails || isHideDisabled}
-                                    onChange={() =>
-                                        setHideDetails(!hideDetails)
-                                    }
-                                    disabled={isHideDisabled}
-                                />
-                                <label htmlFor="hideDetails">
-                                    세부 일정 비공개
-                                </label>
-                            </div>
+
                             <div className={styles.description}>
                                 <label>
                                     <Image

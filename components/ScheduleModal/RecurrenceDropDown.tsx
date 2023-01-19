@@ -7,21 +7,22 @@ import {
     DropDownHeader,
     useDropDown,
 } from '@components/DropDown';
-import {
-    ProtectionLevel,
-    ProtectionLevelText,
-} from '@customTypes/ScheduleTypes';
+import { Recurrence, RecurType } from '@customTypes/ScheduleTypes';
 import dropdown_icon from '@images/dropdown_icon.svg';
 
-interface ProtectionLevelDropDownProps {
-    protectionLevel: ProtectionLevel;
-    setProtectionLevel: Dispatch<SetStateAction<ProtectionLevel>>;
+// 반복 안함, 매일, 매주 *요일, 매월 *일,매월 *번째 *요일, 매년 *월 *일, 맞춤 설정
+
+interface RecurrenceDropDownProps {
+    date: Date;
+    recurrence: Recurrence;
+    setRecurrence: Dispatch<SetStateAction<Recurrence>>;
 }
 
-export default function ProtectionLevelDropDown({
-    protectionLevel,
-    setProtectionLevel,
-}: ProtectionLevelDropDownProps) {
+export default function RecurrenceDropDown({
+    date,
+    recurrence,
+    setRecurrence,
+}: RecurrenceDropDownProps) {
     const triggerRef = useRef<HTMLButtonElement>(null);
     const {
         isOpen,
@@ -33,14 +34,14 @@ export default function ProtectionLevelDropDown({
 
     return (
         <DropDown dropDownRef={dropDownRef} style={{ width: 'fit-content' }}>
-            <DropDownHeader style={{ width: 'fit-content', zIndex: 120 }}>
+            <DropDownHeader style={{ width: 'fit-content', zIndex: '145' }}>
                 <button
                     ref={triggerRef}
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
                 >
                     <span style={{ whiteSpace: 'nowrap' }}>
-                        {ProtectionLevelText[protectionLevel]}
+                        {recurrence.content}
                     </span>
                     <Image
                         src={dropdown_icon}
@@ -52,20 +53,21 @@ export default function ProtectionLevelDropDown({
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}
-                style={{ width: '100px', top: '40px', zIndex: 110 }}
+                style={{
+                    top: '40px',
+                    height: '150px',
+                    zIndex: '144',
+                    overflow: 'auto',
+                }}
             >
-                <ul style={{ padding: '0' }}>
-                    {Object.keys(ProtectionLevelText).map(lev => (
-                        <li
-                            key={lev}
-                            onClick={() => {
-                                setProtectionLevel(Number(lev));
-                                closeDropDown();
-                            }}
-                        >
-                            {ProtectionLevelText[Number(lev)]}
-                        </li>
-                    ))}
+                <ul>
+                    <li>반복 안 함</li>
+                    <li>매일</li>
+                    <li>매주 *요일</li>
+                    <li>매월 며칠</li>
+                    <li>매월 *번째 *요일</li>
+                    <li>매년 *월 *일</li>
+                    <li>맞춤 설정</li>
                 </ul>
             </DropDownBody>
         </DropDown>

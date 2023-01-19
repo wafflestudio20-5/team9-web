@@ -4,13 +4,19 @@ import styles from './DropDown.module.scss';
 
 interface DropDownProps {
     dropDownRef: React.ForwardedRef<HTMLDivElement>; // pass `dropDownRef` in `useDropDown`
+    style?: React.CSSProperties;
     children: React.ReactNode;
 }
 
-export function DropDown({ dropDownRef, children }: DropDownProps) {
+export function DropDown({ dropDownRef, style, children }: DropDownProps) {
     return (
         <>
-            <div className={styles.dropDown} ref={dropDownRef} tabIndex={-1}>
+            <div
+                className={styles.dropDown}
+                ref={dropDownRef}
+                tabIndex={-1}
+                style={style}
+            >
                 {children}
             </div>
         </>
