@@ -19,13 +19,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 25px;
-        width: 25px;
-
-        img {
-            height: 20px;
-            width: 20px;
-        }
+        height: fit-content;
+        width: fit-content;
+        padding: none;
     }
     &:hover {
         background-color: v.$background-gray;

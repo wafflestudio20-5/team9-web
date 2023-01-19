@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
 
 import styles from './CreateScheduleModal.module.scss';
@@ -11,11 +10,11 @@ import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
-import close_icon from '@images/close_icon.svg';
-import lock_icon from '@images/lock_icon.svg';
-import people_icon from '@images/people_icon.svg';
-import text_icon from '@images/text_icon.svg';
-import time_icon from '@images/time_icon.svg';
+import CloseIcon from '@images/close_icon.svg';
+import LockIcon from '@images/lock_icon.svg';
+import PeopleIcon from '@images/people_icon.svg';
+import TextIcon from '@images/text_icon.svg';
+import TimeIcon from '@images/time_icon.svg';
 
 function ErrorMessage({ message }: { message: string }) {
     return <span className={styles.errorMessage}>{message}</span>;
@@ -88,11 +87,7 @@ export default function CreateScheduleModal() {
                         className={styles.close}
                         onClick={cancelCreateSchedule}
                     >
-                        <Image
-                            src={close_icon}
-                            height={18}
-                            alt="clear_search_input"
-                        />
+                        <CloseIcon className="icon" height="18px" />
                     </button>
                 </div>
                 <form
@@ -114,10 +109,9 @@ export default function CreateScheduleModal() {
                             <div className={styles.time}>
                                 <div>
                                     <label>
-                                        <Image
-                                            src={time_icon}
-                                            alt="date_time"
-                                            width={24}
+                                        <TimeIcon
+                                            className="icon"
+                                            height="24px"
                                         />
                                     </label>
                                     <div className={styles.timeInputContainer}>
@@ -152,21 +146,13 @@ export default function CreateScheduleModal() {
                             </div>
                             <div className={styles.participant}>
                                 <label>
-                                    <Image
-                                        src={people_icon}
-                                        alt="participant"
-                                        width={24}
-                                    />
+                                    <PeopleIcon className="icon" width="24px" />
                                 </label>
                                 <input type="text" placeholder="참석자" />
                             </div>
                             <div className={styles.sharingScope}>
                                 <label>
-                                    <Image
-                                        src={lock_icon}
-                                        alt="public_scope"
-                                        width={24}
-                                    />
+                                    <LockIcon className="icon" width="24px" />
                                 </label>
                                 <SharingScopeDropDown
                                     scope={sharingScope}
@@ -189,11 +175,7 @@ export default function CreateScheduleModal() {
                             </div>
                             <div className={styles.description}>
                                 <label>
-                                    <Image
-                                        src={text_icon}
-                                        alt="description"
-                                        width={24}
-                                    />
+                                    <TextIcon className="icon" width="24px" />
                                 </label>
                                 <textarea
                                     cols={57}

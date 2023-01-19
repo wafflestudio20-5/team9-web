@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 
@@ -140,8 +139,7 @@ export default function Header() {
                     }`}
                 >
                     <button onClick={isOpen ? closeSidebar : openSidebar}>
-                        <MenuIcon className={styles.icon} height="24px" />
-                        {/* <Image src={menu_icon} height={24} alt="sidebar" /> */}
+                        <MenuIcon className="icon" height="24px" />
                     </button>
                 </div>
 
@@ -152,8 +150,8 @@ export default function Header() {
                     }`}
                 >
                     <div>
-                        <CalendarIcon className={styles.icon} height="40px" />
-                        {/* <Image src={calendar_icon} height={40} alt="calendar" /> */}
+                        <CalendarIcon className="icon" height="40px" />
+
                         <span className={styles.dateToday}>
                             {now.getDate()}
                         </span>
@@ -168,8 +166,7 @@ export default function Header() {
                     }`}
                 >
                     <button onClick={closeSearchbar}>
-                        <BackIcon className={styles.icon} height="24px" />
-                        {/* <Image src={back_icon} height={24} alt="back" /> */}
+                        <BackIcon className="icon" height="24px" />
                     </button>
                     <span>검색</span>
                 </div>
@@ -187,20 +184,10 @@ export default function Header() {
                     </button>
                     <div className={styles.btnContainer}>
                         <button onClick={movePrev}>
-                            <BeforeIcon height="24px" className={styles.icon} />
-                            {/* <Image
-                                src={before_icon}
-                                height={24}
-                                alt="prev_calendar"
-                            /> */}
+                            <BeforeIcon height="24px" className="icon" />
                         </button>
                         <button onClick={moveNext}>
-                            <NextIcon height="24px" className={styles.icon} />
-                            {/* <Image
-                                src={next_icon}
-                                height={24}
-                                alt="next_calendar"
-                            /> */}
+                            <NextIcon height="24px" className="icon" />
                         </button>
                     </div>
                     <div className={styles.date}>
@@ -212,15 +199,7 @@ export default function Header() {
                         >
                             {getSelectedDate()}
                             {!isOpen && (
-                                <DropdownIcon
-                                    height="24px"
-                                    className={styles.icon}
-                                />
-                                // <Image
-                                //     src={dropdown_icon}
-                                //     height={24}
-                                //     alt="date"
-                                // />
+                                <DropdownIcon height="24px" className="icon" />
                             )}
                         </button>
                     </div>
@@ -240,8 +219,7 @@ export default function Header() {
                                 setIsSearchOpen(true);
                             }}
                         >
-                            <SearchIcon className={styles.icon} height="24px" />
-                            {/* <Image src={search_icon} height={24} alt="search" /> */}
+                            <SearchIcon className="icon" height="24px" />
                         </button>
                     </div>
                     <div className={styles.help}>
@@ -261,8 +239,7 @@ export default function Header() {
                 <div className={styles.userContainer}>
                     <div className={styles.apps}>
                         <button>
-                            <AppIcon className={styles.icon} height="24px" />
-                            {/* <Image src={apps_icon} height={24} alt="apps" /> */}
+                            <AppIcon className="icon" height="24px" />
                         </button>
                     </div>
                     {user ? (
