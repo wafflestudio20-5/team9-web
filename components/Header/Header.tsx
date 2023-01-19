@@ -13,6 +13,7 @@ import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
+import { useThemeContext } from '@contexts/ThemeContext';
 import apps_icon from '@images/apps_icon.svg';
 import back_icon from '@images/back_icon.svg';
 import before_icon from '@images/before_icon.svg';
@@ -40,6 +41,7 @@ export default function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const router = useRouter();
     const now = useMemo(() => new Date(), []);
+    const { theme } = useThemeContext();
 
     const getPathname = (
         calendarType: CalendarType,
