@@ -1,5 +1,9 @@
 @use '@styles/variables.scss' as v;
 
+.icon {
+    fill: var(--icons);
+}
+
 .header {
     display: flex;
     padding: 8px;
@@ -42,10 +46,6 @@
         &:hover {
             background-color: var(--button-hover);
         }
-    }
-
-    svg {
-        color: var(--icons);
     }
 
     .sidebarContainer {

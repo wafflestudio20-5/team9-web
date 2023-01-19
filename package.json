@@ -49,6 +49,7 @@
         ]
     },
     "devDependencies": {
+        "@svgr/webpack": "^6.5.1",
         "@typescript-eslint/eslint-plugin": "^5.46.1",
         "eslint-plugin-react": "^7.31.11"
     }
