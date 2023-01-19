@@ -35,6 +35,7 @@ export default function SettingsDropDown() {
                 <ul>
                     <li
                         onClick={() => {
+                            closeDropDown();
                             router.push('/settings');
                         }}
                     >
