@@ -8,10 +8,10 @@
     width: 570px;
     height: 80vh;
     max-height: 500px;
-    border: 1px solid v.$border-gray;
+    border: 1px solid var(--structure);
     border-radius: 10px;
     background-color: white;
-    box-shadow: 0 1px 5px 1px v.$border-gray;
+    box-shadow: 0 1px 5px 1px var(--structure);
     overflow: hidden;
 }
 
@@ -21,7 +21,8 @@
     align-items: center;
     padding: 0 5px;
     height: 36px;
-    background-color: v.$background-gray;
+    background-color: var(--header-background);
+    color: var(--text-other);
 
     button {
         display: flex;
@@ -31,10 +32,10 @@
         height: 30px;
         border: none;
         border-radius: 50%;
-        background-color: v.$background-gray;
+        background-color: var(--button-hover);
 
         &:hover {
-            background-color: v.$border-gray;
+            background-color: var(--structure);
         }
     }
 }
@@ -48,6 +49,8 @@
 .body {
     overflow: auto;
     padding: 24px;
+    background-color: var(--sidebar-background);
+    color: var(--text-other);
 }
 
 .title {
@@ -59,11 +62,12 @@
         width: 100%;
         font-size: x-large;
         border: none;
-        border-bottom: 2px solid v.$border-gray;
+        border-bottom: 2px solid var(--structure);
+        background-color: var(--fill-inputBox);
 
         &:focus {
             outline: none;
-            border-bottom: 2px solid v.$primary-blue;
+            border-bottom: 2px solid var(--today-blueberry);
         }
     }
 }
@@ -79,7 +83,7 @@
         display: flex;
         align-items: center;
         width: 52px;
-        border-bottom: 2px solid white;
+        border-bottom: 2px solid transparent;
     }
 
     input {
@@ -88,19 +92,20 @@
         height: 36px;
         border: none;
         border-radius: 5px;
-        border-bottom: 2px solid white;
+        border-bottom: 2px solid transparent;
+        background-color: var(--fill-inputBox);
 
         &:hover {
-            border-bottom: 2px solid v.$background-gray;
-            background-color: v.$background-gray;
+            border-bottom: 2px solid var(--button-hover);
+            background-color: var(--fill-inputBox);
         }
 
         &:focus {
             outline: none;
-            border-bottom: 2px solid v.$primary-blue;
+            border-bottom: 2px solid var(--today-blueberry);
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
-            background-color: v.$background-gray;
+            background-color: var(--fill-inputBox);
         }
     }
 
@@ -170,12 +175,13 @@
         textarea {
             padding: 5px;
             resize: none;
-            border: 2px solid v.$border-gray;
+            border: 2px solid var(--structure);
             border-radius: 5px;
+            background-color: var(--fill-inputBox);
 
             &:focus {
                 outline: none;
-                border: 2px solid v.$primary-blue;
+                border: 2px solid var(--today-blueberry);
             }
         }
     }
@@ -184,16 +190,17 @@
 .btnContainer {
     padding: 12px 24px;
     text-align: right;
-    border-top: 1px solid v.$border-gray;
+    border-top: 1px solid var(--structure);
+    background-color: var(--sidebar-background);
 
     button {
         padding: 0 20px;
         height: 36px;
         color: white;
-        background-color: v.$primary-blue;
+        background-color: var(--today-blueberry);
 
         &:hover {
-            background-color: v.$dark-blue;
+            background-color: var(--dark-blueberry);
         }
     }
 }

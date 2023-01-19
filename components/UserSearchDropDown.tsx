@@ -237,7 +237,7 @@ const SelectedResultItem = ({
     //          get profile picture with UserData and pass that to Image src prop
     return (
         <div className={styles.selected}>
-            <AccountDefaultIcon width="20px" />
+            <AccountDefaultIcon className="icon" width="20px" />
             <div>{item.username}</div>
             <button onClick={onClick}>
                 <CloseIcon />
@@ -256,7 +256,7 @@ const SuggestionItem = ({
     return (
         <li onClick={onClick}>
             <div className={styles.suggestion}>
-                <AccountDefaultIcon width="30px" />
+                <AccountDefaultIcon className="icon" width="30px" />
                 <div>
                     <div className={styles.username}>{item.username}</div>
                     <div className={styles.email}>{item.email}</div>

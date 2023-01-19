@@ -22,7 +22,7 @@ export default function CalendarToggle({ name }: { name: string }) {
                 state={isChosen}
                 setState={setIsChosen}
                 size={{ size: 18, unit: 'px' }}
-                color="#1967cd"
+                color="#6f50c3"
             />
             <div className={styles.text}>{name}</div>
         </div>

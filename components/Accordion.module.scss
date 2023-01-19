@@ -24,7 +24,7 @@
         padding: none;
     }
     &:hover {
-        background-color: v.$background-gray;
+        background-color: var(--button-hover);
         cursor: pointer;
     }
 }

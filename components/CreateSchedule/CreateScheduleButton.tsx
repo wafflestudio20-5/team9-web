@@ -13,7 +13,7 @@ export default function CreateScheduleButton() {
             className={styles.createScheduleButton}
             onClick={() => openModal(MODAL_NAMES.createSchedule)}
         >
-            <AddIcon width="40px" />
+            <AddIcon className="icon" width="40px" />
         </div>
     );
 }
