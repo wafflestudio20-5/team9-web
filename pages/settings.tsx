@@ -1,6 +1,9 @@
+import React from 'react';
+
+import styles from './settings.module.scss';
+
 import { Accordion } from '@components/Accordion';
 import { useThemeContext } from '@contexts/ThemeContext';
-import styles from './settings.module.scss';
 
 const settings = { 일반: ['테마', '기타'] };
 
