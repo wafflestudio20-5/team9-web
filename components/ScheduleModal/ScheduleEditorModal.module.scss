@@ -97,7 +97,7 @@
         border-bottom: 2px solid white;
     }
 
-    input:not(.participant input) {
+    input:not(.participants input) {
         height: 36px;
         border: none;
         border-radius: 5px;
@@ -145,6 +145,10 @@
         .dash {
             margin: 0 5px;
         }
+    }
+
+    .participants {
+        align-items: flex-start;
     }
 
     .protectionLevel {

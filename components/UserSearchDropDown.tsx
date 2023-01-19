@@ -18,22 +18,24 @@ import updateSequence from '@utils/updateSequence';
 
 interface UserSearchDropDownProps {
     toExecute: (item: UserDataForSearch) => void;
-    interceptItem?: (item: UserDataForSearch, state: 'add' | 'remove') => void;
+    interceptResult?: (result: UserDataForSearch[]) => void;
     buttonText: string;
     width?: string; // custom width when used elsewhere
     underlineColor?: string;
     resetOnExecution?: boolean;
     submitButtonNotRequired?: boolean;
+    palceHolder?: string;
 }
 
 export function UserSearchDropDown({
     toExecute,
-    interceptItem,
+    interceptResult,
     buttonText,
     width,
     underlineColor,
     resetOnExecution,
     submitButtonNotRequired,
+    palceHolder,
 }: UserSearchDropDownProps) {
     const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
 
@@ -122,7 +124,7 @@ export function UserSearchDropDown({
                 // only save the recent 4 searches to localStorage
             });
             setStored(newSearchRecord);
-            if (interceptItem) interceptItem(item, 'add');
+            if (interceptResult) interceptResult(newSelectedResults);
         }
         setSearchInput('');
         closeDropDown();
@@ -168,8 +170,12 @@ export function UserSearchDropDown({
                                             // Remove button: on click,
                                             // remove this item from selectedResults
                                         );
-                                        if (interceptItem)
-                                            interceptItem(item, 'remove');
+                                        if (interceptResult)
+                                            interceptResult(
+                                                selectedResults.filter(
+                                                    i => i !== item,
+                                                ),
+                                            );
                                     }}
                                 />
                             );
@@ -189,7 +195,7 @@ export function UserSearchDropDown({
                                 handleChange(e);
                             }}
                             className={styles.input}
-                            placeholder="사용자 검색..."
+                            placeholder={palceHolder || '사용자 검색...'}
                             onFocus={openDropDown}
                         />
                     </form>

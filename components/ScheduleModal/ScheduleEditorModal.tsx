@@ -23,8 +23,8 @@ import {
     ProtectionLevel,
     Schedule,
     FullSchedule,
+    Participant,
 } from '@customTypes/ScheduleTypes';
-import { UserDataForSearch } from '@customTypes/UserTypes';
 import close_icon from '@images/close_icon.svg';
 import lock_icon from '@images/lock_icon.svg';
 import people_icon from '@images/people_icon.svg';
@@ -97,19 +97,10 @@ export default function ScheduleEditorModal({
         setEndDate(newDate);
     };
 
-    const updateParticipants = (
-        participant: UserDataForSearch,
-        state: 'add' | 'remove',
-    ) => {
-        if (state === 'add') {
-            const isDuplicate = participants.some(p => p.pk === participant.pk);
-            if (!isDuplicate) participants.push({ pk: participant.pk });
-        } else if (state === 'remove') {
-            const filteredList = participants.filter(
-                p => p.pk !== participant.pk,
-            );
-            setParticipants(filteredList);
-        }
+    const updateParticipants = (participants: Participant[]) => {
+        const pkList: { pk: number }[] = [];
+        participants.forEach(p => pkList.push({ pk: p.pk }));
+        setParticipants(pkList);
     };
 
     const detectChange = () => {
@@ -361,7 +352,7 @@ export default function ScheduleEditorModal({
                                     />
                                 )}
                             </div>
-                            <div className={styles.participant}>
+                            <div className={styles.participants}>
                                 <label>
                                     <Image
                                         src={people_icon}
@@ -371,10 +362,11 @@ export default function ScheduleEditorModal({
                                 </label>
                                 <UserSearchDropDown
                                     toExecute={item => null}
-                                    interceptItem={updateParticipants}
+                                    interceptResult={updateParticipants}
                                     buttonText="추가"
                                     width="400px"
                                     submitButtonNotRequired={true}
+                                    palceHolder="참가자 추가"
                                 />
                             </div>
                             <div className={styles.protectionLevel}>
