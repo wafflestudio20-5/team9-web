@@ -51,6 +51,7 @@ body {
 * {
     box-sizing: border-box;
     font-family: 'Nanum Gothic', sans-serif;
+    color: var(--text-other);
 
     &::-webkit-scrollbar {
         width: 8px;
@@ -79,11 +80,22 @@ ul {
 button {
     border: 1px solid var(--structure);
     border-radius: 5px;
-    background-color: white;
+    background-color: transparent;
     cursor: pointer;
 
     &:hover {
-        background-color: v.$background-gray;
+        background-color: var(--button-hover);
+    }
+}
+
+input,
+textarea {
+    caret-color: var(--text-other);
+    border: none;
+    background-color: transparent;
+
+    &::placeholder {
+        color: var(--text-datesSecondary);
     }
 }
 

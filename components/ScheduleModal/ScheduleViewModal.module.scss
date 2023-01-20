@@ -1,0 +1,122 @@
+@use '@styles/variables.scss' as v;
+
+.scheduleViewModal {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 550px; // temp
+    border: 1px solid var(--structure);
+    border-radius: 10px;
+    background-color: var(--sidebar-background);
+    box-shadow: 0 1px 5px 1px var(--structure);
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding: 10px;
+    gap: 5px;
+
+    button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+    }
+}
+
+.body {
+    padding: 12px 36px;
+    max-height: calc(100vh - 180px);
+    overflow: auto;
+
+    .title {
+        display: flex;
+        align-items: center;
+        margin: 0;
+
+        .color {
+            margin-left: 3px;
+            margin-right: 31px;
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+        }
+    }
+
+    > div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        height: 36px;
+
+        .icon {
+            display: flex;
+            align-items: center;
+            width: 54px;
+            flex-shrink: 0;
+        }
+    }
+
+    .date {
+        margin-left: 52px;
+        gap: 5px;
+        font-size: small;
+
+        .dash {
+            margin: 0 5px;
+        }
+    }
+
+    .participants {
+        align-items: flex-start;
+        height: fit-content;
+
+        ul {
+            flex-grow: 1;
+            max-height: 150px;
+            overflow: auto;
+        }
+    }
+
+    .participant {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        gap: 5px;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .email {
+            font-size: small;
+        }
+    }
+
+    .description {
+        align-items: flex-start;
+        height: fit-content;
+
+        p {
+            margin: 0;
+            padding-top: 1px;
+            max-height: 150px;
+            overflow: auto;
+        }
+    }
+
+    .protectionLevel {
+        .hideDetails {
+            margin-left: 5px;
+            font-size: small;
+        }
+    }
+}

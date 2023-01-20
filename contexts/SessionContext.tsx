@@ -24,6 +24,7 @@ interface RegisterInfo {
 }
 
 interface User {
+    pk: number;
     email: string;
     birthdate: string;
     username: string;
@@ -83,6 +84,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             .post(apiEndPoint + 'login/', loginInfo)
             .then(response => {
                 setUser({
+                    pk: response.data.user.pk,
                     email: response.data.user.email,
                     birthdate: response.data.user.birthdate,
                     username: response.data.user.username,
@@ -129,6 +131,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             .post(apiEndPoint + 'registration/', registerInfo)
             .then(response => {
                 setUser({
+                    pk: response.data.user.pk,
                     email: response.data.user.email,
                     birthdate: response.data.user.birthdate,
                     username: response.data.user.username,

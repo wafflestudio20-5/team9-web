@@ -90,6 +90,7 @@ export default function Sidebar() {
                     <UserSearchDropDown
                         toExecute={sendFollowRequest}
                         buttonText="요청"
+                        resetOnExecution={true}
                     />
                 </div>
                 <div className={styles.accordions}>

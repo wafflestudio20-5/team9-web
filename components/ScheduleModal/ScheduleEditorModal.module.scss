@@ -1,0 +1,235 @@
+@use '@styles/variables.scss' as v;
+
+.scheduleEditorModal {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 560px;
+    border: 1px solid var(--structure);
+    border-radius: 10px;
+    background-color: var(--sidebar-background);
+    box-shadow: 0 1px 5px 1px var(--structure);
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding: 0 5px;
+    height: 36px;
+    background-color: var(--fill-inputBox);
+
+    button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+
+        &:hover {
+            background-color: var(--structure);
+        }
+    }
+}
+
+.scheduleForm {
+    padding: 24px 72px 24px 24px;
+    max-height: calc(100vh - 180px);
+    overflow: auto;
+}
+
+.title {
+    position: relative;
+    padding-left: 55px;
+    padding-bottom: 20px;
+
+    input {
+        padding: 3px;
+        width: 100%;
+        font-size: x-large;
+        border: none;
+        border-bottom: 2px solid var(--structure);
+        background-color: transparent;
+
+        + .underline {
+            position: absolute;
+            left: calc(50% + 26px);
+            bottom: 20px;
+            width: 0;
+            transition: all 0.3s ease-in-out;
+            border-bottom: 2px solid var(--structure);
+        }
+
+        &:focus {
+            outline: none;
+
+            + .underline {
+                left: 52px;
+                width: calc(100% - 52px);
+                border-bottom: 2px solid var(--today-blueberry);
+            }
+        }
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    > div {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        width: 48px;
+    }
+
+    // dropdown input and button
+    input:not(.participants input),
+    button:not(.participants button) {
+        height: 36px;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+
+        // underline
+        + span {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 0;
+            transition: all 0.3s ease-in-out;
+            border-bottom: 2px solid var(--button-hover);
+        }
+
+        &:hover {
+            background-color: var(--button-hover);
+        }
+
+        &:focus {
+            outline: none;
+            background-color: var(--button-hover);
+
+            // underline
+            + span {
+                left: 0;
+                width: 100%;
+                border-bottom: 2px solid var(--today-blueberry);
+            }
+        }
+    }
+}
+
+.dateTime {
+    > label {
+        margin-top: 6px;
+    }
+
+    .timeInputContainer {
+        display: flex;
+        align-items: center;
+    }
+
+    .dash {
+        margin: 0 5px;
+    }
+}
+
+.errorMessage {
+    display: inline-block;
+    margin-left: 8px;
+    margin-bottom: 5px;
+    color: var(--syrup-strawberry);
+    font-size: 12px;
+}
+
+.public {
+    > label {
+        margin-top: 6px;
+    }
+
+    // protection level dropdown button
+    button {
+        display: flex;
+        align-items: center;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .hideDetails {
+        display: flex;
+        margin: 2px 8px 5px 8px;
+        font-size: small;
+
+        input {
+            margin: 0 5px 0 0;
+            height: 16px !important;
+            accent-color: var(--today-blueberry);
+            background-color: var(--today-blueberry);
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &:disabled {
+                cursor: default;
+
+                & + label {
+                    cursor: default;
+                }
+            }
+        }
+
+        label {
+            width: auto;
+            border: none;
+            font-size: 12px;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.description {
+    textarea {
+        padding: 5px;
+        resize: none;
+        border: 2px solid var(--structure);
+        border-radius: 5px;
+
+        &:focus {
+            outline: none;
+            border: 2px solid var(--today-blueberry);
+        }
+    }
+}
+
+.btnContainer {
+    padding: 12px 24px;
+    height: 60px;
+    text-align: right;
+    border-top: 1px solid var(--structure);
+    background-color: var(--sidebar-background);
+
+    button {
+        padding: 0 20px;
+        height: 36px;
+        color: white;
+        border: none;
+        background-color: var(--today-blueberry);
+
+        &:hover {
+            background-color: var(--dark-blueberry);
+        }
+    }
+}
