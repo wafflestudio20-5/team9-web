@@ -51,7 +51,7 @@ export default function RegisterModal() {
             >
                 <div className={styles.textErrorContainer}>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>닉네임:</div>
+                        <div className={styles.textName}>닉네임</div>
                         <input
                             type="text"
                             className={styles.text}
@@ -65,7 +65,7 @@ export default function RegisterModal() {
                 </div>
                 <div className={styles.textErrorContainer}>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>이메일:</div>
+                        <div className={styles.textName}>이메일</div>
                         <input
                             type="email"
                             className={styles.text}
@@ -79,7 +79,7 @@ export default function RegisterModal() {
                 </div>
                 <div className={styles.textErrorContainer}>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>비밀번호:</div>
+                        <div className={styles.textName}>비밀번호</div>
                         <input
                             type="password"
                             className={styles.text}
@@ -93,7 +93,7 @@ export default function RegisterModal() {
                 </div>
                 <div className={styles.textErrorContainer}>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>비밀번호 확인:</div>
+                        <div className={styles.textName}>비밀번호 확인</div>
                         <input
                             type="password"
                             className={styles.text}
@@ -107,7 +107,7 @@ export default function RegisterModal() {
                 </div>
                 <div className={styles.textErrorContainer}>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>생일:</div>
+                        <div className={styles.textName}>생일</div>
                         <input
                             type="date"
                             className={styles.text}
