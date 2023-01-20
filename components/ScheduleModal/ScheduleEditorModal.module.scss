@@ -6,10 +6,10 @@
     left: 50%;
     transform: translateX(-50%);
     width: 560px;
-    border: 1px solid v.$border-gray;
+    border: 1px solid var(--structure);
     border-radius: 10px;
     background-color: white;
-    box-shadow: 0 1px 5px 1px v.$border-gray;
+    box-shadow: 0 1px 5px 1px var(--structure);
 }
 
 .header {
@@ -18,7 +18,8 @@
     align-items: center;
     padding: 0 5px;
     height: 36px;
-    background-color: v.$background-gray;
+    background-color: var(--fill-inputBox);
+    color: var(--text-other);
 
     button {
         display: flex;
@@ -28,10 +29,10 @@
         height: 30px;
         border: none;
         border-radius: 50%;
-        background-color: v.$background-gray;
+        background-color: var(--fill-inputBox);
 
         &:hover {
-            background-color: v.$border-gray;
+            background-color: var(--structure);
         }
     }
 }
@@ -52,7 +53,7 @@
         width: 100%;
         font-size: x-large;
         border: none;
-        border-bottom: 2px solid v.$border-gray;
+        border-bottom: 2px solid var(--structure);
 
         + .underline {
             position: absolute;
@@ -60,7 +61,7 @@
             bottom: 20px;
             width: 0;
             transition: all 0.3s ease-in-out;
-            border-bottom: 2px solid v.$border-gray;
+            border-bottom: 2px solid var(--structure);
         }
 
         &:focus {
@@ -69,7 +70,7 @@
             + .underline {
                 left: 52px;
                 width: calc(100% - 52px);
-                border-bottom: 2px solid v.$primary-blue;
+                border-bottom: 2px solid var(--today-blueberry);
             }
         }
     }
@@ -106,22 +107,22 @@
             bottom: 0;
             width: 0;
             transition: all 0.3s ease-in-out;
-            border-bottom: 2px solid v.$border-gray;
+            border-bottom: 2px solid var(--structure);
         }
 
         &:hover {
-            background-color: v.$background-gray;
+            background-color: var(--fill-inputBox);
         }
 
         &:focus {
             outline: none;
-            background-color: v.$background-gray;
+            background-color: var(--fill-inputBox);
 
             // underline
             + span {
                 left: 0;
                 width: 100%;
-                border-bottom: 2px solid v.$primary-blue;
+                border-bottom: 2px solid var(--today-blueberry);
             }
         }
     }
@@ -201,12 +202,12 @@
     textarea {
         padding: 5px;
         resize: none;
-        border: 2px solid v.$border-gray;
+        border: 2px solid var(--structure);
         border-radius: 5px;
 
         &:focus {
             outline: none;
-            border: 2px solid v.$primary-blue;
+            border: 2px solid var(--today-blueberry);
         }
     }
 }
@@ -215,16 +216,17 @@
     padding: 12px 24px;
     height: 60px;
     text-align: right;
-    border-top: 1px solid v.$border-gray;
+    border-top: 1px solid var(--structure);
+    background-color: var(--sidebar-background);
 
     button {
         padding: 0 20px;
         height: 36px;
         color: white;
-        background-color: v.$primary-blue;
+        background-color: var(--today-blueberry);
 
         &:hover {
-            background-color: v.$dark-blue;
+            background-color: var(--dark-blueberry);
         }
     }
 }

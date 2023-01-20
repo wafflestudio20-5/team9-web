@@ -1,10 +1,9 @@
-import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
 
 import styles from './MiniCalendar.module.scss';
 
-import before_icon from '@images/before_icon.svg';
-import next_icon from '@images/next_icon.svg';
+import BeforeIcon from '@images/before_icon.svg';
+import NextIcon from '@images/next_icon.svg';
 import { DAYS_ARR } from '@utils/formatDay';
 
 interface MiniCalendarProps {
@@ -68,15 +67,10 @@ export default function MiniCalendar({
             </div>
             <div className={styles.buttons}>
                 <button onClick={showPrevious} type="button">
-                    <Image
-                        src={before_icon}
-                        alt="이전"
-                        width={24}
-                        height={24}
-                    />
+                    <BeforeIcon className="icon" width="24px" />
                 </button>
                 <button onClick={showNext} type="button">
-                    <Image src={next_icon} alt="이후" width={24} height={24} />
+                    <NextIcon className="icon" width="24px" />
                 </button>
             </div>
             <div className={styles.header}>
