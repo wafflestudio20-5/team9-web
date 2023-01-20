@@ -9,7 +9,7 @@
     max-height: 450px;
     border: 1px solid var(--structure);
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--sidebar-background);
     box-shadow: 0 1px 5px 1px var(--structure);
     overflow: auto;
 
@@ -27,7 +27,7 @@
             position: relative;
             width: 100px;
             height: 100px;
-            border: 1px solid black;
+            border: 1px solid var(--structure);
             border-radius: 50%;
 
             .addPhoto {
@@ -40,6 +40,11 @@
                 border: none;
                 border-radius: 50%;
                 box-shadow: 0 1px 5px 1px var(--structure);
+                background-color: var(--sidebar-background);
+
+                &:hover {
+                    background-color: var(--button-hover);
+                }
             }
         }
 
@@ -48,10 +53,6 @@
 
             span {
                 display: block;
-            }
-
-            .id {
-                color: var(--text-other);
             }
         }
 

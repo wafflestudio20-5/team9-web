@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useRef } from 'react';
 
 import {

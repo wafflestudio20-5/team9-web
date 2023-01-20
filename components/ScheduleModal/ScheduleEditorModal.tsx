@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Image from 'next/image';
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 
 import styles from './ScheduleEditorModal.module.scss';

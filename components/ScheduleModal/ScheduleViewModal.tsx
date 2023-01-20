@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Image from 'next/image';
 import React, { useMemo } from 'react';
 
 import styles from './ScheduleViewModal.module.scss';
