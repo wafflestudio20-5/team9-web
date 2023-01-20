@@ -170,12 +170,13 @@ export function UserSearchDropDown({
                                             // Remove button: on click,
                                             // remove this item from selectedResults
                                         );
-                                        if (interceptResult)
+                                        if (interceptResult) {
                                             interceptResult(
                                                 selectedResults.filter(
                                                     i => i !== item,
                                                 ),
                                             );
+                                        }
                                     }}
                                 />
                             );

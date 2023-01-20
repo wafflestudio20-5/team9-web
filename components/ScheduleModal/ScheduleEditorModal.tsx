@@ -6,11 +6,8 @@ import styles from './ScheduleEditorModal.module.scss';
 
 import {
     CalendarURLParams,
-    CalendarURLParamsEmail,
     createScheduleAPI,
     editScheduleAPI,
-    getEntireScheduleAPIEmail,
-    getParticularScheduleAPI,
 } from '@apis/calendar';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
@@ -22,7 +19,6 @@ import { useSessionContext } from '@contexts/SessionContext';
 import {
     ProtectionLevel,
     Schedule,
-    FullSchedule,
     Participant,
 } from '@customTypes/ScheduleTypes';
 import close_icon from '@images/close_icon.svg';
@@ -46,7 +42,7 @@ export default function ScheduleEditorModal({
     initSchedule,
     taskType,
 }: ScheduleEditorModalProps) {
-    const { openModal, closeModal } = useModal();
+    const { closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
     const titleRef = useRef<HTMLInputElement>(null);
     const [title, setTitle] = useState<string>(initSchedule.title);
@@ -103,41 +99,6 @@ export default function ScheduleEditorModal({
         setParticipants(pkList);
     };
 
-    const detectChange = () => {
-        if (
-            title === initSchedule.title &&
-            startDate.toString() ===
-                new Date(initSchedule.start_at).toString() &&
-            endDate.toString() === new Date(initSchedule.end_at).toString() &&
-            description === initSchedule.description &&
-            protectionLevel === initSchedule.protection_level &&
-            hideDetails === !initSchedule.show_content &&
-            JSON.stringify(participants) ===
-                JSON.stringify(initSchedule.participants)
-        ) {
-            return false;
-        }
-        return true;
-    };
-
-    const cancelScheduleForm = () => {
-        const isChanged = detectChange();
-        if (isChanged) {
-            const warningContent = {
-                title: '작성 중인 일정을 삭제하시겠습니까?',
-                text: '변경사항이 저장되지 않았습니다.',
-                confirmButtonText: '삭제',
-            };
-            warningModal(warningContent).then(result => {
-                if (result.isConfirmed) {
-                    closeModal(MODAL_NAMES.scheduleEditor);
-                }
-            });
-        } else {
-            closeModal(MODAL_NAMES.scheduleEditor);
-        }
-    };
-
     const createSchedule = async (
         newSchedule: Schedule,
         accessToken: string | null,
@@ -151,12 +112,7 @@ export default function ScheduleEditorModal({
         };
 
         try {
-            const res = await createScheduleAPI(
-                newSchedule,
-                urlParams,
-                accessToken,
-            );
-            console.log(res.data);
+            await createScheduleAPI(newSchedule, urlParams, accessToken);
             successToast('일정이 추가되었습니다.');
             return true;
         } catch (error) {
@@ -176,12 +132,7 @@ export default function ScheduleEditorModal({
         accessToken: string | null,
     ) => {
         try {
-            const res = await editScheduleAPI(
-                scheduleId,
-                newSchedule,
-                accessToken,
-            );
-            console.log(res);
+            await editScheduleAPI(scheduleId, newSchedule, accessToken);
             successToast('일정이 수정되었습니다.');
             return true;
         } catch (error) {
@@ -218,7 +169,7 @@ export default function ScheduleEditorModal({
             description: description,
             protection_level: protectionLevel,
             show_content: !hideDetails,
-            participants: participants, // comment out this to test edit schedule
+            participants: participants,
         };
 
         let isSuccessful = false;
@@ -237,46 +188,44 @@ export default function ScheduleEditorModal({
                 break;
         }
 
-        // comment out this to test other apis
         if (isSuccessful) closeModal(MODAL_NAMES.scheduleEditor);
+    };
+
+    const detectChange = () => {
+        return (
+            title !== initSchedule.title ||
+            startDate.toString() !==
+                new Date(initSchedule.start_at).toString() ||
+            endDate.toString() !== new Date(initSchedule.end_at).toString() ||
+            description !== initSchedule.description ||
+            protectionLevel !== initSchedule.protection_level ||
+            hideDetails !== !initSchedule.show_content ||
+            JSON.stringify(participants) !==
+                JSON.stringify(initSchedule.participants)
+        );
+    };
+
+    const cancelScheduleForm = () => {
+        const isChanged = detectChange();
+        if (isChanged) {
+            const warningContent = {
+                title: '작성 중인 일정을 삭제하시겠습니까?',
+                text: '변경사항이 저장되지 않았습니다.',
+                confirmButtonText: '삭제',
+            };
+            warningModal(warningContent).then(result => {
+                if (result.isConfirmed) {
+                    closeModal(MODAL_NAMES.scheduleEditor);
+                }
+            });
+        } else {
+            closeModal(MODAL_NAMES.scheduleEditor);
+        }
     };
 
     useEffect(() => {
         titleRef.current?.focus();
     }, []);
-
-    const testScheduleViewModal = (initSchedule: FullSchedule) => {
-        openModal(MODAL_NAMES.scheduleView, { schedule: initSchedule });
-    };
-
-    const testGetEntireSchedule = async () => {
-        if (!user) return;
-
-        const urlParams: CalendarURLParamsEmail = {
-            email: user.email,
-            from: formatFullDate(startDate),
-            to: formatFullDate(endDate),
-        };
-
-        try {
-            const res = await getEntireScheduleAPIEmail(urlParams, accessToken);
-            console.log(res.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const testGetParticularSchedule = async () => {
-        // write the schedule id you want to get at description textarea in the ScheduleEditorModal
-        const scheduleId = Number(description);
-        try {
-            const res = await getParticularScheduleAPI(scheduleId, accessToken);
-            console.log(res.data);
-            testScheduleViewModal(res.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     return (
         <ModalFrame
@@ -285,8 +234,6 @@ export default function ScheduleEditorModal({
         >
             <div className={styles.scheduleEditorModal}>
                 <div className={styles.header}>
-                    <button onClick={testGetEntireSchedule}>전체</button>
-                    <button onClick={testGetParticularSchedule}>특정</button>
                     <button
                         type="button"
                         className={styles.close}
