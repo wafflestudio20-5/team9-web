@@ -40,6 +40,9 @@ interface ScheduleModalProps {
     schedule: FullSchedule;
 }
 
+// when you open this modal using `openModal`, you have to pass `schedule` property
+// e.g. openModal(MODAL_NAMES.scheduleView, {schedule})
+// for detailed example, see line 140 of `ScheduleEditorModal.tsx`
 export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
     const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();

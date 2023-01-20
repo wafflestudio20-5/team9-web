@@ -173,7 +173,7 @@ export default function ScheduleEditorModal({
             description: description,
             protection_level: protectionLevel,
             show_content: !hideDetails,
-            // participants: participants,
+            participants: participants,
         };
 
         let isSuccessful = false;
