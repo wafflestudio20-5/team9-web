@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import Header from '@components/Header/Header';
 import CalendarProvider from '@contexts/CalendarContext';
@@ -10,24 +10,28 @@ import SidebarProvider from '@contexts/SidebarContext';
 import ThemeProvider from '@contexts/ThemeContext';
 import '@styles/global.scss';
 
+function ContextProviders({ children }: PropsWithChildren) {
+    return (
+        <ThemeProvider>
+            <SessionProvider>
+                <CalendarProvider>
+                    <DateProvider>
+                        <ModalProvider>
+                            <SidebarProvider> {children} </SidebarProvider>
+                        </ModalProvider>
+                    </DateProvider>
+                </CalendarProvider>
+            </SessionProvider>
+        </ThemeProvider>
+    );
+}
+
 export default function MyApp({ Component, pageProps }: AppProps) {
     return (
-        <>
-            <ThemeProvider>
-                <SessionProvider>
-                    <CalendarProvider>
-                        <DateProvider>
-                            <ModalProvider>
-                                <SidebarProvider>
-                                    <Header />
-                                    <Component {...pageProps} />
-                                    <ModalContainer />
-                                </SidebarProvider>
-                            </ModalProvider>
-                        </DateProvider>
-                    </CalendarProvider>
-                </SessionProvider>
-            </ThemeProvider>
-        </>
+        <ContextProviders>
+            <Header />
+            <Component {...pageProps} />
+            <ModalContainer />
+        </ContextProviders>
     );
 }
