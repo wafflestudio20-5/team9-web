@@ -104,7 +104,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         if (isDeleted) closeModal(MODAL_NAMES.scheduleView);
     };
 
-    const collapseScheduleEndDateTime = (startDate: Date, endDate: Date) => {
+    const mergeScheduleEndDateTime = (startDate: Date, endDate: Date) => {
         if (startDate.toString() === endDate.toString()) return '';
 
         let result = '';
@@ -191,7 +191,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             <span className={styles.dash}>-</span>
                         )}
                         <span>
-                            {collapseScheduleEndDateTime(startDate, endDate)}
+                            {mergeScheduleEndDateTime(startDate, endDate)}
                         </span>
                     </div>
                     {user?.pk !== schedule.created_by &&
