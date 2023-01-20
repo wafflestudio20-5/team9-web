@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useRef } from 'react';
 
 import {
@@ -10,6 +11,7 @@ import {
     ProtectionLevel,
     ProtectionLevelText,
 } from '@customTypes/ScheduleTypes';
+import dropdown_icon from '@images/dropdown_icon.svg';
 
 interface ProtectionLevelDropDownProps {
     protectionLevel: ProtectionLevel;
@@ -20,7 +22,7 @@ export default function ProtectionLevelDropDown({
     protectionLevel,
     setProtectionLevel,
 }: ProtectionLevelDropDownProps) {
-    const triggerRef = useRef<HTMLInputElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
     const {
         isOpen,
         dropDownRef,
@@ -30,17 +32,22 @@ export default function ProtectionLevelDropDown({
     } = useDropDown(triggerRef);
 
     return (
-        <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader style={{ zIndex: 120 }}>
-                <input
-                    type="text"
-                    value={ProtectionLevelText[protectionLevel]}
-                    placeholder="공개 설정"
-                    readOnly
+        <DropDown dropDownRef={dropDownRef} style={{ width: 'fit-content' }}>
+            <DropDownHeader style={{ width: 'fit-content', zIndex: 120 }}>
+                <button
+                    ref={triggerRef}
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
-                    ref={triggerRef}
-                />
+                >
+                    <span style={{ whiteSpace: 'nowrap' }}>
+                        {ProtectionLevelText[protectionLevel]}
+                    </span>
+                    <Image
+                        src={dropdown_icon}
+                        width={20}
+                        alt="recurrence_option"
+                    />
+                </button>
                 <span className="underline" />
             </DropDownHeader>
             <DropDownBody

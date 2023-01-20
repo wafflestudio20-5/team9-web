@@ -2,17 +2,14 @@
 
 .scheduleEditorModal {
     position: fixed;
-    top: 60px;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
-    width: 570px;
-    height: 80vh;
-    max-height: 500px;
+    width: 560px;
     border: 1px solid v.$border-gray;
     border-radius: 10px;
     background-color: white;
     box-shadow: 0 1px 5px 1px v.$border-gray;
-    overflow: hidden;
 }
 
 .header {
@@ -40,19 +37,14 @@
 }
 
 .scheduleForm {
-    display: grid;
-    grid-template-rows: auto 60px;
-    height: calc(100% - 36px);
-}
-
-.body {
+    padding: 24px 72px 24px 24px;
+    max-height: calc(100vh - 180px);
     overflow: auto;
-    padding: 24px 64px 24px 24px;
 }
 
 .title {
     position: relative;
-    padding-left: 52px;
+    padding-left: 55px;
     padding-bottom: 20px;
 
     input {
@@ -84,20 +76,24 @@
 }
 
 .content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
     > div {
         display: flex;
-        align-items: center;
-        margin-bottom: 15px;
+        align-items: flex-start;
     }
 
     label {
         display: flex;
         align-items: center;
-        width: 52px;
-        border-bottom: 2px solid white;
+        width: 48px;
     }
 
-    input:not(.participants input) {
+    // dropdown input and button
+    input:not(.participants input),
+    button:not(.participants button) {
         height: 36px;
         border: none;
         border-radius: 5px;
@@ -129,43 +125,52 @@
             }
         }
     }
+}
 
-    .time {
-        display: block;
-
-        > div {
-            display: flex;
-        }
-
-        .timeInputContainer {
-            display: flex;
-            align-items: center;
-        }
-
-        .dash {
-            margin: 0 5px;
-        }
+.dateTime {
+    > label {
+        margin-top: 6px;
     }
 
-    .participants {
-        align-items: flex-start;
+    .timeInputContainer {
+        display: flex;
+        align-items: center;
     }
 
-    .protectionLevel {
-        margin-bottom: 0px;
+    .dash {
+        margin: 0 5px;
+    }
+}
 
-        input {
-            width: 80px;
-        }
+.errorMessage {
+    display: inline-block;
+    margin-left: 8px;
+    margin-bottom: 5px;
+    color: tomato;
+    font-size: 12px;
+}
+
+.public {
+    > label {
+        margin-top: 6px;
+    }
+
+    // protection level dropdown button
+    button {
+        display: flex;
+        align-items: center;
+        padding-left: 8px;
+        padding-right: 8px;
     }
 
     .hideDetails {
-        padding-left: 52px;
+        display: flex;
+        margin: 2px 8px 5px 8px;
         font-size: small;
 
         input {
             margin: 0 5px 0 0;
-            height: 16px;
+            height: 16px !important;
 
             &:hover {
                 cursor: pointer;
@@ -183,32 +188,32 @@
         label {
             width: auto;
             border: none;
+            font-size: 12px;
 
             &:hover {
                 cursor: pointer;
             }
         }
     }
+}
 
-    .description {
-        align-items: flex-start;
+.description {
+    textarea {
+        padding: 5px;
+        resize: none;
+        border: 2px solid v.$border-gray;
+        border-radius: 5px;
 
-        textarea {
-            padding: 5px;
-            resize: none;
-            border: 2px solid v.$border-gray;
-            border-radius: 5px;
-
-            &:focus {
-                outline: none;
-                border: 2px solid v.$primary-blue;
-            }
+        &:focus {
+            outline: none;
+            border: 2px solid v.$primary-blue;
         }
     }
 }
 
 .btnContainer {
     padding: 12px 24px;
+    height: 60px;
     text-align: right;
     border-top: 1px solid v.$border-gray;
 
@@ -222,10 +227,4 @@
             background-color: v.$dark-blue;
         }
     }
-}
-
-.errorMessage {
-    padding-left: 55px;
-    color: tomato;
-    font-size: small;
 }

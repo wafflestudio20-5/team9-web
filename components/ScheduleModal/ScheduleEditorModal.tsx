@@ -251,8 +251,8 @@ export default function ScheduleEditorModal({
                         />
                     </button>
                 </div>
-                <div className={styles.scheduleForm}>
-                    <div className={styles.body}>
+                <div className={styles.body}>
+                    <div className={styles.scheduleForm}>
                         <div className={styles.title}>
                             <input
                                 type="text"
@@ -265,44 +265,53 @@ export default function ScheduleEditorModal({
                             <span className={styles.underline} />
                         </div>
                         <div className={styles.content}>
-                            <div className={styles.time}>
-                                <div>
-                                    <label>
-                                        <Image
-                                            src={time_icon}
-                                            alt="date_time"
-                                            width={24}
-                                        />
-                                    </label>
-                                    <div className={styles.timeInputContainer}>
-                                        <MiniCalendarDropDown
-                                            title="시작 날짜"
-                                            date={startDate}
-                                            changeDate={changeStartDate}
-                                        />
-                                        <TimeDropDown
-                                            title="시작 시간"
-                                            time={startDate}
-                                            changeTime={changeStartDate}
-                                        />
-                                        <span className={styles.dash}>-</span>
-                                        <MiniCalendarDropDown
-                                            title="종료 날짜"
-                                            date={endDate}
-                                            changeDate={changeEndDate}
-                                        />
-                                        <TimeDropDown
-                                            title="시작 시간"
-                                            time={endDate}
-                                            changeTime={changeEndDate}
-                                        />
-                                    </div>
-                                </div>
-                                {!dateValidity.isValid && (
-                                    <ErrorMessage
-                                        message={dateValidity.message}
+                            <div className={styles.dateTime}>
+                                <label>
+                                    <Image
+                                        src={time_icon}
+                                        alt="date_time"
+                                        width={24}
                                     />
-                                )}
+                                </label>
+                                <div>
+                                    <div className={styles.dateTimeContent}>
+                                        <div
+                                            className={
+                                                styles.timeInputContainer
+                                            }
+                                        >
+                                            <MiniCalendarDropDown
+                                                title="시작 날짜"
+                                                date={startDate}
+                                                changeDate={changeStartDate}
+                                            />
+                                            <TimeDropDown
+                                                title="시작 시간"
+                                                time={startDate}
+                                                changeTime={changeStartDate}
+                                            />
+                                            <span className={styles.dash}>
+                                                -
+                                            </span>
+                                            <MiniCalendarDropDown
+                                                title="종료 날짜"
+                                                date={endDate}
+                                                changeDate={changeEndDate}
+                                            />
+                                            <TimeDropDown
+                                                title="시작 시간"
+                                                time={endDate}
+                                                changeTime={changeEndDate}
+                                            />
+                                        </div>
+                                        {!dateValidity.isValid && (
+                                            <ErrorMessage
+                                                message={dateValidity.message}
+                                            />
+                                        )}
+                                    </div>
+                                    <div className={styles.recurrence}></div>
+                                </div>
                             </div>
                             <div className={styles.participants}>
                                 <label>
@@ -321,7 +330,7 @@ export default function ScheduleEditorModal({
                                     placeholder="참가자 추가"
                                 />
                             </div>
-                            <div className={styles.protectionLevel}>
+                            <div className={styles.public}>
                                 <label>
                                     <Image
                                         src={lock_icon}
@@ -329,24 +338,28 @@ export default function ScheduleEditorModal({
                                         width={24}
                                     />
                                 </label>
-                                <ProtectionLevelDropDown
-                                    protectionLevel={protectionLevel}
-                                    setProtectionLevel={setProtectionLevel}
-                                />
-                            </div>
-                            <div className={styles.hideDetails}>
-                                <input
-                                    type="checkbox"
-                                    id="hideDetails"
-                                    checked={hideDetails || isHideDisabled}
-                                    onChange={() =>
-                                        setHideDetails(!hideDetails)
-                                    }
-                                    disabled={isHideDisabled}
-                                />
-                                <label htmlFor="hideDetails">
-                                    세부 일정 비공개
-                                </label>
+                                <div>
+                                    <ProtectionLevelDropDown
+                                        protectionLevel={protectionLevel}
+                                        setProtectionLevel={setProtectionLevel}
+                                    />
+                                    <div className={styles.hideDetails}>
+                                        <input
+                                            type="checkbox"
+                                            id="hideDetails"
+                                            checked={
+                                                hideDetails || isHideDisabled
+                                            }
+                                            onChange={() =>
+                                                setHideDetails(!hideDetails)
+                                            }
+                                            disabled={isHideDisabled}
+                                        />
+                                        <label htmlFor="hideDetails">
+                                            세부 일정 비공개
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             <div className={styles.description}>
                                 <label>
