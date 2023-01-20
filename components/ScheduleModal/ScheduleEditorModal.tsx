@@ -42,7 +42,7 @@ export default function ScheduleEditorModal({
     initSchedule,
     taskType,
 }: ScheduleEditorModalProps) {
-    const { closeModal } = useModal();
+    const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
     const titleRef = useRef<HTMLInputElement>(null);
     const [title, setTitle] = useState<string>(initSchedule.title);
@@ -132,8 +132,13 @@ export default function ScheduleEditorModal({
         accessToken: string | null,
     ) => {
         try {
-            await editScheduleAPI(scheduleId, newSchedule, accessToken);
+            const res = await editScheduleAPI(
+                scheduleId,
+                newSchedule,
+                accessToken,
+            );
             successToast('일정이 수정되었습니다.');
+            openModal(MODAL_NAMES.scheduleView, { schedule: res.data });
             return true;
         } catch (error) {
             const message = '일정을 수정하지 못했습니다.';
@@ -169,7 +174,7 @@ export default function ScheduleEditorModal({
             description: description,
             protection_level: protectionLevel,
             show_content: !hideDetails,
-            participants: participants,
+            // participants: participants,
         };
 
         let isSuccessful = false;
@@ -313,7 +318,7 @@ export default function ScheduleEditorModal({
                                     buttonText="추가"
                                     width="400px"
                                     submitButtonNotRequired={true}
-                                    palceHolder="참가자 추가"
+                                    placeholder="참가자 추가"
                                 />
                             </div>
                             <div className={styles.protectionLevel}>

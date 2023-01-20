@@ -24,7 +24,7 @@ interface UserSearchDropDownProps {
     underlineColor?: string;
     resetOnExecution?: boolean;
     submitButtonNotRequired?: boolean;
-    palceHolder?: string;
+    placeholder?: string;
 }
 
 export function UserSearchDropDown({
@@ -35,7 +35,7 @@ export function UserSearchDropDown({
     underlineColor,
     resetOnExecution,
     submitButtonNotRequired,
-    palceHolder,
+    placeholder,
 }: UserSearchDropDownProps) {
     const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
 
@@ -196,7 +196,7 @@ export function UserSearchDropDown({
                                 handleChange(e);
                             }}
                             className={styles.input}
-                            placeholder={palceHolder || '사용자 검색...'}
+                            placeholder={placeholder || '사용자 검색...'}
                             onFocus={openDropDown}
                         />
                     </form>

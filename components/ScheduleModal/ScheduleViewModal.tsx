@@ -84,6 +84,13 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         }
     };
 
+    const onClickEdit = () => {
+        openModal(MODAL_NAMES.scheduleEditor, {
+            initSchedule,
+            taskType: 'edit',
+        });
+    };
+
     const onClickDelete = async () => {
         const { isConfirmed } = await warningModal({
             title: '일정을 삭제하시겠습니까?',
@@ -125,12 +132,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                         <>
                             <button
                                 className={styles.edit}
-                                onClick={() =>
-                                    openModal(MODAL_NAMES.scheduleEditor, {
-                                        initSchedule,
-                                        taskType: 'edit',
-                                    })
-                                }
+                                onClick={onClickEdit}
                             >
                                 <Image
                                     src={edit_icon}
