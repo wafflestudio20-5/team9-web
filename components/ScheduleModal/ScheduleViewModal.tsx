@@ -107,19 +107,25 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
     const collapseScheduleEndDateTime = (startDate: Date, endDate: Date) => {
         if (startDate.toString() === endDate.toString()) return '';
 
-        let result = formatTime(endDate);
+        let result = '';
+        let different = false;
 
-        if (startDate.getDate() !== endDate.getDate()) {
-            result = `${endDate.getDate()}일(${formatDayToKr(
-                endDate.getDay(),
-            )}) ${result}`;
-        }
-        if (startDate.getMonth() + 1 !== endDate.getMonth() + 1) {
-            result = `${endDate.getMonth() + 1}월 ${result}`;
-        }
         if (startDate.getFullYear() !== endDate.getFullYear()) {
-            result = `${endDate.getFullYear()}년 ${result}`;
+            result += `${endDate.getFullYear()}년`;
+            different = true;
         }
+        if (different || startDate.getMonth() + 1 !== endDate.getMonth() + 1) {
+            result += `${different ? ' ' : ''}${endDate.getMonth() + 1}월`;
+            different = true;
+        }
+        if (different || startDate.getDate() !== endDate.getDate()) {
+            result += `${
+                different ? ' ' : ''
+            }${endDate.getDate()}일(${formatDayToKr(endDate.getDay())})`;
+            different = true;
+        }
+
+        result += (different ? ' ' : '') + formatTime(endDate);
 
         return result;
     };
