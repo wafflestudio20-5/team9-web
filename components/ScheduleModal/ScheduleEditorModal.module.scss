@@ -99,7 +99,6 @@
         border: none;
         border-radius: 5px;
         text-align: center;
-        background-color: transparent;
 
         // underline
         + span {
@@ -108,7 +107,7 @@
             bottom: 0;
             width: 0;
             transition: all 0.3s ease-in-out;
-            border-bottom: 2px solid var(--structure);
+            border-bottom: 2px solid var(--button-hover);
         }
 
         &:hover {
@@ -207,7 +206,6 @@
         resize: none;
         border: 2px solid var(--structure);
         border-radius: 5px;
-        background-color: transparent;
 
         &:focus {
             outline: none;
@@ -227,6 +225,7 @@
         padding: 0 20px;
         height: 36px;
         color: white;
+        border: none;
         background-color: var(--today-blueberry);
 
         &:hover {

@@ -91,6 +91,12 @@ button {
 input,
 textarea {
     caret-color: var(--text-other);
+    border: none;
+    background-color: transparent;
+
+    &::placeholder {
+        color: var(--text-datesSecondary);
+    }
 }
 
 .icon {
