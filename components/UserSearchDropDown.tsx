@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
 
 import styles from './UserSearchDropDown.module.scss';
@@ -12,8 +11,8 @@ import {
 } from '@components/DropDown';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 import useLocalStorage from '@hooks/useLocalStorage';
-import account_default_icon from '@images/account_default_icon.svg';
-import close_icon from '@images/close_icon.svg';
+import AccountDefaultIcon from '@images/account_default_icon.svg';
+import CloseIcon from '@images/close_icon.svg';
 import updateSequence from '@utils/updateSequence';
 
 interface UserSearchDropDownProps {
@@ -24,7 +23,7 @@ interface UserSearchDropDownProps {
     underlineColor?: string;
     resetOnExecution?: boolean;
     submitButtonNotRequired?: boolean;
-    palceHolder?: string;
+    placeholder?: string;
 }
 
 export function UserSearchDropDown({
@@ -35,7 +34,7 @@ export function UserSearchDropDown({
     underlineColor,
     resetOnExecution,
     submitButtonNotRequired,
-    palceHolder,
+    placeholder,
 }: UserSearchDropDownProps) {
     const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
 
@@ -170,12 +169,13 @@ export function UserSearchDropDown({
                                             // Remove button: on click,
                                             // remove this item from selectedResults
                                         );
-                                        if (interceptResult)
+                                        if (interceptResult) {
                                             interceptResult(
                                                 selectedResults.filter(
                                                     i => i !== item,
                                                 ),
                                             );
+                                        }
                                     }}
                                 />
                             );
@@ -195,7 +195,7 @@ export function UserSearchDropDown({
                                 handleChange(e);
                             }}
                             className={styles.input}
-                            placeholder={palceHolder || '사용자 검색...'}
+                            placeholder={placeholder || '사용자 검색...'}
                             onFocus={openDropDown}
                         />
                     </form>
@@ -263,10 +263,10 @@ const SelectedResultItem = ({
     //          get profile picture with UserData and pass that to Image src prop
     return (
         <div className={styles.selected}>
-            <Image src={account_default_icon} alt="image" />
+            <AccountDefaultIcon className="icon" width="20px" />
             <div>{item.username}</div>
             <button onClick={onClick}>
-                <Image src={close_icon} alt="remove" />
+                <CloseIcon />
             </button>
         </div>
     );
@@ -282,7 +282,7 @@ const SuggestionItem = ({
     return (
         <li onClick={onClick}>
             <div className={styles.suggestion}>
-                <Image src={account_default_icon} alt="image" />
+                <AccountDefaultIcon className="icon" width="30px" />
                 <div>
                     <div className={styles.username}>{item.username}</div>
                     <div className={styles.email}>{item.email}</div>

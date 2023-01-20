@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 
 import styles from './UserModal.module.scss';
@@ -6,7 +5,7 @@ import styles from './UserModal.module.scss';
 import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
-import camera_icon from '@images/camera_icon.svg';
+import CameraIcon from '@images/camera_icon.svg';
 
 export default function UserModal() {
     const { user, logout } = useSessionContext();
@@ -20,11 +19,7 @@ export default function UserModal() {
                 <div className={styles.userInfo}>
                     <div className={styles.photo}>
                         <button className={styles.addPhoto}>
-                            <Image
-                                src={camera_icon}
-                                height={20}
-                                alt="add_photo"
-                            />
+                            <CameraIcon height="20px" className="icon" />
                         </button>
                     </div>
                     <div className={styles.basic}>

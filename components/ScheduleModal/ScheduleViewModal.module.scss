@@ -2,14 +2,14 @@
 
 .scheduleViewModal {
     position: fixed;
-    top: 60px;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
     width: 550px; // temp
-    border: 1px solid v.$border-gray;
+    border: 1px solid var(--structure);
     border-radius: 10px;
-    background-color: white;
-    box-shadow: 0 1px 5px 1px v.$border-gray;
+    background-color: var(--sidebar-background);
+    box-shadow: 0 1px 5px 1px var(--structure);
     overflow: hidden;
 }
 
@@ -33,6 +33,8 @@
 
 .body {
     padding: 12px 36px;
+    max-height: calc(100vh - 180px);
+    overflow: auto;
 
     .title {
         display: flex;
@@ -41,7 +43,7 @@
 
         .color {
             margin-left: 3px;
-            margin-right: 33px;
+            margin-right: 31px;
             width: 18px;
             height: 18px;
             border-radius: 5px;

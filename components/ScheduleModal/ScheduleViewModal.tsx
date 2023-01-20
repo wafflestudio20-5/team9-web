@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Image from 'next/image';
 import React, { useMemo } from 'react';
 
 import styles from './ScheduleViewModal.module.scss';
@@ -14,13 +13,13 @@ import {
     ProtectionLevelText,
     Schedule,
 } from '@customTypes/ScheduleTypes';
-import account_default_icon from '@images/account_default_icon.svg';
-import close_icon from '@images/close_icon.svg';
-import delete_icon from '@images/delete_icon.svg';
-import edit_icon from '@images/edit_icon.svg';
-import lock_icon from '@images/lock_icon.svg';
-import people_icon from '@images/people_icon.svg';
-import text_icon from '@images/text_icon.svg';
+import AccountDefaultIcon from '@images/account_default_icon.svg';
+import CloseIcon from '@images/close_icon.svg';
+import DeleteIcon from '@images/delete_icon.svg';
+import EditIcon from '@images/edit_icon.svg';
+import LockIcon from '@images/lock_icon.svg';
+import PeopleIcon from '@images/people_icon.svg';
+import TextIcon from '@images/text_icon.svg';
 import { errorToast, successToast, warningModal } from '@utils/customAlert';
 import { formatDayToKr } from '@utils/formatDay';
 import { formatTime } from '@utils/formatTime';
@@ -28,7 +27,7 @@ import { formatTime } from '@utils/formatTime';
 function ParticipantItem({ participant }: { participant: Participant }) {
     return (
         <li className={styles.participant}>
-            <Image src={account_default_icon} width={24} alt="participant" />
+            <AccountDefaultIcon className="icon" height="24px" />
             <div>
                 <span>{participant.username}</span>
                 <span className={styles.email}>{participant.email}</span>
@@ -41,6 +40,9 @@ interface ScheduleModalProps {
     schedule: FullSchedule;
 }
 
+// when you open this modal using `openModal`, you have to pass `schedule` property
+// e.g. openModal(MODAL_NAMES.scheduleView, {schedule})
+// for detailed example, see line 140 of `ScheduleEditorModal.tsx`
 export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
     const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
@@ -84,6 +86,13 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         }
     };
 
+    const onClickEdit = () => {
+        openModal(MODAL_NAMES.scheduleEditor, {
+            initSchedule,
+            taskType: 'edit',
+        });
+    };
+
     const onClickDelete = async () => {
         const { isConfirmed } = await warningModal({
             title: '일정을 삭제하시겠습니까?',
@@ -97,22 +106,28 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         if (isDeleted) closeModal(MODAL_NAMES.scheduleView);
     };
 
-    const collapseScheduleEndDateTime = (startDate: Date, endDate: Date) => {
+    const mergeScheduleEndDateTime = (startDate: Date, endDate: Date) => {
         if (startDate.toString() === endDate.toString()) return '';
 
-        let result = formatTime(endDate);
+        let result = '';
+        let different = false;
 
-        if (startDate.getDate() !== endDate.getDate()) {
-            result = `${endDate.getDate()}일(${formatDayToKr(
-                endDate.getDay(),
-            )}) ${result}`;
-        }
-        if (startDate.getMonth() + 1 !== endDate.getMonth() + 1) {
-            result = `${endDate.getMonth() + 1}월 ${result}`;
-        }
         if (startDate.getFullYear() !== endDate.getFullYear()) {
-            result = `${endDate.getFullYear()}년 ${result}`;
+            result += `${endDate.getFullYear()}년`;
+            different = true;
         }
+        if (different || startDate.getMonth() + 1 !== endDate.getMonth() + 1) {
+            result += `${different ? ' ' : ''}${endDate.getMonth() + 1}월`;
+            different = true;
+        }
+        if (different || startDate.getDate() !== endDate.getDate()) {
+            result += `${
+                different ? ' ' : ''
+            }${endDate.getDate()}일(${formatDayToKr(endDate.getDay())})`;
+            different = true;
+        }
+
+        result += (different ? ' ' : '') + formatTime(endDate);
 
         return result;
     };
@@ -125,28 +140,15 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                         <>
                             <button
                                 className={styles.edit}
-                                onClick={() =>
-                                    openModal(MODAL_NAMES.scheduleEditor, {
-                                        initSchedule,
-                                        taskType: 'edit',
-                                    })
-                                }
+                                onClick={onClickEdit}
                             >
-                                <Image
-                                    src={edit_icon}
-                                    width={18}
-                                    alt="edit_schedule"
-                                />
+                                <EditIcon className="icon" height="18px" />
                             </button>
                             <button
                                 className={styles.delete}
                                 onClick={onClickDelete}
                             >
-                                <Image
-                                    src={delete_icon}
-                                    width={18}
-                                    alt="delete_schedule"
-                                />
+                                <DeleteIcon className="icon" height="18px" />
                             </button>
                         </>
                     )}
@@ -154,11 +156,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                         className={styles.close}
                         onClick={() => closeModal(MODAL_NAMES.scheduleView)}
                     >
-                        <Image
-                            src={close_icon}
-                            width={18}
-                            alt="close_schedule_modal"
-                        />
+                        <CloseIcon className="icon" height="18px" />
                     </button>
                 </div>
                 <div className={styles.body}>
@@ -183,7 +181,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             <span className={styles.dash}>-</span>
                         )}
                         <span>
-                            {collapseScheduleEndDateTime(startDate, endDate)}
+                            {mergeScheduleEndDateTime(startDate, endDate)}
                         </span>
                     </div>
                     {user?.pk !== schedule.created_by &&
@@ -194,10 +192,9 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             {schedule.participants?.length ? (
                                 <div className={styles.participants}>
                                     <div className={styles.icon}>
-                                        <Image
-                                            src={people_icon}
-                                            width={24}
-                                            alt="participants"
+                                        <PeopleIcon
+                                            className="icon"
+                                            height="24px"
                                         />
                                     </div>
                                     <ul>
@@ -213,10 +210,9 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             {schedule.description && (
                                 <div className={styles.description}>
                                     <div className={styles.icon}>
-                                        <Image
-                                            src={text_icon}
-                                            width={24}
-                                            alt="description"
+                                        <TextIcon
+                                            className="icon"
+                                            height="24px"
                                         />
                                     </div>
                                     <p>{schedule.description}</p>
@@ -225,10 +221,9 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             {user?.pk === schedule.created_by && (
                                 <div className={styles.protectionLevel}>
                                     <div className={styles.icon}>
-                                        <Image
-                                            src={lock_icon}
-                                            width={24}
-                                            alt="protection_level"
+                                        <LockIcon
+                                            className="icon"
+                                            height="24px"
                                         />
                                     </div>
                                     <div>

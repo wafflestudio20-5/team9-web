@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { useRef, useState } from 'react';
 
 import {
@@ -7,7 +6,7 @@ import {
     DropDownBody,
     DropDownHeader,
 } from '@components/DropDown';
-import dropdown_icon from '@images/dropdown_icon.svg';
+import DropdownIcon from '@images/dropdown_icon.svg';
 
 export default function SearchCategoryDropDown() {
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -40,11 +39,7 @@ export default function SearchCategoryDropDown() {
                     onBlur={maintainFocus}
                 >
                     <span>{category}</span>
-                    <Image
-                        src={dropdown_icon}
-                        height={17}
-                        alt="search_category"
-                    />
+                    <DropdownIcon height="17px" className="icon" />
                 </button>
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ width: '125px' }}>

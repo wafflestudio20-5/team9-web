@@ -1,16 +1,12 @@
 import axios from 'axios';
-import Image from 'next/image';
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 
 import styles from './ScheduleEditorModal.module.scss';
 
 import {
     CalendarURLParams,
-    CalendarURLParamsEmail,
     createScheduleAPI,
     editScheduleAPI,
-    getEntireScheduleAPIEmail,
-    getParticularScheduleAPI,
 } from '@apis/calendar';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
@@ -23,16 +19,15 @@ import { useSessionContext } from '@contexts/SessionContext';
 import {
     ProtectionLevel,
     Schedule,
-    FullSchedule,
     Participant,
     RecurType,
     Recurrence,
 } from '@customTypes/ScheduleTypes';
-import close_icon from '@images/close_icon.svg';
-import lock_icon from '@images/lock_icon.svg';
-import people_icon from '@images/people_icon.svg';
-import text_icon from '@images/text_icon.svg';
-import time_icon from '@images/time_icon.svg';
+import CloseIcon from '@images/close_icon.svg';
+import LockIcon from '@images/lock_icon.svg';
+import PeopleIcon from '@images/people_icon.svg';
+import TextIcon from '@images/text_icon.svg';
+import TimeIcon from '@images/time_icon.svg';
 import { errorToast, successToast, warningModal } from '@utils/customAlert';
 import { formatFullDate } from '@utils/formatDate';
 
@@ -113,41 +108,6 @@ export default function ScheduleEditorModal({
         setParticipants(pkList);
     };
 
-    const detectChange = () => {
-        if (
-            title === initSchedule.title &&
-            startDate.toString() ===
-                new Date(initSchedule.start_at).toString() &&
-            endDate.toString() === new Date(initSchedule.end_at).toString() &&
-            description === initSchedule.description &&
-            protectionLevel === initSchedule.protection_level &&
-            hideDetails === !initSchedule.show_content &&
-            JSON.stringify(participants) ===
-                JSON.stringify(initSchedule.participants)
-        ) {
-            return false;
-        }
-        return true;
-    };
-
-    const cancelScheduleForm = () => {
-        const isChanged = detectChange();
-        if (isChanged) {
-            const warningContent = {
-                title: '작성 중인 일정을 삭제하시겠습니까?',
-                text: '변경사항이 저장되지 않았습니다.',
-                confirmButtonText: '삭제',
-            };
-            warningModal(warningContent).then(result => {
-                if (result.isConfirmed) {
-                    closeModal(MODAL_NAMES.scheduleEditor);
-                }
-            });
-        } else {
-            closeModal(MODAL_NAMES.scheduleEditor);
-        }
-    };
-
     const createSchedule = async (
         newSchedule: Schedule,
         accessToken: string | null,
@@ -161,12 +121,7 @@ export default function ScheduleEditorModal({
         };
 
         try {
-            const res = await createScheduleAPI(
-                newSchedule,
-                urlParams,
-                accessToken,
-            );
-            console.log(res.data);
+            await createScheduleAPI(newSchedule, urlParams, accessToken);
             successToast('일정이 추가되었습니다.');
             return true;
         } catch (error) {
@@ -191,8 +146,8 @@ export default function ScheduleEditorModal({
                 newSchedule,
                 accessToken,
             );
-            console.log(res);
             successToast('일정이 수정되었습니다.');
+            openModal(MODAL_NAMES.scheduleView, { schedule: res.data });
             return true;
         } catch (error) {
             const message = '일정을 수정하지 못했습니다.';
@@ -228,7 +183,7 @@ export default function ScheduleEditorModal({
             description: description,
             protection_level: protectionLevel,
             show_content: !hideDetails,
-            participants: participants, // comment out this to test edit schedule
+            participants: participants,
         };
 
         let isSuccessful = false;
@@ -247,46 +202,44 @@ export default function ScheduleEditorModal({
                 break;
         }
 
-        // comment out this to test other apis
         if (isSuccessful) closeModal(MODAL_NAMES.scheduleEditor);
+    };
+
+    const detectChange = () => {
+        return (
+            title !== initSchedule.title ||
+            startDate.toString() !==
+                new Date(initSchedule.start_at).toString() ||
+            endDate.toString() !== new Date(initSchedule.end_at).toString() ||
+            description !== initSchedule.description ||
+            protectionLevel !== initSchedule.protection_level ||
+            hideDetails !== !initSchedule.show_content ||
+            JSON.stringify(participants) !==
+                JSON.stringify(initSchedule.participants)
+        );
+    };
+
+    const cancelScheduleForm = () => {
+        const isChanged = detectChange();
+        if (isChanged) {
+            const warningContent = {
+                title: '작성 중인 일정을 삭제하시겠습니까?',
+                text: '변경사항이 저장되지 않았습니다.',
+                confirmButtonText: '삭제',
+            };
+            warningModal(warningContent).then(result => {
+                if (result.isConfirmed) {
+                    closeModal(MODAL_NAMES.scheduleEditor);
+                }
+            });
+        } else {
+            closeModal(MODAL_NAMES.scheduleEditor);
+        }
     };
 
     useEffect(() => {
         titleRef.current?.focus();
     }, []);
-
-    const testScheduleViewModal = (initSchedule: FullSchedule) => {
-        openModal(MODAL_NAMES.scheduleView, { schedule: initSchedule });
-    };
-
-    const testGetEntireSchedule = async () => {
-        if (!user) return;
-
-        const urlParams: CalendarURLParamsEmail = {
-            email: user.email,
-            from: formatFullDate(startDate),
-            to: formatFullDate(endDate),
-        };
-
-        try {
-            const res = await getEntireScheduleAPIEmail(urlParams, accessToken);
-            console.log(res.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const testGetParticularSchedule = async () => {
-        // write the schedule id you want to get at description textarea in the ScheduleEditorModal
-        const scheduleId = Number(description);
-        try {
-            const res = await getParticularScheduleAPI(scheduleId, accessToken);
-            console.log(res.data);
-            testScheduleViewModal(res.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     return (
         <ModalFrame
@@ -295,22 +248,16 @@ export default function ScheduleEditorModal({
         >
             <div className={styles.scheduleEditorModal}>
                 <div className={styles.header}>
-                    <button onClick={testGetEntireSchedule}>전체</button>
-                    <button onClick={testGetParticularSchedule}>특정</button>
                     <button
                         type="button"
                         className={styles.close}
                         onClick={cancelScheduleForm}
                     >
-                        <Image
-                            src={close_icon}
-                            height={18}
-                            alt="clear_search_input"
-                        />
+                        <CloseIcon height="18px" />
                     </button>
                 </div>
-                <div className={styles.scheduleForm}>
-                    <div className={styles.body}>
+                <div className={styles.body}>
+                    <div className={styles.scheduleForm}>
                         <div className={styles.title}>
                             <input
                                 type="text"
@@ -325,11 +272,7 @@ export default function ScheduleEditorModal({
                         <div className={styles.content}>
                             <div className={styles.dateTime}>
                                 <label>
-                                    <Image
-                                        src={time_icon}
-                                        alt="date_time"
-                                        width={24}
-                                    />
+                                    <TimeIcon className="icon" height="24px" />
                                 </label>
                                 <div>
                                     <div className={styles.dateTimeContent}>
@@ -368,21 +311,18 @@ export default function ScheduleEditorModal({
                                             />
                                         )}
                                     </div>
-                                    <div className={styles.recurrence}>
-                                        <RecurrenceDropDown
-                                            date={startDate}
-                                            recurrence={recurrence}
-                                            setRecurrence={setRecurrence}
-                                        />
-                                    </div>
+                                    <RecurrenceDropDown
+                                        date={startDate}
+                                        recurrence={recurrence}
+                                        setRecurrence={setRecurrence}
+                                    />
                                 </div>
                             </div>
                             <div className={styles.participants}>
                                 <label>
-                                    <Image
-                                        src={people_icon}
-                                        alt="participant"
-                                        width={24}
+                                    <PeopleIcon
+                                        className="icon"
+                                        height="24px"
                                     />
                                 </label>
                                 <UserSearchDropDown
@@ -391,16 +331,12 @@ export default function ScheduleEditorModal({
                                     buttonText="추가"
                                     width="400px"
                                     submitButtonNotRequired={true}
-                                    palceHolder="참가자 추가"
+                                    placeholder="참가자 추가"
                                 />
                             </div>
                             <div className={styles.public}>
                                 <label>
-                                    <Image
-                                        src={lock_icon}
-                                        alt="protection_level"
-                                        width={24}
-                                    />
+                                    <LockIcon className="icon" height="24px" />
                                 </label>
                                 <div>
                                     <ProtectionLevelDropDown
@@ -428,11 +364,7 @@ export default function ScheduleEditorModal({
 
                             <div className={styles.description}>
                                 <label>
-                                    <Image
-                                        src={text_icon}
-                                        alt="description"
-                                        width={24}
-                                    />
+                                    <TextIcon className="icon" height="24px" />
                                 </label>
                                 <textarea
                                     cols={57}

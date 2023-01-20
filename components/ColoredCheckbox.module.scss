@@ -7,7 +7,7 @@
     justify-content: center;
     &:hover {
         border-radius: 50%;
-        background-color: v.$background-gray;
+        background-color: var(--button-hover);
         cursor: pointer;
     }
 }

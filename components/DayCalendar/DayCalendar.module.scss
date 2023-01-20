@@ -1,0 +1,13 @@
+@use '@styles/variables.scss' as v;
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    justify-content: stretch;
+}
+
+.dayHolder {
+    border-left: 1px solid v.$border-gray;
+    flex: 1;
+}

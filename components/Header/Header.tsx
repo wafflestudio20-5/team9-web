@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 
@@ -13,14 +12,15 @@ import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
-import apps_icon from '@images/apps_icon.svg';
-import back_icon from '@images/back_icon.svg';
-import before_icon from '@images/before_icon.svg';
-import calendar_icon from '@images/calendar_icon.svg';
-import dropdown_icon from '@images/dropdown_icon.svg';
-import menu_icon from '@images/menu_icon.svg';
-import next_icon from '@images/next_icon.svg';
-import search_icon from '@images/search_icon.svg';
+import { useThemeContext } from '@contexts/ThemeContext';
+import AppIcon from '@images/apps_icon.svg';
+import BackIcon from '@images/back_icon.svg';
+import BeforeIcon from '@images/before_icon.svg';
+import CalendarIcon from '@images/calendar_icon.svg';
+import DropdownIcon from '@images/dropdown_icon.svg';
+import MenuIcon from '@images/menu_icon.svg';
+import NextIcon from '@images/next_icon.svg';
+import SearchIcon from '@images/search_icon.svg';
 import {
     getNextDay,
     getNextMonth,
@@ -40,6 +40,7 @@ export default function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const router = useRouter();
     const now = useMemo(() => new Date(), []);
+    const { theme } = useThemeContext();
 
     const getPathname = (
         calendarType: CalendarType,
@@ -138,7 +139,7 @@ export default function Header() {
                     }`}
                 >
                     <button onClick={isOpen ? closeSidebar : openSidebar}>
-                        <Image src={menu_icon} height={24} alt="sidebar" />
+                        <MenuIcon className="icon" height="24px" />
                     </button>
                 </div>
 
@@ -149,7 +150,8 @@ export default function Header() {
                     }`}
                 >
                     <div>
-                        <Image src={calendar_icon} height={40} alt="calendar" />
+                        <CalendarIcon className="icon" height="40px" />
+
                         <span className={styles.dateToday}>
                             {now.getDate()}
                         </span>
@@ -164,7 +166,7 @@ export default function Header() {
                     }`}
                 >
                     <button onClick={closeSearchbar}>
-                        <Image src={back_icon} height={24} alt="back" />
+                        <BackIcon className="icon" height="24px" />
                     </button>
                     <span>검색</span>
                 </div>
@@ -182,18 +184,10 @@ export default function Header() {
                     </button>
                     <div className={styles.btnContainer}>
                         <button onClick={movePrev}>
-                            <Image
-                                src={before_icon}
-                                height={24}
-                                alt="prev_calendar"
-                            />
+                            <BeforeIcon height="24px" className="icon" />
                         </button>
                         <button onClick={moveNext}>
-                            <Image
-                                src={next_icon}
-                                height={24}
-                                alt="next_calendar"
-                            />
+                            <NextIcon height="24px" className="icon" />
                         </button>
                     </div>
                     <div className={styles.date}>
@@ -205,11 +199,7 @@ export default function Header() {
                         >
                             {getSelectedDate()}
                             {!isOpen && (
-                                <Image
-                                    src={dropdown_icon}
-                                    height={24}
-                                    alt="date"
-                                />
+                                <DropdownIcon height="24px" className="icon" />
                             )}
                         </button>
                     </div>
@@ -229,7 +219,7 @@ export default function Header() {
                                 setIsSearchOpen(true);
                             }}
                         >
-                            <Image src={search_icon} height={24} alt="search" />
+                            <SearchIcon className="icon" height="24px" />
                         </button>
                     </div>
                     <div className={styles.help}>
@@ -249,7 +239,7 @@ export default function Header() {
                 <div className={styles.userContainer}>
                     <div className={styles.apps}>
                         <button>
-                            <Image src={apps_icon} height={24} alt="apps" />
+                            <AppIcon className="icon" height="24px" />
                         </button>
                     </div>
                     {user ? (

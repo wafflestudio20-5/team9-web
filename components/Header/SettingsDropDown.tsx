@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useRef } from 'react';
 
 import {
@@ -7,7 +7,7 @@ import {
     DropDownBody,
     DropDownHeader,
 } from '@components/DropDown';
-import settings_icon from '@images/settings_icon.svg';
+import SettingsIcon from '@images/settings_icon.svg';
 
 export default function SettingsDropDown() {
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -18,6 +18,7 @@ export default function SettingsDropDown() {
         toggleDropDown,
         maintainFocus,
     } = useDropDown(triggerRef);
+    const router = useRouter();
 
     return (
         <DropDown dropDownRef={dropDownRef}>
@@ -27,12 +28,19 @@ export default function SettingsDropDown() {
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
                 >
-                    <Image src={settings_icon} height={24} alt="settings" />
+                    <SettingsIcon height="24px" className="icon" />
                 </button>
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>
                 <ul>
-                    <li onClick={closeDropDown}>설정</li>
+                    <li
+                        onClick={() => {
+                            closeDropDown();
+                            router.push('/settings');
+                        }}
+                    >
+                        설정
+                    </li>
                     <li onClick={closeDropDown}>휴지통</li>
                 </ul>
                 <ul>

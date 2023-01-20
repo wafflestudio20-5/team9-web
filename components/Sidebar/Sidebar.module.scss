@@ -1,3 +1,8 @@
+.sidebar {
+    background-color: var(--sidebar-background);
+    color: var(--text-other);
+}
+
 .open {
     overflow-x: hidden;
     animation: soft-expand 300ms;

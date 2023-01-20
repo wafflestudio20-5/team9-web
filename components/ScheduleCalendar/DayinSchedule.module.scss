@@ -4,7 +4,7 @@
     display: grid;
     height: fit-content;
     padding: 8px 10px 8px 14px;
-    border-bottom: 1px solid v.$border-gray;
+    border-bottom: 1px solid var(--structure);
     grid-template-columns: 140px 1fr;
 }
 
@@ -13,7 +13,6 @@
     align-items: baseline;
     .date {
         font-size: 18px;
-        color: black;
         border-radius: 50%;
         border-color: transparent;
         height: 36px;
@@ -23,11 +22,10 @@
         align-items: center;
 
         &:hover {
-            background-color: v.$background-gray;
+            background-color: var(--button-hover);
         }
     }
     .monthDay {
         font-size: 11px;
-        color: v.$font-gray;
     }
 }

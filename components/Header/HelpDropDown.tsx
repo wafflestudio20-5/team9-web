@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { useRef } from 'react';
 
 import {
@@ -7,7 +6,7 @@ import {
     DropDownBody,
     DropDownHeader,
 } from '@components/DropDown';
-import help_icon from '@images/help_icon.svg';
+import HelpIcon from '@images/help_icon.svg';
 
 export default function HelpDropDown() {
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -27,7 +26,7 @@ export default function HelpDropDown() {
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
                 >
-                    <Image src={help_icon} height={24} alt="help" />
+                    <HelpIcon className="icon" height="24px" />
                 </button>
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>

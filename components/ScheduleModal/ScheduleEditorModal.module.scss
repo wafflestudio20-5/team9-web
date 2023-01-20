@@ -6,10 +6,11 @@
     left: 50%;
     transform: translateX(-50%);
     width: 560px;
-    border: 1px solid v.$border-gray;
+    border: 1px solid var(--structure);
     border-radius: 10px;
-    background-color: white;
-    box-shadow: 0 1px 5px 1px v.$border-gray;
+    background-color: var(--sidebar-background);
+    box-shadow: 0 1px 5px 1px var(--structure);
+    overflow: hidden;
 }
 
 .header {
@@ -18,7 +19,7 @@
     align-items: center;
     padding: 0 5px;
     height: 36px;
-    background-color: v.$background-gray;
+    background-color: var(--fill-inputBox);
 
     button {
         display: flex;
@@ -28,15 +29,14 @@
         height: 30px;
         border: none;
         border-radius: 50%;
-        background-color: v.$background-gray;
 
         &:hover {
-            background-color: v.$border-gray;
+            background-color: var(--structure);
         }
     }
 }
 
-.body {
+.scheduleForm {
     padding: 24px 72px 24px 24px;
     max-height: calc(100vh - 180px);
     overflow: auto;
@@ -52,7 +52,8 @@
         width: 100%;
         font-size: x-large;
         border: none;
-        border-bottom: 2px solid v.$border-gray;
+        border-bottom: 2px solid var(--structure);
+        background-color: transparent;
 
         + .underline {
             position: absolute;
@@ -60,7 +61,7 @@
             bottom: 20px;
             width: 0;
             transition: all 0.3s ease-in-out;
-            border-bottom: 2px solid v.$border-gray;
+            border-bottom: 2px solid var(--structure);
         }
 
         &:focus {
@@ -69,7 +70,7 @@
             + .underline {
                 left: 52px;
                 width: calc(100% - 52px);
-                border-bottom: 2px solid v.$primary-blue;
+                border-bottom: 2px solid var(--today-blueberry);
             }
         }
     }
@@ -106,22 +107,22 @@
             bottom: 0;
             width: 0;
             transition: all 0.3s ease-in-out;
-            border-bottom: 2px solid v.$border-gray;
+            border-bottom: 2px solid var(--button-hover);
         }
 
         &:hover {
-            background-color: v.$background-gray;
+            background-color: var(--button-hover);
         }
 
         &:focus {
             outline: none;
-            background-color: v.$background-gray;
+            background-color: var(--button-hover);
 
             // underline
             + span {
                 left: 0;
                 width: 100%;
-                border-bottom: 2px solid v.$primary-blue;
+                border-bottom: 2px solid var(--today-blueberry);
             }
         }
     }
@@ -147,10 +148,6 @@
         align-items: center;
         padding-left: 8px;
         padding-right: 8px;
-
-        &:focus {
-            background-color: v.$background-gray;
-        }
     }
 }
 
@@ -158,7 +155,7 @@
     display: inline-block;
     margin-left: 8px;
     margin-bottom: 5px;
-    color: tomato;
+    color: var(--syrup-strawberry);
     font-size: 12px;
 }
 
@@ -181,8 +178,10 @@
         font-size: small;
 
         input {
-            margin: 0px 5px 0px 0;
+            margin: 0 5px 0 0;
             height: 16px !important;
+            accent-color: var(--today-blueberry);
+            background-color: var(--today-blueberry);
 
             &:hover {
                 cursor: pointer;
@@ -213,12 +212,12 @@
     textarea {
         padding: 5px;
         resize: none;
-        border: 2px solid v.$border-gray;
+        border: 2px solid var(--structure);
         border-radius: 5px;
 
         &:focus {
             outline: none;
-            border: 2px solid v.$primary-blue;
+            border: 2px solid var(--today-blueberry);
         }
     }
 }
@@ -227,16 +226,18 @@
     padding: 12px 24px;
     height: 60px;
     text-align: right;
-    border-top: 1px solid v.$border-gray;
+    border-top: 1px solid var(--structure);
+    background-color: var(--sidebar-background);
 
     button {
         padding: 0 20px;
         height: 36px;
         color: white;
-        background-color: v.$primary-blue;
+        border: none;
+        background-color: var(--today-blueberry);
 
         &:hover {
-            background-color: v.$dark-blue;
+            background-color: var(--dark-blueberry);
         }
     }
 }
