@@ -4,7 +4,9 @@
     display: flex;
     padding: 8px;
     height: 65px;
-    border-bottom: 1px solid v.$border-gray;
+    border-bottom: 1px solid var(--structure);
+    background-color: var(--header-background);
+    color: var(--text-other);
 
     .left,
     .middle,
@@ -34,6 +36,12 @@
         width: 100%;
         height: 100%;
         border: none;
+        background-color: transparent;
+        color: var(--text-other);
+
+        &:hover {
+            background-color: var(--button-hover);
+        }
     }
 
     .sidebarContainer {
@@ -44,7 +52,7 @@
             border-radius: 50%;
 
             &:focus {
-                background-color: v.$background-gray;
+                background-color: var(--button-hover);
             }
         }
     }
@@ -103,7 +111,7 @@
             flex-shrink: 0;
             width: 64px;
             height: 75%;
-            border: 1px solid v.$border-gray;
+            border: 1px solid var(--structure);
         }
 
         .btnContainer {
@@ -128,7 +136,7 @@
                 &.inactive {
                     cursor: default;
                     &:hover {
-                        background-color: white;
+                        background-color: var(--button-hover);
                     }
                 }
             }
@@ -150,7 +158,7 @@
         }
 
         button:focus {
-            background-color: v.$background-gray;
+            background-color: var(--button-hover);
         }
 
         button:not(.calendarType button) {
@@ -166,7 +174,7 @@
                 justify-content: space-between;
                 padding-left: 12px;
                 padding-right: 8px;
-                border: 1px solid v.$border-gray;
+                border: 1px solid var(--structure);
                 text-align: right;
             }
         }
@@ -200,10 +208,10 @@
                 color: white;
 
                 &:hover {
-                    border: 2px solid v.$border-gray;
+                    border: 2px solid var(--structure);
                 }
                 &:focus {
-                    border: 2px solid v.$border-gray;
+                    border: 2px solid var(--structure);
                 }
             }
         }
@@ -217,12 +225,12 @@
             gap: 2px;
 
             button {
-                background-color: v.$primary-blue;
+                background-color: var(--today-blueberry);
                 font-size: small;
                 color: white;
 
                 &:hover {
-                    background-color: v.$dark-blue;
+                    background-color: var(--dark-blueberry);
                 }
             }
         }

@@ -1,9 +1,8 @@
-import Image from 'next/image';
 import React, { ReactNode } from 'react';
 
 import styles from './ColoredCheckbox.module.scss';
 
-import white_check_icon from '@images/white_check_icon.svg';
+import WhiteCheckIcon from '@images/white_check_icon.svg';
 
 interface CustomCheckboxProps {
     state: boolean;
@@ -14,7 +13,7 @@ interface CustomCheckboxProps {
 }
 
 function DefaultChild() {
-    return <Image src={white_check_icon} alt="O" className={styles.check} />;
+    return <WhiteCheckIcon className={styles.check} />;
 }
 
 export default function ColoredCheckbox({

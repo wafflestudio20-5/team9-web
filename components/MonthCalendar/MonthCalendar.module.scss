@@ -5,6 +5,7 @@
     flex-direction: row;
     height: calc(100vh - 65px);
     width: 100vw;
+    background-color: var(--sidebar-background);
 }
 
 .monthHolder {
@@ -12,20 +13,22 @@
     flex-direction: column;
     flex-grow: 1;
     margin-left: 8px;
-    border-left: 1px solid v.$border-gray;
+    border-left: 1px solid var(--structure);
+    background-color: var(--waffle-background);
 }
 
 .headrow {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 1px;
-    background-color: v.$border-gray;
+    border-left: 1px solid var(--structure);
 
     div {
-        color: v.$font-gray;
+        color: var(--text-datesSecondary);
         text-align: center;
         font-size: 11px;
-        background-color: white;
+        background-color: transparent;
+        border-right: 1px solid var(--structure);
     }
 }
 
@@ -35,5 +38,6 @@
     grid-template-columns: repeat(7, 1fr);
     flex-grow: 1;
     gap: 1px;
-    background-color: v.$border-gray;
+    border-left: 1px solid var(--structure);
+    border-top: 1px solid var(--structure);
 }

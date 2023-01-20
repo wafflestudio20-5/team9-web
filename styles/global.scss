@@ -1,6 +1,48 @@
 @use './variables.scss' as v;
 @import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Nanum+Gothic:wght@400;700;800&display=swap');
 
+:root[data-theme='light'] {
+    --syrup-strawberry: #b13b16;
+    --syrup-chocolate: #6b4c0f;
+    --syrup-honey: #ddac4d;
+    --waffle-background: #f9f7f3;
+    --sidebar-background: #fcfbf9;
+    --header-background: #fdfcfb;
+    --grid-line: #ffffff;
+    --structure: #b6aaa0;
+    --text-datesPrimary: #2f1900;
+    --text-datesSecondary: #85898d;
+    --text-other: #3e4042;
+    --icons: #606368;
+    --today-blueberry: #5f40ba;
+    --light-blueberry: #cbc0ed;
+    --dark-blueberry: #462f8d;
+    --stroke-header: #c8c9cc;
+    --fill-inputBox: #f0f0f0;
+    --button-hover: #f0f0f0;
+}
+
+:root[data-theme='dark'] {
+    --syrup-strawberry: #ebb5ad;
+    --syrup-chocolate: #bc9978;
+    --syrup-honey: #edc881;
+    --waffle-background: #0d0d0d;
+    --sidebar-background: #141414;
+    --header-background: #242424;
+    --grid-line: #0d0d0d;
+    --structure: #b6aaa0;
+    --text-datesPrimary: #ffffff;
+    --text-datesSecondary: #85898d;
+    --text-other: #eef2f5;
+    --icons: #a9acb0;
+    --today-blueberry: #6f50c3;
+    --light-blueberry: #cbc0ed;
+    --dark-blueberry: #462f8d;
+    --stroke-header: #f8f8fa;
+    --fill-inputBox: #e2e0e0;
+    --button-hover: #6e6d6d;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -16,7 +58,7 @@ body {
 
     &::-webkit-scrollbar-thumb {
         border-radius: 10px;
-        background-color: v.$border-gray;
+        background-color: var(--structure);
 
         &:hover {
             background-color: v.$font-gray;
@@ -35,7 +77,7 @@ ul {
 }
 
 button {
-    border: 1px solid v.$border-gray;
+    border: 1px solid var(--structure);
     border-radius: 5px;
     background-color: white;
     cursor: pointer;
@@ -43,4 +85,8 @@ button {
     &:hover {
         background-color: v.$background-gray;
     }
+}
+
+.icon {
+    fill: var(--icons);
 }
