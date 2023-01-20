@@ -11,7 +11,7 @@ import {
     ProtectionLevel,
     ProtectionLevelText,
 } from '@customTypes/ScheduleTypes';
-import dropdown_icon from '@images/dropdown_icon.svg';
+import DropdownIcon from '@images/dropdown_icon.svg';
 
 interface ProtectionLevelDropDownProps {
     protectionLevel: ProtectionLevel;
@@ -42,11 +42,7 @@ export default function ProtectionLevelDropDown({
                     <span style={{ whiteSpace: 'nowrap' }}>
                         {ProtectionLevelText[protectionLevel]}
                     </span>
-                    <Image
-                        src={dropdown_icon}
-                        width={20}
-                        alt="recurrence_option"
-                    />
+                    <DropdownIcon height="20px" />
                 </button>
                 <span className="underline" />
             </DropDownHeader>

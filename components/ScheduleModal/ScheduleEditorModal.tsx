@@ -21,11 +21,11 @@ import {
     Schedule,
     Participant,
 } from '@customTypes/ScheduleTypes';
-import close_icon from '@images/close_icon.svg';
-import lock_icon from '@images/lock_icon.svg';
-import people_icon from '@images/people_icon.svg';
-import text_icon from '@images/text_icon.svg';
-import time_icon from '@images/time_icon.svg';
+import CloseIcon from '@images/close_icon.svg';
+import LockIcon from '@images/lock_icon.svg';
+import PeopleIcon from '@images/people_icon.svg';
+import TextIcon from '@images/text_icon.svg';
+import TimeIcon from '@images/time_icon.svg';
 import { errorToast, successToast, warningModal } from '@utils/customAlert';
 import { formatFullDate } from '@utils/formatDate';
 
@@ -244,11 +244,7 @@ export default function ScheduleEditorModal({
                         className={styles.close}
                         onClick={cancelScheduleForm}
                     >
-                        <Image
-                            src={close_icon}
-                            height={18}
-                            alt="clear_search_input"
-                        />
+                        <CloseIcon height="18px" />
                     </button>
                 </div>
                 <div className={styles.body}>
@@ -267,11 +263,7 @@ export default function ScheduleEditorModal({
                         <div className={styles.content}>
                             <div className={styles.dateTime}>
                                 <label>
-                                    <Image
-                                        src={time_icon}
-                                        alt="date_time"
-                                        width={24}
-                                    />
+                                    <TimeIcon height="24px" />
                                 </label>
                                 <div>
                                     <div className={styles.dateTimeContent}>
@@ -315,11 +307,7 @@ export default function ScheduleEditorModal({
                             </div>
                             <div className={styles.participants}>
                                 <label>
-                                    <Image
-                                        src={people_icon}
-                                        alt="participant"
-                                        width={24}
-                                    />
+                                    <PeopleIcon height="24px" />
                                 </label>
                                 <UserSearchDropDown
                                     toExecute={item => null}
@@ -332,11 +320,7 @@ export default function ScheduleEditorModal({
                             </div>
                             <div className={styles.public}>
                                 <label>
-                                    <Image
-                                        src={lock_icon}
-                                        alt="protection_level"
-                                        width={24}
-                                    />
+                                    <LockIcon height="24px" />
                                 </label>
                                 <div>
                                     <ProtectionLevelDropDown
@@ -363,11 +347,7 @@ export default function ScheduleEditorModal({
                             </div>
                             <div className={styles.description}>
                                 <label>
-                                    <Image
-                                        src={text_icon}
-                                        alt="description"
-                                        width={24}
-                                    />
+                                    <TextIcon height="24px" />
                                 </label>
                                 <textarea
                                     cols={57}

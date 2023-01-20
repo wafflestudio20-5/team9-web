@@ -13,6 +13,7 @@ import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import { useThemeContext } from '@contexts/ThemeContext';
+import { FullSchedule } from '@customTypes/ScheduleTypes';
 import AppIcon from '@images/apps_icon.svg';
 import BackIcon from '@images/back_icon.svg';
 import BeforeIcon from '@images/before_icon.svg';
@@ -41,6 +42,22 @@ export default function Header() {
     const router = useRouter();
     const now = useMemo(() => new Date(), []);
     const { theme } = useThemeContext();
+
+    const schedule: FullSchedule = {
+        id: 1,
+        participants: [
+            { pk: 1, username: 'laylay', email: 'chansol1024@nave.rom' },
+        ],
+        title: 'edited',
+        protection_level: 1,
+        start_at: '2023-01-18 00:00:00',
+        end_at: '2023-02-18 00:00:00',
+        description: ' 입니아ㅣㄴ ㄷ ㅁㄴ얆;댜 ㅁ;냥험냉ㅎㄴㅁㅇㅁ어',
+        created_at: '2023-01-18 19:36:41',
+        updated_at: '2023-01-18 19:36:41',
+        created_by: 7,
+        show_content: true,
+    };
 
     const getPathname = (
         calendarType: CalendarType,
@@ -133,6 +150,13 @@ export default function Header() {
         <header className={styles.header}>
             <div className={styles.left}>
                 {/* sidebar menu */}
+                <button
+                    onClick={() =>
+                        openModal(MODAL_NAMES.scheduleView, { schedule })
+                    }
+                >
+                    일정
+                </button>
                 <div
                     className={`${styles.sidebarContainer} ${
                         isSearchOpen && styles.hidden

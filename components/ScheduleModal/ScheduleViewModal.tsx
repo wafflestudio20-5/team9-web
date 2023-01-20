@@ -14,13 +14,13 @@ import {
     ProtectionLevelText,
     Schedule,
 } from '@customTypes/ScheduleTypes';
-import account_default_icon from '@images/account_default_icon.svg';
-import close_icon from '@images/close_icon.svg';
-import delete_icon from '@images/delete_icon.svg';
-import edit_icon from '@images/edit_icon.svg';
-import lock_icon from '@images/lock_icon.svg';
-import people_icon from '@images/people_icon.svg';
-import text_icon from '@images/text_icon.svg';
+import AccountDefaultIcon from '@images/account_default_icon.svg';
+import CloseIcon from '@images/close_icon.svg';
+import DeleteIcon from '@images/delete_icon.svg';
+import EditIcon from '@images/edit_icon.svg';
+import LockIcon from '@images/lock_icon.svg';
+import PeopleIcon from '@images/people_icon.svg';
+import TextIcon from '@images/text_icon.svg';
 import { errorToast, successToast, warningModal } from '@utils/customAlert';
 import { formatDayToKr } from '@utils/formatDay';
 import { formatTime } from '@utils/formatTime';
@@ -28,7 +28,7 @@ import { formatTime } from '@utils/formatTime';
 function ParticipantItem({ participant }: { participant: Participant }) {
     return (
         <li className={styles.participant}>
-            <Image src={account_default_icon} width={24} alt="participant" />
+            <AccountDefaultIcon height="24px" />
             <div>
                 <span>{participant.username}</span>
                 <span className={styles.email}>{participant.email}</span>
@@ -140,21 +140,13 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                                 className={styles.edit}
                                 onClick={onClickEdit}
                             >
-                                <Image
-                                    src={edit_icon}
-                                    width={18}
-                                    alt="edit_schedule"
-                                />
+                                <EditIcon height="18px" />
                             </button>
                             <button
                                 className={styles.delete}
                                 onClick={onClickDelete}
                             >
-                                <Image
-                                    src={delete_icon}
-                                    width={18}
-                                    alt="delete_schedule"
-                                />
+                                <DeleteIcon height="18px" />
                             </button>
                         </>
                     )}
@@ -162,11 +154,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                         className={styles.close}
                         onClick={() => closeModal(MODAL_NAMES.scheduleView)}
                     >
-                        <Image
-                            src={close_icon}
-                            width={18}
-                            alt="close_schedule_modal"
-                        />
+                        <CloseIcon height="18px" />
                     </button>
                 </div>
                 <div className={styles.body}>
@@ -202,11 +190,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             {schedule.participants?.length ? (
                                 <div className={styles.participants}>
                                     <div className={styles.icon}>
-                                        <Image
-                                            src={people_icon}
-                                            width={24}
-                                            alt="participants"
-                                        />
+                                        <PeopleIcon height="24px" />
                                     </div>
                                     <ul>
                                         {schedule.participants.map((p, i) => (
@@ -221,11 +205,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             {schedule.description && (
                                 <div className={styles.description}>
                                     <div className={styles.icon}>
-                                        <Image
-                                            src={text_icon}
-                                            width={24}
-                                            alt="description"
-                                        />
+                                        <TextIcon height="24px" />
                                     </div>
                                     <p>{schedule.description}</p>
                                 </div>
@@ -233,11 +213,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             {user?.pk === schedule.created_by && (
                                 <div className={styles.protectionLevel}>
                                     <div className={styles.icon}>
-                                        <Image
-                                            src={lock_icon}
-                                            width={24}
-                                            alt="protection_level"
-                                        />
+                                        <LockIcon height="24px" />
                                     </div>
                                     <div>
                                         {
