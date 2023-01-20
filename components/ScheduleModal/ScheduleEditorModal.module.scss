@@ -8,7 +8,7 @@
     width: 560px;
     border: 1px solid var(--structure);
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--sidebar-background);
     box-shadow: 0 1px 5px 1px var(--structure);
     overflow: hidden;
 }
@@ -20,7 +20,6 @@
     padding: 0 5px;
     height: 36px;
     background-color: var(--fill-inputBox);
-    color: var(--text-other);
 
     button {
         display: flex;
@@ -30,7 +29,6 @@
         height: 30px;
         border: none;
         border-radius: 50%;
-        background-color: var(--fill-inputBox);
 
         &:hover {
             background-color: var(--structure);
@@ -55,6 +53,7 @@
         font-size: x-large;
         border: none;
         border-bottom: 2px solid var(--structure);
+        background-color: transparent;
 
         + .underline {
             position: absolute;
@@ -100,6 +99,7 @@
         border: none;
         border-radius: 5px;
         text-align: center;
+        background-color: transparent;
 
         // underline
         + span {
@@ -112,12 +112,12 @@
         }
 
         &:hover {
-            background-color: var(--fill-inputBox);
+            background-color: var(--button-hover);
         }
 
         &:focus {
             outline: none;
-            background-color: var(--fill-inputBox);
+            background-color: var(--button-hover);
 
             // underline
             + span {
@@ -148,7 +148,7 @@
     display: inline-block;
     margin-left: 8px;
     margin-bottom: 5px;
-    color: tomato;
+    color: var(--syrup-strawberry);
     font-size: 12px;
 }
 
@@ -173,6 +173,7 @@
         input {
             margin: 0 5px 0 0;
             height: 16px !important;
+            background-color: var(--today-blueberry);
 
             &:hover {
                 cursor: pointer;
@@ -205,6 +206,7 @@
         resize: none;
         border: 2px solid var(--structure);
         border-radius: 5px;
+        background-color: transparent;
 
         &:focus {
             outline: none;

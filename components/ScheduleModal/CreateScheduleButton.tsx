@@ -40,7 +40,7 @@ export default function CreateScheduleButton({
             }
             style={style}
         >
-            <AddIcon height="40px" />
+            <AddIcon className="icon" height="40px" />
             {text && <span>{text}</span>}
         </div>
     );

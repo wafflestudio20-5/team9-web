@@ -28,7 +28,7 @@ import { formatTime } from '@utils/formatTime';
 function ParticipantItem({ participant }: { participant: Participant }) {
     return (
         <li className={styles.participant}>
-            <AccountDefaultIcon height="24px" />
+            <AccountDefaultIcon className="icon" height="24px" />
             <div>
                 <span>{participant.username}</span>
                 <span className={styles.email}>{participant.email}</span>
@@ -140,13 +140,13 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                                 className={styles.edit}
                                 onClick={onClickEdit}
                             >
-                                <EditIcon height="18px" />
+                                <EditIcon className="icon" height="18px" />
                             </button>
                             <button
                                 className={styles.delete}
                                 onClick={onClickDelete}
                             >
-                                <DeleteIcon height="18px" />
+                                <DeleteIcon className="icon" height="18px" />
                             </button>
                         </>
                     )}
@@ -154,7 +154,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                         className={styles.close}
                         onClick={() => closeModal(MODAL_NAMES.scheduleView)}
                     >
-                        <CloseIcon height="18px" />
+                        <CloseIcon className="icon" height="18px" />
                     </button>
                 </div>
                 <div className={styles.body}>
@@ -190,7 +190,10 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             {schedule.participants?.length ? (
                                 <div className={styles.participants}>
                                     <div className={styles.icon}>
-                                        <PeopleIcon height="24px" />
+                                        <PeopleIcon
+                                            className="icon"
+                                            height="24px"
+                                        />
                                     </div>
                                     <ul>
                                         {schedule.participants.map((p, i) => (
@@ -205,7 +208,10 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             {schedule.description && (
                                 <div className={styles.description}>
                                     <div className={styles.icon}>
-                                        <TextIcon height="24px" />
+                                        <TextIcon
+                                            className="icon"
+                                            height="24px"
+                                        />
                                     </div>
                                     <p>{schedule.description}</p>
                                 </div>
@@ -213,7 +219,10 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             {user?.pk === schedule.created_by && (
                                 <div className={styles.protectionLevel}>
                                     <div className={styles.icon}>
-                                        <LockIcon height="24px" />
+                                        <LockIcon
+                                            className="icon"
+                                            height="24px"
+                                        />
                                     </div>
                                     <div>
                                         {

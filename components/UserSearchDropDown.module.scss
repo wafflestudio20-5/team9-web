@@ -60,6 +60,8 @@
     background-color: transparent;
     width: 100%;
     margin: 0px 12px 0px 12px;
+    caret-color: black;
+    color: black;
     &:focus {
         outline: none;
     }
@@ -97,7 +99,6 @@
     }
     .email {
         font-size: 12px;
-        color: var(--text-other);
         overflow-x: ellipsis;
     }
 }

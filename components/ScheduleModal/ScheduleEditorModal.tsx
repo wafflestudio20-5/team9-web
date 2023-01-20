@@ -263,7 +263,7 @@ export default function ScheduleEditorModal({
                         <div className={styles.content}>
                             <div className={styles.dateTime}>
                                 <label>
-                                    <TimeIcon height="24px" />
+                                    <TimeIcon className="icon" height="24px" />
                                 </label>
                                 <div>
                                     <div className={styles.dateTimeContent}>
@@ -307,7 +307,10 @@ export default function ScheduleEditorModal({
                             </div>
                             <div className={styles.participants}>
                                 <label>
-                                    <PeopleIcon height="24px" />
+                                    <PeopleIcon
+                                        className="icon"
+                                        height="24px"
+                                    />
                                 </label>
                                 <UserSearchDropDown
                                     toExecute={item => null}
@@ -320,7 +323,7 @@ export default function ScheduleEditorModal({
                             </div>
                             <div className={styles.public}>
                                 <label>
-                                    <LockIcon height="24px" />
+                                    <LockIcon className="icon" height="24px" />
                                 </label>
                                 <div>
                                     <ProtectionLevelDropDown
@@ -347,7 +350,7 @@ export default function ScheduleEditorModal({
                             </div>
                             <div className={styles.description}>
                                 <label>
-                                    <TextIcon height="24px" />
+                                    <TextIcon className="icon" height="24px" />
                                 </label>
                                 <textarea
                                     cols={57}

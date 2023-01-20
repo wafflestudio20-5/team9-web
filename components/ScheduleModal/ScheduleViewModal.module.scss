@@ -8,7 +8,7 @@
     width: 550px; // temp
     border: 1px solid var(--structure);
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--sidebar-background);
     box-shadow: 0 1px 5px 1px var(--structure);
     overflow: hidden;
 }

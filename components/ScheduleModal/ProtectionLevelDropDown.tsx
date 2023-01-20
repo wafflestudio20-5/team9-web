@@ -42,7 +42,7 @@ export default function ProtectionLevelDropDown({
                     <span style={{ whiteSpace: 'nowrap' }}>
                         {ProtectionLevelText[protectionLevel]}
                     </span>
-                    <DropdownIcon height="20px" />
+                    <DropdownIcon className="icon" height="20px" />
                 </button>
                 <span className="underline" />
             </DropDownHeader>
