@@ -8,7 +8,7 @@ import {
     useDropDown,
 } from '@components/DropDown';
 import { Recurrence, RecurType } from '@customTypes/ScheduleTypes';
-import dropdown_icon from '@images/dropdown_icon.svg';
+import DropdownIcon from '@images/dropdown_icon.svg';
 import { formatDayToKr } from '@utils/formatDay';
 
 // 반복 안함, 매일, 매주 *요일, 매월 *일,매월 *번째 *요일, 매년 *월 *일, 맞춤 설정
@@ -100,11 +100,7 @@ export default function RecurrenceDropDown({
                     <span style={{ whiteSpace: 'nowrap' }}>
                         {recurrence.content}
                     </span>
-                    <Image
-                        src={dropdown_icon}
-                        width={20}
-                        alt="recurrence_option"
-                    />
+                    <DropdownIcon className="icon" height="20px" />
                 </button>
                 <span className="underline" />
             </DropDownHeader>
