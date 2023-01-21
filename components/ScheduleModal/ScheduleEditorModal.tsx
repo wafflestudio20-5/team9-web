@@ -20,7 +20,7 @@ import {
     ProtectionLevel,
     Schedule,
     Participant,
-    RecurType,
+    Repeat,
     Recurrence,
 } from '@customTypes/ScheduleTypes';
 import CloseIcon from '@images/close_icon.svg';
@@ -53,10 +53,10 @@ export default function ScheduleEditorModal({
     );
     const [endDate, setEndDate] = useState<Date>(new Date(initSchedule.end_at));
     const [recurrence, setRecurrence] = useState<Recurrence>({
-        isRecurrent: false,
+        isRecurring: false,
         cronjob: '',
         endDate: '',
-        type: RecurType.none,
+        repeat: Repeat.none,
         content: '반복 안 함',
     });
     const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(

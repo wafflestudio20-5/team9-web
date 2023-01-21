@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useRef } from 'react';
 
 import {
@@ -7,11 +6,12 @@ import {
     DropDownHeader,
     useDropDown,
 } from '@components/DropDown';
-import { Recurrence, RecurType } from '@customTypes/ScheduleTypes';
+import { Recurrence, RecurrenceRule, Repeat } from '@customTypes/ScheduleTypes';
 import DropdownIcon from '@images/dropdown_icon.svg';
-import { formatDayToKr } from '@utils/formatDay';
 
 // 반복 안함, 매일, 매주 *요일, 매월 *일,매월 *번째 *요일, 매년 *월 *일, 맞춤 설정
+
+export const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 interface RecurrenceDropDownProps {
     date: Date;
@@ -33,59 +33,93 @@ export default function RecurrenceDropDown({
         maintainFocus,
     } = useDropDown(triggerRef);
 
-    const getOrdinalNumberOfDay = (date: Date) => {
-        let order;
-
-        const nextWeek = new Date(date);
-        nextWeek.setDate(date.getDate() + 7);
-        if (date.getMonth() !== nextWeek.getMonth()) {
-            order = ' 마지막';
-        } else {
-            const ordinalNumber = parseInt(`${(date.getDate() - 1) / 7}`) + 1;
-            order = ordinalNumber === 1 ? '첫번째' : `${ordinalNumber}번째`;
-        }
-
-        return `매월 ${order} ${formatDayToKr(date.getDay())}요일`;
+    const OrdinalText: { [key: number]: string } = {
+        1: '첫번째',
+        2: '두번째',
+        3: '세번째',
+        4: '네번째',
+        5: '마지막',
     };
 
-    const RecurTypeText = (date: Date): { [key: number]: string } => ({
-        [RecurType.none]: '반복 안 함',
-        [RecurType.day]: '매일',
-        [RecurType.week]: `매주 ${formatDayToKr(date.getDay())}요일`,
-        [RecurType.ordinal]: getOrdinalNumberOfDay(date),
-        [RecurType.month]: `매월 ${date.getDate()}일`,
-        [RecurType.year]: `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
-        [RecurType.custom]: '맞춤 설정',
-    });
+    const getOrdinalNum = (date: Date) => {
+        const nextWeek = new Date(date);
+        nextWeek.setDate(date.getDate() + 7);
+        const num =
+            date.getMonth() !== nextWeek.getMonth()
+                ? 5
+                : Math.floor((date.getDate() - 1) / 7) + 1;
 
-    const getCronjob = (recurType: RecurType) => {
-        if (recurType === RecurType.none) return '';
+        return num;
+    };
+
+    const DefaultRepeatOptions: {
+        rule: RecurrenceRule;
+        content: string;
+    }[] = [
+        { rule: { repeat: Repeat.none, interval: 0 }, content: '반복 안 함' },
+        { rule: { repeat: Repeat.daily, interval: 1 }, content: '매일' },
+        {
+            rule: { repeat: Repeat.weekly, interval: 1, days: [date.getDay()] },
+            content: `매주 ${DAYS[date.getDay()]}요일`,
+        },
+        {
+            rule: { repeat: Repeat.monthly, interval: 1, date: date.getDate() },
+            content: `매월 ${date.getDate()}일`,
+        },
+        {
+            rule: {
+                repeat: Repeat.monthly,
+                interval: 1,
+                ordinal: getOrdinalNum(date),
+                days: [date.getDay()],
+            },
+            content: `매월 ${OrdinalText[getOrdinalNum(date)]} ${
+                DAYS[date.getDay()]
+            }요일`,
+        },
+        {
+            rule: {
+                repeat: Repeat.yearly,
+                interval: 1,
+                month: date.getMonth(),
+                date: date.getDate(),
+            },
+            content: `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
+        },
+        {
+            rule: {
+                repeat: Repeat.yearly,
+                interval: 1,
+                month: date.getMonth(),
+                ordinal: getOrdinalNum(date),
+                days: [date.getDay()],
+            },
+            content: `매년 ${date.getMonth() + 1}월 ${
+                OrdinalText[getOrdinalNum(date)]
+            } ${DAYS[date.getDay()]}요일`,
+        },
+    ];
+
+    const getCronjob = (rule: RecurrenceRule) => {
+        if (rule.repeat === Repeat.none) return '';
         return 'cronjob';
     };
 
-    const getEndDate = (recurType: RecurType) => {
-        if (recurType === RecurType.none) return '';
+    const getEndDate = (rule: RecurrenceRule) => {
+        if (rule.repeat === Repeat.none) return '';
         return 'endDate';
     };
 
-    const changeRecurrenceSetting = (e: React.MouseEvent<HTMLLIElement>) => {
-        if (!(e.target instanceof HTMLLIElement)) return;
-
-        const type = Number(e.target.dataset['recurrence'] ?? RecurType.none);
-        const content = e.target.innerText;
-        const isRecurrent = type !== RecurType.none;
-        const cronjob = getCronjob(type);
-        const endDate = getEndDate(type);
-
-        const recurInfo: Recurrence = {
-            type,
-            content,
-            isRecurrent,
-            cronjob,
-            endDate,
+    const changeRecurrenceRule = (newRule: RecurrenceRule, content: string) => {
+        const newRecurrence: Recurrence = {
+            isRecurring: newRule.repeat !== Repeat.none,
+            repeat: newRule.repeat,
+            cronjob: getCronjob(newRule),
+            endDate: getEndDate(newRule),
+            content: content,
         };
 
-        setRecurrence(recurInfo);
+        setRecurrence(newRecurrence);
         closeDropDown();
     };
 
@@ -114,17 +148,30 @@ export default function RecurrenceDropDown({
                 }}
             >
                 <ul>
-                    {Object.keys(RecurTypeText(date)).map(recurType => {
+                    {DefaultRepeatOptions.map(option => {
                         return (
                             <li
-                                key={recurType}
-                                data-recurrence={recurType}
-                                onClick={changeRecurrenceSetting}
+                                key={option.content}
+                                onClick={() =>
+                                    changeRecurrenceRule(
+                                        option.rule,
+                                        option.content,
+                                    )
+                                }
                             >
-                                {RecurTypeText(date)[Number(recurType)]}
+                                {option.content}
                             </li>
                         );
                     })}
+                    <li
+                        onClick={() =>
+                            console.log(
+                                'open custom recurrence modal, close dropdown',
+                            )
+                        }
+                    >
+                        맞춤 설정
+                    </li>
                 </ul>
             </DropDownBody>
         </DropDown>

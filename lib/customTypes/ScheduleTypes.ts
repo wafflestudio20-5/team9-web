@@ -37,20 +37,30 @@ export const ProtectionLevelText: { [key: number]: string } = {
     [ProtectionLevel.private]: '비공개',
 };
 
-export enum RecurType {
-    none,
-    day,
-    week,
-    ordinal,
-    month,
-    year,
+export enum Repeat {
+    none, // no repeat
+    daily, // 매일, 며칠마다
+    weekly, // 매주 무슨 요일, 몇 주마다 무슨 요일(커스텀)
+    monthly, // 매월 며칠, 매월 몇 번째 무슨 요일, 몇 달마다 며칠, 몇 달마다 몇 번째 무슨 요일
+    yearly, // 매년 몇월 며칠, 매년 몇월 몇 번째 무슨 요일, 몇 년마다 몇월 며칠, 몇 년마다 몇월 몇 번째 무슨 요일
     custom,
 }
 
+export interface RecurrenceRule {
+    repeat: Repeat;
+    interval: number;
+    date?: number;
+    month?: number;
+    days?: number[];
+    ordinal?: number;
+    until?: string;
+    count?: number;
+}
+
 export interface Recurrence {
-    isRecurrent: boolean;
+    isRecurring: boolean;
     cronjob: string;
     endDate: string;
-    type: RecurType;
+    repeat: Repeat; // no need?
     content: string;
 }
