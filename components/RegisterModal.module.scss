@@ -6,11 +6,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 670px;
-    height: 670px;
-    top: calc(50vh - 335px);
-    left: calc(50vw - 335px);
-    padding: 0px 80px 0px 0px;
+    width: 80vh;
+    height: 80vh;
+    top: calc(50vh - 40vh);
+    left: calc(50vw - 40vh);
+    padding: 0px 12vh 0px 0px;
     background-image: url(../public/images/register_bg.svg);
     background-repeat: no-repeat;
     background-size: 100%;
@@ -19,6 +19,7 @@
     .textErrorContainer {
         display: flex;
         flex-direction: column;
+        align-items: flex-end;
         width: 400px;
         gap: 17px;
 
@@ -32,6 +33,7 @@
                 align-items: center;
                 font-weight: 500;
                 font-size: 18px;
+                white-space: nowrap;
 
                 color: v.$register-text;
             }
@@ -48,7 +50,7 @@
 
         .error {
             color: red;
-            font-size: 7px;
+            font-size: 12px;
         }
     }
 
