@@ -12,12 +12,16 @@ interface MiniCalendarDropDownProps {
     title: string;
     date: Date;
     changeDate(newDate: Date): void;
+    disabled?: boolean;
+    bodyStyle?: React.CSSProperties;
 }
 
 export default function MiniCalendarDropDown({
     title,
     date,
     changeDate,
+    disabled,
+    bodyStyle,
 }: MiniCalendarDropDownProps) {
     const triggerRef = useRef<HTMLInputElement>(null);
     const {
@@ -49,12 +53,13 @@ export default function MiniCalendarDropDown({
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
                     ref={triggerRef}
+                    disabled={disabled}
                 />
                 <span className="underline" />
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}
-                style={{ top: '40px', width: '250px' }}
+                style={bodyStyle || { top: '40px', width: '250px' }}
             >
                 <MiniCalendar
                     dateVariable={date}

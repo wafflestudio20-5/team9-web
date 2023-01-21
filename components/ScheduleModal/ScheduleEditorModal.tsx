@@ -350,8 +350,8 @@ export default function ScheduleEditorModal({
                                             checked={
                                                 hideDetails || isHideDisabled
                                             }
-                                            onChange={() =>
-                                                setHideDetails(!hideDetails)
+                                            onChange={e =>
+                                                setHideDetails(e.target.checked)
                                             }
                                             disabled={isHideDisabled}
                                         />

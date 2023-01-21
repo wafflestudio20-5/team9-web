@@ -6,12 +6,32 @@ import {
     DropDownHeader,
     useDropDown,
 } from '@components/DropDown';
+import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { Recurrence, RecurrenceRule, Repeat } from '@customTypes/ScheduleTypes';
 import DropdownIcon from '@images/dropdown_icon.svg';
 
 // 반복 안함, 매일, 매주 *요일, 매월 *일,매월 *번째 *요일, 매년 *월 *일, 맞춤 설정
 
 export const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
+
+const OrdinalText: { [key: number]: string } = {
+    1: '첫번째',
+    2: '두번째',
+    3: '세번째',
+    4: '네번째',
+    5: '마지막',
+};
+
+const getOrdinalNum = (date: Date) => {
+    const nextWeek = new Date(date);
+    nextWeek.setDate(date.getDate() + 7);
+    const num =
+        date.getMonth() !== nextWeek.getMonth()
+            ? 5
+            : Math.floor((date.getDate() - 1) / 7) + 1;
+
+    return num;
+};
 
 interface RecurrenceDropDownProps {
     date: Date;
@@ -32,27 +52,13 @@ export default function RecurrenceDropDown({
         closeDropDown,
         maintainFocus,
     } = useDropDown(triggerRef);
-
-    const OrdinalText: { [key: number]: string } = {
-        1: '첫번째',
-        2: '두번째',
-        3: '세번째',
-        4: '네번째',
-        5: '마지막',
+    const { openModal } = useModal();
+    const ordinal = {
+        number: getOrdinalNum(date),
+        text: OrdinalText[getOrdinalNum(date)],
     };
 
-    const getOrdinalNum = (date: Date) => {
-        const nextWeek = new Date(date);
-        nextWeek.setDate(date.getDate() + 7);
-        const num =
-            date.getMonth() !== nextWeek.getMonth()
-                ? 5
-                : Math.floor((date.getDate() - 1) / 7) + 1;
-
-        return num;
-    };
-
-    const DefaultRepeatOptions: {
+    const defaultRepeatOptions: {
         rule: RecurrenceRule;
         content: string;
     }[] = [
@@ -70,12 +76,10 @@ export default function RecurrenceDropDown({
             rule: {
                 repeat: Repeat.monthly,
                 interval: 1,
-                ordinal: getOrdinalNum(date),
+                ordinal: ordinal.number,
                 days: [date.getDay()],
             },
-            content: `매월 ${OrdinalText[getOrdinalNum(date)]} ${
-                DAYS[date.getDay()]
-            }요일`,
+            content: `매월 ${ordinal.text} ${DAYS[date.getDay()]}요일`,
         },
         {
             rule: {
@@ -91,12 +95,12 @@ export default function RecurrenceDropDown({
                 repeat: Repeat.yearly,
                 interval: 1,
                 month: date.getMonth(),
-                ordinal: getOrdinalNum(date),
+                ordinal: ordinal.number,
                 days: [date.getDay()],
             },
-            content: `매년 ${date.getMonth() + 1}월 ${
-                OrdinalText[getOrdinalNum(date)]
-            } ${DAYS[date.getDay()]}요일`,
+            content: `매년 ${date.getMonth() + 1}월 ${ordinal.text} ${
+                DAYS[date.getDay()]
+            }요일`,
         },
     ];
 
@@ -148,7 +152,7 @@ export default function RecurrenceDropDown({
                 }}
             >
                 <ul>
-                    {DefaultRepeatOptions.map(option => {
+                    {defaultRepeatOptions.map(option => {
                         return (
                             <li
                                 key={option.content}
@@ -164,11 +168,14 @@ export default function RecurrenceDropDown({
                         );
                     })}
                     <li
-                        onClick={() =>
-                            console.log(
-                                'open custom recurrence modal, close dropdown',
-                            )
-                        }
+                        onClick={() => {
+                            openModal(MODAL_NAMES.customRecurrence, {
+                                date,
+                                ordinal,
+                                changeRecurrenceRule,
+                            });
+                            closeDropDown();
+                        }}
                     >
                         맞춤 설정
                     </li>

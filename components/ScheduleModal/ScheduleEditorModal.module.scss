@@ -177,7 +177,7 @@
         margin: 2px 8px 5px 8px;
         font-size: small;
 
-        input {
+        input[type='checkbox'] {
             margin: 0 5px 0 0;
             height: 16px !important;
             accent-color: var(--today-blueberry);

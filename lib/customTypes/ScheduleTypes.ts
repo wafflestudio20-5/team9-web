@@ -48,13 +48,13 @@ export enum Repeat {
 
 export interface RecurrenceRule {
     repeat: Repeat;
-    interval: number;
-    date?: number;
-    month?: number;
-    days?: number[];
-    ordinal?: number;
-    until?: string;
-    count?: number;
+    interval: number; // e.g. every '3' days
+    date?: number; // e.g. on '15'th of every month
+    month?: number; // e.g. on 'february' 3rd every year
+    days?: number[]; // e.g. every 'monday' and 'tuesday'
+    ordinal?: number; // e.g. '3'rd Wednesday of every month
+    until?: string; // e.g. until 2023-02-08
+    count?: number; // e.g. repeat '3' times
 }
 
 export interface Recurrence {
