@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import ModalFrame from './ModalFrame';
@@ -8,7 +7,6 @@ import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 
 export default function RegisterModal() {
-    const router = useRouter();
     const { register } = useSessionContext();
     const { closeModal } = useModal();
 
