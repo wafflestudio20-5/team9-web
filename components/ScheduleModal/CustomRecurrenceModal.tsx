@@ -2,6 +2,7 @@ import React, {
     Dispatch,
     SetStateAction,
     useEffect,
+    useMemo,
     useRef,
     useState,
 } from 'react';
@@ -20,6 +21,8 @@ import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { RecurrenceRule, Repeat } from '@customTypes/ScheduleTypes';
 import DropDownIcon from '@images/dropdown_icon.svg';
+
+type DateOption = 'specific' | 'last' | 'ordinal';
 
 type EndCondition = 'never' | 'until' | 'count';
 
@@ -40,10 +43,10 @@ export default function CustomRecurrenceModal({
         Repeat.weekly,
     );
     const [dateOption, setDateOption] = useState<{
-        isOrdinal: boolean;
+        option: DateOption;
         text: string;
     }>({
-        isOrdinal: false,
+        option: 'specific',
         text:
             period === Repeat.monthly
                 ? `매월 ${date.getDate()}일`
@@ -331,9 +334,9 @@ interface DateOptionDropDdownProps {
     date: Date;
     ordinal: { number: number; text: string };
     period: Exclude<Repeat, Repeat.none>;
-    dateOption: { isOrdinal: boolean; text: string };
+    dateOption: { option: DateOption; text: string };
     setDateOption: Dispatch<
-        SetStateAction<{ isOrdinal: boolean; text: string }>
+        SetStateAction<{ option: DateOption; text: string }>
     >;
 }
 
@@ -352,9 +355,13 @@ function DateOptionDropDown({
         closeDropDown,
         maintainFocus,
     } = useDropDown(triggerRef);
+    const isLastDay = useMemo(() => {
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        return date.getDate() === lastDay.getDate();
+    }, [date]);
 
-    const changeRepeatDetails = (isOrdinal: boolean, text: string) => {
-        setDateOption(prev => ({ ...prev, isOrdinal, text }));
+    const changeRepeatDetails = (option: DateOption, text: string) => {
+        setDateOption(prev => ({ ...prev, option, text }));
         closeDropDown();
     };
 
@@ -388,7 +395,7 @@ function DateOptionDropDown({
                     <li
                         onClick={e =>
                             changeRepeatDetails(
-                                false,
+                                'specific',
                                 e.currentTarget.innerText,
                             )
                         }
@@ -399,9 +406,26 @@ function DateOptionDropDown({
                                   date.getMonth() + 1
                               }월 ${date.getDate()}일`}
                     </li>
+                    {isLastDay && (
+                        <li
+                            onClick={e =>
+                                changeRepeatDetails(
+                                    'last',
+                                    e.currentTarget.innerText,
+                                )
+                            }
+                        >
+                            {period === Repeat.monthly
+                                ? `매월 마지막날`
+                                : `매년 ${date.getMonth() + 1}월 마지막날`}
+                        </li>
+                    )}
                     <li
                         onClick={e =>
-                            changeRepeatDetails(true, e.currentTarget.innerText)
+                            changeRepeatDetails(
+                                'ordinal',
+                                e.currentTarget.innerText,
+                            )
                         }
                     >
                         {period === Repeat.monthly
