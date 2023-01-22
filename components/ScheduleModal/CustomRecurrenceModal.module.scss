@@ -2,7 +2,7 @@
     position: fixed;
     width: 410px;
     top: 50vh;
-    left: calc(50vw - 200px);
+    left: calc(50vw - 205px);
     transform: translateY(-50%);
     border: 1px solid var(--structure);
     border-radius: 10px;
@@ -14,15 +14,13 @@
         margin: 18px 24px;
     }
 
-    .inputWrapper {
-        display: inline-block;
-        position: relative;
-    }
-
     input,
-    button {
-        padding: 0 5px;
+    button:not(.calendar button) {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
         height: 36px;
+        border: none;
         border-radius: 5px;
         background-color: var(--button-hover);
         text-align: center;
@@ -31,6 +29,7 @@
             height: 30px;
         }
 
+        // underline
         + span {
             position: absolute;
             left: 50%;
@@ -52,14 +51,9 @@
         }
     }
 
-    label {
-        font-size: small;
-        font-weight: bold;
-    }
-
-    button {
-        height: 36px;
-        border: none;
+    .inputUnderlineWrapper {
+        display: inline-block;
+        position: relative;
     }
 }
 
@@ -67,8 +61,17 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
-    padding: 12px 24px;
-    overflow: auto;
+    padding: 18px 24px 12px 24px;
+
+    &.flexible {
+        max-height: calc(100vh - 130px);
+        overflow: auto;
+    }
+
+    > div > label {
+        font-size: small;
+        font-weight: bold;
+    }
 }
 
 .intervalContainer {
@@ -79,17 +82,10 @@
     .interval {
         display: flex;
         gap: 8px;
-    }
 
-    input {
-        width: 60px;
-    }
-
-    button {
-        display: flex;
-        align-items: center;
-        padding: 0 8px;
-        background-color: var(--button-hover);
+        input {
+            width: 60px;
+        }
     }
 }
 
@@ -97,12 +93,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-
-    button {
-        display: flex;
-        align-items: center;
-        padding: 0 8px;
-    }
 }
 
 .daysContainer .days {
@@ -110,6 +100,7 @@
     gap: 8px;
     margin-top: 12px;
 
+    // SUN, MON, TUE ...
     label {
         display: flex;
         justify-content: center;
@@ -136,6 +127,7 @@
 
         &:disabled + label {
             opacity: 0.7;
+            cursor: default;
         }
     }
 }
@@ -151,35 +143,24 @@
         align-items: center;
 
         input[type='radio'] {
-            margin: 0 8px 0 0;
-            width: 20px;
+            margin: 0;
+            width: 18px;
             accent-color: var(--today-blueberry);
             cursor: pointer;
         }
 
         label {
             margin-right: 70px;
-            width: 30px;
+            padding-left: 8px;
+            width: 38px;
+            font-size: small;
             font-weight: normal;
             cursor: pointer;
         }
     }
 
-    .endInputWrapper {
-        display: flex;
-        align-items: center;
-        position: relative;
-
-        .blur {
-            position: absolute;
-            width: 120px;
-            height: 36px;
-            z-index: 160;
-            top: 0;
-            border-radius: 5px;
-            background-color: var(--sidebar-background);
-            opacity: 0.3;
-        }
+    .calendar input {
+        padding: 1px 2px;
     }
 
     .count {
@@ -197,17 +178,32 @@
         border-radius: 0 5px 5px 0;
         background-color: var(--button-hover);
     }
+
+    .disabled input,
+    .disabled .countText {
+        opacity: 0.6;
+        cursor: default;
+    }
 }
 
-.btnContainer {
+.customRecurrenceModal .btnContainer {
+    display: flex;
+    justify-content: right;
     padding: 18px;
-    text-align: right;
+    gap: 5px;
 
-    button {
-        padding: 0 20px;
+    > button {
+        &.cancel {
+            padding: 0 20px;
+            background-color: transparent;
+
+            &:hover {
+                background-color: var(--button-hover);
+            }
+        }
 
         &.complete {
-            margin-left: 5px;
+            padding: 0 20px;
             color: white;
             background-color: var(--today-blueberry);
 

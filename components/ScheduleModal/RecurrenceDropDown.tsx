@@ -15,10 +15,10 @@ import DropdownIcon from '@images/dropdown_icon.svg';
 export const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 const OrdinalText: { [key: number]: string } = {
-    1: '첫번째',
-    2: '두번째',
-    3: '세번째',
-    4: '네번째',
+    1: '첫 번째',
+    2: '두 번째',
+    3: '세 번째',
+    4: '네 번째',
     5: '마지막',
 };
 

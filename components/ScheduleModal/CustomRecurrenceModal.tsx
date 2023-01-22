@@ -77,22 +77,27 @@ export default function CustomRecurrenceModal({
         <ModalFrame modalName={MODAL_NAMES.customRecurrence} isDim={true}>
             <div className={styles.customRecurrenceModal}>
                 <h3>반복 설정</h3>
-                <div className={styles.rules}>
+                <div
+                    className={`${styles.rules} ${
+                        period !== Repeat.daily && styles.flexible
+                    }`}
+                >
                     <div className={styles.intervalContainer}>
                         <label>반복 주기</label>
                         <div className={styles.interval}>
-                            <div className={styles.inputWrapper}>
+                            <div className={styles.inputUnderlineWrapper}>
                                 <input
                                     type="number"
                                     value={interval}
                                     min={1}
+                                    disabled={true}
                                     onChange={e =>
                                         setInterval(Number(e.target.value) || 1)
                                     }
                                 />
                                 <span className="underline" />
                             </div>
-                            <PeiodDropDown
+                            <PeriodDropDown
                                 period={period}
                                 setPeriod={setPeriod}
                             />
@@ -164,38 +169,6 @@ export default function CustomRecurrenceModal({
                                 <input
                                     type="radio"
                                     name="endCondition"
-                                    id="until"
-                                    checked={endCondition.condition === 'until'}
-                                    onChange={() =>
-                                        setEndCondition(prev => ({
-                                            ...prev,
-                                            condition: 'until',
-                                        }))
-                                    }
-                                />
-                                <label htmlFor="until">날짜: </label>
-                                <div className={styles.endInputWrapper}>
-                                    <MiniCalendarDropDown
-                                        title="종료 날짜"
-                                        date={endCondition.date || date}
-                                        changeDate={changeEndDate}
-                                        disabled={
-                                            endCondition.condition !== 'until'
-                                        }
-                                        bodyStyle={{
-                                            top: '-247px',
-                                            width: '250px',
-                                        }}
-                                    />
-                                    {endCondition.condition !== 'until' && (
-                                        <div className={styles.blur} />
-                                    )}
-                                </div>
-                            </div>
-                            <div className={styles.conditionWrapper}>
-                                <input
-                                    type="radio"
-                                    name="endCondition"
                                     id="count"
                                     checked={endCondition.condition === 'count'}
                                     onChange={() =>
@@ -206,12 +179,25 @@ export default function CustomRecurrenceModal({
                                     }
                                 />
                                 <label htmlFor="count">다음</label>
-                                <div className={styles.endInputWrapper}>
-                                    <div className={styles.inputWrapper}>
+                                <div
+                                    className={
+                                        endCondition.condition !== 'count'
+                                            ? styles.disabled
+                                            : ''
+                                    }
+                                >
+                                    <div
+                                        className={styles.inputUnderlineWrapper}
+                                    >
                                         <input
                                             type="number"
                                             value={endCondition.count}
+                                            className={styles.count}
                                             min={1}
+                                            disabled={
+                                                endCondition.condition !==
+                                                'count'
+                                            }
                                             onChange={e =>
                                                 setEndCondition(prev => ({
                                                     ...prev,
@@ -220,16 +206,47 @@ export default function CustomRecurrenceModal({
                                                     ),
                                                 }))
                                             }
-                                            className={styles.count}
                                         />
                                         <span className="underline" />
                                     </div>
                                     <span className={styles.countText}>
                                         회 반복
                                     </span>
-                                    {endCondition.condition !== 'count' && (
-                                        <div className={styles.blur} />
-                                    )}
+                                </div>
+                            </div>
+                            <div className={styles.conditionWrapper}>
+                                <input
+                                    type="radio"
+                                    name="endCondition"
+                                    id="until"
+                                    checked={endCondition.condition === 'until'}
+                                    onChange={() =>
+                                        setEndCondition(prev => ({
+                                            ...prev,
+                                            condition: 'until',
+                                        }))
+                                    }
+                                />
+                                <label htmlFor="until">날짜: </label>
+                                <div
+                                    className={`${styles.calendar} ${
+                                        endCondition.condition !== 'until' &&
+                                        styles.disabled
+                                    }`}
+                                >
+                                    <MiniCalendarDropDown
+                                        title="종료 날짜"
+                                        date={endCondition.date || date}
+                                        changeDate={changeEndDate}
+                                        disabled={
+                                            endCondition.condition !== 'until'
+                                        }
+                                        bodyStyle={{
+                                            top: '-245px',
+                                            width: '240px',
+                                            zIndex: 175,
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -266,7 +283,7 @@ interface PeriodDropDownProps {
     setPeriod: Dispatch<SetStateAction<Exclude<Repeat, Repeat.none>>>;
 }
 
-function PeiodDropDown({ period, setPeriod }: PeriodDropDownProps) {
+function PeriodDropDown({ period, setPeriod }: PeriodDropDownProps) {
     const triggerRef = useRef<HTMLButtonElement>(null);
     const {
         isOpen,
