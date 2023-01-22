@@ -360,7 +360,33 @@ function DateOptionDropDown({
         return date.getDate() === lastDay.getDate();
     }, [date]);
 
-    const changeRepeatDetails = (option: DateOption, text: string) => {
+    const dateOptionList: {
+        [key: number]: { option: DateOption; text: string }[];
+    } = {
+        [Repeat.monthly]: [
+            { option: 'specific', text: `매월 ${date.getDate()}일` },
+            { option: 'last', text: '매월 마지막날' },
+            {
+                option: 'ordinal',
+                text: `매월 ${ordinal.text} ${DAYS[date.getDay()]}요일`,
+            },
+        ],
+        [Repeat.yearly]: [
+            {
+                option: 'specific',
+                text: `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
+            },
+            { option: 'last', text: '매년 2월 마지막날' },
+            {
+                option: 'ordinal',
+                text: `매년 ${date.getMonth() + 1}월 ${ordinal.text} ${
+                    DAYS[date.getDay()]
+                }요일`,
+            },
+        ],
+    };
+
+    const changeDateOption = (option: DateOption, text: string) => {
         setDateOption(prev => ({ ...prev, option, text }));
         closeDropDown();
     };
@@ -392,48 +418,28 @@ function DateOptionDropDown({
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ top: '40px' }}>
                 <ul>
-                    <li
-                        onClick={e =>
-                            changeRepeatDetails(
-                                'specific',
-                                e.currentTarget.innerText,
-                            )
+                    {dateOptionList[period].map((v, i) => {
+                        if (
+                            (!isLastDay && v.option === 'last') ||
+                            (period === Repeat.yearly &&
+                                date.getMonth() !== 1 &&
+                                isLastDay &&
+                                v.option === 'last')
+                        ) {
+                            return null;
                         }
-                    >
-                        {period === Repeat.monthly
-                            ? `매월 ${date.getDate()}일`
-                            : `매년 ${
-                                  date.getMonth() + 1
-                              }월 ${date.getDate()}일`}
-                    </li>
-                    {isLastDay && (
-                        <li
-                            onClick={e =>
-                                changeRepeatDetails(
-                                    'last',
-                                    e.currentTarget.innerText,
-                                )
-                            }
-                        >
-                            {period === Repeat.monthly
-                                ? `매월 마지막날`
-                                : `매년 ${date.getMonth() + 1}월 마지막날`}
-                        </li>
-                    )}
-                    <li
-                        onClick={e =>
-                            changeRepeatDetails(
-                                'ordinal',
-                                e.currentTarget.innerText,
-                            )
-                        }
-                    >
-                        {period === Repeat.monthly
-                            ? `매월 ${ordinal.text} ${DAYS[date.getDay()]}요일`
-                            : `매년 ${date.getMonth() + 1}월 ${ordinal.text} ${
-                                  DAYS[date.getDay()]
-                              }요일`}
-                    </li>
+
+                        return (
+                            <li
+                                onClick={() =>
+                                    changeDateOption(v.option, v.text)
+                                }
+                                key={i}
+                            >
+                                {v.text}
+                            </li>
+                        );
+                    })}
                 </ul>
             </DropDownBody>
         </DropDown>
