@@ -43,7 +43,6 @@ export enum Repeat {
     weekly, // 매주 무슨 요일, 몇 주마다 무슨 요일(커스텀)
     monthly, // 매월 며칠, 매월 몇 번째 무슨 요일, 몇 달마다 며칠, 몇 달마다 몇 번째 무슨 요일
     yearly, // 매년 몇월 며칠, 매년 몇월 몇 번째 무슨 요일, 몇 년마다 몇월 며칠, 몇 년마다 몇월 몇 번째 무슨 요일
-    custom,
 }
 
 export interface RecurrenceRule {

@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
+import React, {
+    Dispatch,
+    SetStateAction,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 
 import styles from './CustomRecurrenceModal.module.scss';
 import { DAYS } from './RecurrenceDropDown';
 
+import {
+    DropDown,
+    DropDownBody,
+    DropDownHeader,
+    useDropDown,
+} from '@components/DropDown';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { RecurrenceRule, Repeat } from '@customTypes/ScheduleTypes';
+import DropDownIcon from '@images/dropdown_icon.svg';
+
+type EndCondition = 'never' | 'until' | 'count';
 
 interface CustomRecurrenceModalProps {
     date: Date;
@@ -14,17 +29,26 @@ interface CustomRecurrenceModalProps {
     changeRecurrenceRule(newRule: RecurrenceRule, content: string): void;
 }
 
-type EndCondition = 'never' | 'until' | 'count';
-
 export default function CustomRecurrenceModal({
     date,
     ordinal,
     changeRecurrenceRule,
 }: CustomRecurrenceModalProps) {
-    console.log(date);
     const { closeModal } = useModal();
     const [interval, setInterval] = useState<number>(1);
-    const [period, setPeriod] = useState<Repeat>(Repeat.weekly);
+    const [period, setPeriod] = useState<Exclude<Repeat, Repeat.none>>(
+        Repeat.weekly,
+    );
+    const [dateOption, setDateOption] = useState<{
+        isOrdinal: boolean;
+        text: string;
+    }>({
+        isOrdinal: false,
+        text:
+            period === Repeat.monthly
+                ? `매월 ${date.getDate()}일`
+                : `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
+    });
     const [days, setDays] = useState(
         DAYS.map((d, i) => ({
             name: d,
@@ -68,37 +92,56 @@ export default function CustomRecurrenceModal({
                                 />
                                 <span className="underline" />
                             </div>
-                            <button className={styles.period}>주drop</button>
+                            <PeiodDropDown
+                                period={period}
+                                setPeriod={setPeriod}
+                            />
                         </div>
                     </div>
-                    <div className={styles.daysContainer}>
-                        <label>반복 요일</label>
-                        <div className={styles.days}>
-                            {days.map((d, i) => {
-                                return (
-                                    <>
-                                        <input
-                                            type="checkbox"
-                                            key={i}
-                                            id={d.name}
-                                            className={styles.day}
-                                            checked={d.checked}
-                                            disabled={i === date.getDay()}
-                                            onChange={e =>
-                                                setDays(prev => {
-                                                    const temp = [...prev];
-                                                    temp[i].checked =
-                                                        e.target.checked;
-                                                    return temp;
-                                                })
-                                            }
-                                        />
-                                        <label htmlFor={d.name}>{d.name}</label>
-                                    </>
-                                );
-                            })}
+                    {[Repeat.monthly, Repeat.yearly].includes(period) && (
+                        <div className={styles.dateOptionContainer}>
+                            <label>반복 날짜</label>
+                            <DateOptionDropDown
+                                date={date}
+                                ordinal={ordinal}
+                                period={period}
+                                dateOption={dateOption}
+                                setDateOption={setDateOption}
+                            />
                         </div>
-                    </div>
+                    )}
+                    {period === Repeat.weekly && (
+                        <div className={styles.daysContainer}>
+                            <label>반복 요일</label>
+                            <div className={styles.days}>
+                                {days.map((d, i) => {
+                                    return (
+                                        <>
+                                            <input
+                                                type="checkbox"
+                                                key={i}
+                                                id={d.name}
+                                                className={styles.day}
+                                                checked={d.checked}
+                                                disabled={i === date.getDay()}
+                                                onChange={e =>
+                                                    setDays(prev => {
+                                                        const temp = [...prev];
+                                                        temp[i].checked =
+                                                            e.target.checked;
+                                                        return temp;
+                                                    })
+                                                }
+                                            />
+                                            <label htmlFor={d.name}>
+                                                {d.name}
+                                            </label>
+                                        </>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
                     <div className={styles.endConditionContainer}>
                         <label>종료</label>
                         <div className={styles.endCondition}>
@@ -208,5 +251,150 @@ export default function CustomRecurrenceModal({
                 </div>
             </div>
         </ModalFrame>
+    );
+}
+
+const PeriodText: { [key: number]: string } = {
+    [Repeat.daily]: '일',
+    [Repeat.weekly]: '주',
+    [Repeat.monthly]: '개월',
+    [Repeat.yearly]: '년',
+};
+
+interface PeriodDropDownProps {
+    period: Exclude<Repeat, Repeat.none>;
+    setPeriod: Dispatch<SetStateAction<Exclude<Repeat, Repeat.none>>>;
+}
+
+function PeiodDropDown({ period, setPeriod }: PeriodDropDownProps) {
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const {
+        isOpen,
+        dropDownRef,
+        toggleDropDown,
+        closeDropDown,
+        maintainFocus,
+    } = useDropDown(triggerRef);
+
+    return (
+        <DropDown dropDownRef={dropDownRef}>
+            <DropDownHeader style={{ zIndex: 171 }}>
+                <button
+                    ref={triggerRef}
+                    onClick={toggleDropDown}
+                    onBlur={maintainFocus}
+                >
+                    <span style={{ whiteSpace: 'nowrap' }}>
+                        {PeriodText[period]}
+                    </span>
+                    <DropDownIcon className="icon" height="20px" />
+                </button>
+                <span className="underline" />
+            </DropDownHeader>
+            <DropDownBody isOpen={isOpen} style={{ top: '40px', zIndex: 170 }}>
+                <ul>
+                    {Object.keys(PeriodText).map((p, i) => (
+                        <li
+                            key={i}
+                            onClick={() => {
+                                setPeriod(Number(p));
+                                closeDropDown();
+                            }}
+                        >
+                            {PeriodText[Number(p)]}
+                        </li>
+                    ))}
+                </ul>
+            </DropDownBody>
+        </DropDown>
+    );
+}
+
+interface DateOptionDropDdownProps {
+    date: Date;
+    ordinal: { number: number; text: string };
+    period: Exclude<Repeat, Repeat.none>;
+    dateOption: { isOrdinal: boolean; text: string };
+    setDateOption: Dispatch<
+        SetStateAction<{ isOrdinal: boolean; text: string }>
+    >;
+}
+
+function DateOptionDropDown({
+    date,
+    ordinal,
+    period,
+    dateOption,
+    setDateOption,
+}: DateOptionDropDdownProps) {
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const {
+        isOpen,
+        dropDownRef,
+        toggleDropDown,
+        closeDropDown,
+        maintainFocus,
+    } = useDropDown(triggerRef);
+
+    const changeRepeatDetails = (isOrdinal: boolean, text: string) => {
+        setDateOption(prev => ({ ...prev, isOrdinal, text }));
+        closeDropDown();
+    };
+
+    useEffect(() => {
+        const newText =
+            period === Repeat.monthly
+                ? `매월 ${date.getDate()}일`
+                : `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+
+        setDateOption(prev => ({
+            ...prev,
+            text: newText,
+        }));
+    }, [period]);
+
+    return (
+        <DropDown dropDownRef={dropDownRef}>
+            <DropDownHeader>
+                <button
+                    ref={triggerRef}
+                    onClick={toggleDropDown}
+                    onBlur={maintainFocus}
+                >
+                    <span>{dateOption.text}</span>
+                    <DropDownIcon className="icon" height="20px" />
+                </button>
+                <span className="underline" />
+            </DropDownHeader>
+            <DropDownBody isOpen={isOpen} style={{ top: '40px' }}>
+                <ul>
+                    <li
+                        onClick={e =>
+                            changeRepeatDetails(
+                                false,
+                                e.currentTarget.innerText,
+                            )
+                        }
+                    >
+                        {period === Repeat.monthly
+                            ? `매월 ${date.getDate()}일`
+                            : `매년 ${
+                                  date.getMonth() + 1
+                              }월 ${date.getDate()}일`}
+                    </li>
+                    <li
+                        onClick={e =>
+                            changeRepeatDetails(true, e.currentTarget.innerText)
+                        }
+                    >
+                        {period === Repeat.monthly
+                            ? `매월 ${ordinal.text} ${DAYS[date.getDay()]}요일`
+                            : `매년 ${date.getMonth() + 1}월 ${ordinal.text} ${
+                                  DAYS[date.getDay()]
+                              }요일`}
+                    </li>
+                </ul>
+            </DropDownBody>
+        </DropDown>
     );
 }

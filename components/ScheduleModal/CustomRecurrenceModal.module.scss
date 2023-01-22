@@ -1,7 +1,6 @@
 .customRecurrenceModal {
     position: fixed;
-    width: 400px;
-    height: 450px; // temp
+    width: 410px;
     top: 50vh;
     left: calc(50vw - 200px);
     transform: translateY(-50%);
@@ -20,7 +19,8 @@
         position: relative;
     }
 
-    input {
+    input,
+    button {
         padding: 0 5px;
         height: 36px;
         border-radius: 5px;
@@ -68,6 +68,7 @@
     flex-direction: column;
     gap: 30px;
     padding: 12px 24px;
+    overflow: auto;
 }
 
 .intervalContainer {
@@ -82,6 +83,25 @@
 
     input {
         width: 60px;
+    }
+
+    button {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        background-color: var(--button-hover);
+    }
+}
+
+.dateOptionContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    button {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
     }
 }
 
@@ -154,7 +174,7 @@
             position: absolute;
             width: 120px;
             height: 36px;
-            z-index: 400;
+            z-index: 160;
             top: 0;
             border-radius: 5px;
             background-color: var(--sidebar-background);
@@ -181,7 +201,6 @@
 
 .btnContainer {
     padding: 18px;
-    height: 60px;
     text-align: right;
 
     button {
