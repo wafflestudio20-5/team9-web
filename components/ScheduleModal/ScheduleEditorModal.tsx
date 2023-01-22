@@ -57,7 +57,7 @@ export default function ScheduleEditorModal({
         cronjob: '',
         endDate: '',
         repeat: Repeat.none,
-        content: '반복 안 함',
+        text: '반복 안 함',
     });
     const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
         initSchedule.protection_level,

@@ -21,6 +21,7 @@ import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { RecurrenceRule, Repeat } from '@customTypes/ScheduleTypes';
 import DropDownIcon from '@images/dropdown_icon.svg';
+import { formatFullDate } from '@utils/formatDate';
 
 type DateOption = 'specific' | 'last' | 'ordinal';
 
@@ -42,6 +43,13 @@ export default function CustomRecurrenceModal({
     const [period, setPeriod] = useState<Exclude<Repeat, Repeat.none>>(
         Repeat.weekly,
     );
+    const [days, setDays] = useState(
+        DAYS.map((d, i) => ({
+            name: d,
+            num: i,
+            checked: i === date.getDay(),
+        })),
+    );
     const [dateOption, setDateOption] = useState<{
         option: DateOption;
         text: string;
@@ -52,12 +60,6 @@ export default function CustomRecurrenceModal({
                 ? `매월 ${date.getDate()}일`
                 : `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
     });
-    const [days, setDays] = useState(
-        DAYS.map((d, i) => ({
-            name: d,
-            checked: i === date.getDay(),
-        })),
-    );
     const [endCondition, setEndCondition] = useState<{
         condition: EndCondition;
         date: Date;
@@ -73,7 +75,68 @@ export default function CustomRecurrenceModal({
     };
 
     const submitCustomRecurrenceRule = () => {
-        console.log('custom recurrence rule');
+        const newRule: RecurrenceRule = {
+            repeat: period,
+            interval: interval,
+        };
+        const text = '';
+
+        switch (period) {
+            default:
+            case Repeat.daily:
+                break;
+            case Repeat.weekly:
+                newRule.days = days.filter(d => d.checked).map(d => d.num);
+                break;
+            case Repeat.monthly:
+                switch (dateOption.option) {
+                    default:
+                    case 'specific':
+                        newRule.date = date.getDate();
+                        break;
+                    case 'last':
+                        newRule.last = true;
+                        break;
+                    case 'ordinal':
+                        newRule.ordinal = ordinal.number;
+                        newRule.days = [date.getDay()];
+                        break;
+                }
+                break;
+            case Repeat.yearly:
+                switch (dateOption.option) {
+                    default:
+                    case 'specific':
+                        newRule.month = date.getMonth();
+                        newRule.date = date.getDate();
+                        break;
+                    case 'last':
+                        newRule.month = date.getMonth();
+                        newRule.last = true;
+                        break;
+                    case 'ordinal':
+                        newRule.month = date.getMonth();
+                        newRule.ordinal = ordinal.number;
+                        newRule.days = [date.getDay()];
+                        break;
+                }
+        }
+
+        switch (endCondition.condition) {
+            default:
+            case 'never':
+                newRule.never = true;
+                break;
+
+            case 'count':
+                newRule.count = endCondition.count;
+                break;
+            case 'until':
+                newRule.until = formatFullDate(endCondition.date);
+        }
+
+        changeRecurrenceRule(newRule, text);
+        console.log(newRule);
     };
 
     return (
@@ -93,7 +156,6 @@ export default function CustomRecurrenceModal({
                                     type="number"
                                     value={interval}
                                     min={1}
-                                    disabled={true}
                                     onChange={e =>
                                         setInterval(Number(e.target.value) || 1)
                                     }
@@ -360,7 +422,7 @@ function DateOptionDropDown({
         return date.getDate() === lastDay.getDate();
     }, [date]);
 
-    const dateOptionList: {
+    const dateOptions: {
         [key: number]: { option: DateOption; text: string }[];
     } = {
         [Repeat.monthly]: [
@@ -387,7 +449,7 @@ function DateOptionDropDown({
     };
 
     const changeDateOption = (option: DateOption, text: string) => {
-        setDateOption(prev => ({ ...prev, option, text }));
+        setDateOption({ option, text });
         closeDropDown();
     };
 
@@ -397,10 +459,7 @@ function DateOptionDropDown({
                 ? `매월 ${date.getDate()}일`
                 : `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
 
-        setDateOption(prev => ({
-            ...prev,
-            text: newText,
-        }));
+        setDateOption({ option: 'specific', text: newText });
     }, [period]);
 
     return (
@@ -418,7 +477,7 @@ function DateOptionDropDown({
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ top: '40px' }}>
                 <ul>
-                    {dateOptionList[period].map((v, i) => {
+                    {dateOptions[period].map((v, i) => {
                         if (
                             (!isLastDay && v.option === 'last') ||
                             (period === Repeat.yearly &&

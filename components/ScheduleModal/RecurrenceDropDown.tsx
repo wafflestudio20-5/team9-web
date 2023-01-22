@@ -114,13 +114,13 @@ export default function RecurrenceDropDown({
         return 'endDate';
     };
 
-    const changeRecurrenceRule = (newRule: RecurrenceRule, content: string) => {
+    const changeRecurrenceRule = (newRule: RecurrenceRule, text: string) => {
         const newRecurrence: Recurrence = {
             isRecurring: newRule.repeat !== Repeat.none,
             repeat: newRule.repeat,
             cronjob: getCronjob(newRule),
             endDate: getEndDate(newRule),
-            content: content,
+            text: text,
         };
 
         setRecurrence(newRecurrence);
@@ -136,7 +136,7 @@ export default function RecurrenceDropDown({
                     onBlur={maintainFocus}
                 >
                     <span style={{ whiteSpace: 'nowrap' }}>
-                        {recurrence.content}
+                        {recurrence.text}
                     </span>
                     <DropdownIcon className="icon" height="20px" />
                 </button>

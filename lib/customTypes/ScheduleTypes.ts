@@ -48,12 +48,14 @@ export enum Repeat {
 export interface RecurrenceRule {
     repeat: Repeat;
     interval: number; // e.g. every '3' days
-    date?: number; // e.g. on '15'th of every month
     month?: number; // e.g. on 'february' 3rd every year
+    date?: number; // e.g. on '15'th of every month
     days?: number[]; // e.g. every 'monday' and 'tuesday'
     ordinal?: number; // e.g. '3'rd Wednesday of every month
     until?: string; // e.g. until 2023-02-08
     count?: number; // e.g. repeat '3' times
+    never?: boolean;
+    last?: boolean;
 }
 
 export interface Recurrence {
@@ -61,5 +63,5 @@ export interface Recurrence {
     cronjob: string;
     endDate: string;
     repeat: Repeat; // no need?
-    content: string;
+    text: string;
 }
