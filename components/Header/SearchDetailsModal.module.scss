@@ -7,8 +7,8 @@
     padding: 10px 15px;
     width: 720px;
     border-radius: 5px;
-    background-color: white;
-    box-shadow: 0 1px 3px 1px v.$border-gray;
+    background-color: var(--sidebar-background);
+    box-shadow: 0 1px 3px 1px var(--structure);
 
     form > div {
         display: flex;
@@ -24,7 +24,10 @@
         button {
             height: 100%;
             border: none;
-            background-color: v.$background-gray;
+            background-color: var(--fill-inputBox);
+            span {
+                color: black;
+            }
         }
     }
 
@@ -36,12 +39,13 @@
         padding: 0 5px;
         width: 460px;
         height: 100%;
-        border: 2px solid v.$background-gray;
+        border: 2px solid var(--fill-inputBox);
         border-radius: 5px;
-        background-color: v.$background-gray;
+        background-color: var(--fill-inputBox);
+        color: black;
 
         &:focus {
-            border-bottom: 2px solid v.$border-gray;
+            border-bottom: 2px solid var(--today-blueberry);
             outline: none;
         }
     }
@@ -75,10 +79,10 @@
 
             &.search {
                 color: white;
-                background-color: v.$primary-blue;
+                background-color: var(--today-blueberry);
 
                 &:hover {
-                    background-color: v.$dark-blue;
+                    background-color: var(--dark-blueberry);
                 }
             }
         }

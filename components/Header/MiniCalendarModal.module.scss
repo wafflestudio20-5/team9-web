@@ -1,4 +1,4 @@
-@use '../../styles/variables.scss' as v;
+@use '@styles/variables.scss' as v;
 
 .calendarModal {
     position: absolute;
@@ -6,8 +6,9 @@
     left: 340px;
     width: 280px;
     height: 250px;
-    border: 1px solid v.$border-gray;
+    border: 1px solid var(--structure);
     border-radius: 10px;
-    background-color: white;
-    box-shadow: 0 1px 5px 1px v.$border-gray;
+    background-color: var(--sidebar-background);
+    box-shadow: 0 1px 5px 1px var(--structure);
+    overflow: hidden;
 }

@@ -1,0 +1,15 @@
+@use '@styles/variables.scss' as v;
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    justify-content: stretch;
+}
+
+.weekHolder {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    flex: 1;
+    border-left: 1px solid v.$border-gray;
+}

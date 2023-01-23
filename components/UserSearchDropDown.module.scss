@@ -1,12 +1,18 @@
 @use '@styles/variables.scss' as v;
 
 .container {
-    background-color: v.$background-gray;
+    background-color: var(--fill-inputBox);
     padding-top: 6px;
     margin-right: 5px;
     border-radius: 3px;
     display: flex;
     flex-direction: column;
+    max-width: calc(100% - 40px);
+}
+
+.searchedResultWrapper {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .selected {
@@ -16,7 +22,9 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    margin: 0px 12px 5px 12px;
+
+    margin: 0px 8px 5px 8px;
+    max-width: calc(100% - 16px);
     > img {
         height: 20px;
         width: 20px;
@@ -26,10 +34,14 @@
     div {
         height: fit-content;
         text-overflow: ellipsis;
-        flex-grow: 1;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     button {
+        margin: 0 5px;
+        padding: 0;
+        border-radius: 50%;
         border: none;
         background-color: transparent;
         display: flex;
@@ -48,13 +60,15 @@
     background-color: transparent;
     width: 100%;
     margin: 0px 12px 0px 12px;
+    caret-color: black;
+    color: black;
     &:focus {
         outline: none;
     }
 }
 
 .underline {
-    background-color: v.$primary-blue;
+    background-color: var(--today-blueberry);
     margin-top: 3px;
     height: 3px;
     width: 0px;
@@ -79,17 +93,12 @@
     height: 100%;
     width: 100%;
 
-    img {
-        height: 30px;
-        width: 30px;
-    }
     .username {
         font-size: 14px;
         overflow-x: ellipsis;
     }
     .email {
         font-size: 12px;
-        color: v.$font-gray;
         overflow-x: ellipsis;
     }
 }

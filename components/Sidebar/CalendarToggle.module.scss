@@ -6,7 +6,7 @@
     align-items: center;
     padding-left: 13px;
     &:hover {
-        background-color: v.$background-gray;
+        background-color: var(--button-hover);
         cursor: pointer;
     }
 }

@@ -50,6 +50,7 @@ export default function MiniCalendarDropDown({
                     onBlur={maintainFocus}
                     ref={triggerRef}
                 />
+                <span className="underline" />
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}

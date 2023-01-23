@@ -1,12 +1,11 @@
-import Image from 'next/image';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import styles from './Searchbar.module.scss';
 
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
-import close_icon from '@images/close_icon.svg';
-import dropdown_icon from '@images/dropdown_icon.svg';
-import search_icon from '@images/search_icon.svg';
+import CloseIcon from '@images/close_icon.svg';
+import DropdownIcon from '@images/dropdown_icon.svg';
+import SearchIcon from '@images/search_icon.svg';
 
 interface SearchbarProps {
     isOpen: boolean;
@@ -56,7 +55,7 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
                 onSubmit={searchSchedule}
             >
                 <button>
-                    <Image src={search_icon} height={24} alt="search" />
+                    <SearchIcon height="24px" className="icon" />
                 </button>
                 <input
                     type="search"
@@ -71,21 +70,13 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
                     className={`${styles.clear} ${!query && styles.hidden}`}
                     onClick={clearQuery}
                 >
-                    <Image
-                        src={close_icon}
-                        height={24}
-                        alt="clear_search_input"
-                    />
+                    <CloseIcon height="24px" className="icon" />
                 </button>
                 <button
                     type="button"
                     onClick={() => openModal(MODAL_NAMES.searchDetails)}
                 >
-                    <Image
-                        src={dropdown_icon}
-                        height={24}
-                        alt="detailed_search"
-                    />
+                    <DropdownIcon height="24px" className="icon" />
                 </button>
             </form>
         </div>

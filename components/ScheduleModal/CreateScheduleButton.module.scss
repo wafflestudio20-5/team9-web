@@ -2,26 +2,29 @@
 
 .createScheduleButton {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     position: absolute;
     top: 80px;
     left: 30px;
     width: 56px;
     height: 56px;
-    border: 1px solid v.$border-gray;
-    border-radius: 50%;
-    background-color: transparent;
-    box-shadow: 0 1px 3px 1px v.$border-gray;
+    border: 1px solid var(--structure);
+    border-radius: 28px;
+    box-shadow: 0 1px 3px 1px var(--structure);
     text-align: center;
+
+    span {
+        margin-right: 10px;
+    }
 
     &::after {
         position: absolute;
         left: 0;
         width: 100%;
         height: 100%;
-        border-radius: 50%;
-        box-shadow: 0 5px 7px 2px v.$border-gray;
+        border-radius: 28px;
+        box-shadow: 0 5px 7px 2px var(--structure);
         transition: opacity 0.3s ease-in-out;
         opacity: 0;
         content: '';

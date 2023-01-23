@@ -79,11 +79,10 @@
                     display: flex;
                     align-items: center;
                     white-space: nowrap;
-
-                    // font-family: 'Noto Sans KR';
                     font-style: normal;
                     font-weight: 500;
                     font-size: 17px;
+                    color: black;
                 }
 
                 .text {
@@ -144,6 +143,10 @@
                 justify-content: space-around;
 
                 border: 1px solid #585858;
+            }
+
+            .text {
+                color: black;
             }
 
             .kakaoLogin {

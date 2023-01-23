@@ -64,7 +64,13 @@ export default function Sidebar() {
         { pk: 304, name: 'Other Calendar 4' },
     ];
     return (
-        <div className={isClosing ? `${styles.closing}` : `${styles.open}`}>
+        <div
+            className={
+                isClosing
+                    ? `${styles.sidebar} ${styles.closing}`
+                    : `${styles.sidebar} ${styles.open}`
+            }
+        >
             <div className={styles.wrapper}>
                 <div>Create Button</div>
                 <div className={styles.calendar}>
@@ -84,6 +90,7 @@ export default function Sidebar() {
                     <UserSearchDropDown
                         toExecute={sendFollowRequest}
                         buttonText="요청"
+                        resetOnExecution={true}
                     />
                 </div>
                 <div className={styles.accordions}>

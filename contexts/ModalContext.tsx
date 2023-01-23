@@ -8,11 +8,12 @@ import React, {
     useState,
 } from 'react';
 
-import CreateScheduleModal from '@components/CreateSchedule/CreateScheduleModal';
 import MiniCalendarModal from '@components/Header/MiniCalendarModal';
 import SearchDetailsModal from '@components/Header/SearchDetailsModal';
 import UserModal from '@components/Header/UserModal';
 import RegisterModal from '@components/RegisterModal';
+import ScheduleEditorModal from '@components/ScheduleModal/ScheduleEditorModal';
+import ScheduleViewModal from '@components/ScheduleModal/ScheduleViewModal';
 
 // Add modal name to MODAL_NAMES (to prevent hard coding)
 // key and value should be the same
@@ -21,7 +22,8 @@ export enum MODAL_NAMES {
     miniCalendar = 'miniCalendar',
     searchDetails = 'searchDetails',
     register = 'register',
-    createSchedule = 'createSchedule',
+    scheduleView = 'scheduleView',
+    scheduleEditor = 'scheduleEditor',
 }
 
 // Add your modal component to MODAL_COMPONENTS
@@ -30,7 +32,8 @@ const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
     [MODAL_NAMES.miniCalendar]: MiniCalendarModal,
     [MODAL_NAMES.searchDetails]: SearchDetailsModal,
     [MODAL_NAMES.register]: RegisterModal,
-    [MODAL_NAMES.createSchedule]: CreateScheduleModal,
+    [MODAL_NAMES.scheduleView]: ScheduleViewModal,
+    [MODAL_NAMES.scheduleEditor]: ScheduleEditorModal,
 };
 
 type ModalState = 'open' | 'closing' | 'closed';

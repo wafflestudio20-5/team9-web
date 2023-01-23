@@ -6,8 +6,8 @@ import styles from './login.module.scss';
 
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
-import googleLogo from '@images/google_logo.svg';
-import kakaoLogo from '@images/kakao_logo.svg';
+import GoogleLogo from '@images/google_logo.svg';
+import KakaoLogo from '@images/kakao_logo.svg';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -98,11 +98,7 @@ export default function LoginPage() {
                                 openKakaoLoginPage();
                             }}
                         >
-                            <Image
-                                src={kakaoLogo}
-                                alt="kakaoLogo"
-                                height={13}
-                            />
+                            <KakaoLogo height="13px" />
                             <div className={styles.text}>Kakao로 로그인</div>
                         </button>
                         <button
@@ -111,11 +107,7 @@ export default function LoginPage() {
                                 openGoogleLoginPage();
                             }}
                         >
-                            <Image
-                                src={googleLogo}
-                                alt="googleLogo"
-                                height={13}
-                            />
+                            <GoogleLogo height="13px" />
                             <div className={styles.text}>Google로 로그인</div>
                         </button>
                     </div>

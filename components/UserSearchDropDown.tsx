@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
 
 import styles from './UserSearchDropDown.module.scss';
@@ -12,22 +11,30 @@ import {
 } from '@components/DropDown';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 import useLocalStorage from '@hooks/useLocalStorage';
-import account_default_icon from '@images/account_default_icon.svg';
-import close_icon from '@images/close_icon.svg';
+import AccountDefaultIcon from '@images/account_default_icon.svg';
+import CloseIcon from '@images/close_icon.svg';
 import updateSequence from '@utils/updateSequence';
 
 interface UserSearchDropDownProps {
     toExecute: (item: UserDataForSearch) => void;
+    interceptResult?: (result: UserDataForSearch[]) => void;
     buttonText: string;
     width?: string; // custom width when used elsewhere
     underlineColor?: string;
+    resetOnExecution?: boolean;
+    submitButtonNotRequired?: boolean;
+    placeholder?: string;
 }
 
 export function UserSearchDropDown({
     toExecute,
+    interceptResult,
     buttonText,
     width,
     underlineColor,
+    resetOnExecution,
+    submitButtonNotRequired,
+    placeholder,
 }: UserSearchDropDownProps) {
     const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
 
@@ -116,6 +123,7 @@ export function UserSearchDropDown({
                 // only save the recent 4 searches to localStorage
             });
             setStored(newSearchRecord);
+            if (interceptResult) interceptResult(newSelectedResults);
         }
         setSearchInput('');
         closeDropDown();
@@ -126,41 +134,53 @@ export function UserSearchDropDown({
         if (selectedResults) {
             selectedResults.map(item => toExecute(item));
         }
-        setSelectedResults(null);
+        if (resetOnExecution) {
+            setSelectedResults(null);
+        }
+
         closeDropDown();
     };
 
     return (
         <DropDown dropDownRef={dropDownRef}>
-            <DropDownHeader style={{ display: 'flex' }}>
+            <DropDownHeader style={{ display: 'flex', zIndex: 140 }}>
                 {/* Large container. Area with gray background. Holds all selected(staged) items + input box */}
                 <div
                     className={styles.container}
                     ref={containerRef}
                     style={
-                        width ? { width: width } : { flexGrow: 1 }
+                        width ? { width: width } : { width: '100%' }
                         // if width is provided, fit to specified width
                         // otherwise, expand horizontally to fill all space available(flexGrow)
                     }
                 >
-                    {selectedResults?.map(item => {
-                        return (
-                            <SelectedResultItem
-                                key={item.pk}
-                                item={item}
-                                onClick={e => {
-                                    e.preventDefault();
-                                    setSelectedResults(
-                                        selectedResults.filter(i => {
-                                            return i !== item;
-                                        }),
-                                        // Remove button: on click,
-                                        // remove this item from selectedResults
-                                    );
-                                }}
-                            />
-                        );
-                    })}
+                    <div className={styles.searchedResultWrapper}>
+                        {selectedResults?.map(item => {
+                            return (
+                                <SelectedResultItem
+                                    key={item.pk}
+                                    item={item}
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        setSelectedResults(
+                                            selectedResults.filter(
+                                                i => i !== item,
+                                            ),
+                                            // Remove button: on click,
+                                            // remove this item from selectedResults
+                                        );
+                                        if (interceptResult) {
+                                            interceptResult(
+                                                selectedResults.filter(
+                                                    i => i !== item,
+                                                ),
+                                            );
+                                        }
+                                    }}
+                                />
+                            );
+                        })}
+                    </div>
                     <form
                         onSubmit={e => {
                             // submitting the input box only (pressing Enter)
@@ -175,7 +195,7 @@ export function UserSearchDropDown({
                                 handleChange(e);
                             }}
                             className={styles.input}
-                            placeholder="사용자 검색..."
+                            placeholder={placeholder || '사용자 검색...'}
                             onFocus={openDropDown}
                         />
                     </form>
@@ -190,7 +210,11 @@ export function UserSearchDropDown({
                     />
                 </div>
                 {/* Rightmost button for executing final function (ex.sending friend request API call) */}
-                <button onClick={executeAction}>{buttonText}</button>
+                {submitButtonNotRequired ? (
+                    <></>
+                ) : (
+                    <button onClick={executeAction}>{buttonText}</button>
+                )}
             </DropDownHeader>
             {/* DropDownBody displays suggestions -> either autocomplete for input search or the most recent 4 searches */}
             <DropDownBody
@@ -204,6 +228,7 @@ export function UserSearchDropDown({
                     // 'offset~' and not 'client~' to include borders etc.
                     top: containerRef.current?.offsetHeight,
                     width: containerRef.current?.offsetWidth,
+                    zIndex: 130,
                 }}
             >
                 <ul className={styles.suggestions}>
@@ -238,10 +263,10 @@ const SelectedResultItem = ({
     //          get profile picture with UserData and pass that to Image src prop
     return (
         <div className={styles.selected}>
-            <Image src={account_default_icon} alt="image" />
+            <AccountDefaultIcon className="icon" width="20px" />
             <div>{item.username}</div>
             <button onClick={onClick}>
-                <Image src={close_icon} alt="remove" />
+                <CloseIcon />
             </button>
         </div>
     );
@@ -257,7 +282,7 @@ const SuggestionItem = ({
     return (
         <li onClick={onClick}>
             <div className={styles.suggestion}>
-                <Image src={account_default_icon} alt="image" />
+                <AccountDefaultIcon className="icon" width="30px" />
                 <div>
                     <div className={styles.username}>{item.username}</div>
                     <div className={styles.email}>{item.email}</div>

@@ -50,6 +50,7 @@ export default function TimeDropDown({
                     onBlur={maintainFocus}
                     ref={triggerRef}
                 />
+                <span className="underline" />
             </DropDownHeader>
             <DropDownBody
                 isOpen={isOpen}

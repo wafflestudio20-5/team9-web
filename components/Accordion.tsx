@@ -1,11 +1,10 @@
-import Image from 'next/image';
 import React, { useState } from 'react';
 
 import styles from './Accordion.module.scss';
 
-import add_icon from '@images/add_icon.svg';
-import collapse_icon from '@images/collapse_icon.svg';
-import expand_icon from '@images/expand_icon.svg';
+import AddIcon from '@images/add_icon.svg';
+import CollapseIcon from '@images/collapse_icon.svg';
+import ExpandIcon from '@images/expand_icon.svg';
 
 interface AccordionProps {
     addAble?: boolean;
@@ -53,14 +52,15 @@ export function Accordion({
                 <span style={style?.title}>{title}</span>
                 {addAble && ( // false by default
                     <button>
-                        <Image src={add_icon} alt="add" />
+                        <AddIcon className="icon" height="25px" />
                     </button>
                 )}
                 <button onClick={isOpen ? closeAccordion : openAccordion}>
-                    <Image
-                        src={isOpen ? collapse_icon : expand_icon}
-                        alt="toggle"
-                    />
+                    {isOpen ? (
+                        <CollapseIcon className="icon" height="25px" />
+                    ) : (
+                        <ExpandIcon className="icon" height="25px" />
+                    )}
                 </button>
             </div>
             {

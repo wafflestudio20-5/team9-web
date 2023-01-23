@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useRef } from 'react';
 
@@ -10,7 +9,7 @@ import {
 } from '@components/DropDown';
 import { CalendarType, useCalendarContext } from '@contexts/CalendarContext';
 import { useDateContext } from '@contexts/DateContext';
-import dropdown_icon from '@images/dropdown_icon.svg';
+import DropdownIcon from '@images/dropdown_icon.svg';
 
 export default function CalendarTypeDropDown() {
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -63,11 +62,7 @@ export default function CalendarTypeDropDown() {
                     <span style={{ whiteSpace: 'nowrap' }}>
                         {formatCalendarTypeToKr(calendarType)}
                     </span>
-                    <Image
-                        src={dropdown_icon}
-                        height={20}
-                        alt="calender_type"
-                    />
+                    <DropdownIcon className="icon" height="20px" />
                 </button>
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>

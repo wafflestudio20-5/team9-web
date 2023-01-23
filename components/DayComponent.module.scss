@@ -1,0 +1,44 @@
+@use '@styles/variables.scss' as v;
+
+.dayContentHolder {
+    .headRow {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .dayHolder {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: center;
+        width: 40px;
+
+        .dayTodayNumber {
+            color: white;
+            border-radius: 50%;
+            border-color: transparent;
+            background-color: v.$primary-blue;
+            height: 24px;
+            width: 24px;
+        }
+
+        .dayNotTodayNumber {
+            height: 24px;
+        }
+    }
+
+    .mainSchedules {
+        display: grid;
+        grid-template-rows: repeat(24, 50px);
+        grid-template-columns: repeat(auto-fill, 1fr);
+        // flex-grow: 1;
+        border-top: 1px solid v.$border-gray;
+        gap: 1px;
+
+        .oneHourInDay {
+            border-bottom: 1px v.$border-gray solid;
+        }
+    }
+
+    border-right: 1px solid v.$border-gray;
+}
