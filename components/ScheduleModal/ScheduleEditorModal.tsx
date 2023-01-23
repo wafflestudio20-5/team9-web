@@ -361,7 +361,6 @@ export default function ScheduleEditorModal({
                                     </div>
                                 </div>
                             </div>
-
                             <div className={styles.description}>
                                 <label>
                                     <TextIcon className="icon" height="24px" />

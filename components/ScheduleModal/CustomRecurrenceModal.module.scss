@@ -29,6 +29,10 @@
             height: 30px;
         }
 
+        &.invalid {
+            background-color: var(--syrup-strawberry) !important;
+        }
+
         // underline
         + span {
             position: absolute;
@@ -159,13 +163,15 @@
         }
     }
 
-    .calendar input {
-        padding: 1px 2px;
+    .countContainer {
+        border-radius: 5px;
+        background-color: var(--button-hover);
     }
 
-    .count {
+    input.count {
         width: 60px;
         border-radius: 5px 0 0 5px;
+        background-color: transparent;
     }
 
     .countText {
@@ -175,12 +181,15 @@
         font-size: small;
         text-align: center;
         line-height: 36px;
-        border-radius: 0 5px 5px 0;
-        background-color: var(--button-hover);
+        background-color: transparent;
     }
 
-    .disabled input,
-    .disabled .countText {
+    .calendar input {
+        padding: 1px 2px;
+    }
+
+    .countContainer.disabled,
+    .calendar.disabled {
         opacity: 0.6;
         cursor: default;
     }

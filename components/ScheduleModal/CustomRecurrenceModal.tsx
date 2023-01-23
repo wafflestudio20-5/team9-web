@@ -19,7 +19,12 @@ import {
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
-import { RecurrenceRule, Repeat } from '@customTypes/ScheduleTypes';
+import {
+    Period,
+    PeriodText,
+    RecurrenceRule,
+    Repeat,
+} from '@customTypes/ScheduleTypes';
 import DropDownIcon from '@images/dropdown_icon.svg';
 import { formatFullDate } from '@utils/formatDate';
 
@@ -40,9 +45,7 @@ export default function CustomRecurrenceModal({
 }: CustomRecurrenceModalProps) {
     const { closeModal } = useModal();
     const [interval, setInterval] = useState<number>(1);
-    const [period, setPeriod] = useState<Exclude<Repeat, Repeat.none>>(
-        Repeat.weekly,
-    );
+    const [period, setPeriod] = useState<Period>(Repeat.weekly);
     const [days, setDays] = useState(
         DAYS.map((d, i) => ({
             name: d,
@@ -74,12 +77,31 @@ export default function CustomRecurrenceModal({
         setEndCondition(prev => ({ ...prev, date: endDate }));
     };
 
+    const getRepeatIntervalText = (interval: number, period: Period) => {
+        if (interval === 1) {
+            if (period === Repeat.monthly) return '매월';
+            return `매${PeriodText[period]}`;
+        } else {
+            return `${interval}${PeriodText[period]}마다`;
+        }
+    };
+
+    const validateCustomRecurrenceRule = () => {
+        return (
+            interval < 1 ||
+            (endCondition.condition === 'count' && endCondition.count < 1)
+        );
+    };
+
     const submitCustomRecurrenceRule = () => {
+        const isValid = validateCustomRecurrenceRule();
+        if (!isValid) return;
+
         const newRule: RecurrenceRule = {
             repeat: period,
             interval: interval,
         };
-        const text = '';
+        let text = getRepeatIntervalText(interval, period);
 
         switch (period) {
             default:
@@ -87,8 +109,12 @@ export default function CustomRecurrenceModal({
                 break;
             case Repeat.weekly:
                 newRule.days = days.filter(d => d.checked).map(d => d.num);
+                text += ` ${newRule.days
+                    .map(d => `${DAYS[d]}요일`)
+                    .join(', ')}`;
                 break;
             case Repeat.monthly:
+                text += ` ${dateOption.text}`;
                 switch (dateOption.option) {
                     default:
                     case 'specific':
@@ -104,6 +130,7 @@ export default function CustomRecurrenceModal({
                 }
                 break;
             case Repeat.yearly:
+                text += ` ${dateOption.text}`;
                 switch (dateOption.option) {
                     default:
                     case 'specific':
@@ -127,16 +154,17 @@ export default function CustomRecurrenceModal({
             case 'never':
                 newRule.never = true;
                 break;
-
             case 'count':
                 newRule.count = endCondition.count;
+                text += `, ${endCondition.count}회`;
                 break;
             case 'until':
                 newRule.until = formatFullDate(endCondition.date);
+                text += `, 종료일: ${formatFullDate(endCondition.date)}`;
         }
 
         changeRecurrenceRule(newRule, text);
-        console.log(newRule);
+        closeModal(MODAL_NAMES.customRecurrence);
     };
 
     return (
@@ -154,11 +182,15 @@ export default function CustomRecurrenceModal({
                             <div className={styles.inputUnderlineWrapper}>
                                 <input
                                     type="number"
-                                    value={interval}
-                                    min={1}
-                                    onChange={e =>
-                                        setInterval(Number(e.target.value) || 1)
+                                    value={interval || ''}
+                                    className={
+                                        interval < 1 ? styles.invalid : ''
                                     }
+                                    min={1}
+                                    onChange={e => {
+                                        console.log(Number(e.target.value));
+                                        setInterval(Number(e.target.value));
+                                    }}
                                 />
                                 <span className="underline" />
                             </div>
@@ -247,8 +279,8 @@ export default function CustomRecurrenceModal({
                                 <div
                                     className={
                                         endCondition.condition !== 'count'
-                                            ? styles.disabled
-                                            : ''
+                                            ? `${styles.countContainer} ${styles.disabled}`
+                                            : styles.countContainer
                                     }
                                 >
                                     <div
@@ -256,8 +288,12 @@ export default function CustomRecurrenceModal({
                                     >
                                         <input
                                             type="number"
-                                            value={endCondition.count}
-                                            className={styles.count}
+                                            value={endCondition.count || ''}
+                                            className={
+                                                endCondition.count < 1
+                                                    ? `${styles.count} ${styles.invalid}`
+                                                    : styles.count
+                                            }
                                             min={1}
                                             disabled={
                                                 endCondition.condition !==
@@ -336,13 +372,6 @@ export default function CustomRecurrenceModal({
     );
 }
 
-const PeriodText: { [key: number]: string } = {
-    [Repeat.daily]: '일',
-    [Repeat.weekly]: '주',
-    [Repeat.monthly]: '개월',
-    [Repeat.yearly]: '년',
-};
-
 interface PeriodDropDownProps {
     period: Exclude<Repeat, Repeat.none>;
     setPeriod: Dispatch<SetStateAction<Exclude<Repeat, Repeat.none>>>;
@@ -395,7 +424,7 @@ function PeriodDropDown({ period, setPeriod }: PeriodDropDownProps) {
 interface DateOptionDropDdownProps {
     date: Date;
     ordinal: { number: number; text: string };
-    period: Exclude<Repeat, Repeat.none>;
+    period: Period;
     dateOption: { option: DateOption; text: string };
     setDateOption: Dispatch<
         SetStateAction<{ option: DateOption; text: string }>
@@ -426,26 +455,35 @@ function DateOptionDropDown({
         [key: number]: { option: DateOption; text: string }[];
     } = {
         [Repeat.monthly]: [
-            { option: 'specific', text: `매월 ${date.getDate()}일` },
-            { option: 'last', text: '매월 마지막날' },
+            { option: 'specific', text: `${date.getDate()}일` },
+            { option: 'last', text: '마지막날' },
             {
                 option: 'ordinal',
-                text: `매월 ${ordinal.text} ${DAYS[date.getDay()]}요일`,
+                text: `${ordinal.text} ${DAYS[date.getDay()]}요일`,
             },
         ],
         [Repeat.yearly]: [
             {
                 option: 'specific',
-                text: `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
+                text: `${date.getMonth() + 1}월 ${date.getDate()}일`,
             },
-            { option: 'last', text: '매년 2월 마지막날' },
+            { option: 'last', text: '2월 마지막날' },
             {
                 option: 'ordinal',
-                text: `매년 ${date.getMonth() + 1}월 ${ordinal.text} ${
+                text: `${date.getMonth() + 1}월 ${ordinal.text} ${
                     DAYS[date.getDay()]
                 }요일`,
             },
         ],
+    };
+
+    const getDateOptionFullText = (text: string) => {
+        switch (period) {
+            case Repeat.monthly:
+                return `매월 ${text}`;
+            case Repeat.yearly:
+                return `매년 ${text}`;
+        }
     };
 
     const changeDateOption = (option: DateOption, text: string) => {
@@ -456,8 +494,8 @@ function DateOptionDropDown({
     useEffect(() => {
         const newText =
             period === Repeat.monthly
-                ? `매월 ${date.getDate()}일`
-                : `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+                ? `${date.getDate()}일`
+                : `${date.getMonth() + 1}월 ${date.getDate()}일`;
 
         setDateOption({ option: 'specific', text: newText });
     }, [period]);
@@ -470,7 +508,7 @@ function DateOptionDropDown({
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
                 >
-                    <span>{dateOption.text}</span>
+                    <span>{getDateOptionFullText(dateOption.text)}</span>
                     <DropDownIcon className="icon" height="20px" />
                 </button>
                 <span className="underline" />
@@ -495,7 +533,7 @@ function DateOptionDropDown({
                                 }
                                 key={i}
                             >
-                                {v.text}
+                                {getDateOptionFullText(v.text)}
                             </li>
                         );
                     })}

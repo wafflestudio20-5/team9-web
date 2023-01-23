@@ -65,3 +65,12 @@ export interface Recurrence {
     repeat: Repeat; // no need?
     text: string;
 }
+
+export type Period = Exclude<Repeat, Repeat.none>;
+
+export const PeriodText: { [key: number]: string } = {
+    [Repeat.daily]: '일',
+    [Repeat.weekly]: '주',
+    [Repeat.monthly]: '개월',
+    [Repeat.yearly]: '년',
+};
