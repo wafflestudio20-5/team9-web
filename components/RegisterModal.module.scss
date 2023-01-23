@@ -1,0 +1,77 @@
+@use '@styles/variables.scss' as v;
+
+.registerContainer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80vh;
+    height: 80vh;
+    top: calc(50vh - 40vh);
+    left: calc(50vw - 40vh);
+    padding: 0px 12vh 0px 0px;
+    background-image: url(../public/images/register_bg.svg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    gap: 10px;
+
+    .textErrorContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 400px;
+        gap: 17px;
+
+        .textContainer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+
+            .textName {
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                font-size: 18px;
+                white-space: nowrap;
+
+                color: v.$register-text;
+            }
+
+            .text {
+                width: 250px;
+                height: 42px;
+                font-weight: 500;
+                font-size: 15px;
+                background: v.$register-input;
+                border: none;
+            }
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    }
+
+    .registerButtonContainer {
+        display: flex;
+        justify-content: flex-end;
+        width: 400px;
+
+        button {
+            width: 108px;
+            height: 53px;
+            background: v.$login-register-submit;
+            font-weight: 500;
+            font-size: 18px;
+            color: white;
+            border: none;
+            border-radius: 3px;
+
+            &:hover {
+                background-color: v.$login-register-submit-hover;
+            }
+        }
+    }
+}

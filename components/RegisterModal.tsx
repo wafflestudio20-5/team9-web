@@ -1,13 +1,14 @@
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import styles from './register.module.scss';
+import ModalFrame from './ModalFrame';
+import styles from './RegisterModal.module.scss';
 
+import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 
-export default function RegisterPage() {
-    const router = useRouter();
+export default function RegisterModal() {
     const { register } = useSessionContext();
+    const { closeModal } = useModal();
 
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
@@ -22,7 +23,7 @@ export default function RegisterPage() {
     const [errorUserBirthdate, setErrorUserBirthdate] = useState('');
 
     return (
-        <div className={styles.registerPage}>
+        <ModalFrame modalName={MODAL_NAMES.register}>
             <form
                 className={styles.registerContainer}
                 onSubmit={e => {
@@ -35,7 +36,7 @@ export default function RegisterPage() {
                         birthdate: userBirthdate,
                     }).then(result => {
                         if (result.error === false) {
-                            router.push('/');
+                            closeModal(MODAL_NAMES.register);
                         } else {
                             setErrorUserName(result.username);
                             setErrorUserEmail(result.email);
@@ -48,7 +49,7 @@ export default function RegisterPage() {
             >
                 <div className={styles.textErrorContainer}>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>닉네임:</div>
+                        <div className={styles.textName}>닉네임</div>
                         <input
                             type="text"
                             className={styles.text}
@@ -62,7 +63,7 @@ export default function RegisterPage() {
                 </div>
                 <div className={styles.textErrorContainer}>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>이메일:</div>
+                        <div className={styles.textName}>이메일</div>
                         <input
                             type="email"
                             className={styles.text}
@@ -76,7 +77,7 @@ export default function RegisterPage() {
                 </div>
                 <div className={styles.textErrorContainer}>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>비밀번호:</div>
+                        <div className={styles.textName}>비밀번호</div>
                         <input
                             type="password"
                             className={styles.text}
@@ -90,7 +91,7 @@ export default function RegisterPage() {
                 </div>
                 <div className={styles.textErrorContainer}>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>비밀번호 확인:</div>
+                        <div className={styles.textName}>비밀번호 확인</div>
                         <input
                             type="password"
                             className={styles.text}
@@ -104,7 +105,7 @@ export default function RegisterPage() {
                 </div>
                 <div className={styles.textErrorContainer}>
                     <div className={styles.textContainer}>
-                        <div className={styles.textName}>생일:</div>
+                        <div className={styles.textName}>생일</div>
                         <input
                             type="date"
                             className={styles.text}
@@ -120,6 +121,6 @@ export default function RegisterPage() {
                     <button>회원가입</button>
                 </div>
             </form>
-        </div>
+        </ModalFrame>
     );
 }
