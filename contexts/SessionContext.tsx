@@ -81,11 +81,9 @@ const SessionContext = createContext<SessionContextData>({
 });
 
 //const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
-const apiEndPoint =
-    'http://ec2-13-124-64-149.ap-northeast-2.compute.amazonaws.com/api/v1/user/';
+const apiEndPoint = 'http://api-staging-dearj-wafflestudio.site/api/v1/user/';
 
-const REACT_APP_BASE_BACKEND_URL =
-    'http://ec2-13-124-64-149.ap-northeast-2.compute.amazonaws.com';
+const REACT_APP_BASE_BACKEND_URL = 'http://api-staging-dearj-wafflestudio.site';
 
 const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
 
