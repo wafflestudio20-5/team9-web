@@ -62,8 +62,6 @@ export interface Recurrence {
     isRecurring: boolean;
     cronjob: string;
     endDate: string;
-    repeat: Repeat; // no need?
-    text: string;
 }
 
 export type Period = Exclude<Repeat, Repeat.none>;

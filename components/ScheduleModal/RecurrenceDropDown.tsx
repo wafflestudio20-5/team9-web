@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 
 import {
     DropDown,
@@ -41,7 +41,6 @@ interface RecurrenceDropDownProps {
 
 export default function RecurrenceDropDown({
     date,
-    recurrence,
     setRecurrence,
 }: RecurrenceDropDownProps) {
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -53,6 +52,7 @@ export default function RecurrenceDropDown({
         maintainFocus,
     } = useDropDown(triggerRef);
     const { openModal } = useModal();
+    const [ruleText, setRuleText] = useState<string>('반복 안 함');
     const ordinal = {
         number: getOrdinalNum(date),
         text: OrdinalText[getOrdinalNum(date)],
@@ -60,17 +60,17 @@ export default function RecurrenceDropDown({
 
     const defaultRepeatOptions: {
         rule: RecurrenceRule;
-        content: string;
+        text: string;
     }[] = [
-        { rule: { repeat: Repeat.none, interval: 0 }, content: '반복 안 함' },
-        { rule: { repeat: Repeat.daily, interval: 1 }, content: '매일' },
+        { rule: { repeat: Repeat.none, interval: 0 }, text: '반복 안 함' },
+        { rule: { repeat: Repeat.daily, interval: 1 }, text: '매일' },
         {
             rule: { repeat: Repeat.weekly, interval: 1, days: [date.getDay()] },
-            content: `매주 ${DAYS[date.getDay()]}요일`,
+            text: `매주 ${DAYS[date.getDay()]}요일`,
         },
         {
             rule: { repeat: Repeat.monthly, interval: 1, date: date.getDate() },
-            content: `매월 ${date.getDate()}일`,
+            text: `매월 ${date.getDate()}일`,
         },
         {
             rule: {
@@ -79,7 +79,7 @@ export default function RecurrenceDropDown({
                 ordinal: ordinal.number,
                 days: [date.getDay()],
             },
-            content: `매월 ${ordinal.text} ${DAYS[date.getDay()]}요일`,
+            text: `매월 ${ordinal.text} ${DAYS[date.getDay()]}요일`,
         },
         {
             rule: {
@@ -88,7 +88,7 @@ export default function RecurrenceDropDown({
                 month: date.getMonth(),
                 date: date.getDate(),
             },
-            content: `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
+            text: `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
         },
         {
             rule: {
@@ -98,7 +98,7 @@ export default function RecurrenceDropDown({
                 ordinal: ordinal.number,
                 days: [date.getDay()],
             },
-            content: `매년 ${date.getMonth() + 1}월 ${ordinal.text} ${
+            text: `매년 ${date.getMonth() + 1}월 ${ordinal.text} ${
                 DAYS[date.getDay()]
             }요일`,
         },
@@ -117,13 +117,12 @@ export default function RecurrenceDropDown({
     const changeRecurrenceRule = (newRule: RecurrenceRule, text: string) => {
         const newRecurrence: Recurrence = {
             isRecurring: newRule.repeat !== Repeat.none,
-            repeat: newRule.repeat,
             cronjob: getCronjob(newRule),
             endDate: getEndDate(newRule),
-            text: text,
         };
 
         setRecurrence(newRecurrence);
+        setRuleText(text);
         closeDropDown();
     };
 
@@ -135,9 +134,7 @@ export default function RecurrenceDropDown({
                     onClick={toggleDropDown}
                     onBlur={maintainFocus}
                 >
-                    <span style={{ whiteSpace: 'nowrap' }}>
-                        {recurrence.text}
-                    </span>
+                    <span style={{ whiteSpace: 'nowrap' }}>{ruleText}</span>
                     <DropdownIcon className="icon" height="20px" />
                 </button>
                 <span className="underline" />
@@ -155,15 +152,15 @@ export default function RecurrenceDropDown({
                     {defaultRepeatOptions.map(option => {
                         return (
                             <li
-                                key={option.content}
+                                key={option.text}
                                 onClick={() =>
                                     changeRecurrenceRule(
                                         option.rule,
-                                        option.content,
+                                        option.text,
                                     )
                                 }
                             >
-                                {option.content}
+                                {option.text}
                             </li>
                         );
                     })}

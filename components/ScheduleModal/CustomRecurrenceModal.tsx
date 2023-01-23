@@ -26,6 +26,7 @@ import {
     Repeat,
 } from '@customTypes/ScheduleTypes';
 import DropDownIcon from '@images/dropdown_icon.svg';
+import { errorToast } from '@utils/customAlert';
 import { formatFullDate } from '@utils/formatDate';
 
 type DateOption = 'specific' | 'last' | 'ordinal';
@@ -88,14 +89,17 @@ export default function CustomRecurrenceModal({
 
     const validateCustomRecurrenceRule = () => {
         return (
-            interval < 1 ||
-            (endCondition.condition === 'count' && endCondition.count < 1)
+            interval >= 1 &&
+            (endCondition.condition !== 'count' || endCondition.count >= 1)
         );
     };
 
     const submitCustomRecurrenceRule = () => {
         const isValid = validateCustomRecurrenceRule();
-        if (!isValid) return;
+        if (!isValid) {
+            errorToast('반복 설정값이 올바르지 않습니다.');
+            return;
+        }
 
         const newRule: RecurrenceRule = {
             repeat: period,
