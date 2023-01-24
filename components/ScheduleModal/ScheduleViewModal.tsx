@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 
 import styles from './ScheduleViewModal.module.scss';
 
-import { deleteScheduleAPI } from '@apis/calendar';
+import { deleteRecurringScheduleAPI, deleteScheduleAPI } from '@apis/calendar';
 import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
@@ -20,7 +20,12 @@ import EditIcon from '@images/edit_icon.svg';
 import LockIcon from '@images/lock_icon.svg';
 import PeopleIcon from '@images/people_icon.svg';
 import TextIcon from '@images/text_icon.svg';
-import { errorToast, successToast, warningModal } from '@utils/customAlert';
+import {
+    errorToast,
+    radioRecurringModal,
+    successToast,
+    warningModal,
+} from '@utils/customAlert';
 import { formatDayToKr } from '@utils/formatDay';
 import { formatTime } from '@utils/formatTime';
 
@@ -65,14 +70,22 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         show_content: schedule.show_content,
         description: schedule.description,
         participants: getParticipantPks(schedule.participants),
+        is_recurring: schedule.is_recurring,
+        cron_expr: schedule.cron_expr,
+        recurring_end_at: schedule.recurring_end_at,
     };
 
     const deleteSchedule = async (
-        scheduleId: number,
+        id: number, // scheduleId or groupId
         accessToken: string | null,
+        deleteRecurring: boolean,
     ) => {
         try {
-            await deleteScheduleAPI(scheduleId, accessToken);
+            if (deleteRecurring) {
+                await deleteRecurringScheduleAPI(id, accessToken);
+            } else {
+                await deleteScheduleAPI(id, accessToken);
+            }
             successToast('일정을 삭제했습니다.');
             return true;
         } catch (error) {
@@ -94,16 +107,43 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
     };
 
     const onClickDelete = async () => {
-        const { isConfirmed } = await warningModal({
-            title: '일정을 삭제하시겠습니까?',
-            text: '삭제된 일정은 복원할 수 없습니다.',
-            confirmButtonText: '삭제',
-        });
+        if (schedule.is_recurring) {
+            const { value, isConfirmed } = await radioRecurringModal('삭제');
 
-        if (!isConfirmed) return;
+            if (!isConfirmed) return;
 
-        const isDeleted = await deleteSchedule(schedule.id, accessToken);
-        if (isDeleted) closeModal(MODAL_NAMES.scheduleView);
+            let isDeleted = false;
+            if (value === '이 일정') {
+                isDeleted = await deleteSchedule(
+                    schedule.id,
+                    accessToken,
+                    true,
+                );
+            } else {
+                isDeleted = await deleteSchedule(
+                    schedule.schedule_groups[0],
+                    accessToken,
+                    false,
+                );
+            }
+
+            if (isDeleted) closeModal(MODAL_NAMES.scheduleView);
+        } else {
+            const { isConfirmed } = await warningModal({
+                title: '일정을 삭제하시겠습니까?',
+                text: '삭제된 일정은 복원할 수 없습니다.',
+                confirmButtonText: '삭제',
+            });
+
+            if (!isConfirmed) return;
+
+            const isDeleted = await deleteSchedule(
+                schedule.id,
+                accessToken,
+                false,
+            );
+            if (isDeleted) closeModal(MODAL_NAMES.scheduleView);
+        }
     };
 
     const mergeScheduleEndDateTime = (startDate: Date, endDate: Date) => {

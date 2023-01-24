@@ -25,6 +25,7 @@ export interface FullSchedule extends Readonly<Omit<Schedule, 'participants'>> {
     created_at: string;
     updated_at: string;
     participants?: Participant[];
+    schedule_groups: number[];
 }
 
 export enum ProtectionLevel {
