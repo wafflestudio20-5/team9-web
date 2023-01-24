@@ -54,8 +54,8 @@ export default function ScheduleEditorModal({
     const [endDate, setEndDate] = useState<Date>(new Date(initSchedule.end_at));
     const [recurrence, setRecurrence] = useState<Recurrence>({
         isRecurring: false,
-        cronjob: '',
-        end_date: '',
+        cron_expr: '',
+        recurring_end_at: '',
     });
     const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
         initSchedule.protection_level,
@@ -119,7 +119,12 @@ export default function ScheduleEditorModal({
         };
 
         try {
-            await createScheduleAPI(newSchedule, urlParams, accessToken);
+            const res = await createScheduleAPI(
+                newSchedule,
+                urlParams,
+                accessToken,
+            );
+            console.log(res.data);
             successToast('일정이 추가되었습니다.');
             return true;
         } catch (error) {
@@ -182,7 +187,11 @@ export default function ScheduleEditorModal({
             protection_level: protectionLevel,
             show_content: !hideDetails,
             participants: participants,
+            is_recurring: recurrence.isRecurring,
+            cron_expr: recurrence.cron_expr,
+            recurring_end_at: recurrence.recurring_end_at,
         };
+        console.log(newSchedule);
 
         let isSuccessful = false;
         switch (taskType) {

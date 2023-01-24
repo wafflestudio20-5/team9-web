@@ -12,7 +12,6 @@ import {
     Recurrence,
     RecurrenceRule,
     Repeat,
-    StopCondition,
 } from '@customTypes/ScheduleTypes';
 import DropdownIcon from '@images/dropdown_icon.svg';
 import { formatFullDate } from '@utils/formatDate';
@@ -298,7 +297,7 @@ export default function RecurrenceDropDown({
         temp.setFullYear(
             date.getFullYear() + (rule.repeat === Repeat.yearly ? 5 : 1),
         );
-        const defaultEndDate = formatFullDate(temp, true); // after 1 year (for yearly schedule, after 5 years)
+        const defaultEndDate = formatFullDate(temp, true); // after 1 year (after 5 years for yearly schedule)
 
         switch (rule.stopCondition) {
             case 'until':
@@ -344,12 +343,10 @@ export default function RecurrenceDropDown({
     };
 
     const changeRecurrenceRule = (newRule: RecurrenceRule, text: string) => {
-        const tt = getCronjob(newRule);
-        console.log(tt);
         const newRecurrence: Recurrence = {
             isRecurring: newRule.repeat !== Repeat.none,
-            cronjob: getCronjob(newRule),
-            end_date: getEndDate(newRule),
+            cron_expr: getCronjob(newRule),
+            recurring_end_at: getEndDate(newRule),
         };
 
         setRecurrence(newRecurrence);

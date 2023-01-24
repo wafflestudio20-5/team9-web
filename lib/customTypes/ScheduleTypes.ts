@@ -14,7 +14,9 @@ export interface Schedule {
     show_content: boolean;
     description?: string;
     participants?: { pk: number }[];
-    // repetition_type?: will be added later using cronjob
+    is_recurring: boolean;
+    cron_expr: string;
+    recurring_end_at: string;
 }
 
 export interface FullSchedule extends Readonly<Omit<Schedule, 'participants'>> {
@@ -39,8 +41,8 @@ export const ProtectionLevelText: { [key: number]: string } = {
 
 export interface Recurrence {
     isRecurring: boolean;
-    cronjob: string;
-    end_date: string;
+    cron_expr: string;
+    recurring_end_at: string;
 }
 
 export enum Repeat {
