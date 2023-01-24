@@ -55,7 +55,7 @@ export default function ScheduleEditorModal({
     const [recurrence, setRecurrence] = useState<Recurrence>({
         isRecurring: false,
         cronjob: '',
-        endDate: '',
+        end_date: '',
     });
     const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
         initSchedule.protection_level,

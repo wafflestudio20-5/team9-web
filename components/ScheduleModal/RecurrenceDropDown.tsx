@@ -130,9 +130,81 @@ export default function RecurrenceDropDown({
         },
     ];
 
+    const getDailyCron = (interval: number) => {
+        const time = `${date.getMinutes()} ${date.getHours()}`;
+        return `${time} */${interval} * * *`;
+    };
+
+    const getWeeklyCron = (interval: number, days: number[]) => {
+        const time = `${date.getMinutes()} ${date.getHours()}`;
+        return `${time} * * ${days.join(',')}/${interval} *`;
+    };
+
+    const getMonthlyCron = (
+        interval: number,
+        dateOption: DateOption,
+        ordinal?: number,
+    ) => {
+        const time = `${date.getMinutes()} ${date.getHours()}`;
+        if (dateOption === 'specific') {
+            return `${time} ${date.getDate()} */${interval} * *`;
+        } else if (dateOption === 'last') {
+            return `${time} L */${interval} * *`;
+        } else {
+            if (ordinal === 5) {
+                return `${time} * */${interval} ${date.getDay()}L *`;
+            } else {
+                return `${time} * */${interval} ${date.getDay()}#${ordinal} *`;
+            }
+        }
+    };
+
+    const getYearlyCron = (
+        interval: number,
+        dateOption: DateOption,
+        ordinal?: number,
+    ) => {
+        const time = `${date.getMinutes()} ${date.getHours()}`;
+
+        if (dateOption === 'specific') {
+            return `${time} ${date.getDate()} ${date.getMonth()} * */${interval}`;
+        } else if (dateOption === 'last') {
+            return `${time} L 2 * */${interval}`;
+        } else {
+            if (ordinal === 5) {
+                return `${time} * ${date.getMonth()} ${date.getDay()}L */${interval}`;
+            } else {
+                return `${time} * ${date.getMonth()} ${date.getDay()}#${ordinal} */${interval}`;
+            }
+        }
+    };
+
     const getCronjob = (rule: RecurrenceRule) => {
         if (rule.repeat === Repeat.none) return '';
-        return 'cronjob';
+
+        switch (rule.repeat) {
+            case Repeat.daily:
+                return getDailyCron(rule.interval);
+            case Repeat.weekly:
+                if (!rule.days) return '';
+                return getWeeklyCron(rule.interval, rule.days);
+            case Repeat.monthly:
+                if (!rule.dateOption) return '';
+                return getMonthlyCron(
+                    rule.interval,
+                    rule.dateOption,
+                    rule.ordinal,
+                );
+            case Repeat.yearly:
+                if (!rule.dateOption) return '';
+                return getYearlyCron(
+                    rule.interval,
+                    rule.dateOption,
+                    rule.ordinal,
+                );
+            default:
+                return '';
+        }
     };
 
     const calculateDailyEndDate = (interval: number, count: number) => {
@@ -272,10 +344,12 @@ export default function RecurrenceDropDown({
     };
 
     const changeRecurrenceRule = (newRule: RecurrenceRule, text: string) => {
+        const tt = getCronjob(newRule);
+        console.log(tt);
         const newRecurrence: Recurrence = {
             isRecurring: newRule.repeat !== Repeat.none,
             cronjob: getCronjob(newRule),
-            endDate: getEndDate(newRule),
+            end_date: getEndDate(newRule),
         };
 
         setRecurrence(newRecurrence);

@@ -40,7 +40,7 @@ export const ProtectionLevelText: { [key: number]: string } = {
 export interface Recurrence {
     isRecurring: boolean;
     cronjob: string;
-    endDate: string;
+    end_date: string;
 }
 
 export enum Repeat {
@@ -65,12 +65,12 @@ export type DateOption = 'specific' | 'last' | 'ordinal';
 export type StopCondition = 'never' | 'until' | 'count';
 
 export interface RecurrenceRule {
-    repeat: Repeat;
+    repeat: Repeat; // none, daily, weekly, monthly, yearly
     interval: number; // e.g. every '3' days
-    dateOption?: DateOption;
+    dateOption?: DateOption; // 'specific' | 'last' | 'ordinal'  e.g. 'last' day of every month
     days?: number[]; // e.g. every 'monday' and 'tuesday'
     ordinal?: number; // e.g. '3'rd Wednesday of every month
-    stopCondition: StopCondition;
+    stopCondition: StopCondition; // 'never' | 'until' | 'count'
     until?: Date; // e.g. until 2023-02-08
     count?: number; // e.g. repeat '3' times
 }

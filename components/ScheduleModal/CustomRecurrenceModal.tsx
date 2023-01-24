@@ -206,10 +206,9 @@ export default function CustomRecurrenceModal({
                             <div className={styles.days}>
                                 {days.map((d, i) => {
                                     return (
-                                        <>
+                                        <div key={d.num}>
                                             <input
                                                 type="checkbox"
-                                                key={i}
                                                 id={d.name}
                                                 className={styles.day}
                                                 checked={d.checked}
@@ -226,7 +225,7 @@ export default function CustomRecurrenceModal({
                                             <label htmlFor={d.name}>
                                                 {d.name}
                                             </label>
-                                        </>
+                                        </div>
                                     );
                                 })}
                             </div>
@@ -512,25 +511,22 @@ function DateOptionDropDown({
                 <ul>
                     {dateOptions[period].map((v, i) => {
                         if (
-                            (!isLastDay && v.option === 'last') ||
-                            (period === Repeat.yearly &&
-                                date.getMonth() !== 1 &&
-                                isLastDay &&
-                                v.option === 'last')
+                            v.option !== 'last' ||
+                            (isLastDay &&
+                                (period === Repeat.monthly ||
+                                    date.getMonth() + 1 === 2))
                         ) {
-                            return null;
+                            return (
+                                <li
+                                    onClick={() =>
+                                        changeDateOption(v.option, v.text)
+                                    }
+                                    key={i}
+                                >
+                                    {getDateOptionFullText(v.text)}
+                                </li>
+                            );
                         }
-
-                        return (
-                            <li
-                                onClick={() =>
-                                    changeDateOption(v.option, v.text)
-                                }
-                                key={i}
-                            >
-                                {getDateOptionFullText(v.text)}
-                            </li>
-                        );
                     })}
                 </ul>
             </DropDownBody>
