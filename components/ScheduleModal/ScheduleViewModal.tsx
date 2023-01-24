@@ -117,13 +117,13 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                 isDeleted = await deleteSchedule(
                     schedule.id,
                     accessToken,
-                    true,
+                    false,
                 );
             } else {
                 isDeleted = await deleteSchedule(
                     schedule.schedule_groups[0],
                     accessToken,
-                    false,
+                    true,
                 );
             }
 

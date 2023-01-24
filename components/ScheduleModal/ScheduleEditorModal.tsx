@@ -6,6 +6,7 @@ import styles from './ScheduleEditorModal.module.scss';
 import {
     CalendarURLParams,
     createScheduleAPI,
+    editRecurringScheduleAPI,
     editScheduleAPI,
 } from '@apis/calendar';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
@@ -28,7 +29,12 @@ import LockIcon from '@images/lock_icon.svg';
 import PeopleIcon from '@images/people_icon.svg';
 import TextIcon from '@images/text_icon.svg';
 import TimeIcon from '@images/time_icon.svg';
-import { errorToast, successToast, warningModal } from '@utils/customAlert';
+import {
+    errorToast,
+    radioRecurringModal,
+    successToast,
+    warningModal,
+} from '@utils/customAlert';
 import { formatFullDate } from '@utils/formatDate';
 
 function ErrorMessage({ message }: { message: string }) {
@@ -139,16 +145,22 @@ export default function ScheduleEditorModal({
     };
 
     const editSchdule = async (
-        scheduleId: number,
+        id: number,
         newSchedule: Schedule,
         accessToken: string | null,
+        editRecurring: boolean,
     ) => {
         try {
-            const res = await editScheduleAPI(
-                scheduleId,
-                newSchedule,
-                accessToken,
-            );
+            let res;
+            if (editRecurring) {
+                res = await editRecurringScheduleAPI(
+                    id,
+                    newSchedule,
+                    accessToken,
+                );
+            } else {
+                res = await editScheduleAPI(id, newSchedule, accessToken);
+            }
             successToast('일정이 수정되었습니다.');
             openModal(MODAL_NAMES.scheduleView, { schedule: res.data });
             return true;
@@ -191,7 +203,6 @@ export default function ScheduleEditorModal({
             cron_expr: recurrence.cron_expr,
             recurring_end_at: recurrence.recurring_end_at,
         };
-        console.log(newSchedule);
 
         let isSuccessful = false;
         switch (taskType) {
@@ -199,13 +210,37 @@ export default function ScheduleEditorModal({
                 isSuccessful = await createSchedule(newSchedule, accessToken);
                 break;
             case 'edit':
-                isSuccessful = initSchedule?.id
-                    ? await editSchdule(
-                          initSchedule.id,
-                          newSchedule,
-                          accessToken,
-                      )
-                    : false;
+                if (!initSchedule.id || !initSchedule.schedule_groups) return;
+
+                if (initSchedule.is_recurring) {
+                    const { value, isConfirmed } = await radioRecurringModal(
+                        '수정',
+                    );
+                    if (!isConfirmed) return;
+
+                    if (value === '이 일정') {
+                        isSuccessful = await editSchdule(
+                            initSchedule.schedule_groups[0],
+                            newSchedule,
+                            accessToken,
+                            false,
+                        );
+                    } else {
+                        isSuccessful = await editSchdule(
+                            initSchedule.schedule_groups[0],
+                            newSchedule,
+                            accessToken,
+                            true,
+                        );
+                    }
+                } else {
+                    isSuccessful = await editSchdule(
+                        initSchedule.id,
+                        newSchedule,
+                        accessToken,
+                        false,
+                    );
+                }
                 break;
         }
 

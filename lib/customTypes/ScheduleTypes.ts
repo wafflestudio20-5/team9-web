@@ -17,6 +17,7 @@ export interface Schedule {
     is_recurring: boolean;
     cron_expr: string;
     recurring_end_at: string;
+    readonly schedule_groups? : number[];
 }
 
 export interface FullSchedule extends Readonly<Omit<Schedule, 'participants'>> {
