@@ -7,8 +7,15 @@ import {
     useDropDown,
 } from '@components/DropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
-import { Recurrence, RecurrenceRule, Repeat } from '@customTypes/ScheduleTypes';
+import {
+    DateOption,
+    Recurrence,
+    RecurrenceRule,
+    Repeat,
+    StopCondition,
+} from '@customTypes/ScheduleTypes';
 import DropdownIcon from '@images/dropdown_icon.svg';
+import { formatFullDate } from '@utils/formatDate';
 
 // 반복 안함, 매일, 매주 *요일, 매월 *일,매월 *번째 *요일, 매년 *월 *일, 맞춤 설정
 
@@ -28,7 +35,7 @@ const getOrdinalNum = (date: Date) => {
     const num =
         date.getMonth() !== nextWeek.getMonth()
             ? 5
-            : Math.floor((date.getDate() - 1) / 7) + 1;
+            : Math.ceil(date.getDate() / 7);
 
     return num;
 };
@@ -62,22 +69,40 @@ export default function RecurrenceDropDown({
         rule: RecurrenceRule;
         text: string;
     }[] = [
-        { rule: { repeat: Repeat.none, interval: 0 }, text: '반복 안 함' },
-        { rule: { repeat: Repeat.daily, interval: 1 }, text: '매일' },
         {
-            rule: { repeat: Repeat.weekly, interval: 1, days: [date.getDay()] },
+            rule: { repeat: Repeat.none, interval: 0, stopCondition: 'never' },
+            text: '반복 안 함',
+        },
+        {
+            rule: { repeat: Repeat.daily, interval: 1, stopCondition: 'never' },
+            text: '매일',
+        },
+        {
+            rule: {
+                repeat: Repeat.weekly,
+                interval: 1,
+                days: [date.getDay()],
+                stopCondition: 'never',
+            },
             text: `매주 ${DAYS[date.getDay()]}요일`,
         },
         {
-            rule: { repeat: Repeat.monthly, interval: 1, date: date.getDate() },
+            rule: {
+                repeat: Repeat.monthly,
+                interval: 1,
+                dateOption: 'specific',
+                stopCondition: 'never',
+            },
             text: `매월 ${date.getDate()}일`,
         },
         {
             rule: {
                 repeat: Repeat.monthly,
                 interval: 1,
+                dateOption: 'ordinal',
                 ordinal: ordinal.number,
                 days: [date.getDay()],
+                stopCondition: 'never',
             },
             text: `매월 ${ordinal.text} ${DAYS[date.getDay()]}요일`,
         },
@@ -85,8 +110,8 @@ export default function RecurrenceDropDown({
             rule: {
                 repeat: Repeat.yearly,
                 interval: 1,
-                month: date.getMonth(),
-                date: date.getDate(),
+                dateOption: 'specific',
+                stopCondition: 'never',
             },
             text: `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
         },
@@ -94,9 +119,10 @@ export default function RecurrenceDropDown({
             rule: {
                 repeat: Repeat.yearly,
                 interval: 1,
-                month: date.getMonth(),
+                dateOption: 'ordinal',
                 ordinal: ordinal.number,
                 days: [date.getDay()],
+                stopCondition: 'never',
             },
             text: `매년 ${date.getMonth() + 1}월 ${ordinal.text} ${
                 DAYS[date.getDay()]
@@ -109,9 +135,140 @@ export default function RecurrenceDropDown({
         return 'cronjob';
     };
 
+    const calculateDailyEndDate = (interval: number, count: number) => {
+        const endDate = new Date(date);
+        const duration = interval * (count - 1);
+        endDate.setDate(date.getDate() + duration);
+        return formatFullDate(endDate, true);
+    };
+
+    const calculateWeeklyEndDate = (
+        interval: number,
+        count: number,
+        days: number[],
+    ) => {
+        const daysNum = days.length;
+        const lastStartDayOrder = (count - 1) % daysNum;
+        const lastStartDayRepeatCnt = Math.ceil(count / daysNum);
+        const lastStartDayIdx =
+            (days.indexOf(date.getDay()) + lastStartDayOrder) % daysNum;
+
+        let gap = days[lastStartDayIdx] - date.getDay();
+        if (gap < 0) gap += 7 * interval;
+
+        const endDate = new Date(date);
+        const duration = gap + 7 * interval * (lastStartDayRepeatCnt - 1);
+        endDate.setDate(date.getDate() + duration);
+        return formatFullDate(endDate, true);
+    };
+
+    const calculateOrdinalEndDate = (endDate: Date, ordinal: number) => {
+        if (ordinal === 5) {
+            endDate.setMonth(endDate.getMonth() + 1, 0);
+            let gap = endDate.getDay() - date.getDay();
+            if (gap < 0) gap += 7;
+            endDate.setDate(endDate.getDate() - gap);
+        } else {
+            endDate.setDate(1);
+            let gap = date.getDay() - endDate.getDay();
+            if (gap < 0) gap += 7;
+            endDate.setDate(endDate.getDate() + gap + 7 * (ordinal - 1));
+        }
+    };
+
+    const calculateMonthlyEndDate = (
+        interval: number,
+        count: number,
+        dateOption: DateOption,
+        ordinal?: number,
+    ) => {
+        const endDate = new Date(date);
+        const duration = interval * (count - 1);
+        endDate.setMonth(date.getMonth() + duration, 1);
+
+        if (dateOption === 'specific') {
+            endDate.setDate(date.getDate());
+        } else if (dateOption === 'last') {
+            endDate.setMonth(endDate.getMonth() + 1, 0);
+        } else if (dateOption === 'ordinal') {
+            if (!ordinal) return formatFullDate(date, true);
+            calculateOrdinalEndDate(endDate, ordinal);
+        }
+
+        return formatFullDate(endDate, true);
+    };
+
+    const calculateYearlyEndDate = (
+        interval: number,
+        count: number,
+        dateOption: DateOption,
+        ordinal?: number,
+    ) => {
+        const endDate = new Date(date);
+        const duration = interval * (count - 1);
+        endDate.setFullYear(date.getFullYear() + duration, date.getMonth(), 1);
+
+        if (dateOption === 'specific') {
+            endDate.setDate(date.getDate());
+        } else if (dateOption === 'last') {
+            endDate.setMonth(3, 0); // last day of Feb (28 or 29)
+        } else if (dateOption === 'ordinal') {
+            if (!ordinal) return formatFullDate(date, true);
+            calculateOrdinalEndDate(endDate, ordinal);
+        }
+        return formatFullDate(endDate, true);
+    };
+
     const getEndDate = (rule: RecurrenceRule) => {
         if (rule.repeat === Repeat.none) return '';
-        return 'endDate';
+
+        const temp = new Date(date);
+        temp.setFullYear(
+            date.getFullYear() + (rule.repeat === Repeat.yearly ? 5 : 1),
+        );
+        const defaultEndDate = formatFullDate(temp, true); // after 1 year (for yearly schedule, after 5 years)
+
+        switch (rule.stopCondition) {
+            case 'until':
+                if (!rule.until) return defaultEndDate;
+                rule.until.setHours(date.getHours(), date.getMinutes());
+                return formatFullDate(rule.until, true);
+
+            case 'count':
+                if (!rule.count) return defaultEndDate;
+                switch (rule.repeat) {
+                    case Repeat.daily:
+                        return calculateDailyEndDate(rule.interval, rule.count);
+                    case Repeat.weekly:
+                        if (!rule.days) break;
+                        return calculateWeeklyEndDate(
+                            rule.interval,
+                            rule.count,
+                            rule.days,
+                        );
+                    case Repeat.monthly:
+                        if (!rule.dateOption) break;
+                        return calculateMonthlyEndDate(
+                            rule.interval,
+                            rule.count,
+                            rule.dateOption,
+                            rule.ordinal,
+                        );
+                    case Repeat.yearly:
+                        if (!rule.dateOption) break;
+                        return calculateYearlyEndDate(
+                            rule.interval,
+                            rule.count,
+                            rule.dateOption,
+                            rule.ordinal,
+                        );
+                }
+                return formatFullDate(date, true);
+
+            case 'never':
+            default:
+                return defaultEndDate;
+        }
     };
 
     const changeRecurrenceRule = (newRule: RecurrenceRule, text: string) => {

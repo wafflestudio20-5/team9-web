@@ -20,18 +20,16 @@ import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import {
+    DateOption,
     Period,
     PeriodText,
     RecurrenceRule,
     Repeat,
+    StopCondition,
 } from '@customTypes/ScheduleTypes';
 import DropDownIcon from '@images/dropdown_icon.svg';
 import { errorToast } from '@utils/customAlert';
 import { formatFullDate } from '@utils/formatDate';
-
-type DateOption = 'specific' | 'last' | 'ordinal';
-
-type EndCondition = 'never' | 'until' | 'count';
 
 interface CustomRecurrenceModalProps {
     date: Date;
@@ -64,18 +62,22 @@ export default function CustomRecurrenceModal({
                 ? `매월 ${date.getDate()}일`
                 : `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
     });
-    const [endCondition, setEndCondition] = useState<{
-        condition: EndCondition;
-        date: Date;
+    const [stopCondition, setStopCondition] = useState<{
+        condition: StopCondition;
+        until: Date;
         count: number;
     }>({
         condition: 'never',
-        date: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7),
+        until: new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate() + 7,
+        ),
         count: 1,
     });
 
     const changeEndDate = (endDate: Date) => {
-        setEndCondition(prev => ({ ...prev, date: endDate }));
+        setStopCondition(prev => ({ ...prev, until: endDate }));
     };
 
     const getRepeatIntervalText = (interval: number, period: Period) => {
@@ -90,7 +92,7 @@ export default function CustomRecurrenceModal({
     const validateCustomRecurrenceRule = () => {
         return (
             interval >= 1 &&
-            (endCondition.condition !== 'count' || endCondition.count >= 1)
+            (stopCondition.condition !== 'count' || stopCondition.count >= 1)
         );
     };
 
@@ -104,6 +106,8 @@ export default function CustomRecurrenceModal({
         const newRule: RecurrenceRule = {
             repeat: period,
             interval: interval,
+            dateOption: dateOption.option,
+            stopCondition: stopCondition.condition,
         };
         let text = getRepeatIntervalText(interval, period);
 
@@ -119,52 +123,32 @@ export default function CustomRecurrenceModal({
                 break;
             case Repeat.monthly:
                 text += ` ${dateOption.text}`;
-                switch (dateOption.option) {
-                    default:
-                    case 'specific':
-                        newRule.date = date.getDate();
-                        break;
-                    case 'last':
-                        newRule.last = true;
-                        break;
-                    case 'ordinal':
-                        newRule.ordinal = ordinal.number;
-                        newRule.days = [date.getDay()];
-                        break;
+                if (dateOption.option === 'ordinal') {
+                    newRule.ordinal = ordinal.number;
+                    newRule.days = [date.getDay()];
                 }
                 break;
             case Repeat.yearly:
                 text += ` ${dateOption.text}`;
-                switch (dateOption.option) {
-                    default:
-                    case 'specific':
-                        newRule.month = date.getMonth();
-                        newRule.date = date.getDate();
-                        break;
-                    case 'last':
-                        newRule.month = date.getMonth();
-                        newRule.last = true;
-                        break;
-                    case 'ordinal':
-                        newRule.month = date.getMonth();
-                        newRule.ordinal = ordinal.number;
-                        newRule.days = [date.getDay()];
-                        break;
+                if (dateOption.option === 'ordinal') {
+                    newRule.ordinal = ordinal.number;
+                    newRule.days = [date.getDay()];
                 }
+                break;
         }
 
-        switch (endCondition.condition) {
-            default:
-            case 'never':
-                newRule.never = true;
-                break;
+        switch (stopCondition.condition) {
             case 'count':
-                newRule.count = endCondition.count;
-                text += `, ${endCondition.count}회`;
+                newRule.count = stopCondition.count;
+                text += `, ${stopCondition.count}회`;
                 break;
             case 'until':
-                newRule.until = formatFullDate(endCondition.date);
-                text += `, 종료일: ${formatFullDate(endCondition.date)}`;
+                newRule.until = stopCondition.until;
+                text += `, 종료일: ${formatFullDate(stopCondition.until)}`;
+                break;
+            case 'never':
+            default:
+                break;
         }
 
         changeRecurrenceRule(newRule, text);
@@ -191,10 +175,10 @@ export default function CustomRecurrenceModal({
                                         interval < 1 ? styles.invalid : ''
                                     }
                                     min={1}
-                                    onChange={e => {
-                                        console.log(Number(e.target.value));
-                                        setInterval(Number(e.target.value));
-                                    }}
+                                    max={100}
+                                    onChange={e =>
+                                        setInterval(Number(e.target.value))
+                                    }
                                 />
                                 <span className="underline" />
                             </div>
@@ -248,17 +232,19 @@ export default function CustomRecurrenceModal({
                             </div>
                         </div>
                     )}
-                    <div className={styles.endConditionContainer}>
+                    <div className={styles.stopConditionContainer}>
                         <label>종료</label>
-                        <div className={styles.endCondition}>
+                        <div className={styles.stopCondition}>
                             <div className={styles.conditionWrapper}>
                                 <input
                                     type="radio"
-                                    name="endCondition"
+                                    name="stopCondition"
                                     id="never"
-                                    checked={endCondition.condition === 'never'}
+                                    checked={
+                                        stopCondition.condition === 'never'
+                                    }
                                     onChange={() =>
-                                        setEndCondition(prev => ({
+                                        setStopCondition(prev => ({
                                             ...prev,
                                             condition: 'never',
                                         }))
@@ -269,11 +255,13 @@ export default function CustomRecurrenceModal({
                             <div className={styles.conditionWrapper}>
                                 <input
                                     type="radio"
-                                    name="endCondition"
+                                    name="stopCondition"
                                     id="count"
-                                    checked={endCondition.condition === 'count'}
+                                    checked={
+                                        stopCondition.condition === 'count'
+                                    }
                                     onChange={() =>
-                                        setEndCondition(prev => ({
+                                        setStopCondition(prev => ({
                                             ...prev,
                                             condition: 'count',
                                         }))
@@ -282,7 +270,7 @@ export default function CustomRecurrenceModal({
                                 <label htmlFor="count">다음</label>
                                 <div
                                     className={
-                                        endCondition.condition !== 'count'
+                                        stopCondition.condition !== 'count'
                                             ? `${styles.countContainer} ${styles.disabled}`
                                             : styles.countContainer
                                     }
@@ -292,19 +280,20 @@ export default function CustomRecurrenceModal({
                                     >
                                         <input
                                             type="number"
-                                            value={endCondition.count || ''}
+                                            value={stopCondition.count || ''}
                                             className={
-                                                endCondition.count < 1
+                                                stopCondition.count < 1
                                                     ? `${styles.count} ${styles.invalid}`
                                                     : styles.count
                                             }
                                             min={1}
+                                            max={100}
                                             disabled={
-                                                endCondition.condition !==
+                                                stopCondition.condition !==
                                                 'count'
                                             }
                                             onChange={e =>
-                                                setEndCondition(prev => ({
+                                                setStopCondition(prev => ({
                                                     ...prev,
                                                     count: Number(
                                                         e.target.value,
@@ -322,11 +311,13 @@ export default function CustomRecurrenceModal({
                             <div className={styles.conditionWrapper}>
                                 <input
                                     type="radio"
-                                    name="endCondition"
+                                    name="stopCondition"
                                     id="until"
-                                    checked={endCondition.condition === 'until'}
+                                    checked={
+                                        stopCondition.condition === 'until'
+                                    }
                                     onChange={() =>
-                                        setEndCondition(prev => ({
+                                        setStopCondition(prev => ({
                                             ...prev,
                                             condition: 'until',
                                         }))
@@ -335,16 +326,16 @@ export default function CustomRecurrenceModal({
                                 <label htmlFor="until">날짜: </label>
                                 <div
                                     className={`${styles.calendar} ${
-                                        endCondition.condition !== 'until' &&
+                                        stopCondition.condition !== 'until' &&
                                         styles.disabled
                                     }`}
                                 >
                                     <MiniCalendarDropDown
                                         title="종료 날짜"
-                                        date={endCondition.date || date}
+                                        date={stopCondition.until || date}
                                         changeDate={changeEndDate}
                                         disabled={
-                                            endCondition.condition !== 'until'
+                                            stopCondition.condition !== 'until'
                                         }
                                         bodyStyle={{
                                             top: '-245px',

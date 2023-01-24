@@ -37,31 +37,18 @@ export const ProtectionLevelText: { [key: number]: string } = {
     [ProtectionLevel.private]: '비공개',
 };
 
+export interface Recurrence {
+    isRecurring: boolean;
+    cronjob: string;
+    endDate: string;
+}
+
 export enum Repeat {
     none, // no repeat
     daily, // 매일, 며칠마다
     weekly, // 매주 무슨 요일, 몇 주마다 무슨 요일(커스텀)
     monthly, // 매월 며칠, 매월 몇 번째 무슨 요일, 몇 달마다 며칠, 몇 달마다 몇 번째 무슨 요일
     yearly, // 매년 몇월 며칠, 매년 몇월 몇 번째 무슨 요일, 몇 년마다 몇월 며칠, 몇 년마다 몇월 몇 번째 무슨 요일
-}
-
-export interface RecurrenceRule {
-    repeat: Repeat;
-    interval: number; // e.g. every '3' days
-    month?: number; // e.g. on 'february' 3rd every year
-    date?: number; // e.g. on '15'th of every month
-    days?: number[]; // e.g. every 'monday' and 'tuesday'
-    ordinal?: number; // e.g. '3'rd Wednesday of every month
-    until?: string; // e.g. until 2023-02-08
-    count?: number; // e.g. repeat '3' times
-    never?: boolean;
-    last?: boolean;
-}
-
-export interface Recurrence {
-    isRecurring: boolean;
-    cronjob: string;
-    endDate: string;
 }
 
 export type Period = Exclude<Repeat, Repeat.none>;
@@ -72,3 +59,18 @@ export const PeriodText: { [key: number]: string } = {
     [Repeat.monthly]: '개월',
     [Repeat.yearly]: '년',
 };
+
+export type DateOption = 'specific' | 'last' | 'ordinal';
+
+export type StopCondition = 'never' | 'until' | 'count';
+
+export interface RecurrenceRule {
+    repeat: Repeat;
+    interval: number; // e.g. every '3' days
+    dateOption?: DateOption;
+    days?: number[]; // e.g. every 'monday' and 'tuesday'
+    ordinal?: number; // e.g. '3'rd Wednesday of every month
+    stopCondition: StopCondition;
+    until?: Date; // e.g. until 2023-02-08
+    count?: number; // e.g. repeat '3' times
+}

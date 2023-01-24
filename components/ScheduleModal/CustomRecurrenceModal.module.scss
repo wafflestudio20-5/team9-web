@@ -68,7 +68,7 @@
     padding: 18px 24px 12px 24px;
 
     &.flexible {
-        max-height: calc(100vh - 130px);
+        max-height: calc(100vh - 200px);
         overflow: auto;
     }
 
@@ -136,7 +136,7 @@
     }
 }
 
-.endConditionContainer .endCondition {
+.stopConditionContainer .stopCondition {
     display: flex;
     flex-direction: column;
     margin-top: 12px;
