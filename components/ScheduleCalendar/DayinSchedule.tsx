@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './DayinSchedule.module.scss';
 
 import { useDateContext } from '@contexts/DateContext';
-import { formatDayToKr } from '@utils/formatDay';
+import { DAYS } from '@utils/formattings';
 
 // interface name overlaps & is different
 // Need to properly decide data structure for further development
@@ -24,7 +24,7 @@ export default function DayinSchedule({ dayData }: { dayData: DayData }) {
                 </div>
                 <div
                     className={styles.monthDay}
-                >{`${monthNow}월, ${formatDayToKr(day)}`}</div>
+                >{`${monthNow}월, ${DAYS[day]}`}</div>
             </div>
 
             <div>

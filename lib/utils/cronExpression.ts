@@ -1,4 +1,4 @@
-import { DAYS } from '@components/ScheduleModal/RecurrenceDropDown';
+import { DAYS } from '@utils/formattings';
 
 const LAST = 'L';
 const INTERVAL = '/';

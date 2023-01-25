@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 
 import styles from './CustomRecurrenceModal.module.scss';
-import { DAYS } from './RecurrenceDropDown';
 
 import {
     DropDown,
@@ -29,7 +28,7 @@ import {
 } from '@customTypes/ScheduleTypes';
 import DropDownIcon from '@images/dropdown_icon.svg';
 import { errorToast } from '@utils/customAlert';
-import { formatFullDate } from '@utils/formatDate';
+import { DAYS, formatDate } from '@utils/formattings';
 
 interface CustomRecurrenceModalProps {
     date: Date;
@@ -144,7 +143,7 @@ export default function CustomRecurrenceModal({
                 break;
             case 'until':
                 newRule.until = stopCondition.until;
-                text += `, 종료일: ${formatFullDate(stopCondition.until)}`;
+                text += `, 종료일: ${formatDate(stopCondition.until)}`;
                 break;
             case 'never':
             default:

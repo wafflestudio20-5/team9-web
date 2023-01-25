@@ -35,7 +35,7 @@ import {
     successToast,
     warningModal,
 } from '@utils/customAlert';
-import { formatFullDate } from '@utils/formatDate';
+import { formatDate, formatDateWithTime } from '@utils/formattings';
 
 function ErrorMessage({ message }: { message: string }) {
     return <span className={styles.errorMessage}>{message}</span>;
@@ -120,8 +120,8 @@ export default function ScheduleEditorModal({
 
         const urlParams: CalendarURLParams = {
             pk: user.pk,
-            from: formatFullDate(startDate),
-            to: formatFullDate(endDate),
+            from: formatDate(startDate),
+            to: formatDate(endDate),
         };
 
         try {
@@ -193,8 +193,8 @@ export default function ScheduleEditorModal({
 
         const newSchedule: Schedule = {
             title: title,
-            start_at: formatFullDate(startDate, true),
-            end_at: formatFullDate(endDate, true),
+            start_at: formatDateWithTime(startDate),
+            end_at: formatDateWithTime(endDate),
             description: description,
             protection_level: protectionLevel,
             show_content: !hideDetails,

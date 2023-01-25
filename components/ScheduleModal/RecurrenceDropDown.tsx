@@ -20,11 +20,9 @@ import {
     Repeat,
 } from '@customTypes/ScheduleTypes';
 import DropdownIcon from '@images/dropdown_icon.svg';
-import { formatFullDate } from '@utils/formatDate';
+import { DAYS, formatDateWithTime } from '@utils/formattings';
 
 // 반복 안함, 매일, 매주 *요일, 매월 *일,매월 *번째 *요일, 매년 *월 *일, 맞춤 설정
-
-export const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 const OrdinalText: { [key: number]: string } = {
     1: '첫 번째',
@@ -216,7 +214,7 @@ export default function RecurrenceDropDown({
         const endDate = new Date(date);
         const duration = interval * (count - 1);
         endDate.setDate(date.getDate() + duration);
-        return formatFullDate(endDate, true);
+        return formatDateWithTime(endDate);
     };
 
     const calculateWeeklyEndDate = (
@@ -236,7 +234,7 @@ export default function RecurrenceDropDown({
         const endDate = new Date(date);
         const duration = gap + 7 * interval * (lastStartDayRepeatCnt - 1);
         endDate.setDate(date.getDate() + duration);
-        return formatFullDate(endDate, true);
+        return formatDateWithTime(endDate);
     };
 
     const calculateOrdinalEndDate = (endDate: Date, ordinal: number) => {
@@ -268,11 +266,11 @@ export default function RecurrenceDropDown({
         } else if (dateOption === 'last') {
             endDate.setMonth(endDate.getMonth() + 1, 0);
         } else if (dateOption === 'ordinal') {
-            if (!ordinal) return formatFullDate(date, true);
+            if (!ordinal) return formatDateWithTime(date);
             calculateOrdinalEndDate(endDate, ordinal);
         }
 
-        return formatFullDate(endDate, true);
+        return formatDateWithTime(endDate);
     };
 
     const calculateYearlyEndDate = (
@@ -290,10 +288,10 @@ export default function RecurrenceDropDown({
         } else if (dateOption === 'last') {
             endDate.setMonth(3, 0); // last day of Feb (28 or 29)
         } else if (dateOption === 'ordinal') {
-            if (!ordinal) return formatFullDate(date, true);
+            if (!ordinal) return formatDateWithTime(date);
             calculateOrdinalEndDate(endDate, ordinal);
         }
-        return formatFullDate(endDate, true);
+        return formatDateWithTime(endDate);
     };
 
     const getEndDate = (rule: RecurrenceRule) => {
@@ -303,13 +301,13 @@ export default function RecurrenceDropDown({
         temp.setFullYear(
             date.getFullYear() + (rule.repeat === Repeat.yearly ? 5 : 1),
         );
-        const defaultEndDate = formatFullDate(temp, true); // after 1 year (after 5 years for yearly schedule)
+        const defaultEndDate = formatDateWithTime(temp); // after 1 year (after 5 years for yearly schedule)
 
         switch (rule.stopCondition) {
             case 'until':
                 if (!rule.until) return defaultEndDate;
                 rule.until.setHours(date.getHours(), date.getMinutes());
-                return formatFullDate(rule.until, true);
+                return formatDateWithTime(rule.until);
 
             case 'count':
                 if (!rule.count) return defaultEndDate;
@@ -340,7 +338,7 @@ export default function RecurrenceDropDown({
                             rule.ordinal,
                         );
                 }
-                return formatFullDate(date, true);
+                return formatDateWithTime(date);
 
             case 'never':
             default:

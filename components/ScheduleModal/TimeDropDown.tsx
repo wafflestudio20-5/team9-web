@@ -6,7 +6,7 @@ import {
     DropDownHeader,
     useDropDown,
 } from '@components/DropDown';
-import { formatTime } from '@utils/formatTime';
+import { formatTime } from '@utils/formattings';
 
 interface TimeDropDownProps {
     title: string;

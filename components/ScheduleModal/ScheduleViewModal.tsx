@@ -27,8 +27,7 @@ import {
     successToast,
     warningModal,
 } from '@utils/customAlert';
-import { formatDayToKr } from '@utils/formatDay';
-import { formatTime } from '@utils/formatTime';
+import { DAYS, formatTime } from '@utils/formattings';
 
 function ParticipantItem({ participant }: { participant: Participant }) {
     return (
@@ -163,9 +162,9 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
             different = true;
         }
         if (different || startDate.getDate() !== endDate.getDate()) {
-            result += `${
-                different ? ' ' : ''
-            }${endDate.getDate()}일(${formatDayToKr(endDate.getDay())})`;
+            result += `${different ? ' ' : ''}${endDate.getDate()}일(${
+                DAYS[endDate.getDay()]
+            })`;
             different = true;
         }
 
@@ -218,7 +217,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                                 {startDate.getFullYear()}년{' '}
                                 {startDate.getMonth() + 1}월{' '}
                                 {startDate.getDate()}
-                                일({formatDayToKr(startDate.getDay())}){' '}
+                                일({DAYS[startDate.getDay()]}){' '}
                                 {formatTime(startDate)}
                             </span>
                             {startDate.toString() !== endDate.toString() && (
