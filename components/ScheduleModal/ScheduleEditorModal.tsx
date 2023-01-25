@@ -21,7 +21,6 @@ import {
     ProtectionLevel,
     Schedule,
     Participant,
-    Repeat,
     Recurrence,
 } from '@customTypes/ScheduleTypes';
 import CloseIcon from '@images/close_icon.svg';
@@ -29,6 +28,7 @@ import LockIcon from '@images/lock_icon.svg';
 import PeopleIcon from '@images/people_icon.svg';
 import TextIcon from '@images/text_icon.svg';
 import TimeIcon from '@images/time_icon.svg';
+import { parseCronExpression } from '@utils/cronExpression';
 import {
     errorToast,
     radioRecurringModal,
@@ -59,9 +59,9 @@ export default function ScheduleEditorModal({
     );
     const [endDate, setEndDate] = useState<Date>(new Date(initSchedule.end_at));
     const [recurrence, setRecurrence] = useState<Recurrence>({
-        isRecurring: false,
-        cron_expr: '',
-        recurring_end_at: '',
+        isRecurring: initSchedule.is_recurring,
+        cron_expr: initSchedule.cron_expr,
+        recurring_end_at: initSchedule.recurring_end_at,
     });
     const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
         initSchedule.protection_level,
@@ -218,7 +218,7 @@ export default function ScheduleEditorModal({
                     );
                     if (!isConfirmed) return;
 
-                    if (value === '이 일정') {
+                    if (value === 'only') {
                         isSuccessful = await editSchdule(
                             initSchedule.schedule_groups[0],
                             newSchedule,
@@ -353,11 +353,25 @@ export default function ScheduleEditorModal({
                                             />
                                         )}
                                     </div>
-                                    <RecurrenceDropDown
-                                        date={startDate}
-                                        recurrence={recurrence}
-                                        setRecurrence={setRecurrence}
-                                    />
+                                    {taskType === 'create' ? (
+                                        <RecurrenceDropDown
+                                            date={startDate}
+                                            recurrence={recurrence}
+                                            setRecurrence={setRecurrence}
+                                        />
+                                    ) : (
+                                        initSchedule.is_recurring && (
+                                            <div
+                                                className={
+                                                    styles.recurrenceText
+                                                }
+                                            >
+                                                {parseCronExpression(
+                                                    initSchedule.cron_expr,
+                                                )}
+                                            </div>
+                                        )
+                                    )}
                                 </div>
                             </div>
                             <div className={styles.participants}>

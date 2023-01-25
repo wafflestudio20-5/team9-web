@@ -20,6 +20,7 @@ import EditIcon from '@images/edit_icon.svg';
 import LockIcon from '@images/lock_icon.svg';
 import PeopleIcon from '@images/people_icon.svg';
 import TextIcon from '@images/text_icon.svg';
+import { parseCronExpression } from '@utils/cronExpression';
 import {
     errorToast,
     radioRecurringModal,
@@ -34,7 +35,7 @@ function ParticipantItem({ participant }: { participant: Participant }) {
         <li className={styles.participant}>
             <AccountDefaultIcon className="icon" height="24px" />
             <div>
-                <span>{participant.username}</span>
+                <span className={styles.username}>{participant.username}</span>
                 <span className={styles.email}>{participant.email}</span>
             </div>
         </li>
@@ -73,6 +74,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         is_recurring: schedule.is_recurring,
         cron_expr: schedule.cron_expr,
         recurring_end_at: schedule.recurring_end_at,
+        schedule_groups: schedule.schedule_groups,
     };
 
     const deleteSchedule = async (
@@ -113,7 +115,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
             if (!isConfirmed) return;
 
             let isDeleted = false;
-            if (value === '이 일정') {
+            if (value === 'only') {
                 isDeleted = await deleteSchedule(
                     schedule.id,
                     accessToken,
@@ -210,19 +212,31 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             ? '바쁨'
                             : schedule.title}
                     </h2>
-                    <div className={styles.date}>
-                        <span>
-                            {startDate.getFullYear()}년{' '}
-                            {startDate.getMonth() + 1}월 {startDate.getDate()}
-                            일({formatDayToKr(startDate.getDay())}){' '}
-                            {formatTime(startDate)}
-                        </span>
-                        {startDate.toString() !== endDate.toString() && (
-                            <span className={styles.dash}>-</span>
+                    <div className={styles.times}>
+                        <div className={styles.date}>
+                            <span>
+                                {startDate.getFullYear()}년{' '}
+                                {startDate.getMonth() + 1}월{' '}
+                                {startDate.getDate()}
+                                일({formatDayToKr(startDate.getDay())}){' '}
+                                {formatTime(startDate)}
+                            </span>
+                            {startDate.toString() !== endDate.toString() && (
+                                <span className={styles.dash}>-</span>
+                            )}
+                            <span>
+                                {mergeScheduleEndDateTime(startDate, endDate)}
+                            </span>
+                        </div>
+                        {schedule.is_recurring && (
+                            <div className={styles.recurrence}>
+                                <span>
+                                    {parseCronExpression(schedule.cron_expr)}{' '}
+                                    (종료일:{' '}
+                                    {schedule.recurring_end_at.split(' ')[0]})
+                                </span>
+                            </div>
                         )}
-                        <span>
-                            {mergeScheduleEndDateTime(startDate, endDate)}
-                        </span>
                     </div>
                     {user?.pk !== schedule.created_by &&
                     !schedule.show_content ? (

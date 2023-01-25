@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
+import React, {
+    Dispatch,
+    SetStateAction,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 
 import {
     DropDown,
@@ -168,7 +174,7 @@ export default function RecurrenceDropDown({
         if (dateOption === 'specific') {
             return `${time} ${date.getDate()} ${date.getMonth()} * */${interval}`;
         } else if (dateOption === 'last') {
-            return `${time} L 2 * */${interval}`;
+            return `${time} L 1 * */${interval}`;
         } else {
             if (ordinal === 5) {
                 return `${time} * ${date.getMonth()} ${date.getDay()}L */${interval}`;
@@ -353,6 +359,14 @@ export default function RecurrenceDropDown({
         setRuleText(text);
         closeDropDown();
     };
+
+    // reset recurrence rule when date changed
+    useEffect(() => {
+        changeRecurrenceRule(
+            defaultRepeatOptions[0].rule,
+            defaultRepeatOptions[0].text,
+        );
+    }, [date]);
 
     return (
         <DropDown dropDownRef={dropDownRef} style={{ width: 'fit-content' }}>

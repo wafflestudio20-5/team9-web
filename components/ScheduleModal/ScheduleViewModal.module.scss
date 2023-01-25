@@ -36,10 +36,10 @@
     max-height: calc(100vh - 180px);
     overflow: auto;
 
-    .title {
+    h2.title {
         display: flex;
         align-items: center;
-        margin: 0;
+        margin: 0 0 8px 0;
 
         .color {
             margin-left: 3px;
@@ -64,14 +64,25 @@
         }
     }
 
-    .date {
+    .times {
+        display: block;
         margin-left: 52px;
+
+        > div {
+            font-size: small;
+        }
+    }
+
+    .date {
         gap: 5px;
-        font-size: small;
 
         .dash {
             margin: 0 5px;
         }
+    }
+
+    .recurrence {
+        margin-top: 5px;
     }
 
     .participants {
@@ -96,8 +107,12 @@
             flex-direction: column;
         }
 
-        .email {
+        .username {
             font-size: small;
+        }
+
+        .email {
+            font-size: 11px;
         }
     }
 

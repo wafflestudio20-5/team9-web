@@ -27,6 +27,9 @@ export default function CreateScheduleButton({
         show_content: true,
         description: '',
         participants: [],
+        is_recurring: false,
+        cron_expr: '',
+        recurring_end_at: '',
     };
 
     return (
