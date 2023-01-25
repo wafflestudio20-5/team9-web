@@ -6,6 +6,8 @@ import React, {
     useState,
 } from 'react';
 
+import optionStyles from './DisabledDateOption.module.scss';
+
 import {
     DropDown,
     DropDownBody,
@@ -21,8 +23,6 @@ import {
 } from '@customTypes/ScheduleTypes';
 import DropdownIcon from '@images/dropdown_icon.svg';
 import { DAYS, formatDateWithTime } from '@utils/formattings';
-
-// 반복 안함, 매일, 매주 *요일, 매월 *일,매월 *번째 *요일, 매년 *월 *일, 맞춤 설정
 
 const OrdinalText: { [key: number]: string } = {
     1: '첫 번째',
@@ -182,7 +182,7 @@ export default function RecurrenceDropDown({
         }
     };
 
-    const getCronjob = (rule: RecurrenceRule) => {
+    const getCronExpression = (rule: RecurrenceRule) => {
         if (rule.repeat === Repeat.none) return '';
 
         switch (rule.repeat) {
@@ -347,9 +347,13 @@ export default function RecurrenceDropDown({
     };
 
     const changeRecurrenceRule = (newRule: RecurrenceRule, text: string) => {
+        // unable to handle 'last' and 'ordinal' rules due to sever side logic
+        if (newRule.dateOption === 'last' || newRule.dateOption === 'ordinal')
+            return;
+
         const newRecurrence: Recurrence = {
             isRecurring: newRule.repeat !== Repeat.none,
-            cron_expr: getCronjob(newRule),
+            cron_expr: getCronExpression(newRule),
             recurring_end_at: getEndDate(newRule),
         };
 
@@ -358,13 +362,19 @@ export default function RecurrenceDropDown({
         closeDropDown();
     };
 
-    // reset recurrence rule when date changed
+    // reset recurrence rule to none when date changed
     useEffect(() => {
         changeRecurrenceRule(
             defaultRepeatOptions[0].rule,
             defaultRepeatOptions[0].text,
         );
     }, [date]);
+
+    const getDisabledClass = (dateOption?: DateOption) => {
+        if (dateOption === 'last' || dateOption === 'ordinal') {
+            return optionStyles.disabled;
+        }
+    };
 
     return (
         <DropDown dropDownRef={dropDownRef} style={{ width: 'fit-content' }}>
@@ -399,6 +409,9 @@ export default function RecurrenceDropDown({
                                         option.text,
                                     )
                                 }
+                                className={getDisabledClass(
+                                    option.rule.dateOption,
+                                )}
                             >
                                 {option.text}
                             </li>

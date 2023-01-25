@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 
 import styles from './CustomRecurrenceModal.module.scss';
+import optionStyles from './DisabledDateOption.module.scss';
 
 import {
     DropDown,
@@ -480,6 +481,9 @@ function DateOptionDropDown({
     };
 
     const changeDateOption = (option: DateOption, text: string) => {
+        // unable to handle 'last' and 'ordinal' rules due to sever side logic
+        if (['last', 'ordinal'].includes(option)) return;
+
         setDateOption({ option, text });
         closeDropDown();
     };
@@ -521,6 +525,11 @@ function DateOptionDropDown({
                                         changeDateOption(v.option, v.text)
                                     }
                                     key={i}
+                                    className={
+                                        v.option !== 'specific'
+                                            ? optionStyles.disabled
+                                            : undefined
+                                    }
                                 >
                                     {getDateOptionFullText(v.text)}
                                 </li>

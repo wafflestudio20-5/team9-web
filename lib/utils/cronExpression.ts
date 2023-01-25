@@ -4,6 +4,8 @@ const LAST = 'L';
 const INTERVAL = '/';
 
 export const parseCronExpression = (expr: string) => {
+    if (!expr) return '반복 안 함';
+
     const [date, month, days, year] = expr.split(' ').slice(2);
     let text = '';
 
