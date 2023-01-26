@@ -22,6 +22,7 @@ import {
     Schedule,
     Participant,
     Recurrence,
+    FullSchedule,
 } from '@customTypes/ScheduleTypes';
 import CloseIcon from '@images/close_icon.svg';
 import LockIcon from '@images/lock_icon.svg';
@@ -144,9 +145,9 @@ export default function ScheduleEditorModal({
         editRecurring: boolean,
     ) => {
         try {
-            let res;
+            let newData;
             if (editRecurring) {
-                res = await editRecurringScheduleAPI(
+                const res = await editRecurringScheduleAPI(
                     id,
                     {
                         ...newSchedule,
@@ -155,11 +156,15 @@ export default function ScheduleEditorModal({
                     },
                     accessToken,
                 );
+                newData = res.data.schedules.find(
+                    (s: FullSchedule) => s.id === newSchedule.id,
+                );
             } else {
-                res = await editScheduleAPI(id, newSchedule, accessToken);
+                const res = await editScheduleAPI(id, newSchedule, accessToken);
+                newData = res.data;
             }
             successToast('일정이 수정되었습니다.');
-            openModal(MODAL_NAMES.scheduleView, { schedule: res.data });
+            openModal(MODAL_NAMES.scheduleView, { schedule: newData });
             return true;
         } catch (error) {
             const message = '일정을 수정하지 못했습니다.';
@@ -189,6 +194,7 @@ export default function ScheduleEditorModal({
         if (!isValid) return;
 
         const newSchedule: Schedule = {
+            id: initSchedule.id,
             title: title,
             start_at: formatDateWithTime(startDate),
             end_at: formatDateWithTime(endDate),
