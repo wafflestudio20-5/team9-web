@@ -35,7 +35,7 @@ import {
     successToast,
     warningModal,
 } from '@utils/customAlert';
-import { formatDate, formatDateWithTime } from '@utils/formattings';
+import { formatDate, formatDateWithTime } from '@utils/formatting';
 
 function ErrorMessage({ message }: { message: string }) {
     return <span className={styles.errorMessage}>{message}</span>;

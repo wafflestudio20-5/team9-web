@@ -27,7 +27,7 @@ import {
     successToast,
     warningModal,
 } from '@utils/customAlert';
-import { DAYS, formatTime } from '@utils/formattings';
+import { DAYS, formatTime } from '@utils/formatting';
 
 function ParticipantItem({ participant }: { participant: Participant }) {
     return (

@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './DayinSchedule.module.scss';
 
 import { useDateContext } from '@contexts/DateContext';
-import { DAYS } from '@utils/formattings';
+import { DAYS } from '@utils/formatting';
 
 // interface name overlaps & is different
 // Need to properly decide data structure for further development

@@ -4,7 +4,7 @@ import styles from './MiniCalendar.module.scss';
 
 import BeforeIcon from '@images/before_icon.svg';
 import NextIcon from '@images/next_icon.svg';
-import { DAYS } from '@utils/formattings';
+import { DAYS } from '@utils/formatting';
 
 interface MiniCalendarProps {
     dateVariable: Date;

@@ -22,7 +22,7 @@ import {
     Repeat,
 } from '@customTypes/ScheduleTypes';
 import DropdownIcon from '@images/dropdown_icon.svg';
-import { DAYS, formatDateWithTime } from '@utils/formattings';
+import { DAYS, formatDateWithTime } from '@utils/formatting';
 
 const OrdinalText: { [key: number]: string } = {
     1: '첫 번째',

@@ -1,4 +1,4 @@
-import { DAYS } from '@utils/formattings';
+import { DAYS } from '@utils/formatting';
 
 const LAST = 'L';
 const INTERVAL = '/';

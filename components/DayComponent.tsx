@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './DayComponent.module.scss';
 
 import { useCalendarContext } from '@contexts/CalendarContext';
-import { DAYS } from '@utils/formattings';
+import { DAYS } from '@utils/formatting';
 
 export default function DayComponent({
     isToday,

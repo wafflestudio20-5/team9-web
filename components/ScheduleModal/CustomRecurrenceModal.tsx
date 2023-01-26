@@ -29,7 +29,7 @@ import {
 } from '@customTypes/ScheduleTypes';
 import DropDownIcon from '@images/dropdown_icon.svg';
 import { errorToast } from '@utils/customAlert';
-import { DAYS, formatDate } from '@utils/formattings';
+import { DAYS, formatDate } from '@utils/formatting';
 
 interface CustomRecurrenceModalProps {
     date: Date;
