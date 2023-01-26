@@ -34,7 +34,9 @@ export default function CreateScheduleButton({
 
     return (
         <div
-            className={styles.createScheduleButton}
+            className={`${styles.createScheduleButton} ${
+                text && styles.withText
+            }`}
             onClick={() =>
                 openModal(MODAL_NAMES.scheduleEditor, {
                     taskType: 'create',
@@ -46,7 +48,7 @@ export default function CreateScheduleButton({
             <div className={styles.iconWrapper}>
                 <AddScheduleIcon
                     className="icon"
-                    height="50px"
+                    height={text ? '40px' : '50px'}
                     viewBox="46 46 469 469"
                 />
             </div>

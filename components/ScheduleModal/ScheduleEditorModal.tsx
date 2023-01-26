@@ -358,6 +358,7 @@ export default function ScheduleEditorModal({
                                             setRecurrence={setRecurrence}
                                         />
                                     ) : (
+                                        // can't edit recurring rule
                                         initSchedule.is_recurring && (
                                             <div
                                                 className={
