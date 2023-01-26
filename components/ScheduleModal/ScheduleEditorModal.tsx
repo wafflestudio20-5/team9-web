@@ -216,19 +216,19 @@ export default function ScheduleEditorModal({
                     );
                     if (!isConfirmed) return;
 
-                    if (value === 'only') {
-                        isSuccessful = await editSchdule(
-                            initSchedule.recurring_schedule_group,
-                            newSchedule,
-                            accessToken,
-                            false,
-                        );
-                    } else {
+                    if (value === 'all') {
                         isSuccessful = await editSchdule(
                             initSchedule.recurring_schedule_group,
                             newSchedule,
                             accessToken,
                             true,
+                        );
+                    } else {
+                        isSuccessful = await editSchdule(
+                            initSchedule.id,
+                            newSchedule,
+                            accessToken,
+                            false,
                         );
                     }
                 } else {
