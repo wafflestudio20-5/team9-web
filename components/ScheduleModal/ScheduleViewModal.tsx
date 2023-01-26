@@ -230,9 +230,14 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                         {schedule.is_recurring && (
                             <div className={styles.recurrence}>
                                 <span>
-                                    {parseCronExpression(schedule.cron_expr)}{' '}
+                                    {schedule.cron_expr &&
+                                        parseCronExpression(
+                                            schedule.cron_expr,
+                                        )}{' '}
                                     (종료일:{' '}
-                                    {schedule.recurring_end_at.split(' ')[0]})
+                                    {schedule.recurring_end_at &&
+                                        schedule.recurring_end_at.split(' ')[0]}
+                                    )
                                 </span>
                             </div>
                         )}

@@ -72,9 +72,7 @@ export default function ScheduleEditorModal({
     const [description, setDescription] = useState<string>(
         initSchedule.description ?? '',
     );
-    const [participants, setParticipants] = useState<{ pk: number }[]>(
-        initSchedule.participants ?? [],
-    );
+    const [participants, setParticipants] = useState<{ pk: number }[]>([]);
     const [dateValidity, setDateValidity] = useState({
         isValid: true,
         message: '',
@@ -125,12 +123,7 @@ export default function ScheduleEditorModal({
         };
 
         try {
-            const res = await createScheduleAPI(
-                newSchedule,
-                urlParams,
-                accessToken,
-            );
-            console.log(res.data);
+            await createScheduleAPI(newSchedule, urlParams, accessToken);
             successToast('일정이 추가되었습니다.');
             return true;
         } catch (error) {
@@ -155,7 +148,11 @@ export default function ScheduleEditorModal({
             if (editRecurring) {
                 res = await editRecurringScheduleAPI(
                     id,
-                    newSchedule,
+                    {
+                        ...newSchedule,
+                        cron_expr: undefined,
+                        recurring_end_at: undefined,
+                    },
                     accessToken,
                 );
             } else {
@@ -195,7 +192,7 @@ export default function ScheduleEditorModal({
             title: title,
             start_at: formatDateWithTime(startDate),
             end_at: formatDateWithTime(endDate),
-            description: description,
+            description: description || null,
             protection_level: protectionLevel,
             show_content: !hideDetails,
             participants: participants,
@@ -210,10 +207,10 @@ export default function ScheduleEditorModal({
                 isSuccessful = await createSchedule(newSchedule, accessToken);
                 break;
             case 'edit':
-                if (!initSchedule.id || !initSchedule.recurring_schedule_group)
-                    return;
+                if (!initSchedule.id) return;
 
                 if (initSchedule.is_recurring) {
+                    if (!initSchedule.recurring_schedule_group) return;
                     const { value, isConfirmed } = await radioRecurringModal(
                         '수정',
                     );
@@ -367,9 +364,16 @@ export default function ScheduleEditorModal({
                                                     styles.recurrenceText
                                                 }
                                             >
-                                                {parseCronExpression(
-                                                    initSchedule.cron_expr,
-                                                )}
+                                                {initSchedule.cron_expr &&
+                                                    parseCronExpression(
+                                                        initSchedule.cron_expr,
+                                                    )}{' '}
+                                                (종료일:{' '}
+                                                {initSchedule.recurring_end_at &&
+                                                    initSchedule.recurring_end_at.split(
+                                                        ' ',
+                                                    )[0]}
+                                                )
                                             </div>
                                         )
                                     )}
@@ -427,7 +431,7 @@ export default function ScheduleEditorModal({
                                     rows={5}
                                     value={description}
                                     onChange={e =>
-                                        setDescription(e.target.value)
+                                        setDescription(e.target.value || '')
                                     }
                                     placeholder="일정에 대한 설명을 간략히 적어주세요."
                                 />

@@ -134,13 +134,11 @@ export default function RecurrenceDropDown({
     ];
 
     const getDailyCron = (interval: number) => {
-        const time = `${date.getMinutes()} ${date.getHours()}`;
-        return `${time} */${interval} * * *`;
+        return `* * */${interval} * * *`;
     };
 
     const getWeeklyCron = (interval: number, days: number[]) => {
-        const time = `${date.getMinutes()} ${date.getHours()}`;
-        return `${time} * * ${days.join(',')}/${interval} *`;
+        return `* * * * ${days.join(',')}/${interval} *`;
     };
 
     const getMonthlyCron = (
@@ -148,16 +146,15 @@ export default function RecurrenceDropDown({
         dateOption: DateOption,
         ordinal?: number,
     ) => {
-        const time = `${date.getMinutes()} ${date.getHours()}`;
         if (dateOption === 'specific') {
-            return `${time} ${date.getDate()} */${interval} * *`;
+            return `* * ${date.getDate()} */${interval} * *`;
         } else if (dateOption === 'last') {
-            return `${time} L */${interval} * *`;
+            return `* * L */${interval} * *`;
         } else {
             if (ordinal === 5) {
-                return `${time} * */${interval} ${date.getDay()}L *`;
+                return `* * * */${interval} ${date.getDay()}L *`;
             } else {
-                return `${time} * */${interval} ${date.getDay()}#${ordinal} *`;
+                return `* * * */${interval} ${date.getDay()}#${ordinal} *`;
             }
         }
     };
@@ -170,20 +167,20 @@ export default function RecurrenceDropDown({
         const time = `${date.getMinutes()} ${date.getHours()}`;
 
         if (dateOption === 'specific') {
-            return `${time} ${date.getDate()} ${date.getMonth()} * */${interval}`;
+            return `* * ${date.getDate()} ${date.getMonth()} * */${interval}`;
         } else if (dateOption === 'last') {
             return `${time} L 1 * */${interval}`;
         } else {
             if (ordinal === 5) {
-                return `${time} * ${date.getMonth()} ${date.getDay()}L */${interval}`;
+                return `* * * ${date.getMonth()} ${date.getDay()}L */${interval}`;
             } else {
-                return `${time} * ${date.getMonth()} ${date.getDay()}#${ordinal} */${interval}`;
+                return `* * * ${date.getMonth()} ${date.getDay()}#${ordinal} */${interval}`;
             }
         }
     };
 
     const getCronExpression = (rule: RecurrenceRule) => {
-        if (rule.repeat === Repeat.none) return '';
+        if (rule.repeat === Repeat.none) return null;
 
         switch (rule.repeat) {
             case Repeat.daily:
@@ -295,7 +292,7 @@ export default function RecurrenceDropDown({
     };
 
     const getEndDate = (rule: RecurrenceRule) => {
-        if (rule.repeat === Repeat.none) return '';
+        if (rule.repeat === Repeat.none) return null;
 
         const temp = new Date(date);
         temp.setFullYear(

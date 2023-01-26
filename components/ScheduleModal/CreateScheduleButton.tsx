@@ -28,8 +28,8 @@ export default function CreateScheduleButton({
         description: '',
         participants: [],
         is_recurring: false,
-        cron_expr: '',
-        recurring_end_at: '',
+        cron_expr: null,
+        recurring_end_at: null,
     };
 
     return (

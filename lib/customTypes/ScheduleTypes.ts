@@ -12,11 +12,11 @@ export interface Schedule {
     end_at: string;
     protection_level: number;
     show_content: boolean;
-    description?: string;
-    participants?: { pk: number }[];
+    description: string | null;
+    participants: { pk: number }[];
     is_recurring: boolean;
-    cron_expr: string;
-    recurring_end_at: string;
+    cron_expr?: string | null;
+    recurring_end_at?: string | null;
     readonly recurring_schedule_group?: number;
 }
 
@@ -25,7 +25,7 @@ export interface FullSchedule extends Readonly<Omit<Schedule, 'participants'>> {
     created_by: number;
     created_at: string;
     updated_at: string;
-    participants?: Participant[];
+    participants: Participant[];
     recurring_schedule_group: number;
 }
 
@@ -43,16 +43,16 @@ export const ProtectionLevelText: { [key: number]: string } = {
 
 export interface Recurrence {
     isRecurring: boolean;
-    cron_expr: string;
-    recurring_end_at: string;
+    cron_expr?: string | null;
+    recurring_end_at?: string | null;
 }
 
 export enum Repeat {
-    none, // no repeat
-    daily, // 매일, 며칠마다
-    weekly, // 매주 무슨 요일, 몇 주마다 무슨 요일(커스텀)
-    monthly, // 매월 며칠, 매월 몇 번째 무슨 요일, 몇 달마다 며칠, 몇 달마다 몇 번째 무슨 요일
-    yearly, // 매년 몇월 며칠, 매년 몇월 몇 번째 무슨 요일, 몇 년마다 몇월 며칠, 몇 년마다 몇월 몇 번째 무슨 요일
+    none,
+    daily,
+    weekly,
+    monthly,
+    yearly,
 }
 
 export type Period = Exclude<Repeat, Repeat.none>;
@@ -69,12 +69,12 @@ export type DateOption = 'specific' | 'last' | 'ordinal';
 export type StopCondition = 'never' | 'until' | 'count';
 
 export interface RecurrenceRule {
-    repeat: Repeat; // none, daily, weekly, monthly, yearly
-    interval: number; // e.g. every '3' days
-    dateOption?: DateOption; // 'specific' | 'last' | 'ordinal'  e.g. 'last' day of every month
-    days?: number[]; // e.g. every 'monday' and 'tuesday'
-    ordinal?: number; // e.g. '3'rd Wednesday of every month
-    stopCondition: StopCondition; // 'never' | 'until' | 'count'
-    until?: Date; // e.g. until 2023-02-08
-    count?: number; // e.g. repeat '3' times
+    repeat: Repeat;
+    interval: number;
+    dateOption?: DateOption;
+    days?: number[];
+    ordinal?: number;
+    stopCondition: StopCondition;
+    until?: Date;
+    count?: number;
 }
