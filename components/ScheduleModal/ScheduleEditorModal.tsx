@@ -138,7 +138,7 @@ export default function ScheduleEditorModal({
     };
 
     const editSchdule = async (
-        id: number,
+        id: number, // scheduleId or groupId
         newSchedule: Schedule,
         accessToken: string | null,
         editRecurring: boolean,
