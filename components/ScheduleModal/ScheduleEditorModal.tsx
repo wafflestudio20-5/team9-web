@@ -210,7 +210,8 @@ export default function ScheduleEditorModal({
                 isSuccessful = await createSchedule(newSchedule, accessToken);
                 break;
             case 'edit':
-                if (!initSchedule.id || !initSchedule.schedule_groups) return;
+                if (!initSchedule.id || !initSchedule.recurring_schedule_group)
+                    return;
 
                 if (initSchedule.is_recurring) {
                     const { value, isConfirmed } = await radioRecurringModal(
@@ -220,14 +221,14 @@ export default function ScheduleEditorModal({
 
                     if (value === 'only') {
                         isSuccessful = await editSchdule(
-                            initSchedule.schedule_groups[0],
+                            initSchedule.recurring_schedule_group,
                             newSchedule,
                             accessToken,
                             false,
                         );
                     } else {
                         isSuccessful = await editSchdule(
-                            initSchedule.schedule_groups[0],
+                            initSchedule.recurring_schedule_group,
                             newSchedule,
                             accessToken,
                             true,

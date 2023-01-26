@@ -73,7 +73,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         is_recurring: schedule.is_recurring,
         cron_expr: schedule.cron_expr,
         recurring_end_at: schedule.recurring_end_at,
-        schedule_groups: schedule.schedule_groups,
+        recurring_schedule_group: schedule.recurring_schedule_group,
     };
 
     const deleteSchedule = async (
@@ -122,7 +122,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                 );
             } else {
                 isDeleted = await deleteSchedule(
-                    schedule.schedule_groups[0],
+                    schedule.recurring_schedule_group,
                     accessToken,
                     true,
                 );
