@@ -37,7 +37,7 @@ export default function LoginPage() {
             });
             router.push('/');
         }
-    });
+    }, []);
 
     return (
         <>

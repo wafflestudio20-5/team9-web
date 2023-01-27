@@ -8,7 +8,7 @@
     height: 100vh;
     width: 100vw;
     grid-template-columns: 27fr 451fr 76fr 434fr 103fr 424fr;
-    grid-template-rows: 110fr 76fr 440fr 98fr 127fr;
+    grid-template-rows: 150fr 76fr 440fr 98fr 87fr;
     grid-template-areas:
         '. . . . . .'
         '. . . . . .'
@@ -17,7 +17,7 @@
         '. . . . . .';
 
     .shadow {
-        background-color: v.$login-shadow;
+        background-color: var(--login-shadow);
         z-index: -2;
 
         &.leftmost {
@@ -49,7 +49,7 @@
     .bg {
         grid-column: 1 / 7;
         grid-row: 1 / 6;
-        background-color: v.$login-background;
+        background-color: var(--login-background);
         z-index: -3;
     }
 
@@ -63,7 +63,7 @@
         width: 100%;
         height: 100%;
         padding: 35px 10px;
-        background-color: white;
+        background-color: var(--box-background);
 
         .loginContainer {
             display: flex;
@@ -82,15 +82,15 @@
                     font-style: normal;
                     font-weight: 500;
                     font-size: 17px;
-                    color: black;
                 }
 
                 .text {
                     width: 246px;
                     height: 40px;
                     font-size: 17px;
+                    color: black;
 
-                    background: v.$login-input;
+                    background: var(--login-input);
                     border: none;
                 }
             }
@@ -101,14 +101,14 @@
                 button {
                     width: 85px;
                     height: 45px;
-                    background-color: v.$login-register-submit;
+                    background-color: var(--login-register-submit);
                     font-size: 17px;
                     color: white;
                     border: none;
                     border-radius: 3px;
 
                     &:hover {
-                        background-color: v.$login-register-submit-hover;
+                        background-color: var(--login-register-submit-hover);
                     }
                 }
             }
@@ -121,11 +121,11 @@
             .dividerLine {
                 width: 100px;
                 height: 0px;
-                border: 0.5px solid v.$login-divider-text;
+                border: 0.5px solid var(--login-divider-text);
             }
             .text {
                 font-size: 12px;
-                color: v.$login-divider-text;
+                color: var(--login-divider-text);
             }
         }
 
@@ -149,11 +149,19 @@
                 color: black;
             }
 
-            .kakaoLogin {
-                background-color: v.$kakao-yellow;
+            .googleLogin {
+                background-color: var(--google-foreground);
 
                 &:hover {
-                    background-color: v.$kakao-dark-yellow;
+                    background-color: var(--google-hover);
+                }
+            }
+
+            .kakaoLogin {
+                background-color: var(--kakao-foreground);
+
+                &:hover {
+                    background-color: var(--kakao-hover);
                 }
             }
         }
@@ -165,12 +173,10 @@
 
             .textDescription {
                 font-size: 14px;
-                color: #3c4043;
             }
 
             button {
                 font-size: 14px;
-                color: #3c4043;
                 text-decoration-line: underline;
                 border: none;
             }
@@ -186,10 +192,10 @@
     height: 100vh;
     width: 100vw;
     grid-template-columns: 451fr 76fr 461fr 76fr 451fr;
-    grid-template-rows: 88fr 76fr 462fr 76fr 149fr;
+    grid-template-rows: 128fr 76fr 462fr 76fr 109fr;
 
     .fg {
-        background-color: v.$login-foreground;
+        background-color: var(--login-foreground);
 
         z-index: -1;
 

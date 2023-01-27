@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
 
 import keys from '../secrets.json';
 
+import { apiStagingEndPoint } from '@apis/endpoint';
+
 interface LoginInfo {
     email: string;
     password: string;
@@ -82,7 +84,8 @@ const SessionContext = createContext<SessionContextData>({
 });
 
 //const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
-const apiEndPoint = 'http://api-staging-dearj-wafflestudio.site/api/v1/user/';
+//const apiEndPoint = 'http://api-staging-dearj-wafflestudio.site/api/v1/user/';
+const apiEndPoint = apiStagingEndPoint + '/user/';
 
 const REACT_APP_BASE_BACKEND_URL = 'http://api-staging-dearj-wafflestudio.site';
 
@@ -190,7 +193,8 @@ export default function SessionProvider({ children }: PropsWithChildren) {
                 email: '',
                 password1: '',
                 password2: '',
-                birthdate: '',
+                birthdate:
+                    '알 수 없는 에러가 발생했습니다. 관리자에게 문의하세요.',
             };
         }
     };
