@@ -89,7 +89,14 @@ const apiEndPoint = apiStagingEndPoint + '/user/';
 
 const REACT_APP_BASE_BACKEND_URL = 'http://api-staging-dearj-wafflestudio.site';
 
-const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
+const REACT_APP_GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
+const REACT_APP_KAKAO_REST_API_KEY =
+    process.env.REACT_APP_KAKAO_REST_API_KEY || '';
+//const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
+
+console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
+console.log(process.env.REACT_APP_KAKAO_REST_API_KEY);
+console.log(process.env.NODE_ENV);
 
 export const useSessionContext = () => useContext(SessionContext);
 
