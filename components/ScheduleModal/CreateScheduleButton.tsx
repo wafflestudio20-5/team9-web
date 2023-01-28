@@ -43,6 +43,7 @@ export default function CreateScheduleButton({
                 openModal(MODAL_NAMES.scheduleEditor, {
                     taskType: 'create',
                     initSchedule,
+                    setNeedUpdate,
                 })
             }
             style={style}
