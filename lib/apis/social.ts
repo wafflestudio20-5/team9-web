@@ -1,13 +1,15 @@
 import axios from 'axios';
 
-import { apiEndPoint } from './endpoint';
+import { apiEndPoint, apiStagingEndPoint } from './endpoint';
 
 export const followRequestAPI = (pk: number, accessToken: string | null) =>
     axios.post(
-        `${apiEndPoint}/social/network/`,
+        `${apiStagingEndPoint}/social/network/`,
         { followee: { pk: pk } },
         { headers: { Authorization: `Bearer ${accessToken}` } },
     );
 
 export const searchUserAPI = (searchBy: string) =>
-    axios.get(`${apiEndPoint}/social/search/candidate/?search=${searchBy}`);
+    axios.get(
+        `${apiStagingEndPoint}/social/search/candidate/?search=${searchBy}`,
+    );

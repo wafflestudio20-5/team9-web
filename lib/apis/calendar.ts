@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-import { apiEndPoint } from './endpoint';
+import { apiEndPoint, apiStagingEndPoint } from './endpoint';
 
 import { Schedule } from '@customTypes/ScheduleTypes';
 
 const CalendarAPI = axios.create({
-    baseURL: `${apiEndPoint}/calendar/schedule`,
+    baseURL: `${apiStagingEndPoint}/calendar/schedule`,
 });
 
 export interface CalendarURLParams {

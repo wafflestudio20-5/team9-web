@@ -214,6 +214,7 @@ export default function ScheduleEditorModal({
     const submitScheduleForm = async () => {
         const isValid = validateScheduleForm();
         if (!isValid) return;
+        console.log(participants);
 
         const newSchedule: Schedule = {
             id: initSchedule.id,
