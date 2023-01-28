@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import Swal from 'sweetalert2';
 
-import keys from '../secrets.json';
+//import keys from '../secrets.json';
 
 import { apiStagingEndPoint } from '@apis/endpoint';
 
