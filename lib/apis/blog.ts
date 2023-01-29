@@ -13,8 +13,29 @@ export const createPostAPI = (newPost: Post, accessToken: string | null) =>
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-export const getPostAPI = (postId: number, accessToken: string | null) =>
+export const getParticularPostAPI = (
+    postId: number,
+    accessToken: string | null,
+) =>
     BlogAPI.get(`/${postId}/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+// temp
+export const getEntirePostAPI = (
+    scheduleId: number,
+    accessToken: string | null,
+) =>
+    BlogAPI.get(`/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+// temp
+export const getRelatedSchedulesAPI = (
+    postId: number,
+    accessToken: string | null,
+) =>
+    BlogAPI.get(`/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -41,12 +62,21 @@ export const createCommentAPI = (
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-export const getCommentAPI = (
+export const getParticularCommentAPI = (
     postId: number,
     commentId: number,
     accessToken: string | null,
 ) =>
     BlogAPI.get(`/${postId}/comment/${commentId}/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+// temp
+export const getEntireCommentAPI = (
+    postId: number,
+    accessToken: string | null,
+) =>
+    BlogAPI.get(`/${postId}/comment`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 

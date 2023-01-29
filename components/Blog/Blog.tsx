@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import styles from './Blog.module.scss';
 
-import { getPostAPI } from '@apis/blog';
+import { getParticularPostAPI } from '@apis/blog';
 import { useSessionContext } from '@contexts/SessionContext';
 import { FullPost, Post } from '@customTypes/BlogTypes';
 
@@ -51,7 +51,7 @@ export default function Blog({ postId }: { postId: number }) {
         if (!postId) return;
         (async () => {
             try {
-                const res = await getPostAPI(postId, accessToken);
+                const res = await getParticularPostAPI(postId, accessToken);
                 setPost(res.data);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
