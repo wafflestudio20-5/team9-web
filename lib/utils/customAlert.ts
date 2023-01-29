@@ -34,3 +34,17 @@ export const warningModal = (warningContent: {
         cancelButtonText: '취소',
         // cancelButtonColor: '#color', // to be modified
     });
+
+export const radioRecurringModal = (title: string) =>
+    Swal.fire({
+        title: `반복 일정 ${title}`,
+        input: 'radio',
+        inputOptions: { only: '이 일정', all: '연관된 모든 일정' },
+        inputValidator: value => {
+            if (value) return null;
+            return `${title} 옵션을 선택해주세요.`;
+        },
+        showCancelButton: true,
+        confirmButtonText: `${title}`,
+        cancelButtonText: '취소',
+    });

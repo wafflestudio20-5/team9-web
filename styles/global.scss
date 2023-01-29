@@ -20,6 +20,22 @@
     --stroke-header: #c8c9cc;
     --fill-inputBox: #f0f0f0;
     --button-hover: #f0f0f0;
+    --login-shadow: #b69270;
+    --login-background: #f8f1e6;
+    --login-input: #e8e0d3;
+    --login-foreground: #fcfbf9;
+    --login-divider-text: #888686;
+    --register-shadow: #261604;
+    --register-background: #3e2810;
+    --register-input: #d9d9d9;
+    --register-text: #f8f1e6;
+    --login-register-submit: #a97e57;
+    --login-register-submit-hover: #8c7159;
+    --kakao-foreground: #ffe812;
+    --kakao-hover: #dbc60d;
+    --box-background: white;
+    --google-foreground: white;
+    --google-hover: #f0f0f0;
 }
 
 :root[data-theme='dark'] {
@@ -41,6 +57,22 @@
     --stroke-header: #f8f8fa;
     --fill-inputBox: #e2e0e0;
     --button-hover: #6e6d6d;
+    --login-shadow: #000000;
+    --login-background: #201c18;
+    --login-input: #e8e0d3;
+    --login-foreground: #3e2e1d;
+    --login-divider-text: #888686;
+    --register-shadow: #261604;
+    --register-background: #3e2810;
+    --register-input: #d9d9d9;
+    --register-text: #f8f1e6;
+    --login-register-submit: #a97e57;
+    --login-register-submit-hover: #8c7159;
+    --kakao-foreground: #ffe812;
+    --kakao-hover: #dbc60d;
+    --box-background: #201c18;
+    --google-foreground: white;
+    --google-hover: #f0f0f0;
 }
 
 body {

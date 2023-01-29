@@ -67,10 +67,27 @@ export const editScheduleAPI = (
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
+export const editRecurringScheduleAPI = (
+    groupId: number,
+    newSchedule: Schedule,
+    accessToken: string | null,
+) =>
+    CalendarAPI.patch(`/group/${groupId}/`, newSchedule, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
 export const deleteScheduleAPI = (
     scheduleId: number,
     accessToken: string | null,
 ) =>
     CalendarAPI.delete(`/${scheduleId}/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+export const deleteRecurringScheduleAPI = (
+    groupId: number,
+    accessToken: string | null,
+) =>
+    CalendarAPI.delete(`/group/${groupId}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
