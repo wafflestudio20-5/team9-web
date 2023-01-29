@@ -1,3 +1,4 @@
+// discarded (moved to formattings.ts)
 export const formatFullDate = (fullDate: Date, isTimeIncluded?: boolean) => {
     const year = String(fullDate.getFullYear()).padStart(4, '0');
     const month = String(fullDate.getMonth() + 1).padStart(2, '0');

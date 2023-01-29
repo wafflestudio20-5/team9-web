@@ -98,7 +98,10 @@
 
     .today {
         background-color: var(--today-blueberry);
-        color: white;
+
+        > div {
+            color: white;
+        }
     }
 
     .chosen {

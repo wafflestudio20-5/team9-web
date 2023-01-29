@@ -4,7 +4,7 @@ import styles from './MiniCalendar.module.scss';
 
 import BeforeIcon from '@images/before_icon.svg';
 import NextIcon from '@images/next_icon.svg';
-import { DAYS_ARR } from '@utils/formatDay';
+import { DAYS } from '@utils/formatting';
 
 interface MiniCalendarProps {
     dateVariable: Date;
@@ -74,7 +74,7 @@ export default function MiniCalendar({
                 </button>
             </div>
             <div className={styles.header}>
-                {DAYS_ARR.map((item, index) => {
+                {DAYS.map((item, index) => {
                     return (
                         <div className={styles.item} key={index}>
                             <div>{item}</div>

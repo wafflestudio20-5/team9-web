@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 
 import styles from './ScheduleViewModal.module.scss';
 
-import { deleteScheduleAPI } from '@apis/calendar';
+import { deleteRecurringScheduleAPI, deleteScheduleAPI } from '@apis/calendar';
 import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
@@ -20,16 +20,21 @@ import EditIcon from '@images/edit_icon.svg';
 import LockIcon from '@images/lock_icon.svg';
 import PeopleIcon from '@images/people_icon.svg';
 import TextIcon from '@images/text_icon.svg';
-import { errorToast, successToast, warningModal } from '@utils/customAlert';
-import { formatDayToKr } from '@utils/formatDay';
-import { formatTime } from '@utils/formatTime';
+import { parseCronExpression } from '@utils/cronExpression';
+import {
+    errorToast,
+    radioRecurringModal,
+    successToast,
+    warningModal,
+} from '@utils/customAlert';
+import { DAYS, formatTime } from '@utils/formatting';
 
 function ParticipantItem({ participant }: { participant: Participant }) {
     return (
         <li className={styles.participant}>
             <AccountDefaultIcon className="icon" height="24px" />
             <div>
-                <span>{participant.username}</span>
+                <span className={styles.username}>{participant.username}</span>
                 <span className={styles.email}>{participant.email}</span>
             </div>
         </li>
@@ -65,20 +70,33 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         show_content: schedule.show_content,
         description: schedule.description,
         participants: getParticipantPks(schedule.participants),
+        is_recurring: schedule.is_recurring,
+        cron_expr: schedule.cron_expr,
+        recurring_end_at: schedule.recurring_end_at,
+        recurring_schedule_group: schedule.recurring_schedule_group,
     };
 
     const deleteSchedule = async (
-        scheduleId: number,
+        id: number, // scheduleId or groupId
         accessToken: string | null,
+        deleteRecurring: boolean,
     ) => {
         try {
-            await deleteScheduleAPI(scheduleId, accessToken);
+            if (deleteRecurring) {
+                await deleteRecurringScheduleAPI(id, accessToken);
+            } else {
+                await deleteScheduleAPI(id, accessToken);
+            }
             successToast('일정을 삭제했습니다.');
             return true;
         } catch (error) {
             const message = '일정을 삭제하지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message ?? message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
@@ -94,16 +112,43 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
     };
 
     const onClickDelete = async () => {
-        const { isConfirmed } = await warningModal({
-            title: '일정을 삭제하시겠습니까?',
-            text: '삭제된 일정은 복원할 수 없습니다.',
-            confirmButtonText: '삭제',
-        });
+        if (schedule.is_recurring) {
+            const { value, isConfirmed } = await radioRecurringModal('삭제');
 
-        if (!isConfirmed) return;
+            if (!isConfirmed) return;
 
-        const isDeleted = await deleteSchedule(schedule.id, accessToken);
-        if (isDeleted) closeModal(MODAL_NAMES.scheduleView);
+            let isDeleted = false;
+            if (value === 'only') {
+                isDeleted = await deleteSchedule(
+                    schedule.id,
+                    accessToken,
+                    false,
+                );
+            } else {
+                isDeleted = await deleteSchedule(
+                    schedule.recurring_schedule_group,
+                    accessToken,
+                    true,
+                );
+            }
+
+            if (isDeleted) closeModal(MODAL_NAMES.scheduleView);
+        } else {
+            const { isConfirmed } = await warningModal({
+                title: '일정을 삭제하시겠습니까?',
+                text: '삭제된 일정은 복원할 수 없습니다.',
+                confirmButtonText: '삭제',
+            });
+
+            if (!isConfirmed) return;
+
+            const isDeleted = await deleteSchedule(
+                schedule.id,
+                accessToken,
+                false,
+            );
+            if (isDeleted) closeModal(MODAL_NAMES.scheduleView);
+        }
     };
 
     const mergeScheduleEndDateTime = (startDate: Date, endDate: Date) => {
@@ -121,9 +166,9 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
             different = true;
         }
         if (different || startDate.getDate() !== endDate.getDate()) {
-            result += `${
-                different ? ' ' : ''
-            }${endDate.getDate()}일(${formatDayToKr(endDate.getDay())})`;
+            result += `${different ? ' ' : ''}${endDate.getDate()}일(${
+                DAYS[endDate.getDay()]
+            })`;
             different = true;
         }
 
@@ -170,19 +215,36 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                             ? '바쁨'
                             : schedule.title}
                     </h2>
-                    <div className={styles.date}>
-                        <span>
-                            {startDate.getFullYear()}년{' '}
-                            {startDate.getMonth() + 1}월 {startDate.getDate()}
-                            일({formatDayToKr(startDate.getDay())}){' '}
-                            {formatTime(startDate)}
-                        </span>
-                        {startDate.toString() !== endDate.toString() && (
-                            <span className={styles.dash}>-</span>
+                    <div className={styles.times}>
+                        <div className={styles.date}>
+                            <span>
+                                {startDate.getFullYear()}년{' '}
+                                {startDate.getMonth() + 1}월{' '}
+                                {startDate.getDate()}
+                                일({DAYS[startDate.getDay()]}){' '}
+                                {formatTime(startDate)}
+                            </span>
+                            {startDate.toString() !== endDate.toString() && (
+                                <span className={styles.dash}>-</span>
+                            )}
+                            <span>
+                                {mergeScheduleEndDateTime(startDate, endDate)}
+                            </span>
+                        </div>
+                        {schedule.is_recurring && (
+                            <div className={styles.recurrence}>
+                                <span>
+                                    {schedule.cron_expr &&
+                                        parseCronExpression(
+                                            schedule.cron_expr,
+                                        )}{' '}
+                                    (종료일:{' '}
+                                    {schedule.recurring_end_at &&
+                                        schedule.recurring_end_at.split(' ')[0]}
+                                    )
+                                </span>
+                            </div>
                         )}
-                        <span>
-                            {mergeScheduleEndDateTime(startDate, endDate)}
-                        </span>
                     </div>
                     {user?.pk !== schedule.created_by &&
                     !schedule.show_content ? (

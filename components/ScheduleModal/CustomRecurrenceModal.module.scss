@@ -1,0 +1,224 @@
+.customRecurrenceModal {
+    position: fixed;
+    width: 410px;
+    top: 50vh;
+    left: calc(50vw - 205px);
+    transform: translateY(-50%);
+    border: 1px solid var(--structure);
+    border-radius: 10px;
+    background-color: var(--sidebar-background);
+    box-shadow: 0 1px 5px 1px var(--structure);
+    overflow: hidden;
+
+    h3 {
+        margin: 18px 24px;
+    }
+
+    input,
+    button:not(.calendar button) {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        height: 36px;
+        border: none;
+        border-radius: 5px;
+        background-color: var(--button-hover);
+        text-align: center;
+
+        &::-webkit-inner-spin-button {
+            height: 30px;
+        }
+
+        &.invalid {
+            background-color: var(--syrup-strawberry) !important;
+        }
+
+        // underline
+        + span {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 0;
+            transition: all 0.3s ease-in-out;
+            border-bottom: 2px solid var(--button-hover);
+        }
+
+        &:focus {
+            outline: none;
+
+            // underline
+            + span {
+                left: 0;
+                width: 100%;
+                border-bottom: 2px solid var(--today-blueberry);
+            }
+        }
+    }
+
+    .inputUnderlineWrapper {
+        display: inline-block;
+        position: relative;
+    }
+}
+
+.rules {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 18px 24px 12px 24px;
+
+    &.flexible {
+        max-height: calc(100vh - 200px);
+        overflow: auto;
+    }
+
+    > div > label {
+        font-size: small;
+        font-weight: bold;
+    }
+}
+
+.intervalContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .interval {
+        display: flex;
+        gap: 8px;
+
+        input {
+            width: 60px;
+        }
+    }
+}
+
+.dateOptionContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.daysContainer .days {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+
+    // SUN, MON, TUE ...
+    label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: var(--button-hover);
+        font-size: x-small;
+        cursor: pointer;
+    }
+
+    input[type='checkbox'] {
+        display: none;
+
+        + label {
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        &:checked + label {
+            color: white;
+            background-color: var(--today-blueberry);
+        }
+
+        &:disabled + label {
+            opacity: 0.7;
+            cursor: default;
+        }
+    }
+}
+
+.stopConditionContainer .stopCondition {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    gap: 8px;
+
+    .conditionWrapper {
+        display: flex;
+        align-items: center;
+
+        input[type='radio'] {
+            margin: 0;
+            width: 18px;
+            accent-color: var(--today-blueberry);
+            cursor: pointer;
+        }
+
+        label {
+            margin-right: 70px;
+            padding-left: 8px;
+            width: 38px;
+            font-size: small;
+            font-weight: normal;
+            cursor: pointer;
+        }
+    }
+
+    .countContainer {
+        border-radius: 5px;
+        background-color: var(--button-hover);
+    }
+
+    input.count {
+        width: 60px;
+        border-radius: 5px 0 0 5px;
+        background-color: transparent;
+    }
+
+    .countText {
+        display: inline-block;
+        width: 60px;
+        height: 36px;
+        font-size: small;
+        text-align: center;
+        line-height: 36px;
+        background-color: transparent;
+    }
+
+    .calendar input {
+        padding: 1px 2px;
+    }
+
+    .countContainer.disabled,
+    .calendar.disabled {
+        opacity: 0.6;
+        cursor: default;
+    }
+}
+
+.customRecurrenceModal .btnContainer {
+    display: flex;
+    justify-content: right;
+    padding: 18px;
+    gap: 5px;
+
+    > button {
+        &.cancel {
+            padding: 0 20px;
+            background-color: transparent;
+
+            &:hover {
+                background-color: var(--button-hover);
+            }
+        }
+
+        &.complete {
+            padding: 0 20px;
+            color: white;
+            background-color: var(--today-blueberry);
+
+            &:hover {
+                background-color: var(--dark-blueberry);
+            }
+        }
+    }
+}

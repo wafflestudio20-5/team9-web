@@ -5,7 +5,7 @@ import styles from './CreateScheduleButton.module.scss';
 import { useDateContext } from '@contexts/DateContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { ProtectionLevel, Schedule } from '@customTypes/ScheduleTypes';
-import AddIcon from '@images/add_icon.svg';
+import AddScheduleIcon from '@images/add_schedule_icon.svg';
 
 interface CreateScheduleButtonProps {
     text?: string;
@@ -27,11 +27,16 @@ export default function CreateScheduleButton({
         show_content: true,
         description: '',
         participants: [],
+        is_recurring: false,
+        cron_expr: null,
+        recurring_end_at: null,
     };
 
     return (
         <div
-            className={styles.createScheduleButton}
+            className={`${styles.createScheduleButton} ${
+                text && styles.withText
+            }`}
             onClick={() =>
                 openModal(MODAL_NAMES.scheduleEditor, {
                     taskType: 'create',
@@ -40,7 +45,13 @@ export default function CreateScheduleButton({
             }
             style={style}
         >
-            <AddIcon className="icon" height="40px" />
+            <div className={styles.iconWrapper}>
+                <AddScheduleIcon
+                    className="icon"
+                    height={text ? '40px' : '50px'}
+                    viewBox="46 46 469 469"
+                />
+            </div>
             {text && <span>{text}</span>}
         </div>
     );

@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './DayComponent.module.scss';
 
 import { useCalendarContext } from '@contexts/CalendarContext';
-import { DAYS_ARR } from '@utils/formatDay';
+import { DAYS } from '@utils/formatting';
 
 export default function DayComponent({
     isToday,
@@ -33,9 +33,7 @@ export default function DayComponent({
         <div className={styles.dayContentHolder}>
             <div className={styles.headRow}>
                 <div className={styles.dayHolder}>
-                    <div className={styles.dayText}>
-                        {DAYS_ARR[date.getDay()]}
-                    </div>
+                    <div className={styles.dayText}>{DAYS[date.getDay()]}</div>
                     <div className={getDateType()}>{date.getDate()}</div>
                 </div>
             </div>
