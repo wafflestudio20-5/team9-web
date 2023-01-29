@@ -43,10 +43,8 @@ export default function PostCreatePage() {
 
     return (
         <div className={styles.postCreatePage}>
-            <div className={styles.left}>
-                <ScheduleList schedules={schedules} />
-            </div>
-            <div className={styles.right}>
+            <ScheduleList schedules={schedules} />
+            <div className={styles.createPost}>
                 <div className={styles.guide}>post guide message?</div>
                 <div className={styles.newPost}>
                     <div className={styles.title}>
@@ -60,11 +58,11 @@ export default function PostCreatePage() {
                     </div>
                     <div className={styles.content}>text editor?</div>
                 </div>
-            </div>
-            <div className={styles.btnContainer}>
-                <button className={styles.create} onClick={createPost}>
-                    저장
-                </button>
+                <div className={styles.btnContainer}>
+                    <button className={styles.create} onClick={createPost}>
+                        저장
+                    </button>
+                </div>
             </div>
         </div>
     );

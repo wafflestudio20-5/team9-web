@@ -5,6 +5,7 @@ import Header from '@components/Header/Header';
 import CalendarProvider from '@contexts/CalendarContext';
 import DateProvider from '@contexts/DateContext';
 import ModalProvider, { ModalContainer } from '@contexts/ModalContext';
+import ScheduleProvider from '@contexts/ScheduleContext';
 import SessionProvider from '@contexts/SessionContext';
 import SidebarProvider from '@contexts/SidebarContext';
 import ThemeProvider from '@contexts/ThemeContext';
@@ -17,7 +18,9 @@ function ContextProviders({ children }: PropsWithChildren) {
                 <CalendarProvider>
                     <DateProvider>
                         <ModalProvider>
-                            <SidebarProvider>{children}</SidebarProvider>
+                            <SidebarProvider>
+                                <ScheduleProvider>{children}</ScheduleProvider>
+                            </SidebarProvider>
                         </ModalProvider>
                     </DateProvider>
                 </CalendarProvider>
