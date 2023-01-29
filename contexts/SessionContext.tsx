@@ -94,8 +94,10 @@ const REACT_APP_KAKAO_REST_API_KEY =
     process.env.REACT_APP_KAKAO_REST_API_KEY || '';
 //const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
 
+console.log(process.env);
 console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 console.log(process.env.REACT_APP_KAKAO_REST_API_KEY);
+console.log(process.env.AWS_REGION);
 console.log(process.env.NODE_ENV);
 
 export const useSessionContext = () => useContext(SessionContext);
