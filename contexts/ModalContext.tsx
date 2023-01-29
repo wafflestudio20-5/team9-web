@@ -11,6 +11,7 @@ import React, {
 import MiniCalendarModal from '@components/Header/MiniCalendarModal';
 import SearchDetailsModal from '@components/Header/SearchDetailsModal';
 import UserModal from '@components/Header/UserModal';
+import RegisterModal from '@components/RegisterModal';
 import CustomRecurrenceModal from '@components/ScheduleModal/CustomRecurrenceModal';
 import ScheduleEditorModal from '@components/ScheduleModal/ScheduleEditorModal';
 import ScheduleViewModal from '@components/ScheduleModal/ScheduleViewModal';
@@ -21,7 +22,6 @@ export enum MODAL_NAMES {
     user = 'user',
     miniCalendar = 'miniCalendar',
     searchDetails = 'searchDetails',
-    login = 'login',
     register = 'register',
     scheduleView = 'scheduleView',
     scheduleEditor = 'scheduleEditor',
@@ -33,6 +33,7 @@ const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
     [MODAL_NAMES.user]: UserModal,
     [MODAL_NAMES.miniCalendar]: MiniCalendarModal,
     [MODAL_NAMES.searchDetails]: SearchDetailsModal,
+    [MODAL_NAMES.register]: RegisterModal,
     [MODAL_NAMES.scheduleView]: ScheduleViewModal,
     [MODAL_NAMES.scheduleEditor]: ScheduleEditorModal,
     [MODAL_NAMES.customRecurrence]: CustomRecurrenceModal,

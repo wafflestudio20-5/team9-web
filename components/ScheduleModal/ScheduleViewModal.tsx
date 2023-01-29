@@ -92,7 +92,11 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         } catch (error) {
             const message = '일정을 삭제하지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message ?? message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }

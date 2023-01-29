@@ -115,7 +115,10 @@ export default function ScheduleEditorModal({
         newSchedule: Schedule,
         accessToken: string | null,
     ) => {
-        if (!user) return false;
+        if (!user) {
+            errorToast('로그인을 먼저 해주세요.');
+            return false;
+        }
 
         const urlParams: CalendarURLParams = {
             pk: user.pk,
@@ -130,7 +133,11 @@ export default function ScheduleEditorModal({
         } catch (error) {
             const message = '일정을 생성하지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message ?? message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
@@ -169,7 +176,11 @@ export default function ScheduleEditorModal({
         } catch (error) {
             const message = '일정을 수정하지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message ?? message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
