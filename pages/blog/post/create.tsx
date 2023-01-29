@@ -4,7 +4,9 @@ import React, { useEffect, useState } from 'react';
 import styles from './create.module.scss';
 
 import { createPostAPI } from '@apis/blog';
+import PostEditor from '@components/Blog/PostEditor';
 import ScheduleList from '@components/Blog/ScheduleList';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { Post } from '@customTypes/BlogTypes';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
@@ -12,7 +14,8 @@ import { errorToast, successToast } from '@utils/customAlert';
 
 export default function PostCreatePage() {
     const { accessToken } = useSessionContext();
-    const [schedules, setSchedules] = useState<FullSchedule[]>([]); // get from the context?
+    const { scheduleIds } = useScheduleContext();
+    const [schedules, setSchedules] = useState<FullSchedule[]>([]);
     const [title, setTitle] = useState<string>('');
     const [content, setContent] = useState<string>('');
 
@@ -47,16 +50,13 @@ export default function PostCreatePage() {
             <div className={styles.createPost}>
                 <div className={styles.guide}>post guide message?</div>
                 <div className={styles.newPost}>
-                    <div className={styles.title}>
-                        <label htmlFor="title"></label>
-                        <input
-                            type="text"
-                            id="title"
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                        />
-                    </div>
-                    <div className={styles.content}>text editor?</div>
+                    <PostEditor
+                        initPost={{ title: '', content: '' }}
+                        title={title}
+                        setTitle={setTitle}
+                        content={content}
+                        setContent={setContent}
+                    />
                 </div>
                 <div className={styles.btnContainer}>
                     <button className={styles.create} onClick={createPost}>

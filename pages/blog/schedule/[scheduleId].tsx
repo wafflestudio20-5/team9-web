@@ -6,7 +6,7 @@ import styles from './scheduleId.module.scss';
 
 import { getEntirePostAPI, getParticularPostAPI } from '@apis/blog';
 import { getParticularScheduleAPI } from '@apis/calendar';
-import Post from '@components/Blog/Post';
+import PostViewer from '@components/Blog/PostViewer';
 import ScheduleContent from '@components/ScheduleContent';
 import { useSessionContext } from '@contexts/SessionContext';
 import { FullPost } from '@customTypes/BlogTypes';
@@ -80,7 +80,7 @@ export default function SchedulePage() {
                 <ScheduleContent schedule={schedule} />
             </div>
             {isDetail && post ? (
-                <Post post={post} />
+                <PostViewer post={post} />
             ) : (
                 <div className={styles.posts}>
                     {posts.map(p => (
