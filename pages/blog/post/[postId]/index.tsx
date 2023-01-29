@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styles from './index.module.scss';
 
@@ -14,10 +14,10 @@ export default function PostPage() {
     const { accessToken } = useSessionContext();
     const [schedules, setSchedules] = useState<FullSchedule[]>([]);
     const router = useRouter();
-    const postId = useMemo(() => Number(router.query.postId), [router]);
+    const postId = Number(router.query.postId);
 
     const onClickEdit = () => {
-        router.push(`edit`);
+        router.push(`/blog/post/${postId}/edit`);
     };
 
     const deletePost = async (postId: number, accessToken: string | null) => {
@@ -66,7 +66,7 @@ export default function PostPage() {
             <div className={styles.left}>
                 <ScheduleList schedules={schedules} />
             </div>
-            <div className={styles.right}>
+            <div className={styles.postWrapper} onClick={onClickEdit}>
                 <div className={styles.post}>post</div>
                 <div className={styles.comments}></div>
             </div>

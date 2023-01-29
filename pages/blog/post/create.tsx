@@ -29,9 +29,14 @@ export default function PostCreatePage() {
             await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
         } catch (error) {
+            console.log(error);
             const message = '글을 생성하지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message || message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
@@ -51,7 +56,6 @@ export default function PostCreatePage() {
                 <div className={styles.guide}>post guide message?</div>
                 <div className={styles.newPost}>
                     <PostEditor
-                        initPost={{ title: '', content: '' }}
                         title={title}
                         setTitle={setTitle}
                         content={content}

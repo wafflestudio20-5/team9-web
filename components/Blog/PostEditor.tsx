@@ -5,7 +5,6 @@ import styles from './PostEditor.module.scss';
 import { Post } from '@customTypes/BlogTypes';
 
 interface PostEditorProps {
-    initPost: Post;
     title: string;
     content: string;
     setTitle: Dispatch<SetStateAction<string>>;
@@ -13,7 +12,6 @@ interface PostEditorProps {
 }
 
 export default function PostEditor({
-    initPost,
     title,
     content,
     setTitle,
@@ -35,8 +33,14 @@ export default function PostEditor({
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                 />
+                <span className="underline" />
             </div>
-            <div className={styles.content}>{initPost.content}</div>
+            <div className={styles.content}>
+                <textarea
+                    value={content}
+                    onChange={e => setContent(e.target.value)}
+                />
+            </div>
         </div>
     );
 }

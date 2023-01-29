@@ -9,6 +9,7 @@ import {
     getParticularPostAPI,
     getRelatedSchedulesAPI,
 } from '@apis/blog';
+import PostEditor from '@components/Blog/PostEditor';
 import ScheduleList from '@components/Blog/ScheduleList';
 import { useSessionContext } from '@contexts/SessionContext';
 import { Post } from '@customTypes/BlogTypes';
@@ -18,14 +19,15 @@ import { errorToast, successToast } from '@utils/customAlert';
 export default function PostEditPage() {
     const { accessToken } = useSessionContext();
     const [schedules, setSchedules] = useState<FullSchedule[]>([]);
-    const [initPost, setInitPost] = useState<Post>({ title: '', content: '' });
+    const [title, setTitle] = useState<string>('');
+    const [content, setContent] = useState<string>('');
     const router = useRouter();
-    const postId = useMemo(() => router.query.postId, [router.query.postId]);
+    const postId = Number(router.query.postId);
 
-    const editPost = async (postId: number, accessToken: string | null) => {
+    const editPost = async () => {
         const newPost: Post = {
-            title: initPost.title,
-            content: initPost.content,
+            title,
+            content,
         };
         try {
             await editPostAPI(postId, newPost, accessToken);
@@ -34,7 +36,11 @@ export default function PostEditPage() {
         } catch (error) {
             const message = '글을 수정하지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message || message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
@@ -44,11 +50,16 @@ export default function PostEditPage() {
     const getPost = async () => {
         try {
             const res = await getParticularPostAPI(Number(postId), accessToken);
-            setInitPost(res.data);
+            setTitle(res.data.title);
+            setContent(res.data.content);
         } catch (error) {
             const message = '글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message || message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
@@ -65,7 +76,11 @@ export default function PostEditPage() {
         } catch (error) {
             const message = '연관된 일정을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message || message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
@@ -73,18 +88,28 @@ export default function PostEditPage() {
     };
 
     useEffect(() => {
-        getPost();
-        getRelatedSchedules();
+        // getPost();
+        // getRelatedSchedules();
     }, [router.query]);
 
     return (
         <div className={styles.postEditPage}>
-            <div className={styles.left}>
-                <ScheduleList schedules={schedules} />
-            </div>
-            <div className={styles.right}>
-                <div className={styles.title}></div>
-                <div className={styles.content}></div>
+            <ScheduleList schedules={schedules} />
+            <div className={styles.editPost}>
+                <div className={styles.guide}>post guide message?</div>
+                <div className={styles.newPost}>
+                    <PostEditor
+                        title={title}
+                        setTitle={setTitle}
+                        content={content}
+                        setContent={setContent}
+                    />
+                </div>
+                <div className={styles.btnContainer}>
+                    <button className={styles.edit} onClick={editPost}>
+                        저장
+                    </button>
+                </div>
             </div>
         </div>
     );

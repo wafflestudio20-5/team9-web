@@ -1,0 +1,16 @@
+.postPage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 20px;
+    gap: 20px;
+    background-color: var(--sidebar-background);
+
+    > div {
+        border: 1px solid var(--structure);
+    }
+}
+
+.postWrapper {
+    display: grid;
+    grid-template-rows: 50px auto 60px;
+}
