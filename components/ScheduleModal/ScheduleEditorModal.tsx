@@ -61,8 +61,8 @@ export default function ScheduleEditorModal({
     const [endDate, setEndDate] = useState<Date>(new Date(initSchedule.end_at));
     const [recurrence, setRecurrence] = useState<Recurrence>({
         isRecurring: initSchedule.is_recurring,
-        cron_expr: initSchedule.cron_expr,
-        recurring_end_at: initSchedule.recurring_end_at,
+        cronExpr: initSchedule.cron_expr,
+        endDate: initSchedule.recurring_end_at,
     });
     const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
         initSchedule.protection_level,
@@ -203,8 +203,8 @@ export default function ScheduleEditorModal({
             show_content: !hideDetails,
             participants: participants,
             is_recurring: recurrence.isRecurring,
-            cron_expr: recurrence.cron_expr,
-            recurring_end_at: recurrence.recurring_end_at,
+            cron_expr: recurrence.cronExpr,
+            recurring_end_at: recurrence.endDate,
         };
 
         let isSuccessful = false;

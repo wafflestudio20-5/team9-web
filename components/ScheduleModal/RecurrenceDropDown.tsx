@@ -350,8 +350,8 @@ export default function RecurrenceDropDown({
 
         const newRecurrence: Recurrence = {
             isRecurring: newRule.repeat !== Repeat.none,
-            cron_expr: getCronExpression(newRule),
-            recurring_end_at: getEndDate(newRule),
+            cronExpr: getCronExpression(newRule),
+            endDate: getEndDate(newRule),
         };
 
         setRecurrence(newRecurrence);

@@ -43,8 +43,8 @@ export const ProtectionLevelText: { [key: number]: string } = {
 
 export interface Recurrence {
     isRecurring: boolean;
-    cron_expr?: string | null;
-    recurring_end_at?: string | null;
+    cronExpr?: string | null;
+    endDate?: string | null;
 }
 
 export enum Repeat {
