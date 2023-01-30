@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import styles from './ScheduleViewModal.module.scss';
@@ -16,6 +17,7 @@ import {
 import CloseIcon from '@images/close_icon.svg';
 import DeleteIcon from '@images/delete_icon.svg';
 import EditIcon from '@images/edit_icon.svg';
+import PostIcon from '@images/post_icon.svg';
 import {
     errorToast,
     radioRecurringModal,
@@ -33,6 +35,7 @@ interface ScheduleModalProps {
 export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
     const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
+    const router = useRouter();
 
     const getParticipantPks = (participants?: Participant[]) => {
         if (!participants) return [];
@@ -54,6 +57,13 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         cron_expr: schedule.cron_expr,
         recurring_end_at: schedule.recurring_end_at,
         recurring_schedule_group: schedule.recurring_schedule_group,
+    };
+
+    const onClickEdit = () => {
+        openModal(MODAL_NAMES.scheduleEditor, {
+            initSchedule,
+            taskType: 'edit',
+        });
     };
 
     const deleteSchedule = async (
@@ -82,13 +92,6 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
             }
             return false;
         }
-    };
-
-    const onClickEdit = () => {
-        openModal(MODAL_NAMES.scheduleEditor, {
-            initSchedule,
-            taskType: 'edit',
-        });
     };
 
     const onClickDelete = async () => {
@@ -131,10 +134,22 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
         }
     };
 
+    const closeScheduleView = () => {
+        closeModal(MODAL_NAMES.scheduleView);
+    };
+
+    const goToBlog = () => {
+        closeScheduleView();
+        router.push(`/blog/schedule/${schedule.id}`);
+    };
+
     return (
         <ModalFrame modalName={MODAL_NAMES.scheduleView}>
             <div className={styles.scheduleViewModal}>
                 <div className={styles.header}>
+                    <button className={styles.blog} onClick={goToBlog}>
+                        <PostIcon className="icon" heiehg="18px" />
+                    </button>
                     {user?.pk === schedule.created_by && (
                         <>
                             <button
@@ -153,12 +168,14 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                     )}
                     <button
                         className={styles.close}
-                        onClick={() => closeModal(MODAL_NAMES.scheduleView)}
+                        onClick={closeScheduleView}
                     >
                         <CloseIcon className="icon" height="18px" />
                     </button>
                 </div>
-                <ScheduleContent schedule={schedule} />
+                <div className={styles.body}>
+                    <ScheduleContent schedule={schedule} />
+                </div>
             </div>
         </ModalFrame>
     );

@@ -1,7 +1,11 @@
 .post {
-    .title {
+    h3.title {
+        padding: 0 5px;
+        height: 36px;
+        border-bottom: 2px solid var(--structure);
     }
 
     .content {
+        padding: 0 5px;
     }
 }

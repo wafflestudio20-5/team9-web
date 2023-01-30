@@ -1,6 +1,6 @@
 .scheduleContent {
     padding: 12px 36px;
-    max-height: calc(100vh - 180px);
+    height: 100%;
     overflow: auto;
 
     h2.title {
@@ -86,11 +86,12 @@
     .description {
         align-items: flex-start;
         height: fit-content;
+        max-height: calc(100% - 200px);
 
         p {
             margin: 0;
             padding-top: 1px;
-            max-height: 150px;
+            max-height: 200px;
             overflow: auto;
         }
     }

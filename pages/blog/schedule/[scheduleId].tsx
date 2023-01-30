@@ -13,13 +13,81 @@ import { FullPost } from '@customTypes/BlogTypes';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { errorToast } from '@utils/customAlert';
 
+const tempPosts = [
+    {
+        title: 'temp post1',
+        content:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus.',
+        id: 1,
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+    },
+    {
+        title: 'temp post2',
+        content: ' temp conte',
+        id: 2,
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+    },
+    {
+        title: 'temp post3',
+        content: ' temp conte',
+        id: 3,
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+    },
+    {
+        title: 'temp post4',
+        content: ' temp conte',
+        id: 4,
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+    },
+    {
+        title: 'temp post5',
+        content: ' temp conte',
+        id: 5,
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+    },
+    {
+        title: 'temp post6',
+        content: ' temp conte',
+        id: 6,
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+    },
+    {
+        title: 'temp post7',
+        content: ' temp conte',
+        id: 7,
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+    },
+];
+
 export default function SchedulePage() {
     const { accessToken } = useSessionContext();
     const [schedule, setSchedule] = useState<FullSchedule>();
-    const [posts, setPosts] = useState<FullPost[]>([]);
-    const [post, setPost] = useState<FullPost>();
-    const [isDetail, setIsDetail] = useState<boolean>(false);
+    const [posts, setPosts] = useState<FullPost[]>(tempPosts);
+    const [post, setPost] = useState<FullPost>({
+        title: 'temp post',
+        content: ' temp conte',
+        id: 1,
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+    });
     const router = useRouter();
+    const scheduleId = router.query.scheduleId;
+    const postId = router.query.post;
 
     const getSchedule = async (scheduleId: number) => {
         try {
@@ -39,7 +107,6 @@ export default function SchedulePage() {
         try {
             const res = await getParticularPostAPI(postId, accessToken);
             setPost(res.data);
-            setIsDetail(true);
         } catch (error) {
             const message = '글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -51,36 +118,44 @@ export default function SchedulePage() {
     };
 
     const getPosts = async (scheduleId: number) => {
-        try {
-            const res = await getEntirePostAPI(scheduleId, accessToken);
-            setPosts(res.data);
-            setIsDetail(false);
-        } catch (error) {
-            const message = '글을 불러오지 못했습니다.';
-            if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message || message);
-            } else {
-                errorToast(message);
-            }
-        }
+        return;
+        // try {
+        //     const res = await getEntirePostAPI(scheduleId, accessToken);
+        //     setPosts(res.data);
+        // } catch (error) {
+        //     const message = '글을 불러오지 못했습니다.';
+        //     if (axios.isAxiosError(error)) {
+        //         errorToast(error.response?.data.message || message);
+        //     } else {
+        //         errorToast(message);
+        //     }
+        // }
     };
 
     useEffect(() => {
-        const { scheduleId, postId } = router.query;
-        console.log(router);
         getSchedule(Number(scheduleId));
+    }, [scheduleId]);
+
+    useEffect(() => {
         postId ? getPost(Number(postId)) : getPosts(Number(scheduleId));
-    }, [router.query]);
+    }, [postId]);
 
     if (!schedule) return;
 
     return (
         <div className={styles.blogPage}>
-            <div className={styles.schedule}>
-                <ScheduleContent schedule={schedule} />
-            </div>
-            {isDetail && post ? (
-                <PostViewer post={post} />
+            <ScheduleContent schedule={schedule} />
+            {postId && post ? (
+                <div className={styles.singlePost}>
+                    <button
+                        onClick={() =>
+                            router.push(`/blog/schedule/${scheduleId}`)
+                        }
+                    >
+                        목록
+                    </button>
+                    <PostViewer post={post} />
+                </div>
             ) : (
                 <div className={styles.posts}>
                     {posts.map(p => (
@@ -93,9 +168,19 @@ export default function SchedulePage() {
 }
 
 function PostPreview({ post }: { post: FullPost }) {
+    const router = useRouter();
+    const scheduleId = router.query.scheduleId;
+
+    const viewFullContent = (postId: number) => {
+        router.push(`/blog/schedule/${scheduleId}?post=${postId}`);
+    };
+
     return (
-        <div className={styles.postPreview}>
-            <div className={styles.titlePreview}>{post.title}</div>
+        <div
+            className={styles.postPreview}
+            onClick={() => viewFullContent(post.id)}
+        >
+            <h3 className={styles.titlePreview}>{post.title}</h3>
             <div className={styles.contentPreview}>{post.content}</div>
         </div>
     );
