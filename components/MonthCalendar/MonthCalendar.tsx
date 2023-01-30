@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Swal from 'sweetalert2';
 
 import styles from './MonthCalendar.module.scss';
@@ -22,13 +22,13 @@ export default function MonthCalendar() {
     const { year, month, date } = router.query;
     const { user, accessToken } = useSessionContext();
 
-    const [monthDates, setMonthDates] = useState(
-        getCalendarDates(
+    const monthDates = useMemo(() => {
+        return getCalendarDates(
             year
                 ? new Date(Number(year), Number(month) - 1, Number(date))
                 : new Date(),
-        ),
-    );
+        );
+    }, [year, month, date]);
     const [monthEvents, setMonthEvents] = useState<FullSchedule[]>();
     const [needUpdate, setNeedUpdate] = useState(true);
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
@@ -107,7 +107,7 @@ export default function MonthCalendar() {
                                       );
                                   },
                               )
-                            : monthDates.map((date, index) => {
+                            : monthDates?.map((date, index) => {
                                   return (
                                       <DayinMonth
                                           key={index}
@@ -121,10 +121,15 @@ export default function MonthCalendar() {
                         className={styles.borders}
                         style={{ flexDirection: 'column' }}
                     >
-                        {Array(monthDates.length / 7 - 1)
+                        {Array(monthDates?.length! / 7 - 1)
                             .fill(0)
                             .map((v, i) => {
-                                return <div className={styles.horizontal} />;
+                                return (
+                                    <div
+                                        key={i}
+                                        className={styles.horizontal}
+                                    />
+                                );
                             })}
                     </div>
                 </div>
@@ -134,8 +139,8 @@ export default function MonthCalendar() {
                 >
                     {Array(6)
                         .fill(0)
-                        .map(() => {
-                            return <div className={styles.vertical} />;
+                        .map((v, i) => {
+                            return <div key={i} className={styles.vertical} />;
                         })}
                 </div>
             </div>

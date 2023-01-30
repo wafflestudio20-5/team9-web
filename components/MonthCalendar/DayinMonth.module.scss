@@ -55,6 +55,8 @@
     display: flex;
     flex-direction: column;
     overflow-x: visible;
+    width: 100%;
+    row-gap: 3px;
 }
 
 .withinHolder {

@@ -1,0 +1,25 @@
+.event {
+    width: 100%;
+    height: 19px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 4px 10px;
+    &.chocolate {
+        background-color: var(--syrup-chocolate);
+    }
+    &.honey {
+        background-color: var(--syrup-honey);
+    }
+    &.strawberry {
+        background-color: var(--syrup-strawberry);
+    }
+
+    span {
+        color: var(--text-reverse);
+        font-size: 10px;
+        font-weight: 524;
+        width: 100%;
+        text-overflow: ellipsis;
+    }
+}

@@ -29,6 +29,20 @@ function sortEvents(events: FullSchedule[]) {
     });
     acrossEvents.sort(compareEndAt);
     withinEvents.sort(compareEndAt);
+    for (let i = 0; i < acrossEvents.length; i++) {
+        let j = 1;
+        while (acrossEvents[i - j]) {
+            if (
+                acrossEvents[i - j].end_at.split(' ')[0] >=
+                acrossEvents[i - j].start_at.split(' ')[0]
+            ) {
+                acrossEvents[i].layer! += 1;
+                j += 1;
+            } else {
+                break;
+            }
+        }
+    }
     return { acrossEvents, withinEvents };
 }
 
@@ -44,9 +58,13 @@ export default function getLayeredEvents(
             across: acrossEvents.filter(event => {
                 return isDateIncluded(date, event);
             }),
-            within: withinEvents.filter(event => {
-                return isDateIncluded(date, event);
-            }),
+            within: withinEvents
+                .filter(event => {
+                    return isDateIncluded(date, event);
+                })
+                .map((event, index) => {
+                    return { ...event, layer: index - 1 };
+                }),
         };
     });
     return layeredEvents;

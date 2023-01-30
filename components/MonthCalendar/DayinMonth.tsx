@@ -2,8 +2,8 @@ import React from 'react';
 
 import styles from './DayinMonth.module.scss';
 
-import { useDateContext } from '@contexts/DateContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
+import { AcrossEvent } from './EventinMonth';
 
 export default function DayinMonth({
     dateData,
@@ -15,7 +15,6 @@ export default function DayinMonth({
     const today = new Date();
     const dateToday = today.getDate();
     const monthToday = today.getMonth() + 1;
-    const { monthNow, dateNow } = useDateContext();
     const [year, month, date] = dateData.split('-').map(str => {
         return Number(str);
     });
@@ -35,9 +34,13 @@ export default function DayinMonth({
     return (
         <div className={styles.wrapper}>
             <button className={dateStringClass()}>
-                <span>{dateString}</span>
+                <span>{dateString ? dateString : ''}</span>
             </button>
-            <div className={styles.acrossHolder}></div>
+            <div className={styles.acrossHolder}>
+                {eventData?.across.map((event, index) => {
+                    return <AcrossEvent key={index} eventData={event} />;
+                })}
+            </div>
             <div className={styles.withinHolder}></div>
         </div>
     );
