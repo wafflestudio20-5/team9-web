@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import Swal from 'sweetalert2';
 
-import { apiStagingEndPoint } from '@apis/endpoint';
+import { apiEndPoint } from '@apis/endpoint';
 
 interface LoginInfo {
     email: string;
@@ -83,7 +83,7 @@ const SessionContext = createContext<SessionContextData>({
 
 //const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
 //const apiEndPoint = 'http://api-staging-dearj-wafflestudio.site/api/v1/user/';
-const apiEndPoint = apiStagingEndPoint + '/user/';
+const apiEndPointUser = apiEndPoint + '/user/';
 
 const REACT_APP_BASE_BACKEND_URL = 'http://api-staging-dearj-wafflestudio.site';
 
@@ -105,7 +105,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         // send login request using loginInfo
         // if login success, set user and accessToken
         axios
-            .post(apiEndPoint + 'login/', loginInfo)
+            .post(apiEndPointUser + 'login/', loginInfo)
             .then(response => {
                 setUser({
                     pk: response.data.user.pk,
@@ -132,7 +132,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         // send logout request
         // if logout success, reset user and accessToken to null
         axios
-            .post(apiEndPoint + 'logout/', {
+            .post(apiEndPointUser + 'logout/', {
                 refresh: refreshToken,
             })
             .then(response => {
@@ -154,7 +154,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
 
         try {
             const response = await axios.post(
-                apiEndPoint + 'registration/',
+                apiEndPointUser + 'registration/',
                 registerInfo,
             );
             setUser({
@@ -253,7 +253,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             setRefreshToken(postSocialLoginData.refreshToken);
 
             axios
-                .get(apiEndPoint + 'profile/', {
+                .get(apiEndPointUser + 'profile/', {
                     headers: {
                         Authorization: `Bearer ${postSocialLoginData.accessToken}`,
                     },
