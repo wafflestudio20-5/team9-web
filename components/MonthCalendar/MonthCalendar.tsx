@@ -8,7 +8,7 @@ import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton
 import Sidebar from '@components/Sidebar/Sidebar';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import { getCalendarDates } from '@utils/calculateDate';
-import { DAYS_ARR } from '@utils/formatDay';
+import { DAYS } from '@utils/formatting';
 
 export default function MonthCalendar() {
     const { isOpen } = useSidebarContext();
@@ -24,7 +24,7 @@ export default function MonthCalendar() {
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
             <div className={styles.monthHolder}>
                 <div className={styles.headrow}>
-                    {DAYS_ARR.map((item, index) => {
+                    {DAYS.map((item, index) => {
                         return <div key={index}>{item}</div>;
                     })}
                 </div>
