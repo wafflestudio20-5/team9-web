@@ -8,16 +8,18 @@ import React, {
     useState,
 } from 'react';
 
+import { FullSchedule } from '@customTypes/ScheduleTypes';
+
 interface ScheduleContextData {
-    scheduleIds: { id: number }[];
-    setScheduleIds: Dispatch<SetStateAction<{ id: number }[]>>;
+    schedules: FullSchedule[];
+    setSchedules: Dispatch<SetStateAction<FullSchedule[]>>;
     isSelectMode: boolean;
     setIsSelectMode: Dispatch<SetStateAction<boolean>>;
 }
 
 const ScheduleContext = createContext<ScheduleContextData>({
-    scheduleIds: [],
-    setScheduleIds() {
+    schedules: [],
+    setSchedules() {
         throw new Error('ScheduleContext not provided');
     },
     isSelectMode: false,
@@ -29,17 +31,17 @@ const ScheduleContext = createContext<ScheduleContextData>({
 export const useScheduleContext = () => useContext(ScheduleContext);
 
 export default function ScheduleProvider({ children }: PropsWithChildren) {
-    const [scheduleIds, setScheduleIds] = useState<{ id: number }[]>([]);
+    const [schedules, setSchedules] = useState<FullSchedule[]>([]);
     const [isSelectMode, setIsSelectMode] = useState<boolean>(false);
 
     const value = useMemo(
         () => ({
-            scheduleIds,
-            setScheduleIds,
+            schedules,
+            setSchedules,
             isSelectMode,
             setIsSelectMode,
         }),
-        [scheduleIds, isSelectMode],
+        [schedules, isSelectMode],
     );
 
     return (

@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 
 import styles from './PostEditor.module.scss';
 
-import { Post } from '@customTypes/BlogTypes';
 import ImageIcon from '@images/image_icon.svg';
 import { warningModal } from '@utils/customAlert';
 
 interface PostEditorProps {
     initTitle: string;
     initContent: string;
-    submitNewPost(newPost: Post): void;
+    initImage: string;
+    submitNewPost(newPost: FormData): void;
 }
 
 export default function PostEditor({
@@ -20,17 +20,28 @@ export default function PostEditor({
 }: PostEditorProps) {
     const [title, setTitle] = useState<string>(initTitle);
     const [content, setContent] = useState<string>(initContent);
+    const [image, setImage] = useState<File>();
+    const [imagePreview, setImagePreview] = useState<string>(''); // image object url
     const router = useRouter();
 
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.files);
+        const files = e.target.files;
+        if (!files) return;
+        setImagePreview(URL.createObjectURL(files[0]));
+        setImage(files[0]);
+    };
+
+    const deleteImage = () => {
+        URL.revokeObjectURL(imagePreview); // delete image object url
+        setImagePreview('');
+        setImage(undefined);
     };
 
     const onClickSubmitPost = () => {
-        const newPost: Post = {
-            title,
-            content,
-        };
+        const newPost = new FormData();
+        newPost.append('title', title);
+        newPost.append('content', content);
+        if (image) newPost.append('image', image);
         submitNewPost(newPost);
     };
 
@@ -66,15 +77,23 @@ export default function PostEditor({
                 />
             </div>
             <div className={styles.images}>
-                <label htmlFor="image">
-                    <ImageIcon className="icon" height="24px" />
-                </label>
                 <input
                     type="file"
                     accept="image/*"
                     id="image"
                     onChange={uploadImage}
+                    disabled={Boolean(image)}
                 />
+                <label htmlFor="image">
+                    <ImageIcon className="icon" height="40px" />
+                    <span>{Number(Boolean(image))}/1</span>
+                </label>
+                {imagePreview && (
+                    <div className={styles.preview}>
+                        <img src={imagePreview} width={80} />
+                        <button onClick={deleteImage}>삭제</button>
+                    </div>
+                )}
             </div>
             <div className={styles.btnContainer}>
                 <button className={styles.save} onClick={onClickSubmitPost}>

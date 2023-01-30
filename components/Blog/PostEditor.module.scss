@@ -56,15 +56,29 @@
     }
 
     .images {
-        height: 100px;
-        background-color: tomato;
-
-        label {
-            cursor: pointer;
-        }
+        display: flex;
+        padding: 10px;
+        border: 1px solid var(--structure);
 
         input {
-            // display: none;
+            display: none;
+
+            &:disabled + label {
+                cursor: default;
+            }
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 3px;
+            width: 80px;
+            height: 80px;
+            border: 1px solid var(--structure);
+            border-radius: 5px;
+            cursor: pointer;
         }
     }
 

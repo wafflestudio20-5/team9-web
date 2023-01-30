@@ -8,9 +8,12 @@ const BlogAPI = axios.create({
     baseURL: `${apiEndPoint}/blog`,
 });
 
-export const createPostAPI = (newPost: Post, accessToken: string | null) =>
+export const createPostAPI = (newPost: FormData, accessToken: string | null) =>
     BlogAPI.post('/post/', newPost, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'content-type': 'multipart/form-data',
+        },
     });
 
 export const getMyPostsAPI = (accessToken: string | null) =>
@@ -32,7 +35,10 @@ export const editPostAPI = (
     accessToken: string | null,
 ) =>
     BlogAPI.patch(`/post/${postId}/`, newPost, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'content-type': 'multipart/form-data',
+        },
     });
 
 export const deletePostAPI = (postId: number, accessToken: string | null) =>

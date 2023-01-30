@@ -77,12 +77,18 @@ const schedulesData: FullSchedule[] = [
 
 export default function PostCreatePage() {
     const { accessToken } = useSessionContext();
-    const { scheduleIds } = useScheduleContext();
-    // const [schedules, setSchedules] = useState<FullSchedule[]>([]);
+    // const { schedules, setSchedules } = useScheduleContext();
     const [schedules, setSchedules] = useState(schedulesData);
 
-    const createPost = async (newPost: Post) => {
+    const getScheduleIds = () => {
+        const idList: { pk: number }[] = [];
+        schedules.forEach(s => idList.push({ pk: s.id }));
+        return idList;
+    };
+
+    const createPost = async (newPost: FormData) => {
         try {
+            newPost.append('schedules', JSON.stringify(getScheduleIds()));
             await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
         } catch (error) {
@@ -100,12 +106,6 @@ export default function PostCreatePage() {
         }
     };
 
-    useEffect(() => {
-        // TODO:
-        // get selected schedules may be from context
-        // and setSchedules(selectedSchedules)
-    }, []);
-
     return (
         <div className={styles.postCreatePage}>
             <ScheduleList schedules={schedules} />
@@ -115,6 +115,7 @@ export default function PostCreatePage() {
                     <PostEditor
                         initTitle=""
                         initContent=""
+                        initImage=""
                         submitNewPost={createPost}
                     />
                 </div>
