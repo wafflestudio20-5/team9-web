@@ -33,7 +33,32 @@ export default function MonthCalendar() {
     const [needUpdate, setNeedUpdate] = useState(true);
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
 
-    console.log(layeredEvents);
+    const getBorders = (index: number, length: number) => {
+        // return whether margins are required for each top, right, bottom, left
+        switch (index) {
+            case 0:
+                return [0, 1, 1, 0];
+            case 6:
+                return [0, 0, 1, 1];
+            case length - 7:
+                return [1, 1, 0, 0];
+            case length - 1:
+                return [1, 0, 0, 1];
+        }
+        if (index < 6) {
+            return [0, 1, 1, 1];
+        }
+        if (index % 7 == 0) {
+            return [1, 1, 1, 0];
+        }
+        if (index % 7 == 6) {
+            return [1, 0, 1, 1];
+        }
+        if (index > length - 7) {
+            return [1, 1, 0, 1];
+        }
+        return [1, 1, 1, 1];
+    };
 
     useEffect(() => {
         if (monthDates && needUpdate) {
@@ -103,6 +128,10 @@ export default function MonthCalendar() {
                                       key={index}
                                       dateData={data[0]}
                                       eventData={data[1]}
+                                      borders={getBorders(
+                                          index,
+                                          monthDates.length,
+                                      )}
                                   />
                               );
                           })
@@ -111,6 +140,10 @@ export default function MonthCalendar() {
                                   <DayinMonth
                                       key={index}
                                       dateData={date.toDateString()}
+                                      borders={getBorders(
+                                          index,
+                                          monthDates.length,
+                                      )}
                                   />
                               );
                           })}

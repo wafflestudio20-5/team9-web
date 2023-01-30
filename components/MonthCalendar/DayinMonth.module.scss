@@ -6,8 +6,9 @@
     align-items: center;
     justify-content: flex-start;
     background-color: transparent;
-    border-right: 1px solid var(--structure);
-    border-bottom: 1px solid var(--structure);
+    border-style: solid;
+    border-color: var(--structure);
+    // border: 1px solid var(--structure);
 
     button {
         border: 1px solid transparent;
@@ -51,4 +52,15 @@
             font-weight: 500;
         }
     }
+}
+
+.acrossHolder {
+    display: flex;
+    flex-direction: column;
+    overflow-x: visible;
+}
+
+.withinHolder {
+    display: flex;
+    flex-direction: column;
 }
