@@ -60,6 +60,16 @@ export default function MonthCalendar() {
         return [1, 1, 1, 1];
     };
 
+    const getBorderPosition = (
+        totalLength: number,
+        divideBy: number,
+        borderHeight: number,
+    ) => {
+        const spaceEven =
+            totalLength - (borderHeight * (divideBy - 1)) / divideBy;
+        return `${spaceEven}px`;
+    };
+
     useEffect(() => {
         if (monthDates && needUpdate) {
             getEntireScheduleAPI(
@@ -114,7 +124,7 @@ export default function MonthCalendar() {
             ) : (
                 <CreateScheduleButton setNeedUpdate={setNeedUpdate} />
             )}
-            <div className={styles.monthHolder}>
+            <div className={styles.calendarHolder}>
                 <div className={styles.headrow}>
                     {DAYS.map((item, index) => {
                         return <div key={index}>{item}</div>;
@@ -147,6 +157,26 @@ export default function MonthCalendar() {
                                   />
                               );
                           })}
+                </div>
+                <div
+                    className={styles.borders}
+                    style={{ flexDirection: 'column', paddingTop: '36px' }}
+                >
+                    {Array(monthDates.length / 7 - 1)
+                        .fill(0)
+                        .map((v, i) => {
+                            return <div className={styles.horizontal} />;
+                        })}
+                </div>
+                <div
+                    className={styles.borders}
+                    style={{ flexDirection: 'row' }}
+                >
+                    {Array(6)
+                        .fill(0)
+                        .map(() => {
+                            return <div className={styles.vertical} />;
+                        })}
                 </div>
             </div>
         </div>

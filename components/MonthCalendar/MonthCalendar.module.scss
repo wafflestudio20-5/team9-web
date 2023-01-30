@@ -8,27 +8,29 @@
     background-color: var(--sidebar-background);
 }
 
-.monthHolder {
+.calendarHolder {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     margin-left: 8px;
     border-left: 1px solid var(--structure);
     background-color: var(--waffle-background);
+    position: relative;
 }
 
 .headrow {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 1px;
-    border-left: 1px solid var(--structure);
+    gap: 12px;
+    height: 36px;
+    align-items: end;
+    z-index: 1;
 
     div {
         color: var(--text-datesSecondary);
         text-align: center;
         font-size: 11px;
         background-color: transparent;
-        border-right: 1px solid var(--structure);
     }
 }
 
@@ -36,8 +38,30 @@
     display: grid;
     grid-template-rows: repeat(auto-fill, 1fr);
     grid-template-columns: repeat(7, 1fr);
-    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
     gap: 1px;
-    border-left: 1px solid var(--structure);
-    border-top: 1px solid var(--structure);
+}
+
+.borders {
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    div {
+        background-color: var(--grid-line);
+    }
+    .horizontal {
+        height: 12px;
+        box-shadow: var(--grid-shadow) 0px 2px;
+        z-index: 2;
+    }
+    .vertical {
+        width: 12px;
+        box-shadow: var(--grid-shadow) 1px 0px, var(--grid-shadow) -1px 0px;
+        z-index: 3;
+    }
 }

@@ -46,7 +46,6 @@ export default function DayinMonth({
             className={styles.wrapper}
             style={{
                 margin: `${getBorderString(borders, 6)}`,
-                borderWidth: `${getBorderString(borders, 1)}`,
             }}
         >
             <button className={dateStringClass()}>
