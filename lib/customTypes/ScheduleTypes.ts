@@ -81,6 +81,5 @@ export interface RecurrenceRule {
 }
 
 export interface LayeredEvents {
-    date: Date;
-    events: { across: FullSchedule[]; within: FullSchedule[] };
+    [date: string]: { across: FullSchedule[]; within: FullSchedule[] };
 }

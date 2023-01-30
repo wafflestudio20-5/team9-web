@@ -16,8 +16,6 @@ export default function DayinMonth({
     const dateToday = today.getDate();
     const monthToday = today.getMonth() + 1;
     const { monthNow, dateNow } = useDateContext();
-    // const month = dateData.getMonth() + 1;
-    // const date = dateData.getDate();
     const [year, month, date] = dateData.split('-').map(str => {
         return Number(str);
     });
