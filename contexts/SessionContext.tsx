@@ -10,10 +10,7 @@ import React, {
 } from 'react';
 import Swal from 'sweetalert2';
 
-//import keys from '../secrets.json';
-
 import { apiStagingEndPoint } from '@apis/endpoint';
-import { getEncryptedParameter } from '@utils/paramStore';
 
 interface LoginInfo {
     email: string;
@@ -90,17 +87,9 @@ const apiEndPoint = apiStagingEndPoint + '/user/';
 
 const REACT_APP_BASE_BACKEND_URL = 'http://api-staging-dearj-wafflestudio.site';
 
-const REACT_APP_GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
-const REACT_APP_KAKAO_REST_API_KEY =
-    process.env.REACT_APP_KAKAO_REST_API_KEY || '';
-//const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
-
-// console.log(process.env.ENVIRONMENT_VARIABLE);
-// console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
-// console.log(process.env.REACT_APP_KAKAO_REST_API_KEY);
-// console.log(process.env.AWS_REGION);
-// console.log(process.env.NODE_ENV);
-console.log(process.env.AWS_SDK_LOAD_CONFIG);
+const REACT_APP_GOOGLE_CLIENT_ID =
+    '665556060692-i2l61v20chqcvuji0q9uevi50ujld5oh.apps.googleusercontent.com';
+const REACT_APP_KAKAO_REST_API_KEY = '49d202e6f581c3fbdd29922292338f9a';
 
 export const useSessionContext = () => useContext(SessionContext);
 
@@ -215,11 +204,6 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
         const redirectUri = 'api/v1/user/login/google/callback/';
 
-        const REACT_APP_GOOGLE_CLIENT_ID =
-            (await getEncryptedParameter(
-                '/frontend/dearj/react_app_google_client_id',
-            )) || '';
-
         const scope = [
             'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/userinfo.profile',
@@ -242,11 +226,6 @@ export default function SessionProvider({ children }: PropsWithChildren) {
     const openKakaoLoginPage = useCallback(async () => {
         const kakaoAuthUrl = 'https://kauth.kakao.com/oauth/authorize';
         const redirectUri = 'api/v1/user/login/kakao/callback/';
-
-        const REACT_APP_KAKAO_REST_API_KEY =
-            (await getEncryptedParameter(
-                '/frontend/dearj/react_app_kakao_rest_api_key',
-            )) || '';
 
         const params = {
             response_type: 'code',
