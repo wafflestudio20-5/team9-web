@@ -33,43 +33,6 @@ export default function MonthCalendar() {
     const [needUpdate, setNeedUpdate] = useState(true);
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
 
-    const getBorders = (index: number, length: number) => {
-        // return whether margins are required for each top, right, bottom, left
-        switch (index) {
-            case 0:
-                return [0, 1, 1, 0];
-            case 6:
-                return [0, 0, 1, 1];
-            case length - 7:
-                return [1, 1, 0, 0];
-            case length - 1:
-                return [1, 0, 0, 1];
-        }
-        if (index < 6) {
-            return [0, 1, 1, 1];
-        }
-        if (index % 7 == 0) {
-            return [1, 1, 1, 0];
-        }
-        if (index % 7 == 6) {
-            return [1, 0, 1, 1];
-        }
-        if (index > length - 7) {
-            return [1, 1, 0, 1];
-        }
-        return [1, 1, 1, 1];
-    };
-
-    const getBorderPosition = (
-        totalLength: number,
-        divideBy: number,
-        borderHeight: number,
-    ) => {
-        const spaceEven =
-            totalLength - (borderHeight * (divideBy - 1)) / divideBy;
-        return `${spaceEven}px`;
-    };
-
     useEffect(() => {
         if (monthDates && needUpdate) {
             getEntireScheduleAPI(
@@ -130,43 +93,40 @@ export default function MonthCalendar() {
                         return <div key={index}>{item}</div>;
                     })}
                 </div>
-                <div className={styles.month}>
-                    {layeredEvents
-                        ? Object.entries(layeredEvents).map((data, index) => {
-                              return (
-                                  <DayinMonth
-                                      key={index}
-                                      dateData={data[0]}
-                                      eventData={data[1]}
-                                      borders={getBorders(
-                                          index,
-                                          monthDates.length,
-                                      )}
-                                  />
-                              );
-                          })
-                        : monthDates.map((date, index) => {
-                              return (
-                                  <DayinMonth
-                                      key={index}
-                                      dateData={date.toDateString()}
-                                      borders={getBorders(
-                                          index,
-                                          monthDates.length,
-                                      )}
-                                  />
-                              );
-                          })}
-                </div>
-                <div
-                    className={styles.borders}
-                    style={{ flexDirection: 'column', paddingTop: '36px' }}
-                >
-                    {Array(monthDates.length / 7 - 1)
-                        .fill(0)
-                        .map((v, i) => {
-                            return <div className={styles.horizontal} />;
-                        })}
+                <div className={styles.monthHolder}>
+                    <div className={styles.month}>
+                        {layeredEvents
+                            ? Object.entries(layeredEvents).map(
+                                  (data, index) => {
+                                      return (
+                                          <DayinMonth
+                                              key={index}
+                                              dateData={data[0]}
+                                              eventData={data[1]}
+                                          />
+                                      );
+                                  },
+                              )
+                            : monthDates.map((date, index) => {
+                                  return (
+                                      <DayinMonth
+                                          key={index}
+                                          dateData={date.toDateString()}
+                                      />
+                                  );
+                              })}
+                    </div>
+
+                    <div
+                        className={styles.borders}
+                        style={{ flexDirection: 'column' }}
+                    >
+                        {Array(monthDates.length / 7 - 1)
+                            .fill(0)
+                            .map((v, i) => {
+                                return <div className={styles.horizontal} />;
+                            })}
+                    </div>
                 </div>
                 <div
                     className={styles.borders}
