@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import styles from './CreateScheduleButton.module.scss';
 
@@ -10,11 +10,13 @@ import AddScheduleIcon from '@images/add_schedule_icon.svg';
 interface CreateScheduleButtonProps {
     text?: string;
     style?: React.CSSProperties;
+    setNeedUpdate?: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function CreateScheduleButton({
     text,
     style,
+    setNeedUpdate,
 }: CreateScheduleButtonProps) {
     const { openModal } = useModal();
     const { yearNow, monthNow, dateNow } = useDateContext();

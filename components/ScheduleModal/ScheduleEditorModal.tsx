@@ -1,5 +1,12 @@
 import axios from 'axios';
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, {
+    useState,
+    useMemo,
+    useEffect,
+    useRef,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 
 import styles from './ScheduleEditorModal.module.scss';
 
@@ -45,11 +52,13 @@ function ErrorMessage({ message }: { message: string }) {
 interface ScheduleEditorModalProps {
     initSchedule: Schedule;
     taskType: 'create' | 'edit';
+    setNeedUpdate?: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ScheduleEditorModal({
     initSchedule,
     taskType,
+    setNeedUpdate,
 }: ScheduleEditorModalProps) {
     const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
@@ -261,7 +270,12 @@ export default function ScheduleEditorModal({
                 break;
         }
 
-        if (isSuccessful) closeModal(MODAL_NAMES.scheduleEditor);
+        if (isSuccessful) {
+            closeModal(MODAL_NAMES.scheduleEditor);
+            if (setNeedUpdate) {
+                setNeedUpdate(true);
+            }
+        }
     };
 
     const detectChange = () => {

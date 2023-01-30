@@ -27,6 +27,7 @@ export interface FullSchedule extends Readonly<Omit<Schedule, 'participants'>> {
     updated_at: string;
     participants: Participant[];
     recurring_schedule_group: number;
+    layer?: number;
 }
 
 export enum ProtectionLevel {
@@ -77,4 +78,9 @@ export interface RecurrenceRule {
     stopCondition: StopCondition;
     until?: Date;
     count?: number;
+}
+
+export interface LayeredEvents {
+    date: Date;
+    events: { across: FullSchedule[]; within: FullSchedule[] };
 }

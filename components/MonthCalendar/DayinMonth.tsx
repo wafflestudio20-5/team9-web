@@ -3,14 +3,24 @@ import React from 'react';
 import styles from './DayinMonth.module.scss';
 
 import { useDateContext } from '@contexts/DateContext';
+import { FullSchedule } from '@customTypes/ScheduleTypes';
 
-export default function DayinMonth({ dateData }: { dateData: Date }) {
+export default function DayinMonth({
+    dateData,
+    eventData,
+}: {
+    dateData: string;
+    eventData?: { across: FullSchedule[]; within: FullSchedule[] };
+}) {
     const today = new Date();
     const dateToday = today.getDate();
     const monthToday = today.getMonth() + 1;
     const { monthNow, dateNow } = useDateContext();
-    const month = dateData.getMonth() + 1;
-    const date = dateData.getDate();
+    // const month = dateData.getMonth() + 1;
+    // const date = dateData.getDate();
+    const [year, month, date] = dateData.split('-').map(str => {
+        return Number(str);
+    });
     const dateString =
         date == 1 && (date != dateToday || month != monthToday)
             ? `${month}월 ${date}일`
