@@ -1,21 +1,47 @@
-.event {
-    width: 100%;
-    height: 19px;
+.across {
+    height: 23px;
+    overflow-x: visible;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 4px 10px;
-    &.chocolate {
+    align-items: flex-start;
+    &.chocolate > * {
         background-color: var(--syrup-chocolate);
     }
-    &.honey {
+    &.honey > * {
         background-color: var(--syrup-honey);
     }
-    &.strawberry {
+    &.strawberry > * {
         background-color: var(--syrup-strawberry);
     }
 
+    .filler {
+        width: 3px;
+        height: 20px;
+    }
+
+    .left {
+        transform: skewY(45deg);
+        height: 20px;
+        width: 3px;
+    }
+
+    .main {
+        width: calc(100% - 6px);
+        height: 20px;
+        margin-top: 2px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .right {
+        transform: skewY(-45deg);
+        height: 20px;
+        margin-top: 1px;
+        width: 3px;
+    }
+
     span {
+        padding: 4px;
         color: var(--text-reverse);
         font-size: 10px;
         font-weight: 524;

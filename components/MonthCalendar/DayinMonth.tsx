@@ -6,23 +6,23 @@ import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { AcrossEvent } from './EventinMonth';
 
 export default function DayinMonth({
-    dateData,
+    dateString,
     eventData,
 }: {
-    dateData: string;
+    dateString: string;
     eventData?: { across: FullSchedule[]; within: FullSchedule[] };
 }) {
     const today = new Date();
     const dateToday = today.getDate();
     const monthToday = today.getMonth() + 1;
-    const [year, month, date] = dateData.split('-').map(str => {
+    const [year, month, date] = dateString.split('-').map(str => {
         return Number(str);
     });
-    const dateString =
+    const dateHeader =
         date == 1 && (date != dateToday || month != monthToday)
             ? `${month}월 ${date}일`
             : `${date}`;
-    const dateStringClass = () => {
+    const dateHeaderClass = () => {
         if (date == dateToday && month == monthToday) {
             return styles.today;
         }
@@ -33,12 +33,18 @@ export default function DayinMonth({
     };
     return (
         <div className={styles.wrapper}>
-            <button className={dateStringClass()}>
-                <span>{dateString ? dateString : ''}</span>
+            <button className={dateHeaderClass()}>
+                <span>{dateHeader ? dateHeader : ''}</span>
             </button>
             <div className={styles.acrossHolder}>
                 {eventData?.across.map((event, index) => {
-                    return <AcrossEvent key={index} eventData={event} />;
+                    return (
+                        <AcrossEvent
+                            key={index}
+                            eventData={event}
+                            dateString={dateString}
+                        />
+                    );
                 })}
             </div>
             <div className={styles.withinHolder}></div>
