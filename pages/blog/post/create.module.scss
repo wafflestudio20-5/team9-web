@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 20px;
+    height: calc(100vh - 65px);
     gap: 20px;
     background-color: var(--sidebar-background);
 

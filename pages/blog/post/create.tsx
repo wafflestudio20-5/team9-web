@@ -12,10 +12,74 @@ import { Post } from '@customTypes/BlogTypes';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { errorToast, successToast } from '@utils/customAlert';
 
+const schedulesData: FullSchedule[] = [
+    {
+        id: 1,
+        title: 'test schedule',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description: 'lorem ipsum',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
+    {
+        id: 2,
+        title: 'test schedule2',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description: 'lorem ipsum',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
+    {
+        id: 3,
+        title: 'test schedule3',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description: 'lorem ipsum',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
+    {
+        id: 4,
+        title: 'test schedule4',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description: 'lorem ipsum',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
+];
+
 export default function PostCreatePage() {
     const { accessToken } = useSessionContext();
     const { scheduleIds } = useScheduleContext();
-    const [schedules, setSchedules] = useState<FullSchedule[]>([]);
+    // const [schedules, setSchedules] = useState<FullSchedule[]>([]);
+    const [schedules, setSchedules] = useState(schedulesData);
     const [title, setTitle] = useState<string>('');
     const [content, setContent] = useState<string>('');
 

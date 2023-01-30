@@ -17,7 +17,7 @@ export interface Schedule {
     is_recurring: boolean;
     cron_expr?: string | null;
     recurring_end_at?: string | null;
-    readonly recurring_schedule_group?: number;
+    readonly recurring_schedule_group?: number | null;
 }
 
 export interface FullSchedule extends Readonly<Omit<Schedule, 'participants'>> {
@@ -26,7 +26,7 @@ export interface FullSchedule extends Readonly<Omit<Schedule, 'participants'>> {
     created_at: string;
     updated_at: string;
     participants: Participant[];
-    recurring_schedule_group: number;
+    recurring_schedule_group: number | null;
 }
 
 export enum ProtectionLevel {

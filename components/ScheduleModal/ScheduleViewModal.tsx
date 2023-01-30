@@ -108,6 +108,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                     false,
                 );
             } else {
+                if (!schedule.recurring_schedule_group) return;
                 isDeleted = await deleteSchedule(
                     schedule.recurring_schedule_group,
                     accessToken,

@@ -13,13 +13,13 @@ export interface FullPost extends Readonly<Post> {
 
 export interface Comment {
     readonly id?: number;
-    post: number;
+    readonly post: number;
     content: string;
 }
 
 export interface FullComment extends Readonly<Omit<Comment, 'post'>> {
     id: number;
-    post: Post;
+    post: FullPost;
     created_by: number;
     created_at: string;
     updated_at: string;
