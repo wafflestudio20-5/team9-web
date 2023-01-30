@@ -4,7 +4,8 @@ import styles from './MiniCalendar.module.scss';
 
 import BeforeIcon from '@images/before_icon.svg';
 import NextIcon from '@images/next_icon.svg';
-import { DAYS } from '@utils/formatting';
+import { getCalendarDates } from '@utils/calculateDate';
+import { DAYS_ARR } from '@utils/formatDay';
 
 interface MiniCalendarProps {
     dateVariable: Date;
@@ -16,11 +17,6 @@ export default function MiniCalendar({
     onDateClickFunction,
 }: MiniCalendarProps) {
     const [dateObj, setDateObj] = useState(dateVariable);
-
-    const firstDay = useMemo(() => {
-        const temp = new Date(dateObj.getFullYear(), dateObj.getMonth(), 1);
-        return temp.getDay();
-    }, [dateObj]);
 
     const showPrevious = () => {
         const newDateObj = new Date(dateObj);
@@ -34,15 +30,7 @@ export default function MiniCalendar({
     };
 
     const calendarDates = useMemo(() => {
-        return Array.from(Array(42).keys()).map(item => {
-            const temp = new Date(
-                dateObj.getFullYear(),
-                dateObj.getMonth(),
-                dateObj.getDate(),
-            );
-            temp.setDate(item - firstDay + 1);
-            return temp;
-        });
+        return getCalendarDates(dateObj, 42);
     }, [dateObj]);
 
     const getDateClassName = (item: Date) => {

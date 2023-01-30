@@ -4,36 +4,31 @@ import styles from './DayinMonth.module.scss';
 
 import { useDateContext } from '@contexts/DateContext';
 
-export interface DayData {
-    month: number;
-    date: number;
-    events: object[]; // to be specified
-}
-
-export default function DayinMonth({ dayData }: { dayData: DayData }) {
+export default function DayinMonth({ dateData }: { dateData: Date }) {
+    const today = new Date();
+    const dateToday = today.getDate();
+    const monthToday = today.getMonth() + 1;
     const { monthNow, dateNow } = useDateContext();
-    const { month, date, events } = dayData;
+    const month = dateData.getMonth() + 1;
+    const date = dateData.getDate();
     const dateString =
-        date == 1 && date != dateNow ? `${month}월 ${date}일` : `${date}`;
+        date == 1 && (date != dateToday || month != monthToday)
+            ? `${month}월 ${date}일`
+            : `${date}`;
     const dateStringClass = () => {
-        if (date == dateNow) {
+        if (date == dateToday && month == monthToday) {
             return styles.today;
         }
-        if (month == monthNow) {
-            return styles.currMonth;
+        if (month == today.getMonth()) {
+            return `${styles.currMonth} ${date === 1 && styles.textIncluded}`;
         }
-        return styles.notCurrMonth;
+        return `${styles.notCurrMonth} ${date === 1 && styles.textIncluded}`;
     };
     return (
         <div className={styles.wrapper}>
-            <div className={styles.dateHolder}>
-                <div className={dateStringClass()}>{dateString}</div>
-            </div>
-            <div className={styles.eventsHolder}>
-                {events.map((event, index) => {
-                    return <div key={index}>event</div>;
-                })}
-            </div>
+            <button className={dateStringClass()}>
+                <span>{dateString}</span>
+            </button>
         </div>
     );
 }

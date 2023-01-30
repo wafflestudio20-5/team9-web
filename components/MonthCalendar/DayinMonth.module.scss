@@ -3,37 +3,52 @@
 .wrapper {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     background-color: transparent;
     border-right: 1px solid var(--structure);
     border-bottom: 1px solid var(--structure);
-}
 
-.dateHolder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 500;
-    height: 24px;
-    text-align: center;
-    justify-content: baseline;
-    .today {
-        color: white;
+    button {
+        border: 1px solid transparent;
         border-radius: 50%;
-        border-color: transparent;
-        background-color: var(--today-blueberry);
-        height: 24px;
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 24px;
-    }
-    .currMonth {
-        color: var(--text-datesPrimary);
-    }
-    .notCurrMonth {
-        color: var(--text-datesSecondary);
-    }
-}
+        height: 24px;
+        margin-top: 4px;
 
-.eventsHolder {
-    display: flex;
-    flex-direction: column;
+        &.textIncluded {
+            width: fit-content;
+        }
+
+        &:hover {
+            background-color: var(--button-hover);
+            cursor: pointer;
+        }
+
+        &.today {
+            color: white;
+            background-color: var(--today-blueberry);
+
+            &:hover {
+                background-color: var(--dark-blueberry);
+            }
+        }
+
+        &.currMonth {
+            color: var(--text-datesPrimary);
+        }
+
+        &.notCurrMonth {
+            color: var(--text-datesSecondary);
+        }
+
+        span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
 }

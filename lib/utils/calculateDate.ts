@@ -132,3 +132,30 @@ export const getMonthInThisWeek = (
     // one month in a week
     return `${yearNow}년 ${monthNow}월`;
 };
+
+export const getCalendarDates = (dateObj: Date, count?: number) => {
+    const firstDay = (dateObj: Date) => {
+        const temp = new Date(dateObj.getFullYear(), dateObj.getMonth(), 1);
+        return temp.getDay();
+    };
+    const calendarDates = Array.from(Array(count ? count : 42).keys()).map(
+        item => {
+            const temp = new Date(
+                dateObj.getFullYear(),
+                dateObj.getMonth(),
+                dateObj.getDate(),
+            );
+            temp.setDate(item - firstDay(dateObj) + 1);
+            return temp;
+        },
+    );
+    if (count || calendarDates[35].getMonth() === dateObj.getMonth()) {
+        // if count was provided, calendarDates is already fit to count -> return right away
+        // even if count wasn't provided, if the first element of the last line (index 35)
+        // still represents the month in concern, need to return the entireity of 42 elements
+        return calendarDates;
+    }
+    // else: if count wasn't provided, and 35 elemetns in total were enough to express all dates
+    // (=== index 35 does not represent the date in concern), return only up to the necessary 35 elements
+    return calendarDates.slice(0, 35);
+};
