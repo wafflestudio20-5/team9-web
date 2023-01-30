@@ -35,7 +35,7 @@ export default function CreateScheduleButton({
         maintainFocus,
     } = useDropDown(triggerRef);
     const { yearNow, monthNow, dateNow } = useDateContext();
-    const { schedules, setIsSelectMode } = useScheduleContext();
+    const { scheduleIds, setIsSelectMode } = useScheduleContext();
     const router = useRouter();
 
     const initSchedule: Schedule = {
@@ -63,7 +63,7 @@ export default function CreateScheduleButton({
                 setIsSelectMode(true);
                 break;
             case 'write':
-                if (schedules.length > 0) router.push('/blog/post/create');
+                if (scheduleIds.length > 0) router.push('/blog/post/create');
                 else errorToast('포스팅할 일정을 선택해주세요.');
                 break;
         }
