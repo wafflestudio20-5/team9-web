@@ -85,8 +85,6 @@ const SessionContext = createContext<SessionContextData>({
 //const apiEndPoint = 'http://api-staging-dearj-wafflestudio.site/api/v1/user/';
 const apiEndPointUser = apiEndPoint + '/user/';
 
-const REACT_APP_BASE_BACKEND_URL = 'http://api-staging-dearj-wafflestudio.site';
-
 const REACT_APP_GOOGLE_CLIENT_ID =
     '665556060692-i2l61v20chqcvuji0q9uevi50ujld5oh.apps.googleusercontent.com';
 const REACT_APP_KAKAO_REST_API_KEY = '49d202e6f581c3fbdd29922292338f9a';
@@ -200,9 +198,9 @@ export default function SessionProvider({ children }: PropsWithChildren) {
     };
 
     // referenced https://www.hacksoft.io/blog/google-oauth2-with-django-react-part-2
-    const openGoogleLoginPage = useCallback(async () => {
+    const openGoogleLoginPage = useCallback(() => {
         const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-        const redirectUri = 'api/v1/user/login/google/callback/';
+        const redirectUri = 'user/login/google/callback/';
 
         const scope = [
             'https://www.googleapis.com/auth/userinfo.email',
@@ -212,7 +210,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         const params = {
             response_type: 'code',
             client_id: REACT_APP_GOOGLE_CLIENT_ID,
-            redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${redirectUri}`,
+            redirect_uri: `${apiEndPoint}/${redirectUri}`,
             prompt: 'select_account',
             access_type: 'offline',
             scope,
@@ -223,14 +221,14 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         window.location.href = `${googleAuthUrl}?${urlParams}`;
     }, []);
 
-    const openKakaoLoginPage = useCallback(async () => {
+    const openKakaoLoginPage = useCallback(() => {
         const kakaoAuthUrl = 'https://kauth.kakao.com/oauth/authorize';
-        const redirectUri = 'api/v1/user/login/kakao/callback/';
+        const redirectUri = 'user/login/kakao/callback/';
 
         const params = {
             response_type: 'code',
             client_id: REACT_APP_KAKAO_REST_API_KEY,
-            redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${redirectUri}`,
+            redirect_uri: `${apiEndPoint}/${redirectUri}`,
         };
 
         const urlParams = new URLSearchParams(params).toString();
