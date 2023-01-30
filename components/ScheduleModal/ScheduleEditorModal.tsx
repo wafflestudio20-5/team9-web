@@ -73,7 +73,9 @@ export default function ScheduleEditorModal({
     const [description, setDescription] = useState<string>(
         initSchedule.description ?? '',
     );
-    const [participants, setParticipants] = useState<{ pk: number }[]>([]);
+    const [participants, setParticipants] = useState<{ pk: number }[]>(
+        initSchedule.participants,
+    );
     const [dateValidity, setDateValidity] = useState({
         isValid: true,
         message: '',
