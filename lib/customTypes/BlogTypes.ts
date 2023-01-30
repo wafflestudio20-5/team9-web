@@ -1,24 +1,29 @@
+import { FullSchedule } from './ScheduleTypes';
+
 export interface Post {
-    readonly id?: number;
+    readonly pid?: number;
     title: string;
     content: string;
+    image?: string | null;
+    schedules?: { pk: number }[];
 }
 
-export interface FullPost extends Readonly<Post> {
-    id: number;
+export interface FullPost extends Readonly<Omit<Post, 'schedules'>> {
+    pid: number;
     created_by: number;
     created_at: string;
     updated_at: string;
+    schedules: FullSchedule[];
 }
 
 export interface Comment {
-    readonly id?: number;
+    readonly cid?: number;
     readonly post: number;
     content: string;
 }
 
 export interface FullComment extends Readonly<Omit<Comment, 'post'>> {
-    id: number;
+    cid: number;
     post: FullPost;
     created_by: number;
     created_at: string;

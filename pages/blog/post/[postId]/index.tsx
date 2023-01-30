@@ -26,14 +26,14 @@ export default function PostPage() {
         title: 'test post',
         content:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus.',
-        id: 1,
+        pid: 1,
         created_at: '2023-01-23',
         updated_at: '2023-01-29',
         created_by: 7,
     });
     const [comments, setComments] = useState<FullComment[]>([]);
     const [newComment, setNewComment] = useState<Comment>({
-        post: post.id,
+        post: post.pid,
         content: '',
     });
     const router = useRouter();
@@ -79,7 +79,7 @@ export default function PostPage() {
         }
 
         try {
-            await createCommentAPI(post.id, newComment, accessToken);
+            await createCommentAPI(post.pid, newComment, accessToken);
             successToast('댓글을 추가했습니다.');
         } catch (error) {
             const message = '댓글을 추가하지 못했습니다.';
@@ -131,7 +131,7 @@ export default function PostPage() {
                 <div className={styles.commentsContainer}>
                     <div className={styles.comments}>
                         {comments.map(c => (
-                            <CommentItem comment={c} key={c.id} />
+                            <CommentItem comment={c} key={c.cid} />
                         ))}
                     </div>
                     <div className={styles.newComment}>
@@ -187,19 +187,19 @@ function CommentItem({ comment }: { comment: FullComment }) {
         });
 
         if (!isConfirmed) return;
-        await deleteComment(comment.post.id, comment.id, accessToken);
+        await deleteComment(comment.post.pid, comment.cid, accessToken);
     };
 
     const editComment = async () => {
         const newComment: Comment = {
-            post: comment.post.id,
+            post: comment.post.pid,
             content: newContent,
         };
 
         try {
             await editCommentAPI(
-                comment.post.id,
-                comment.id,
+                comment.post.pid,
+                comment.cid,
                 newComment,
                 accessToken,
             );

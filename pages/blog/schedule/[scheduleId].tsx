@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import styles from './scheduleId.module.scss';
 
-import { getEntirePostAPI, getParticularPostAPI } from '@apis/blog';
+import { getMyPostsAPI, getParticularPostAPI } from '@apis/blog';
 import { getParticularScheduleAPI } from '@apis/calendar';
 import PostViewer from '@components/Blog/PostViewer';
 import ScheduleContent from '@components/ScheduleContent';
@@ -13,63 +13,70 @@ import { FullPost } from '@customTypes/BlogTypes';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { errorToast } from '@utils/customAlert';
 
-const tempPosts = [
+const tempPosts: FullPost[] = [
     {
         title: 'temp post1',
         content:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus.',
-        id: 1,
+        pid: 1,
         created_by: 7,
         created_at: '2023-01-30',
         updated_at: '2023-01-30',
+        schedules: [],
     },
     {
         title: 'temp post2',
         content: ' temp conte',
-        id: 2,
+        pid: 2,
         created_by: 7,
         created_at: '2023-01-30',
         updated_at: '2023-01-30',
+        schedules: [],
     },
     {
         title: 'temp post3',
         content: ' temp conte',
-        id: 3,
+        pid: 3,
         created_by: 7,
         created_at: '2023-01-30',
         updated_at: '2023-01-30',
+        schedules: [],
     },
     {
         title: 'temp post4',
         content: ' temp conte',
-        id: 4,
+        pid: 4,
         created_by: 7,
         created_at: '2023-01-30',
         updated_at: '2023-01-30',
+        schedules: [],
     },
     {
         title: 'temp post5',
         content: ' temp conte',
-        id: 5,
+        pid: 5,
         created_by: 7,
         created_at: '2023-01-30',
         updated_at: '2023-01-30',
+        schedules: [],
     },
     {
         title: 'temp post6',
         content: ' temp conte',
-        id: 6,
+        pid: 6,
         created_by: 7,
         created_at: '2023-01-30',
         updated_at: '2023-01-30',
+        schedules: [],
     },
     {
         title: 'temp post7',
         content: ' temp conte',
-        id: 7,
+        pid: 7,
         created_by: 7,
         created_at: '2023-01-30',
         updated_at: '2023-01-30',
+        schedules: [],
     },
 ];
 
@@ -80,10 +87,11 @@ export default function SchedulePage() {
     const [post, setPost] = useState<FullPost>({
         title: 'temp post',
         content: ' temp conte',
-        id: 1,
+        pid: 1,
         created_by: 7,
         created_at: '2023-01-30',
         updated_at: '2023-01-30',
+        schedules: [],
     });
     const router = useRouter();
     const scheduleId = router.query.scheduleId;
@@ -159,7 +167,7 @@ export default function SchedulePage() {
             ) : (
                 <div className={styles.posts}>
                     {posts.map(p => (
-                        <PostPreview post={p} key={p.id} />
+                        <PostPreview post={p} key={p.pid} />
                     ))}
                 </div>
             )}
@@ -178,7 +186,7 @@ function PostPreview({ post }: { post: FullPost }) {
     return (
         <div
             className={styles.postPreview}
-            onClick={() => viewFullContent(post.id)}
+            onClick={() => viewFullContent(post.pid)}
         >
             <h3 className={styles.titlePreview}>{post.title}</h3>
             <div className={styles.contentPreview}>{post.content}</div>

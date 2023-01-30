@@ -5,11 +5,16 @@ import { apiEndPoint } from './endpoint';
 import { Comment, Post } from '@customTypes/BlogTypes';
 
 const BlogAPI = axios.create({
-    baseURL: `${apiEndPoint}/blog/post`,
+    baseURL: `${apiEndPoint}/blog`,
 });
 
 export const createPostAPI = (newPost: Post, accessToken: string | null) =>
-    BlogAPI.post('/', newPost, {
+    BlogAPI.post('/post/', newPost, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+export const getMyPostsAPI = (accessToken: string | null) =>
+    BlogAPI.get(`/post/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -17,25 +22,7 @@ export const getParticularPostAPI = (
     postId: number,
     accessToken: string | null,
 ) =>
-    BlogAPI.get(`/${postId}/`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-    });
-
-// temp
-export const getEntirePostAPI = (
-    scheduleId: number,
-    accessToken: string | null,
-) =>
-    BlogAPI.get(`/`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-    });
-
-// temp
-export const getRelatedSchedulesAPI = (
-    postId: number,
-    accessToken: string | null,
-) =>
-    BlogAPI.get(`/`, {
+    BlogAPI.get(`/post/${postId}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -44,12 +31,12 @@ export const editPostAPI = (
     newPost: Post,
     accessToken: string | null,
 ) =>
-    BlogAPI.patch(`/${postId}/`, newPost, {
+    BlogAPI.patch(`/post/${postId}/`, newPost, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
 export const deletePostAPI = (postId: number, accessToken: string | null) =>
-    BlogAPI.delete(`/${postId}/`, {
+    BlogAPI.delete(`/post/${postId}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -58,7 +45,15 @@ export const createCommentAPI = (
     newComment: Comment,
     accessToken: string | null,
 ) =>
-    BlogAPI.post(`/${postId}/comment/`, newComment, {
+    BlogAPI.post(`/post/${postId}/comment/`, newComment, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+export const getEntireCommentAPI = (
+    postId: number,
+    accessToken: string | null,
+) =>
+    BlogAPI.get(`/post/${postId}/comment/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -67,16 +62,7 @@ export const getParticularCommentAPI = (
     commentId: number,
     accessToken: string | null,
 ) =>
-    BlogAPI.get(`/${postId}/comment/${commentId}/`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-    });
-
-// temp
-export const getEntireCommentAPI = (
-    postId: number,
-    accessToken: string | null,
-) =>
-    BlogAPI.get(`/${postId}/comment`, {
+    BlogAPI.get(`/post/${postId}/comment/${commentId}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -86,7 +72,7 @@ export const editCommentAPI = (
     newComment: Comment,
     accessToken: string | null,
 ) =>
-    BlogAPI.patch(`/${postId}/comment/${commentId}/`, newComment, {
+    BlogAPI.patch(`/post/${postId}/comment/${commentId}/`, newComment, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -95,6 +81,14 @@ export const deleteCommentAPI = (
     commentId: number,
     accessToken: string | null,
 ) =>
-    BlogAPI.delete(`/${postId}/comment/${commentId}/`, {
+    BlogAPI.delete(`/post/${postId}/comment/${commentId}/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+export const getRelatedPosts = (
+    scheduleId: number,
+    accessToken: string | null,
+) =>
+    BlogAPI.get(`/schedule/post/${scheduleId}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });

@@ -80,15 +80,8 @@ export default function PostCreatePage() {
     const { scheduleIds } = useScheduleContext();
     // const [schedules, setSchedules] = useState<FullSchedule[]>([]);
     const [schedules, setSchedules] = useState(schedulesData);
-    const [title, setTitle] = useState<string>('');
-    const [content, setContent] = useState<string>('');
 
-    const createPost = async () => {
-        const newPost: Post = {
-            title,
-            content,
-        };
-
+    const createPost = async (newPost: Post) => {
         try {
             await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
@@ -120,16 +113,10 @@ export default function PostCreatePage() {
                 <div className={styles.guide}>post guide message?</div>
                 <div className={styles.newPost}>
                     <PostEditor
-                        title={title}
-                        setTitle={setTitle}
-                        content={content}
-                        setContent={setContent}
+                        initTitle=""
+                        initContent=""
+                        submitNewPost={createPost}
                     />
-                </div>
-                <div className={styles.btnContainer}>
-                    <button className={styles.create} onClick={createPost}>
-                        저장
-                    </button>
                 </div>
             </div>
         </div>

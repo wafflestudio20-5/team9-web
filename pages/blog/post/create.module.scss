@@ -12,6 +12,10 @@
 }
 
 .createPost {
-    display: grid;
-    grid-template-rows: 50px auto 60px;
+    display: flex;
+    flex-direction: column;
+
+    .newPost {
+        flex-grow: 1;
+    }
 }
