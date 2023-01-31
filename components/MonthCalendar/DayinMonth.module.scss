@@ -6,11 +6,11 @@
     // align-items: flex-start;
     // justify-content: flex-start;
     background-color: transparent;
-    max-width: calc((100% - 72px) / 7);
 }
 
 .buttonHolder {
-    display: block;
+    display: flex;
+    width: 100%;
     align-items: center;
     justify-content: center;
 

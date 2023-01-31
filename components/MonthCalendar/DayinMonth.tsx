@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { CSSProperties, useRef } from 'react';
 
 import styles from './DayinMonth.module.scss';
 
@@ -8,9 +8,11 @@ import AcrossEvent from '@components/AcrossEvent';
 export default function DayinMonth({
     dateData,
     eventData,
+    style,
 }: {
     dateData: { dateString: string; day: number };
     eventData?: { across: FullSchedule[]; within: FullSchedule[] };
+    style?: React.CSSProperties;
 }) {
     const dayRef = useRef<HTMLDivElement>(null);
     const today = new Date();
@@ -34,7 +36,7 @@ export default function DayinMonth({
         return `${styles.notCurrMonth} ${date === 1 && styles.textIncluded}`;
     };
     return (
-        <div className={styles.wrapper} ref={dayRef}>
+        <div className={styles.wrapper} style={style} ref={dayRef}>
             <div className={styles.buttonHolder}>
                 <button className={dateHeaderClass()}>
                     <span>{dateHeader ? dateHeader : ''}</span>
@@ -47,7 +49,7 @@ export default function DayinMonth({
                         key={index}
                         eventData={event}
                         day={day}
-                        dayWidth={dayRef.current?.clientWidth ?? 0}
+                        dayWidth={dayRef.current?.clientWidth!}
                         eventHeight={20}
                     />
                 );

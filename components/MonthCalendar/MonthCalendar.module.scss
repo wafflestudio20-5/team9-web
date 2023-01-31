@@ -41,9 +41,10 @@
 }
 
 .month {
-    display: grid;
-    grid-auto-rows: 1fr;
-    grid-template-columns: repeat(7, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    // grid-auto-rows: 1fr;
+    // grid-template-columns: repeat(7, 1fr);
     height: 100%;
     width: 100%;
     z-index: 1;

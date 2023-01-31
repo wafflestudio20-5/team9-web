@@ -1,15 +1,15 @@
 .across {
     display: block;
-}
 
-.chocolate svg {
-    color: var(--syrup-chocolate);
-}
-.honey svg {
-    color: var(--syrup-honey);
-}
-.strawberry svg {
-    color: var(--syrup-strawberry);
+    &.chocolate path {
+        color: var(--syrup-chocolate);
+    }
+    &.honey path {
+        color: var(--syrup-honey);
+    }
+    &.strawberry path {
+        color: var(--syrup-strawberry);
+    }
 }
 
 .title {

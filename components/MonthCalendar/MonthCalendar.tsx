@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import Swal from 'sweetalert2';
 
 import styles from './MonthCalendar.module.scss';
@@ -21,6 +21,7 @@ export default function MonthCalendar() {
     const router = useRouter();
     const { year, month, date } = router.query;
     const { user, accessToken } = useSessionContext();
+    const monthHolderRef = useRef<HTMLDivElement>(null);
 
     const monthDates = useMemo(() => {
         return getCalendarDates(
@@ -80,6 +81,32 @@ export default function MonthCalendar() {
         }
     }, [monthDates, monthEvents]);
 
+    const getSizeStyle = (
+        monthLength: number,
+        holderWidth: number,
+        holderHeight: number,
+    ) => {
+        const dayWidth = (holderWidth - 12 * 6) / 7;
+        const numOfWeeks = monthLength / 7;
+        const dayHeight = (holderHeight - 12 * (numOfWeeks - 1)) / numOfWeeks;
+        return {
+            width: Math.round(dayWidth),
+            height: dayHeight,
+            padding: `0px ${(dayWidth - Math.round(dayWidth)) / 2}`,
+        };
+    };
+
+    // const getDayWidth = (holderWidth: number) => {
+    //     const dayWidth = (holderWidth - 12 * 6) / 7;
+    //     return Math.round(dayWidth);
+    // };
+
+    // const getDayHeight = (monthLength: number, holderHeight: number) => {
+    //     const numOfWeeks = monthLength / 7;
+    //     const dayHeight = (holderHeight - 12 * (numOfWeeks - 1)) / numOfWeeks;
+    //     return dayHeight;
+    // };
+
     return (
         <div className={styles.wrapper}>
             {isOpen ? (
@@ -93,7 +120,7 @@ export default function MonthCalendar() {
                         return <div key={index}>{item}</div>;
                     })}
                 </div>
-                <div className={styles.monthHolder}>
+                <div className={styles.monthHolder} ref={monthHolderRef}>
                     <div className={styles.month}>
                         {layeredEvents
                             ? Object.entries(layeredEvents).map(
@@ -106,6 +133,13 @@ export default function MonthCalendar() {
                                                   day: data[1].day,
                                               }}
                                               eventData={data[1]}
+                                              style={getSizeStyle(
+                                                  monthDates.length,
+                                                  monthHolderRef.current
+                                                      ?.clientWidth!,
+                                                  monthHolderRef.current
+                                                      ?.clientHeight!,
+                                              )}
                                           />
                                       );
                                   },
