@@ -5,22 +5,22 @@ import styles from './AcrossEvent.module.scss';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { useCalendarContext } from '@contexts/CalendarContext';
+import { useBoxSizeContext } from './MonthCalendar/BoxSizeContext';
 
 export default function AcrossEvent({
     eventData,
     dateString,
     day,
-    dayWidth,
     eventHeight,
 }: {
     eventData: FullSchedule;
     dateString: string;
     day: number;
-    dayWidth: number;
     eventHeight: number;
 }) {
     const { openModal } = useModal();
     const { setNeedUpdate } = useCalendarContext();
+    const { boxWidth } = useBoxSizeContext();
     const colorLayer = () => {
         if (eventData.layer) {
             switch (eventData.layer % 3) {
@@ -40,18 +40,18 @@ export default function AcrossEvent({
         1;
     const daysLeftThisWeek = 7 - day;
     const numberOfBlocks = Math.min(eventLengthRemaining, daysLeftThisWeek);
-    const totalLength = numberOfBlocks * (dayWidth + 12) - 12;
+    const eventWidth = numberOfBlocks * (boxWidth + 12) - 12;
     const getPathString = () => {
         const upper =
             numberOfBlocks > 1
                 ? Array(numberOfBlocks - 1)
                       .fill(0)
                       .map((v, i) => {
-                          const startAt: number = i * (dayWidth + 12);
+                          const startAt: number = i * (boxWidth + 12);
                           return `L ${startAt + 3} 3 L ${
-                              startAt + dayWidth - 3
-                          } 3 L ${startAt + dayWidth} 0 L ${
-                              startAt + 12 + dayWidth
+                              startAt + boxWidth - 3
+                          } 3 L ${startAt + boxWidth} 0 L ${
+                              startAt + 12 + boxWidth
                           } 0`;
                       })
                       .join(' ')
@@ -61,21 +61,21 @@ export default function AcrossEvent({
                 ? Array(numberOfBlocks - 1)
                       .fill(0)
                       .map((v, i) => {
-                          const startAt = totalLength - i * (dayWidth + 12);
+                          const startAt = eventWidth - i * (boxWidth + 12);
                           return `L ${startAt - 3} ${3 + eventHeight} L ${
-                              startAt + 3 - dayWidth
+                              startAt + 3 - boxWidth
                           } ${3 + eventHeight} L ${
-                              startAt - dayWidth
+                              startAt - boxWidth
                           } ${eventHeight} L ${
-                              startAt - 12 - dayWidth
+                              startAt - 12 - boxWidth
                           } ${eventHeight}`;
                       })
                       .join(' ')
                 : '';
         const pathString = `M 0 3 ${upper} L ${
-            totalLength - dayWidth + 3
-        } 3 L ${totalLength} 3 L ${totalLength} ${3 + eventHeight} ${lower} L ${
-            dayWidth - 3
+            eventWidth - boxWidth + 3
+        } 3 L ${eventWidth} 3 L ${eventWidth} ${3 + eventHeight} ${lower} L ${
+            boxWidth - 3
         } ${eventHeight + 3} L 0 ${eventHeight + 3} L 0 3 Z`;
         return pathString;
     };
@@ -83,7 +83,7 @@ export default function AcrossEvent({
         <div
             className={`${styles.across} ${colorLayer()}`}
             style={{
-                width: `${totalLength}px`,
+                width: `${eventWidth}px`,
                 height: `${eventHeight + 3}px`,
                 top: `${
                     eventData.layer ? (eventHeight + 3) * eventData.layer : 0
@@ -96,11 +96,11 @@ export default function AcrossEvent({
                 });
             }}
         >
-            {dayWidth && (
+            {boxWidth && (
                 <svg
                     fill="currentColor"
                     stroke="currentColor"
-                    viewBox={`0 0 ${totalLength} ${eventHeight + 3}`}
+                    viewBox={`0 0 ${eventWidth} ${eventHeight + 3}`}
                     xmlns="http://www.w3.org/2000/svg"
                 >
                     <path d={getPathString()} />

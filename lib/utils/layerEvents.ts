@@ -39,7 +39,6 @@ function sortEvents(events: FullSchedule[]) {
                 acrossEvents[i - j].end_at.split(' ')[0] >=
                 acrossEvents[i].start_at.split(' ')[0]
             ) {
-                // TODO: use IntersectionObserver to place on above layer if space is available
                 acrossEvents[i].layer! += 1;
                 j += 1;
             } else {

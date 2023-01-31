@@ -3,17 +3,18 @@
 .wrapper {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 65px);
-    width: 100vw;
+    height: fit-content;
+    width: fit-content;
     background-color: var(--sidebar-background);
     position: relative;
+    // overflow: hidden;
 }
 
 .calendarHolder {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    margin-left: 8px;
+    // margin-left: 8px;
     border-left: 1px solid var(--structure);
     background-color: var(--waffle-background);
     position: relative;
@@ -28,7 +29,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 12px;
-    height: 3.6vh;
+    height: 32px;
     align-items: end;
     z-index: 1;
 

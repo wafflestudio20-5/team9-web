@@ -16,6 +16,7 @@ import { DAYS, formatDate } from '@utils/formatting';
 import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
 import getLayeredEvents from '@utils/layerEvents';
 import { useCalendarContext } from '@contexts/CalendarContext';
+import { useBoxSizeContext } from './BoxSizeContext';
 
 export default function MonthCalendar() {
     const router = useRouter();
@@ -23,7 +24,8 @@ export default function MonthCalendar() {
     const { needUpdate, setNeedUpdate } = useCalendarContext();
     const { user, accessToken } = useSessionContext();
     const { isOpen } = useSidebarContext();
-    const monthHolderRef = useRef<HTMLDivElement>(null);
+    const { leftMargin, totalWidth, totalHeight } = useBoxSizeContext();
+    // const monthHolderRef = useRef<HTMLDivElement>(null);
 
     const monthDates = useMemo(() => {
         return getCalendarDates({
@@ -34,14 +36,6 @@ export default function MonthCalendar() {
     }, [year, month, date]);
     const [monthEvents, setMonthEvents] = useState<FullSchedule[]>();
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
-    const [dayBoxSize, setDayBoxSize] = useState<
-        | {
-              width: string;
-              height: string;
-              padding: string;
-          }
-        | undefined
-    >(undefined);
 
     useEffect(() => {
         if (monthDates || needUpdate) {
@@ -90,34 +84,24 @@ export default function MonthCalendar() {
             setLayeredEvents(getLayeredEvents(monthDates, monthEvents));
         }
     }, [monthDates, monthEvents]);
-    useEffect(() => {
-        const monthLength = monthDates.length;
-        const holderWidth = monthHolderRef.current?.clientWidth;
-        const holderHeight = monthHolderRef.current?.clientHeight;
-        if (holderWidth && holderHeight) {
-            const dayWidth = (holderWidth - 12 * 6) / 7;
-            const numOfWeeks = monthLength / 7;
-            const dayHeight =
-                (holderHeight - 12 * (numOfWeeks - 1)) / numOfWeeks;
-            setDayBoxSize({
-                width: `${Math.round(dayWidth)}px`,
-                height: `${dayHeight}px`,
-                padding: `0px ${(dayWidth - Math.round(dayWidth)) / 2}`,
-            });
-        }
-    }, [monthDates, monthHolderRef]);
-    console.log(layeredEvents);
 
     return (
-        <div className={styles.wrapper} style={{}}>
+        <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
-            <div className={styles.calendarHolder}>
+            <div
+                className={styles.calendarHolder}
+                style={{
+                    marginLeft: `${leftMargin}px`,
+                    width: `${totalWidth}px`,
+                    height: `${totalHeight}px`,
+                }}
+            >
                 <div className={styles.headrow}>
                     {DAYS.map((item, index) => {
                         return <div key={index}>{item}</div>;
                     })}
                 </div>
-                <div className={styles.monthHolder} ref={monthHolderRef}>
+                <div className={styles.monthHolder}>
                     <div className={styles.month}>
                         {layeredEvents &&
                             Object.entries(layeredEvents).map((data, index) => {
@@ -129,7 +113,6 @@ export default function MonthCalendar() {
                                             day: data[1].day,
                                         }}
                                         eventData={data[1]}
-                                        boxSize={dayBoxSize}
                                     />
                                 );
                             })}

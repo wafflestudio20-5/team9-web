@@ -5,18 +5,18 @@ import styles from './DayinMonth.module.scss';
 
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import AcrossEvent from '@components/AcrossEvent';
+import { useBoxSizeContext } from './BoxSizeContext';
 
 export default function DayinMonth({
     dateData,
     eventData,
-    boxSize,
 }: {
     dateData: { dateString: string; day: number };
     eventData?: { across: FullSchedule[]; within: FullSchedule[] };
-    boxSize?: { width: string; height: string; padding?: string };
 }) {
     const router = useRouter();
     const dayRef = useRef<HTMLDivElement>(null);
+    const { boxHeight, boxWidth } = useBoxSizeContext();
     const today = new Date();
     const dateToday = today.getDate();
     const monthToday = today.getMonth() + 1;
@@ -38,7 +38,10 @@ export default function DayinMonth({
         return `${styles.notCurrMonth} ${date === 1 && styles.textIncluded}`;
     };
     return (
-        <div className={styles.wrapper} style={boxSize} ref={dayRef}>
+        <div
+            className={styles.wrapper}
+            style={{ height: `${boxHeight}px`, width: `${boxWidth}px` }}
+        >
             <div className={styles.buttonHolder}>
                 <button
                     className={dateHeaderClass()}
@@ -57,7 +60,6 @@ export default function DayinMonth({
                             eventData={event}
                             dateString={dateString}
                             day={day}
-                            dayWidth={Number(boxSize?.width.slice(0, -2))}
                             eventHeight={20}
                         />
                     );
