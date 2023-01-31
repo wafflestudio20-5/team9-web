@@ -49,19 +49,20 @@ export default function DayinMonth({
                     <span>{dateHeader ? dateHeader : ''}</span>
                 </button>
             </div>
-            {eventData?.across.map((event, index) => {
-                return (
-                    <AcrossEvent
-                        key={index}
-                        eventData={event}
-                        dateString={dateString}
-                        day={day}
-                        dayWidth={Number(boxSize?.width.slice(0, -2))}
-                        eventHeight={20}
-                    />
-                );
-            })}
-            <div className={styles.withinHolder}></div>
+            <div className={styles.eventsHolder}>
+                {eventData?.across.map((event, index) => {
+                    return (
+                        <AcrossEvent
+                            key={index}
+                            eventData={event}
+                            dateString={dateString}
+                            day={day}
+                            dayWidth={Number(boxSize?.width.slice(0, -2))}
+                            eventHeight={20}
+                        />
+                    );
+                })}
+            </div>
         </div>
     );
 }

@@ -20,6 +20,8 @@ function isDateIncluded(date: Date, event: FullSchedule) {
 }
 
 function sortEvents(events: FullSchedule[]) {
+    // sort Events into across vs within
+    // add layer property to each event item
     let acrossEvents = <FullSchedule[]>[];
     let withinEvents = <FullSchedule[]>[];
     events.forEach(event => {
@@ -33,9 +35,11 @@ function sortEvents(events: FullSchedule[]) {
         let j = 1;
         while (acrossEvents[i - j]) {
             if (
+                // overlaps with previous across Event
                 acrossEvents[i - j].end_at.split(' ')[0] >=
                 acrossEvents[i].start_at.split(' ')[0]
             ) {
+                // TODO: use IntersectionObserver to place on above layer if space is available
                 acrossEvents[i].layer! += 1;
                 j += 1;
             } else {
@@ -50,6 +54,7 @@ export default function getLayeredEvents(
     dates: Date[],
     events: FullSchedule[],
 ) {
+    // spread event items into each date that they need to be mapped on
     const { acrossEvents, withinEvents } = sortEvents(events);
     let layeredEvents = <LayeredEvents>{};
     dates.forEach(date => {
