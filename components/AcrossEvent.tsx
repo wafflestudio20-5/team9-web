@@ -5,7 +5,7 @@ import styles from './AcrossEvent.module.scss';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { useCalendarContext } from '@contexts/CalendarContext';
-import { useBoxSizeContext } from './MonthCalendar/BoxSizeContext';
+import { useBoxSizeContext } from '../contexts/BoxSizeContext';
 
 export default function AcrossEvent({
     eventData,

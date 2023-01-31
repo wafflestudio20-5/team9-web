@@ -65,12 +65,14 @@
     }
     .horizontal {
         height: 12px;
-        box-shadow: var(--grid-shadow) 0px 2px;
+        box-shadow: var(--grid-shadow) 0px 2px 2px,
+            var(--grid-shadow) 0px -1px 2px;
         z-index: 2;
     }
     .vertical {
         width: 12px;
-        box-shadow: var(--grid-shadow) 1px 0px, var(--grid-shadow) -1px 0px;
+        box-shadow: var(--grid-shadow) 2px 0px 2px,
+            var(--grid-shadow) -2px 0px 2px;
         z-index: 3;
     }
 }

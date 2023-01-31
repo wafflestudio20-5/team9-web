@@ -6,7 +6,7 @@ import styles from './DayinMonth.module.scss';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import AcrossEvent from '@components/AcrossEvent';
 import WithinEvent from '@components/WithinEvent';
-import { useBoxSizeContext } from './BoxSizeContext';
+import { useBoxSizeContext } from '../../contexts/BoxSizeContext';
 
 export default function DayinMonth({
     dateData,

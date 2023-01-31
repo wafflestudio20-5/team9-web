@@ -33,11 +33,14 @@
         }
 
         &.today {
-            color: white;
             background-color: var(--today-blueberry);
 
             &:hover {
                 background-color: var(--dark-blueberry);
+            }
+
+            span {
+                color: var(--text-reverse);
             }
         }
 

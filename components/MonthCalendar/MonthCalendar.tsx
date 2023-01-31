@@ -16,7 +16,7 @@ import { DAYS, formatDate } from '@utils/formatting';
 import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
 import getLayeredEvents from '@utils/layerEvents';
 import { useCalendarContext } from '@contexts/CalendarContext';
-import { useBoxSizeContext } from './BoxSizeContext';
+import { useBoxSizeContext } from '../../contexts/BoxSizeContext';
 
 export default function MonthCalendar() {
     const router = useRouter();
