@@ -18,7 +18,9 @@ function ContextProviders({ children }: PropsWithChildren) {
                 <CalendarProvider>
                     <DateProvider>
                         <ModalProvider>
-                            <SidebarProvider>{children}</SidebarProvider>
+                            <SidebarProvider>
+                                <BoxSizeProvider>{children}</BoxSizeProvider>
+                            </SidebarProvider>
                         </ModalProvider>
                     </DateProvider>
                 </CalendarProvider>
