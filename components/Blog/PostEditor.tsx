@@ -25,10 +25,12 @@ export default function PostEditor({
     const router = useRouter();
 
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (!files) return;
-        setImagePreview(URL.createObjectURL(files[0]));
-        setImage(files[0]);
+        if (e.target.files) {
+            const file = e.target.files[0];
+            setImagePreview(URL.createObjectURL(file));
+            setImage(file);
+            e.currentTarget.value = '';
+        }
     };
 
     const deleteImage = () => {
