@@ -19,7 +19,7 @@ export default function PostEditPage() {
     const router = useRouter();
     const postId = Number(router.query.postId);
 
-    const editPost = async (newPost: Post) => {
+    const editPost = async (newPost: FormData) => {
         try {
             await editPostAPI(postId, newPost, accessToken);
             successToast('글을 수정했습니다.');
@@ -58,7 +58,7 @@ export default function PostEditPage() {
     };
 
     useEffect(() => {
-        // getPost();
+        getPost();
     }, [router.query]);
 
     if (!post) return;
@@ -72,6 +72,7 @@ export default function PostEditPage() {
                     <PostEditor
                         initTitle={post.title}
                         initContent={post.content}
+                        initImage={post.image}
                         submitNewPost={editPost}
                     />
                 </div>

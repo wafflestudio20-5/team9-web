@@ -3,7 +3,7 @@
     grid-template-columns: 1fr 1fr;
     padding: 20px;
     gap: 20px;
-    height: calc(100vh - 65px);
+    min-height: calc(100vh - 65px);
     background-color: var(--sidebar-background);
 
     > div {
@@ -12,13 +12,21 @@
 }
 
 .right {
+    display: grid;
+    grid-template-rows: minmax(200px, auto) auto;
+    justify-items: end;
+}
+
+.postContainer {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--structure);
 }
 
 .util {
     display: flex;
     justify-content: right;
     align-items: center;
-    padding: 10px;
+    padding: 0 10px;
     gap: 5px;
 
     button {
@@ -35,39 +43,64 @@
 .commentsContainer {
     display: flex;
     flex-direction: column;
-    text-align: right;
+    gap: 10px;
+    width: 90%;
 
     .comments {
         flex-grow: 1;
-        background-color: tomato;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .comment {
+        border: 1px solid var(--structure);
+        border-radius: 5px;
+
+        .content {
+            padding: 5px;
+        }
+    }
+
+    textarea {
+        padding: 5px;
+        width: 100%;
+        height: 60px;
+        resize: none;
+        border: 2px solid var(--structure);
+        border-radius: 5px;
+
+        &:focus {
+            outline: none;
+            border: 2px solid var(--today-blueberry);
+        }
     }
 
     .newComment {
         text-align: right;
+    }
 
-        textarea {
-            padding: 5px;
-            width: 100%;
-            height: 60px;
-            resize: none;
-            border: 2px solid var(--structure);
-            border-radius: 5px;
+    .btnContainer {
+        text-align: right;
+    }
 
-            &:focus {
-                outline: none;
-                border: 2px solid var(--today-blueberry);
-            }
+    button.save,
+    button.cancel {
+        margin-top: 5px;
+        height: 24px;
+        border: none;
+        background-color: var(--today-blueberry);
+
+        &:hover {
+            background-color: var(--dark-blueberry);
         }
+    }
 
-        button {
-            margin-top: 5px;
-            height: 24px;
-            border: none;
-            background-color: var(--today-blueberry);
+    button.cancel {
+        background-color: transparent;
 
-            &:hover {
-                background-color: var(--dark-blueberry);
-            }
+        &:hover {
+            background-color: var(--button-hover);
         }
     }
 }

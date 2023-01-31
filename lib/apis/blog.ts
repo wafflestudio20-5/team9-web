@@ -31,7 +31,7 @@ export const getParticularPostAPI = (
 
 export const editPostAPI = (
     postId: number,
-    newPost: Post,
+    newPost: FormData,
     accessToken: string | null,
 ) =>
     BlogAPI.patch(`/post/${postId}/`, newPost, {

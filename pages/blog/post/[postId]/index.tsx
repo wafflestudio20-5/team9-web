@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import styles from './index.module.scss';
 
@@ -9,8 +9,9 @@ import {
     deleteCommentAPI,
     deletePostAPI,
     editCommentAPI,
-    getRelatedSchedulesAPI,
+    getParticularPostAPI,
 } from '@apis/blog';
+import PostViewer from '@components/Blog/PostViewer';
 import ScheduleList from '@components/Blog/ScheduleList';
 import { useSessionContext } from '@contexts/SessionContext';
 import { Comment, FullComment, FullPost } from '@customTypes/BlogTypes';
@@ -18,6 +19,85 @@ import { FullSchedule } from '@customTypes/ScheduleTypes';
 import DeleteIcon from '@images/delete_icon.svg';
 import EditIcon from '@images/edit_icon.svg';
 import { errorToast, successToast, warningModal } from '@utils/customAlert';
+
+const commentsData = [
+    {
+        cid: 1,
+        content:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus.',
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+        is_updated: false,
+        post: {
+            title: 'test post',
+            content:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus.',
+            pid: 1,
+            created_at: '2023-01-23',
+            updated_at: '2023-01-29',
+            created_by: 7,
+            schedules: [],
+        },
+    },
+    {
+        cid: 2,
+        content:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus.',
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+        is_updated: false,
+        post: {
+            title: 'test post',
+            content:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus.',
+            pid: 1,
+            created_at: '2023-01-23',
+            updated_at: '2023-01-29',
+            created_by: 7,
+            schedules: [],
+        },
+    },
+    {
+        cid: 3,
+        content:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus.',
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+        is_updated: false,
+        post: {
+            title: 'test post',
+            content:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus.',
+            pid: 1,
+            created_at: '2023-01-23',
+            updated_at: '2023-01-29',
+            created_by: 7,
+            schedules: [],
+        },
+    },
+    {
+        cid: 4,
+        content:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus.',
+        created_by: 7,
+        created_at: '2023-01-30',
+        updated_at: '2023-01-30',
+        is_updated: false,
+        post: {
+            title: 'test post',
+            content:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus.',
+            pid: 1,
+            created_at: '2023-01-23',
+            updated_at: '2023-01-29',
+            created_by: 7,
+            schedules: [],
+        },
+    },
+];
 
 export default function PostPage() {
     const { accessToken } = useSessionContext();
@@ -30,8 +110,9 @@ export default function PostPage() {
         created_at: '2023-01-23',
         updated_at: '2023-01-29',
         created_by: 7,
+        schedules: [],
     });
-    const [comments, setComments] = useState<FullComment[]>([]);
+    const [comments, setComments] = useState<FullComment[]>(commentsData);
     const [newComment, setNewComment] = useState<Comment>({
         post: post.pid,
         content: '',
@@ -79,7 +160,12 @@ export default function PostPage() {
         }
 
         try {
-            await createCommentAPI(post.pid, newComment, accessToken);
+            const res = await createCommentAPI(
+                post.pid,
+                newComment,
+                accessToken,
+            );
+            setComments(prev => [...prev, res.data]);
             successToast('댓글을 추가했습니다.');
         } catch (error) {
             const message = '댓글을 추가하지 못했습니다.';
@@ -95,27 +181,32 @@ export default function PostPage() {
         }
     };
 
-    useEffect(() => {
-        async () => {
-            try {
-                const res = await getRelatedSchedulesAPI(postId, accessToken);
-                setSchedules(res.data); // temp
-            } catch (error) {
-                const message = '연관된 일정을 가져오지 못했습니다.';
-                if (axios.isAxiosError(error)) {
-                    errorToast(error.response?.data.message || message);
-                } else {
-                    errorToast(message);
-                }
+    const getPost = async () => {
+        try {
+            const res = await getParticularPostAPI(Number(postId), accessToken);
+            setPost(res.data);
+            setSchedules(res.data.schedules);
+        } catch (error) {
+            const message = '글을 불러오지 못했습니다.';
+            if (axios.isAxiosError(error)) {
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
+            } else {
+                errorToast(message);
             }
-        };
+        }
+    };
+
+    useEffect(() => {
+        // getPost();
     }, [router.query]);
 
     return (
         <div className={styles.postPage}>
-            <div className={styles.left}>
-                <ScheduleList schedules={schedules} />
-            </div>
+            <ScheduleList schedules={schedules} />
             <div className={styles.right}>
                 <div className={styles.postContainer}>
                     <div className={styles.util}>
@@ -126,12 +217,16 @@ export default function PostPage() {
                             <DeleteIcon className="icon" height="18px" />
                         </button>
                     </div>
-                    <div className={styles.post}>post</div>
+                    <PostViewer post={post} />
                 </div>
                 <div className={styles.commentsContainer}>
                     <div className={styles.comments}>
                         {comments.map(c => (
-                            <CommentItem comment={c} key={c.cid} />
+                            <CommentItem
+                                comment={c}
+                                setComments={setComments}
+                                key={c.cid}
+                            />
                         ))}
                     </div>
                     <div className={styles.newComment}>
@@ -143,8 +238,11 @@ export default function PostPage() {
                                     content: e.target.value,
                                 }))
                             }
+                            placeholder="댓글을 작성해주세요."
                         />
-                        <button onClick={addNewComment}>저장</button>
+                        <button className={styles.save} onClick={addNewComment}>
+                            저장
+                        </button>
                     </div>
                 </div>
             </div>
@@ -152,7 +250,12 @@ export default function PostPage() {
     );
 }
 
-function CommentItem({ comment }: { comment: FullComment }) {
+interface CommentItemProps {
+    comment: FullComment;
+    setComments: Dispatch<SetStateAction<FullComment[]>>;
+}
+
+function CommentItem({ comment, setComments }: CommentItemProps) {
     const { accessToken } = useSessionContext();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [newContent, setNewContent] = useState<string>(comment.content);
@@ -164,6 +267,7 @@ function CommentItem({ comment }: { comment: FullComment }) {
     ) => {
         try {
             await deleteCommentAPI(postId, commentId, accessToken);
+            setComments(prev => prev.filter(c => c.cid === commentId));
             successToast('댓글을 삭제했습니다.');
         } catch (error) {
             const message = '댓글을 삭제하지 못했습니다.';
@@ -190,18 +294,26 @@ function CommentItem({ comment }: { comment: FullComment }) {
         await deleteComment(comment.post.pid, comment.cid, accessToken);
     };
 
-    const editComment = async () => {
+    const editComment = async (
+        postId: number,
+        commentId: number,
+        accessToken: string | null,
+    ) => {
         const newComment: Comment = {
-            post: comment.post.pid,
+            post: postId,
             content: newContent,
         };
 
         try {
-            await editCommentAPI(
-                comment.post.pid,
-                comment.cid,
+            const res = await editCommentAPI(
+                postId,
+                commentId,
                 newComment,
                 accessToken,
+            );
+
+            setComments(prev =>
+                prev.map(c => (c.cid === commentId ? res.data : c)),
             );
             successToast('댓글을 수정했습니다.');
         } catch (error) {
@@ -218,25 +330,43 @@ function CommentItem({ comment }: { comment: FullComment }) {
         }
     };
 
-    return (
+    const onClickEdit = () => {
+        if (!newContent) {
+            errorToast('댓글을 작성해주세요.');
+            return;
+        }
+        editComment(comment.post.pid, comment.cid, accessToken);
+    };
+
+    return isEditMode ? (
+        <div>
+            <textarea
+                value={newContent}
+                onChange={e => setNewContent(e.target.value)}
+            />
+            <div className={styles.btnContainer}>
+                <button className={styles.save} onClick={onClickEdit}>
+                    저장
+                </button>
+                <button
+                    className={styles.cancel}
+                    onClick={() => setIsEditMode(false)}
+                >
+                    취소
+                </button>
+            </div>
+        </div>
+    ) : (
         <div className={styles.comment}>
-            {isEditMode ? (
-                <div className="d">
-                    <textarea
-                        value={newContent}
-                        onChange={e => setNewContent(e.target.value)}
-                    />
-                </div>
-            ) : (
-                <div className={styles.util}>
-                    <button onClick={() => setIsEditMode(true)}>
-                        <EditIcon className="icon" height="18px" />
-                    </button>
-                    <button onClick={onClickDelete}>
-                        <DeleteIcon className="icon" height="18px" />
-                    </button>
-                </div>
-            )}
+            <div className={styles.util}>
+                <button onClick={() => setIsEditMode(true)}>
+                    <EditIcon className="icon" height="18px" />
+                </button>
+                <button onClick={onClickDelete}>
+                    <DeleteIcon className="icon" height="18px" />
+                </button>
+            </div>
+            <div className={styles.content}>{comment.content}</div>
         </div>
     );
 }

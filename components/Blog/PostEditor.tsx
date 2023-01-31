@@ -9,19 +9,20 @@ import { warningModal } from '@utils/customAlert';
 interface PostEditorProps {
     initTitle: string;
     initContent: string;
-    initImage: string;
+    initImage?: string | null;
     submitNewPost(newPost: FormData): void;
 }
 
 export default function PostEditor({
     initTitle,
     initContent,
+    initImage,
     submitNewPost,
 }: PostEditorProps) {
     const [title, setTitle] = useState<string>(initTitle);
     const [content, setContent] = useState<string>(initContent);
     const [image, setImage] = useState<File>();
-    const [imagePreview, setImagePreview] = useState<string>(''); // image object url
+    const [imagePreview, setImagePreview] = useState<string>(initImage || ''); // image object url
     const router = useRouter();
 
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,11 +85,11 @@ export default function PostEditor({
                     accept="image/*"
                     id="image"
                     onChange={uploadImage}
-                    disabled={Boolean(image)}
+                    disabled={Boolean(imagePreview)}
                 />
                 <label htmlFor="image">
                     <ImageIcon className="icon" height="40px" />
-                    <span>{Number(Boolean(image))}/1</span>
+                    <span>{Number(Boolean(imagePreview))}/1</span>
                 </label>
                 {imagePreview && (
                     <div className={styles.preview}>

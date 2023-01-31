@@ -130,7 +130,7 @@ export default function PostCreatePage() {
 
     const createPost = async (newPost: FormData) => {
         try {
-            newPost.append('schedules', JSON.stringify(getScheduleIds()));
+            // newPost.append('schedules', JSON.stringify(getScheduleIds()));
             await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
         } catch (error) {

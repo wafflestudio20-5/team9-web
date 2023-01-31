@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import styles from './scheduleId.module.scss';
 
-import { getMyPostsAPI, getParticularPostAPI } from '@apis/blog';
+import { getParticularPostAPI } from '@apis/blog';
 import { getParticularScheduleAPI } from '@apis/calendar';
 import PostViewer from '@components/Blog/PostViewer';
 import ScheduleContent from '@components/ScheduleContent';
