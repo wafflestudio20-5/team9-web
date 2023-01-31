@@ -4,8 +4,8 @@ import React, { useRef, useState, useMemo } from 'react';
 import styles from './DayinMonth.module.scss';
 
 import { FullSchedule } from '@customTypes/ScheduleTypes';
-import AcrossEvent from '@components/AcrossEvent';
-import WithinEvent from '@components/WithinEvent';
+import AcrossEvent from '@components/EventComponents/AcrossEvent';
+import WithinEvent from '@components/EventComponents/WithinEvent';
 import { useBoxSizeContext } from '../../contexts/BoxSizeContext';
 
 export default function DayinMonth({
