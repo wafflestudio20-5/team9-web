@@ -56,6 +56,7 @@ export default function getLayeredEvents(
         const layer = findAvailableLayer(layeredEvents, startDateString);
         while (isDateIncluded(dateObj, event)) {
             if (formatDate(dateObj) < formatDate(dates[0])) {
+                dateObj.setDate(dateObj.getDate() + 1);
                 continue;
             }
             if (
