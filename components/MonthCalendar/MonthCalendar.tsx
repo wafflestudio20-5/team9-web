@@ -15,12 +15,14 @@ import { getCalendarDates } from '@utils/calculateDate';
 import { DAYS, formatDate } from '@utils/formatting';
 import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
 import getLayeredEvents from '@utils/layerEvents';
+import { useCalendarContext } from '@contexts/CalendarContext';
 
 export default function MonthCalendar() {
-    const { isOpen } = useSidebarContext();
     const router = useRouter();
     const { year, month, date } = router.query;
+    const { needUpdate, setNeedUpdate } = useCalendarContext();
     const { user, accessToken } = useSessionContext();
+    const { isOpen } = useSidebarContext();
     const monthHolderRef = useRef<HTMLDivElement>(null);
 
     const monthDates = useMemo(() => {
@@ -31,7 +33,6 @@ export default function MonthCalendar() {
         });
     }, [year, month, date]);
     const [monthEvents, setMonthEvents] = useState<FullSchedule[]>();
-    const [needUpdate, setNeedUpdate] = useState(true);
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
     const [dayBoxSize, setDayBoxSize] = useState<
         | {
@@ -81,6 +82,7 @@ export default function MonthCalendar() {
                 });
         }
         setNeedUpdate(false);
+        console.log('updated');
     }, [monthDates, needUpdate]);
 
     useEffect(() => {
@@ -108,11 +110,7 @@ export default function MonthCalendar() {
 
     return (
         <div className={styles.wrapper} style={{}}>
-            {isOpen ? (
-                <Sidebar />
-            ) : (
-                <CreateScheduleButton setNeedUpdate={setNeedUpdate} />
-            )}
+            {isOpen ? <Sidebar /> : <CreateScheduleButton />}
             <div className={styles.calendarHolder}>
                 <div className={styles.headrow}>
                     {DAYS.map((item, index) => {

@@ -44,6 +44,7 @@ import {
     warningModal,
 } from '@utils/customAlert';
 import { formatDate, formatDateWithTime } from '@utils/formatting';
+import { useCalendarContext } from '@contexts/CalendarContext';
 
 function ErrorMessage({ message }: { message: string }) {
     return <span className={styles.errorMessage}>{message}</span>;
@@ -52,16 +53,15 @@ function ErrorMessage({ message }: { message: string }) {
 interface ScheduleEditorModalProps {
     initSchedule: Schedule;
     taskType: 'create' | 'edit';
-    setNeedUpdate?: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ScheduleEditorModal({
     initSchedule,
     taskType,
-    setNeedUpdate,
 }: ScheduleEditorModalProps) {
     const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
+    const { setNeedUpdate } = useCalendarContext();
     const titleRef = useRef<HTMLInputElement>(null);
     const [title, setTitle] = useState<string>(initSchedule.title);
     const [startDate, setStartDate] = useState<Date>(

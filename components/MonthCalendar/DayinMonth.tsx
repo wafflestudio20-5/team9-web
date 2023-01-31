@@ -54,6 +54,7 @@ export default function DayinMonth({
                     <AcrossEvent
                         key={index}
                         eventData={event}
+                        dateString={dateString}
                         day={day}
                         dayWidth={Number(boxSize?.width.slice(0, -2))}
                         eventHeight={20}

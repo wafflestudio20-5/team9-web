@@ -2,20 +2,25 @@ import React from 'react';
 
 import styles from './AcrossEvent.module.scss';
 
+import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
+import { useCalendarContext } from '@contexts/CalendarContext';
 
 export default function AcrossEvent({
     eventData,
+    dateString,
     day,
     dayWidth,
     eventHeight,
 }: {
     eventData: FullSchedule;
+    dateString: string;
     day: number;
     dayWidth: number;
     eventHeight: number;
 }) {
-    console.log(dayWidth);
+    const { openModal } = useModal();
+    const { setNeedUpdate } = useCalendarContext();
     const colorLayer = () => {
         if (eventData.layer) {
             switch (eventData.layer % 3) {
@@ -29,11 +34,12 @@ export default function AcrossEvent({
         }
         return `${styles.chocolate}`;
     };
-    const eventLength =
+    const eventLengthRemaining =
         Number(eventData.end_at.split(' ')[0].split('-')[2]) -
-        Number(eventData.start_at.split(' ')[0].split('-')[2]);
+        Number(dateString.split('-')[2]) +
+        1;
     const daysLeftThisWeek = 7 - day;
-    const numberOfBlocks = Math.min(eventLength, daysLeftThisWeek);
+    const numberOfBlocks = Math.min(eventLengthRemaining, daysLeftThisWeek);
     const totalLength = numberOfBlocks * (dayWidth + 12) - 12;
     const getPathString = () => {
         const upper =
@@ -74,14 +80,6 @@ export default function AcrossEvent({
         return pathString;
     };
     return (
-        // <div
-        //     className={styles.button}
-        //     style={{
-        //         top: `${
-        //             eventData.layer ? (eventHeight + 3) * eventData.layer : 0
-        //         }px`,
-        //     }}
-        // >
         <div
             className={`${styles.across} ${colorLayer()}`}
             style={{
@@ -90,6 +88,12 @@ export default function AcrossEvent({
                 top: `${
                     eventData.layer ? (eventHeight + 3) * eventData.layer : 0
                 }px`,
+            }}
+            onClick={() => {
+                openModal(MODAL_NAMES.scheduleView, {
+                    schedule: eventData,
+                    setNeedUpdate: setNeedUpdate,
+                });
             }}
         >
             {dayWidth && (
@@ -102,20 +106,7 @@ export default function AcrossEvent({
                     <path d={getPathString()} />
                 </svg>
             )}
-            <span className={styles.title}></span>
+            <span className={styles.title}>{eventData.title}</span>
         </div>
-        // <span className={styles.title}></span>
-        // </div>
-
-        // <div
-        //     className={`${styles.across} ${colorLayer()}`}
-        //     style={{
-        //         width: `${totalLength}px`,
-        //         height: `${3 + eventHeight}px`,
-        //         clipPath: `path(${getPathString()})`,
-        //     }}
-        // >
-        //
-        // </div>
     );
 }
