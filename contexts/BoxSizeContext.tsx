@@ -73,7 +73,6 @@ export default function BoxSizeProvider({ children }: PropsWithChildren) {
         const datesCount = monthDates.length;
         setTotalHeight(windowSize.height - 66);
         const width = (windowSize.width - 88) / 7;
-        console.log(width);
         const height = (windowSize.height - 66 - 12 * (datesCount / 7 - 1)) / 7;
         setBoxWidth(width);
         setBoxHeight(height);

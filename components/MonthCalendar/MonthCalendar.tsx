@@ -76,7 +76,6 @@ export default function MonthCalendar() {
                 });
         }
         setNeedUpdate(false);
-        console.log('updated');
     }, [monthDates, needUpdate]);
 
     useEffect(() => {

@@ -14,7 +14,6 @@ export const AcrossEvent = ({
     const isAfterStart = eventData.start_at.split(' ')[0] !== dateString;
     const isBeforeEnd = eventData.end_at.split(' ')[0] !== dateString;
     const colorLayer = () => {
-        // console.log(eventData.layer);
         if (eventData.layer) {
             switch (eventData.layer % 3) {
                 case 0:
