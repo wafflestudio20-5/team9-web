@@ -1,7 +1,26 @@
 .schedules {
+    display: grid;
+    grid-auto-rows: minmax(100px, 1fr);
+    height: 100%;
+    overflow: auto;
 }
 
 .schedule {
-    .title {
+    border: 1px solid var(--structure);
+    overflow: auto;
+}
+
+.selectedSchedule {
+    display: grid;
+    grid-template-rows: 36px minmax(auto, calc(100% - 36px));
+    overflow: auto;
+
+    .schedule {
+        border: none;
+    }
+
+    button {
+        width: 60px;
+        height: 36px;
     }
 }

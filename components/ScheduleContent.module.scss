@@ -86,7 +86,7 @@
     .description {
         align-items: flex-start;
         height: fit-content;
-        max-height: calc(100% - 200px);
+        max-height: minmax(200px, auto);
 
         p {
             margin: 0;

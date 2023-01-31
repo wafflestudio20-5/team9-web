@@ -1,31 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styles from './ScheduleList.module.scss';
 
+import ScheduleContent from '@components/ScheduleContent';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 
-// can be changed depending on the response data type of `getRelatedSchedulesAPI`
 interface ScheduleListProps {
     schedules: FullSchedule[];
 }
 
 export default function ScheduleList({ schedules }: ScheduleListProps) {
-    return (
-        <div className={styles.schedules}>
-            {schedules.map(s => (
-                <Schedule schedule={s} key={s.id} />
-            ))}
-        </div>
-    );
-}
+    const [selectedId, setSelectedId] = useState<number>(0);
 
-function Schedule({ schedule }: { schedule: FullSchedule }) {
+    const toggleSchedule = (id: number) => {
+        if (selectedId === id) setSelectedId(0);
+        else setSelectedId(id);
+    };
+
     return (
-        <div className={styles.schedule}>
-            <div className={styles.title}>{schedule.title}</div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
+        <>
+            {selectedId ? (
+                <div className={styles.selectedSchedule}>
+                    <button onClick={() => toggleSchedule(0)}>목록</button>
+                    <div className={styles.schedule}>
+                        <ScheduleContent
+                            schedule={schedules.find(s => s.id === selectedId)!}
+                        />
+                    </div>
+                </div>
+            ) : (
+                <div className={styles.schedules}>
+                    {schedules.map(s => (
+                        <div
+                            className={styles.schedule}
+                            key={s.id}
+                            onClick={() => toggleSchedule(s.id)}
+                        >
+                            <ScheduleContent schedule={s} />
+                        </div>
+                    ))}
+                </div>
+            )}
+        </>
     );
 }
