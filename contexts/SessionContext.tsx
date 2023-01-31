@@ -238,8 +238,6 @@ export default function SessionProvider({ children }: PropsWithChildren) {
 
     const postHandleSocialLogin = useCallback(
         (postSocialLoginData: PostSocialLoginData) => {
-            console.log(postSocialLoginData.accessToken);
-            console.log(postSocialLoginData.refreshToken);
             if (postSocialLoginData.error !== null) {
                 setTimeout(function () {
                     Swal.fire({
