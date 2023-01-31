@@ -133,7 +133,13 @@ export const getMonthInThisWeek = (
     return `${yearNow}년 ${monthNow}월`;
 };
 
-export const getCalendarDates = (dateObj: Date, count?: number) => {
+export const getCalendarDates = ({
+    dateObj,
+    count,
+}: {
+    dateObj: Date;
+    count?: number;
+}) => {
     const firstDay = (dateObj: Date) => {
         const temp = new Date(dateObj.getFullYear(), dateObj.getMonth(), 1);
         return temp.getDay();

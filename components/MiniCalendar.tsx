@@ -30,7 +30,7 @@ export default function MiniCalendar({
     };
 
     const calendarDates = useMemo(() => {
-        return getCalendarDates(dateObj, 42);
+        return getCalendarDates({ dateObj: dateObj, count: 42 });
     }, [dateObj]);
 
     const getDateClassName = (item: Date) => {

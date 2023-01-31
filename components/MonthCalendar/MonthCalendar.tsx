@@ -24,11 +24,11 @@ export default function MonthCalendar() {
     const monthHolderRef = useRef<HTMLDivElement>(null);
 
     const monthDates = useMemo(() => {
-        return getCalendarDates(
-            year
+        return getCalendarDates({
+            dateObj: year
                 ? new Date(Number(year), Number(month) - 1, Number(date))
                 : new Date(),
-        );
+        });
     }, [year, month, date]);
     const [monthEvents, setMonthEvents] = useState<FullSchedule[]>();
     const [needUpdate, setNeedUpdate] = useState(true);
