@@ -13,12 +13,21 @@ export default function AcrossEvent({
     layer,
     dateString,
     eventHeight,
+    borderWidth,
+    slopeWidth,
+    slopeHeight,
 }: {
     eventData: FullSchedule;
     layer: number;
     dateString: string;
     eventHeight: number;
+    borderWidth?: number;
+    slopeWidth?: number;
+    slopeHeight?: number;
 }) {
+    const bw = borderWidth ? borderWidth : 12;
+    const sw = slopeWidth ? slopeWidth : 6;
+    const sh = slopeHeight ? slopeHeight : 3;
     const { openModal } = useModal();
     const { boxWidth } = useBoxSizeContext();
     const colorLayer = () => {
@@ -47,11 +56,11 @@ export default function AcrossEvent({
                 ? Array(numberOfBlocks - 1)
                       .fill(0)
                       .map((v, i) => {
-                          const startAt: number = i * (boxWidth + 12);
-                          return `L ${startAt + 3} 3 L ${
-                              startAt + boxWidth - 3
-                          } 3 L ${startAt + boxWidth} 0 L ${
-                              startAt + 12 + boxWidth
+                          const startAt: number = i * (boxWidth + bw);
+                          return `L ${startAt + sw} ${sh} L ${
+                              startAt + boxWidth - sw
+                          } ${sh} L ${startAt + boxWidth} 0 L ${
+                              startAt + bw + boxWidth
                           } 0`;
                       })
                       .join(' ')
@@ -61,22 +70,24 @@ export default function AcrossEvent({
                 ? Array(numberOfBlocks - 1)
                       .fill(0)
                       .map((v, i) => {
-                          const startAt = eventWidth - i * (boxWidth + 12);
-                          return `L ${startAt - 3} ${3 + eventHeight} L ${
-                              startAt + 3 - boxWidth
-                          } ${3 + eventHeight} L ${
+                          const startAt = eventWidth - i * (boxWidth + bw);
+                          return `L ${startAt - sw} ${sh + eventHeight} L ${
+                              startAt + sw - boxWidth
+                          } ${sh + eventHeight} L ${
                               startAt - boxWidth
                           } ${eventHeight} L ${
-                              startAt - 12 - boxWidth
+                              startAt - bw - boxWidth
                           } ${eventHeight}`;
                       })
                       .join(' ')
                 : '';
-        const pathString = `M 0 3 ${upper} L ${
-            eventWidth - boxWidth + 3
-        } 3 L ${eventWidth} 3 L ${eventWidth} ${3 + eventHeight} ${lower} L ${
-            boxWidth - 3
-        } ${eventHeight + 3} L 0 ${eventHeight + 3} L 0 3 Z`;
+        const pathString = `M 0 ${sh} ${upper} L ${
+            eventWidth - boxWidth + sw
+        } ${sh} L ${eventWidth} ${sh} L ${eventWidth} ${
+            sh + eventHeight
+        } ${lower} L ${boxWidth - sw} ${eventHeight + sh} L 0 ${
+            eventHeight + sh
+        } L 0 ${sh} Z`;
         return pathString;
     };
     return (
