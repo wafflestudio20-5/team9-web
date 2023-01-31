@@ -15,8 +15,8 @@ export default function AcrossEvent({
     dayWidth: number;
     eventHeight: number;
 }) {
+    console.log(dayWidth);
     const colorLayer = () => {
-        // console.log(eventData.layer);
         if (eventData.layer) {
             switch (eventData.layer % 3) {
                 case 0:
@@ -41,7 +41,7 @@ export default function AcrossEvent({
                 ? Array(numberOfBlocks - 1)
                       .fill(0)
                       .map((v, i) => {
-                          const startAt = i * (dayWidth + 12);
+                          const startAt: number = i * (dayWidth + 12);
                           return `L ${startAt + 3} 3 L ${
                               startAt + dayWidth - 3
                           } 3 L ${startAt + dayWidth} 0 L ${
@@ -74,19 +74,39 @@ export default function AcrossEvent({
         return pathString;
     };
     return (
+        // <div
+        //     className={styles.button}
+        //     style={{
+        //         top: `${
+        //             eventData.layer ? (eventHeight + 3) * eventData.layer : 0
+        //         }px`,
+        //     }}
+        // >
         <div
             className={`${styles.across} ${colorLayer()}`}
-            style={{ width: `${totalLength}px`, height: `${eventHeight}px` }}
+            style={{
+                width: `${totalLength}px`,
+                height: `${eventHeight + 3}px`,
+                top: `${
+                    eventData.layer ? (eventHeight + 3) * eventData.layer : 0
+                }px`,
+            }}
         >
-            <svg
-                fill="currentColor"
-                stroke="currentColor"
-                viewBox={`0 0 ${totalLength} ${eventHeight + 3}`}
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <path d={getPathString()} />
-            </svg>
+            {dayWidth && (
+                <svg
+                    fill="currentColor"
+                    stroke="currentColor"
+                    viewBox={`0 0 ${totalLength} ${eventHeight + 3}`}
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d={getPathString()} />
+                </svg>
+            )}
+            <span className={styles.title}></span>
         </div>
+        // <span className={styles.title}></span>
+        // </div>
+
         // <div
         //     className={`${styles.across} ${colorLayer()}`}
         //     style={{
@@ -95,7 +115,7 @@ export default function AcrossEvent({
         //         clipPath: `path(${getPathString()})`,
         //     }}
         // >
-        //     <span className={styles.title}></span>
+        //
         // </div>
     );
 }

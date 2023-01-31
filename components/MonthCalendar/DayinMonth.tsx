@@ -9,12 +9,13 @@ import AcrossEvent from '@components/AcrossEvent';
 export default function DayinMonth({
     dateData,
     eventData,
-    style,
+    boxSize,
 }: {
     dateData: { dateString: string; day: number };
     eventData?: { across: FullSchedule[]; within: FullSchedule[] };
-    style?: React.CSSProperties;
+    boxSize?: { width: string; height: string; padding?: string };
 }) {
+    const router = useRouter();
     const dayRef = useRef<HTMLDivElement>(null);
     const today = new Date();
     const dateToday = today.getDate();
@@ -37,25 +38,28 @@ export default function DayinMonth({
         return `${styles.notCurrMonth} ${date === 1 && styles.textIncluded}`;
     };
     return (
-        <div className={styles.wrapper} style={style} ref={dayRef}>
+        <div className={styles.wrapper} style={boxSize} ref={dayRef}>
             <div className={styles.buttonHolder}>
-                <button className={dateHeaderClass()}>
+                <button
+                    className={dateHeaderClass()}
+                    onClick={() => {
+                        router.push(`/day/${year}/${month}/${date}`);
+                    }}
+                >
                     <span>{dateHeader ? dateHeader : ''}</span>
                 </button>
             </div>
-            {/* <div className={styles.acrossHolder}> */}
             {eventData?.across.map((event, index) => {
                 return (
                     <AcrossEvent
                         key={index}
                         eventData={event}
                         day={day}
-                        dayWidth={dayRef.current?.clientWidth!}
+                        dayWidth={Number(boxSize?.width.slice(0, -2))}
                         eventHeight={20}
                     />
                 );
             })}
-            {/* </div> */}
             <div className={styles.withinHolder}></div>
         </div>
     );

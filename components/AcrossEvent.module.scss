@@ -1,5 +1,6 @@
 .across {
     display: block;
+    position: relative;
 
     &.chocolate path {
         color: var(--syrup-chocolate);
@@ -13,6 +14,7 @@
 }
 
 .title {
+    position: absolute;
     padding: 4px 10px;
     color: var(--text-reverse);
     font-size: 10px;

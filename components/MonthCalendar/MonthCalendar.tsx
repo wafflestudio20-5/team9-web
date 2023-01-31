@@ -33,9 +33,17 @@ export default function MonthCalendar() {
     const [monthEvents, setMonthEvents] = useState<FullSchedule[]>();
     const [needUpdate, setNeedUpdate] = useState(true);
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
+    const [dayBoxSize, setDayBoxSize] = useState<
+        | {
+              width: string;
+              height: string;
+              padding: string;
+          }
+        | undefined
+    >(undefined);
 
     useEffect(() => {
-        if (monthDates && needUpdate) {
+        if (monthDates || needUpdate) {
             getEntireScheduleAPI(
                 {
                     pk: user?.pk!,
@@ -80,35 +88,26 @@ export default function MonthCalendar() {
             setLayeredEvents(getLayeredEvents(monthDates, monthEvents));
         }
     }, [monthDates, monthEvents]);
-
-    const getSizeStyle = (
-        monthLength: number,
-        holderWidth: number,
-        holderHeight: number,
-    ) => {
-        const dayWidth = (holderWidth - 12 * 6) / 7;
-        const numOfWeeks = monthLength / 7;
-        const dayHeight = (holderHeight - 12 * (numOfWeeks - 1)) / numOfWeeks;
-        return {
-            width: Math.round(dayWidth),
-            height: dayHeight,
-            padding: `0px ${(dayWidth - Math.round(dayWidth)) / 2}`,
-        };
-    };
-
-    // const getDayWidth = (holderWidth: number) => {
-    //     const dayWidth = (holderWidth - 12 * 6) / 7;
-    //     return Math.round(dayWidth);
-    // };
-
-    // const getDayHeight = (monthLength: number, holderHeight: number) => {
-    //     const numOfWeeks = monthLength / 7;
-    //     const dayHeight = (holderHeight - 12 * (numOfWeeks - 1)) / numOfWeeks;
-    //     return dayHeight;
-    // };
+    useEffect(() => {
+        const monthLength = monthDates.length;
+        const holderWidth = monthHolderRef.current?.clientWidth;
+        const holderHeight = monthHolderRef.current?.clientHeight;
+        if (holderWidth && holderHeight) {
+            const dayWidth = (holderWidth - 12 * 6) / 7;
+            const numOfWeeks = monthLength / 7;
+            const dayHeight =
+                (holderHeight - 12 * (numOfWeeks - 1)) / numOfWeeks;
+            setDayBoxSize({
+                width: `${Math.round(dayWidth)}px`,
+                height: `${dayHeight}px`,
+                padding: `0px ${(dayWidth - Math.round(dayWidth)) / 2}`,
+            });
+        }
+    }, [monthDates, monthHolderRef]);
+    console.log(layeredEvents);
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} style={{}}>
             {isOpen ? (
                 <Sidebar />
             ) : (
@@ -122,39 +121,20 @@ export default function MonthCalendar() {
                 </div>
                 <div className={styles.monthHolder} ref={monthHolderRef}>
                     <div className={styles.month}>
-                        {layeredEvents
-                            ? Object.entries(layeredEvents).map(
-                                  (data, index) => {
-                                      return (
-                                          <DayinMonth
-                                              key={index}
-                                              dateData={{
-                                                  dateString: data[0],
-                                                  day: data[1].day,
-                                              }}
-                                              eventData={data[1]}
-                                              style={getSizeStyle(
-                                                  monthDates.length,
-                                                  monthHolderRef.current
-                                                      ?.clientWidth!,
-                                                  monthHolderRef.current
-                                                      ?.clientHeight!,
-                                              )}
-                                          />
-                                      );
-                                  },
-                              )
-                            : monthDates?.map((date, index) => {
-                                  return (
-                                      <DayinMonth
-                                          key={index}
-                                          dateData={{
-                                              dateString: formatDate(date),
-                                              day: date.getDay(),
-                                          }}
-                                      />
-                                  );
-                              })}
+                        {layeredEvents &&
+                            Object.entries(layeredEvents).map((data, index) => {
+                                return (
+                                    <DayinMonth
+                                        key={index}
+                                        dateData={{
+                                            dateString: data[0],
+                                            day: data[1].day,
+                                        }}
+                                        eventData={data[1]}
+                                        boxSize={dayBoxSize}
+                                    />
+                                );
+                            })}
                     </div>
 
                     <div

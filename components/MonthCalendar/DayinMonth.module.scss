@@ -13,6 +13,7 @@
     width: 100%;
     align-items: center;
     justify-content: center;
+    position: relative;
 
     button {
         border: 1px solid transparent;
@@ -58,15 +59,15 @@
     }
 }
 
-.acrossHolder {
-    // display: flex;
-    // flex-direction: column;
-    display: block;
-    overflow-x: visible;
-    width: fit-content;
-    row-gap: 3px;
-    height: fit-content;
-}
+// .acrossHolder {
+//     // display: flex;
+//     // flex-direction: column;
+//     display: block;
+//     overflow-x: visible;
+//     width: fit-content;
+//     row-gap: 3px;
+//     height: fit-content;
+// }
 
 .withinHolder {
     display: flex;

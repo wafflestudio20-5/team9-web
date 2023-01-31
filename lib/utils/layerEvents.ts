@@ -34,7 +34,7 @@ function sortEvents(events: FullSchedule[]) {
         while (acrossEvents[i - j]) {
             if (
                 acrossEvents[i - j].end_at.split(' ')[0] >=
-                acrossEvents[i - j].start_at.split(' ')[0]
+                acrossEvents[i].start_at.split(' ')[0]
             ) {
                 acrossEvents[i].layer! += 1;
                 j += 1;
