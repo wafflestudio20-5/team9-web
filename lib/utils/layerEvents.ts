@@ -56,7 +56,11 @@ export default function getLayeredEvents(
         const dateString = formatDate(date);
         layeredEvents[dateString] = {
             across: acrossEvents.filter(event => {
-                return isDateIncluded(date, event);
+                const isStartDate =
+                    formatDate(date) === event.start_at.split(' ')[0];
+                const isNewWeek =
+                    date.getDay() === 0 && isDateIncluded(date, event);
+                return isStartDate || isNewWeek;
             }),
             within: withinEvents
                 .filter(event => {
@@ -65,6 +69,7 @@ export default function getLayeredEvents(
                 .map((event, index) => {
                     return { ...event, layer: index - 1 };
                 }),
+            day: date.getDay(),
         };
     });
     return layeredEvents;

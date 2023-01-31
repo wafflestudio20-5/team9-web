@@ -101,7 +101,10 @@ export default function MonthCalendar() {
                                       return (
                                           <DayinMonth
                                               key={index}
-                                              dateString={data[0]}
+                                              dateData={{
+                                                  dateString: data[0],
+                                                  day: data[1].day,
+                                              }}
                                               eventData={data[1]}
                                           />
                                       );
@@ -111,7 +114,10 @@ export default function MonthCalendar() {
                                   return (
                                       <DayinMonth
                                           key={index}
-                                          dateString={date.toDateString()}
+                                          dateData={{
+                                              dateString: formatDate(date),
+                                              day: date.getDay(),
+                                          }}
                                       />
                                   );
                               })}

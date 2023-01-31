@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import styles from './DayinMonth.module.scss';
 
 import { FullSchedule } from '@customTypes/ScheduleTypes';
-import { AcrossEvent } from './EventinMonth';
+import AcrossEvent from '@components/AcrossEvent';
 
 export default function DayinMonth({
-    dateString,
+    dateData,
     eventData,
 }: {
-    dateString: string;
+    dateData: { dateString: string; day: number };
     eventData?: { across: FullSchedule[]; within: FullSchedule[] };
 }) {
+    const dayRef = useRef<HTMLDivElement>(null);
     const today = new Date();
     const dateToday = today.getDate();
     const monthToday = today.getMonth() + 1;
+    const { dateString, day } = dateData;
     const [year, month, date] = dateString.split('-').map(str => {
         return Number(str);
     });
@@ -32,21 +34,25 @@ export default function DayinMonth({
         return `${styles.notCurrMonth} ${date === 1 && styles.textIncluded}`;
     };
     return (
-        <div className={styles.wrapper}>
-            <button className={dateHeaderClass()}>
-                <span>{dateHeader ? dateHeader : ''}</span>
-            </button>
-            <div className={styles.acrossHolder}>
-                {eventData?.across.map((event, index) => {
-                    return (
-                        <AcrossEvent
-                            key={index}
-                            eventData={event}
-                            dateString={dateString}
-                        />
-                    );
-                })}
+        <div className={styles.wrapper} ref={dayRef}>
+            <div className={styles.buttonHolder}>
+                <button className={dateHeaderClass()}>
+                    <span>{dateHeader ? dateHeader : ''}</span>
+                </button>
             </div>
+            {/* <div className={styles.acrossHolder}> */}
+            {eventData?.across.map((event, index) => {
+                return (
+                    <AcrossEvent
+                        key={index}
+                        eventData={event}
+                        day={day}
+                        dayWidth={dayRef.current?.clientWidth ?? 0}
+                        eventHeight={20}
+                    />
+                );
+            })}
+            {/* </div> */}
             <div className={styles.withinHolder}></div>
         </div>
     );

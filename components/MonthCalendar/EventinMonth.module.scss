@@ -1,51 +1,58 @@
 .across {
     height: 23px;
     overflow-x: visible;
+    white-space: nowrap;
     display: flex;
-    align-items: flex-start;
-    &.chocolate > * {
+    align-items: flex-end;
+
+    &.chocolate div {
         background-color: var(--syrup-chocolate);
     }
-    &.honey > * {
+    &.honey div {
         background-color: var(--syrup-honey);
     }
-    &.strawberry > * {
+    &.strawberry div {
         background-color: var(--syrup-strawberry);
     }
 
     .filler {
         width: 3px;
         height: 20px;
+        margin-top: 2px;
     }
 
     .left {
-        transform: skewY(45deg);
-        height: 20px;
+        height: 23px;
         width: 3px;
+        clip-path: path('M 0 0 L 3 3 L 3 23 L 0 20 L 0 0 Z');
     }
 
     .main {
-        width: calc(100% - 6px);
+        width: calc(100% - 18px);
         height: 20px;
-        margin-top: 2px;
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        span {
+            padding: 4px;
+            color: var(--text-reverse);
+            font-size: 10px;
+            font-weight: 524;
+            width: 100%;
+            text-overflow: ellipsis;
+        }
     }
 
     .right {
         transform: skewY(-45deg);
         height: 20px;
-        margin-top: 1px;
         width: 3px;
+        margin-bottom: 1.75px;
     }
 
-    span {
-        padding: 4px;
-        color: var(--text-reverse);
-        font-size: 10px;
-        font-weight: 524;
-        width: 100%;
-        text-overflow: ellipsis;
+    .bridge {
+        margin-bottom: 4px;
+        height: 20px;
+        width: 12px;
     }
 }

@@ -34,6 +34,7 @@ export const AcrossEvent = ({
                 <span>{eventData.title}</span>
             </div>
             <div className={isBeforeEnd ? styles.right : styles.filler} />
+            {isBeforeEnd && <div className={styles.bridge} />}
         </div>
     );
 };
