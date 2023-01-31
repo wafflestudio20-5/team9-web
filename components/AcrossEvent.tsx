@@ -92,7 +92,6 @@ export default function AcrossEvent({
             onClick={() => {
                 openModal(MODAL_NAMES.scheduleView, {
                     schedule: eventData,
-                    setNeedUpdate: setNeedUpdate,
                 });
             }}
         >

@@ -1,0 +1,28 @@
+.event {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    &.chocolate {
+        background-color: var(--syrup-chocolate);
+    }
+    &.honey {
+        background-color: var(--syrup-honey);
+    }
+    &.strawberry {
+        background-color: var(--syrup-strawberry);
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    span {
+        color: var(--text-reverse);
+        font-size: 10px;
+        font-weight: 524;
+        width: 100%;
+        text-overflow: ellipsis;
+        padding: 4px 10px;
+    }
+}

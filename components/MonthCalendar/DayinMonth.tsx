@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
-import React, { CSSProperties, useRef } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 
 import styles from './DayinMonth.module.scss';
 
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import AcrossEvent from '@components/AcrossEvent';
+import WithinEvent from '@components/WithinEvent';
 import { useBoxSizeContext } from './BoxSizeContext';
 
 export default function DayinMonth({
@@ -17,6 +18,10 @@ export default function DayinMonth({
     const router = useRouter();
     const dayRef = useRef<HTMLDivElement>(null);
     const { boxHeight, boxWidth } = useBoxSizeContext();
+    const layers = useMemo(() => {
+        return eventData?.across.length! + eventData?.within.length!;
+    }, [eventData]);
+
     const today = new Date();
     const dateToday = today.getDate();
     const monthToday = today.getMonth() + 1;
@@ -54,15 +59,37 @@ export default function DayinMonth({
             </div>
             <div className={styles.eventsHolder}>
                 {eventData?.across.map((event, index) => {
-                    return (
-                        <AcrossEvent
-                            key={index}
-                            eventData={event}
-                            dateString={dateString}
-                            day={day}
-                            eventHeight={20}
-                        />
-                    );
+                    if (event.layer && event.layer <= 3) {
+                        return (
+                            <AcrossEvent
+                                key={index}
+                                eventData={event}
+                                dateString={dateString}
+                                day={day}
+                                eventHeight={20}
+                            />
+                        );
+                    } else if (event.layer == 4 && layers > 4) {
+                        return (
+                            <div className={styles.seeMore}>{`${
+                                layers - event.layer
+                            }개 더보기`}</div>
+                        );
+                    } else return null;
+                })}
+                {eventData?.within.map((event, index) => {
+                    if (
+                        event.layer &&
+                        event.layer + eventData?.across.length <= 3
+                    ) {
+                        return (
+                            <WithinEvent
+                                key={index}
+                                eventData={event}
+                                eventHeight={20}
+                            />
+                        );
+                    }
                 })}
             </div>
         </div>
