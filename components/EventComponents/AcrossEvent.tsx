@@ -6,24 +6,25 @@ import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { useCalendarContext } from '@contexts/CalendarContext';
 import { useBoxSizeContext } from '../../contexts/BoxSizeContext';
+import { formatDatestringToDate } from '@utils/formatting';
 
 export default function AcrossEvent({
     eventData,
+    layer,
     dateString,
-    day,
     eventHeight,
 }: {
     eventData: FullSchedule;
+    layer: number;
     dateString: string;
-    day: number;
     eventHeight: number;
 }) {
     const { openModal } = useModal();
     const { setNeedUpdate } = useCalendarContext();
     const { boxWidth } = useBoxSizeContext();
     const colorLayer = () => {
-        if (eventData.layer) {
-            switch (eventData.layer % 3) {
+        if (layer) {
+            switch (layer % 3) {
                 case 0:
                     return `${styles.chocolate}`;
                 case 1:
@@ -38,7 +39,7 @@ export default function AcrossEvent({
         Number(eventData.end_at.split(' ')[0].split('-')[2]) -
         Number(dateString.split('-')[2]) +
         1;
-    const daysLeftThisWeek = 7 - day;
+    const daysLeftThisWeek = 7 - formatDatestringToDate(dateString).getDay();
     const numberOfBlocks = Math.min(eventLengthRemaining, daysLeftThisWeek);
     const eventWidth = numberOfBlocks * (boxWidth + 12) - 12;
     const getPathString = () => {
@@ -85,9 +86,7 @@ export default function AcrossEvent({
             style={{
                 width: `${eventWidth}px`,
                 height: `${eventHeight + 3}px`,
-                top: `${
-                    eventData.layer ? (eventHeight + 3) * eventData.layer : 0
-                }px`,
+                top: `${layer ? (eventHeight + 3) * layer : 0}px`,
             }}
             onClick={() => {
                 openModal(MODAL_NAMES.scheduleView, {

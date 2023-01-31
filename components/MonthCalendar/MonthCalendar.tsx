@@ -18,6 +18,10 @@ import getLayeredEvents from '@utils/layerEvents';
 import { useCalendarContext } from '@contexts/CalendarContext';
 import { useBoxSizeContext } from '../../contexts/BoxSizeContext';
 
+interface Occupancy {
+    [date: string]: { [layer: number]: boolean };
+}
+
 export default function MonthCalendar() {
     const router = useRouter();
     const { year, month, date } = router.query;
@@ -36,6 +40,7 @@ export default function MonthCalendar() {
     }, [year, month, date]);
     const [monthEvents, setMonthEvents] = useState<FullSchedule[]>();
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
+    const [occupancy, setOccupancy] = useState<Occupancy>();
 
     useEffect(() => {
         if (monthDates || needUpdate) {
@@ -80,9 +85,11 @@ export default function MonthCalendar() {
 
     useEffect(() => {
         if (monthDates && monthEvents) {
-            setLayeredEvents(getLayeredEvents(monthDates, monthEvents));
+            setLayeredEvents(getLayeredEvents(monthEvents, monthDates));
         }
     }, [monthDates, monthEvents]);
+    console.log(layeredEvents);
+    console.log(monthEvents);
 
     return (
         <div className={styles.wrapper}>
@@ -107,11 +114,8 @@ export default function MonthCalendar() {
                                 return (
                                     <DayinMonth
                                         key={index}
-                                        dateData={{
-                                            dateString: data[0],
-                                            day: data[1].day,
-                                        }}
-                                        eventData={data[1]}
+                                        dateString={data[0]}
+                                        layerData={data[1]}
                                     />
                                 );
                             })}

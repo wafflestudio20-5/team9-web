@@ -3,29 +3,33 @@ import React, { useRef, useState, useMemo } from 'react';
 
 import styles from './DayinMonth.module.scss';
 
-import { FullSchedule } from '@customTypes/ScheduleTypes';
+import {
+    FullSchedule,
+    LayerData,
+    LayeredEvents,
+} from '@customTypes/ScheduleTypes';
 import AcrossEvent from '@components/EventComponents/AcrossEvent';
 import WithinEvent from '@components/EventComponents/WithinEvent';
+import FillerEvent from '@components/EventComponents/FillerEvent';
 import { useBoxSizeContext } from '../../contexts/BoxSizeContext';
 
 export default function DayinMonth({
-    dateData,
-    eventData,
+    dateString,
+    layerData,
 }: {
-    dateData: { dateString: string; day: number };
-    eventData?: { across: FullSchedule[]; within: FullSchedule[] };
+    dateString: string;
+    layerData: LayerData;
 }) {
     const router = useRouter();
     const dayRef = useRef<HTMLDivElement>(null);
     const { boxHeight, boxWidth } = useBoxSizeContext();
-    const layers = useMemo(() => {
-        return eventData?.across.length! + eventData?.within.length!;
-    }, [eventData]);
+    // const layers = useMemo(() => {
+    //     return ?.across.length! + eventData?.within.length!;
+    // }, [eventData]);
 
     const today = new Date();
     const dateToday = today.getDate();
     const monthToday = today.getMonth() + 1;
-    const { dateString, day } = dateData;
     const [year, month, date] = dateString.split('-').map(str => {
         return Number(str);
     });
@@ -41,6 +45,41 @@ export default function DayinMonth({
             return `${styles.currMonth} ${date === 1 && styles.textIncluded}`;
         }
         return `${styles.notCurrMonth} ${date === 1 && styles.textIncluded}`;
+    };
+
+    const getEventComponent = (
+        dateString: string,
+        layerData: {
+            type: 'across' | 'within' | 'filler';
+            event: FullSchedule | null;
+        },
+        index: number,
+    ) => {
+        switch (layerData.type) {
+            case 'across':
+                return (
+                    <AcrossEvent
+                        key={index}
+                        layer={index}
+                        eventData={layerData.event!}
+                        dateString={dateString}
+                        eventHeight={20}
+                    />
+                );
+            case 'within':
+                return (
+                    <WithinEvent
+                        key={index}
+                        layer={index}
+                        eventData={layerData.event!}
+                        eventHeight={20}
+                    />
+                );
+            case 'filler':
+                return <FillerEvent />;
+            default:
+                throw new Error('invalid LayerData type');
+        }
     };
     return (
         <div
@@ -58,14 +97,39 @@ export default function DayinMonth({
                 </button>
             </div>
             <div className={styles.eventsHolder}>
-                {eventData?.across.map((event, index) => {
+                {layerData[5]
+                    ? Object.entries(layerData)
+                          .slice(0, 5)
+                          .map(([dateString, layerData], index) => {
+                              if (index === 4) {
+                                  return (
+                                      <div className={styles.seeMore}>{`${
+                                          layerData.length - 4
+                                      }개 더보기`}</div>
+                                  );
+                              }
+                              return getEventComponent(
+                                  dateString,
+                                  layerData,
+                                  index,
+                              );
+                          })
+                    : Object.entries(layerData).map(
+                          ([dateString, layerData], index) => {
+                              return getEventComponent(
+                                  dateString,
+                                  layerData,
+                                  index,
+                              );
+                          },
+                      )}
+                {/* {eventData?.across.map((event, index) => {
                     if (event.layer && event.layer <= 3) {
                         return (
                             <AcrossEvent
                                 key={index}
                                 eventData={event}
                                 dateString={dateString}
-                                day={day}
                                 eventHeight={20}
                             />
                         );
@@ -90,7 +154,7 @@ export default function DayinMonth({
                             />
                         );
                     }
-                })}
+                })} */}
             </div>
         </div>
     );

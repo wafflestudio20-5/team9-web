@@ -32,3 +32,11 @@ export const formatTime = (time: Date) => {
     }
     return `${half} ${hour}:${String(minute).padStart(2, '0')}`;
 };
+
+export const formatDatestringToDate = (dateString: string) => {
+    const [year, month, date] = dateString.split('-').map(str => {
+        return Number(str);
+    });
+    const dateObj = new Date(year, month - 1, date);
+    return dateObj;
+};

@@ -8,14 +8,16 @@ import { FullSchedule } from '@customTypes/ScheduleTypes';
 export default function WithinEvent({
     eventData,
     eventHeight,
+    layer,
 }: {
     eventData: FullSchedule;
     eventHeight: number;
+    layer: number;
 }) {
     const { openModal } = useModal();
     const colorLayer = () => {
-        if (eventData.layer) {
-            switch (eventData.layer % 3) {
+        if (layer) {
+            switch (layer % 3) {
                 case 0:
                     return `${styles.chocolate}`;
                 case 1:
@@ -31,7 +33,7 @@ export default function WithinEvent({
             className={`${styles.event} ${colorLayer()}`}
             style={{
                 height: `${eventHeight}px`,
-                top: `${eventData.layer ? eventData.layer * eventHeight : 0}px`,
+                top: `${layer ? layer * (eventHeight + 6) : 0}px`,
             }}
             onClick={() => {
                 openModal(MODAL_NAMES.scheduleView, {
