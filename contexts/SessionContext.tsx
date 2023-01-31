@@ -238,6 +238,8 @@ export default function SessionProvider({ children }: PropsWithChildren) {
 
     const postHandleSocialLogin = useCallback(
         (postSocialLoginData: PostSocialLoginData) => {
+            console.log(postSocialLoginData.accessToken);
+            console.log(postSocialLoginData.refreshToken);
             if (postSocialLoginData.error !== null) {
                 setTimeout(function () {
                     Swal.fire({
@@ -257,8 +259,6 @@ export default function SessionProvider({ children }: PropsWithChildren) {
                     },
                 })
                 .then(response => {
-                    console.log(postSocialLoginData.accessToken);
-                    console.log(postSocialLoginData.refreshToken);
                     setUser({
                         pk: response.data.pk,
                         email: response.data.email,
