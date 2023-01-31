@@ -49,19 +49,25 @@ export default function DayinMonth({
 
     const getEventComponent = (
         dateString: string,
-        layerData: {
+        data: {
             type: 'across' | 'within' | 'filler';
             event: FullSchedule | null;
         },
         index: number,
     ) => {
-        switch (layerData.type) {
+        if (data === null) {
+            return <FillerEvent key={index} eventHeight={20} />;
+        }
+        if (data === undefined) {
+            return;
+        }
+        switch (data.type) {
             case 'across':
                 return (
                     <AcrossEvent
                         key={index}
                         layer={index}
-                        eventData={layerData.event!}
+                        eventData={data.event!}
                         dateString={dateString}
                         eventHeight={20}
                     />
@@ -71,12 +77,12 @@ export default function DayinMonth({
                     <WithinEvent
                         key={index}
                         layer={index}
-                        eventData={layerData.event!}
+                        eventData={data.event!}
                         eventHeight={20}
                     />
                 );
             case 'filler':
-                return <FillerEvent />;
+                return <FillerEvent key={index} eventHeight={20} />;
             default:
                 throw new Error('invalid LayerData type');
         }
@@ -100,29 +106,19 @@ export default function DayinMonth({
                 {layerData[5]
                     ? Object.entries(layerData)
                           .slice(0, 5)
-                          .map(([dateString, layerData], index) => {
+                          .map(([layer, data], index) => {
                               if (index === 4) {
                                   return (
                                       <div className={styles.seeMore}>{`${
-                                          layerData.length - 4
+                                          data.length - 4
                                       }개 더보기`}</div>
                                   );
                               }
-                              return getEventComponent(
-                                  dateString,
-                                  layerData,
-                                  index,
-                              );
+                              return getEventComponent(dateString, data, index);
                           })
-                    : Object.entries(layerData).map(
-                          ([dateString, layerData], index) => {
-                              return getEventComponent(
-                                  dateString,
-                                  layerData,
-                                  index,
-                              );
-                          },
-                      )}
+                    : Object.entries(layerData).map(([layer, data], index) => {
+                          return getEventComponent(dateString, data, index);
+                      })}
                 {/* {eventData?.across.map((event, index) => {
                     if (event.layer && event.layer <= 3) {
                         return (

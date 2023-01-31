@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Swal from 'sweetalert2';
 
 import styles from './MonthCalendar.module.scss';
@@ -18,10 +18,6 @@ import getLayeredEvents from '@utils/layerEvents';
 import { useCalendarContext } from '@contexts/CalendarContext';
 import { useBoxSizeContext } from '../../contexts/BoxSizeContext';
 
-interface Occupancy {
-    [date: string]: { [layer: number]: boolean };
-}
-
 export default function MonthCalendar() {
     const router = useRouter();
     const { year, month, date } = router.query;
@@ -29,7 +25,6 @@ export default function MonthCalendar() {
     const { user, accessToken } = useSessionContext();
     const { isOpen } = useSidebarContext();
     const { leftMargin, totalWidth, totalHeight } = useBoxSizeContext();
-    // const monthHolderRef = useRef<HTMLDivElement>(null);
 
     const monthDates = useMemo(() => {
         return getCalendarDates({
@@ -40,7 +35,6 @@ export default function MonthCalendar() {
     }, [year, month, date]);
     const [monthEvents, setMonthEvents] = useState<FullSchedule[]>();
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
-    const [occupancy, setOccupancy] = useState<Occupancy>();
 
     useEffect(() => {
         if (monthDates || needUpdate) {
@@ -88,8 +82,6 @@ export default function MonthCalendar() {
             setLayeredEvents(getLayeredEvents(monthEvents, monthDates));
         }
     }, [monthDates, monthEvents]);
-    console.log(layeredEvents);
-    console.log(monthEvents);
 
     return (
         <div className={styles.wrapper}>

@@ -33,7 +33,6 @@ export default function WithinEvent({
             className={`${styles.event} ${colorLayer()}`}
             style={{
                 height: `${eventHeight}px`,
-                top: `${layer ? layer * (eventHeight + 6) : 0}px`,
             }}
             onClick={() => {
                 openModal(MODAL_NAMES.scheduleView, {

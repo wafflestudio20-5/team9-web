@@ -20,7 +20,6 @@ export default function AcrossEvent({
     eventHeight: number;
 }) {
     const { openModal } = useModal();
-    const { setNeedUpdate } = useCalendarContext();
     const { boxWidth } = useBoxSizeContext();
     const colorLayer = () => {
         if (layer) {
@@ -86,7 +85,6 @@ export default function AcrossEvent({
             style={{
                 width: `${eventWidth}px`,
                 height: `${eventHeight + 3}px`,
-                top: `${layer ? (eventHeight + 3) * layer : 0}px`,
             }}
             onClick={() => {
                 openModal(MODAL_NAMES.scheduleView, {
@@ -94,7 +92,7 @@ export default function AcrossEvent({
                 });
             }}
         >
-            {boxWidth && (
+            {eventWidth && (
                 <svg
                     fill="currentColor"
                     stroke="currentColor"

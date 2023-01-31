@@ -64,13 +64,13 @@ export default function getLayeredEvents(
                 dateObj.getDay() === 0
             ) {
                 layeredEvents[formatDate(dateObj)][layer] = {
-                    type: 'filler',
-                    event: null,
+                    type: 'across',
+                    event: event,
                 };
             } else {
                 layeredEvents[formatDate(dateObj)][layer] = {
-                    type: 'across',
-                    event: event,
+                    type: 'filler',
+                    event: null,
                 };
             }
             dateObj.setDate(dateObj.getDate() + 1);

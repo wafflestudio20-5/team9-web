@@ -1,6 +1,7 @@
 .across {
     display: block;
-    position: absolute;
+    position: relative;
+    margin-top: 1px;
     &:hover {
         cursor: pointer;
     }
