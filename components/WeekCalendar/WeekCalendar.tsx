@@ -18,21 +18,37 @@ export default function WeekCalendar() {
         <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <></>}
             <div className={styles.weekHolder}>
-                {sevenDays.map((key, index) => {
-                    return (
-                        <DayComponent
-                            isToday={key === dayNow}
-                            date={
-                                new Date(
-                                    startDay.getFullYear(),
-                                    startDay.getMonth(),
-                                    startDay.getDate() + key,
-                                )
-                            }
-                            key={key}
-                        />
-                    );
-                })}
+                <div className={styles.frozenHolder}>
+                    <div className={styles.left}></div>
+                    <div className={styles.right}>
+                        <div className={styles.headrow}></div>
+                        <div className={styles.acrossHolder}></div>
+                    </div>
+                </div>
+                <div className={styles.scrollHolder}>
+                    <div className={styles.scrollContent}>
+                        <div className={styles.left}></div>
+                        <div className={styles.right}>
+                            <div className={styles.timestamps}></div>
+                            <div className={styles.borderPortrude}></div>
+                            {sevenDays.map((key, index) => {
+                                return (
+                                    <DayComponent
+                                        isToday={key === dayNow}
+                                        date={
+                                            new Date(
+                                                startDay.getFullYear(),
+                                                startDay.getMonth(),
+                                                startDay.getDate() + key,
+                                            )
+                                        }
+                                        key={key}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -8,8 +8,17 @@
 }
 
 .weekHolder {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    flex: 1;
-    border-left: 1px solid v.$border-gray;
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+    // display: grid;
+    // grid-template-columns: repeat(7, 1fr);
+    // flex: 1;
+    // border-left: 1px solid v.$border-gray;
+}
+
+.frozenHolder {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
