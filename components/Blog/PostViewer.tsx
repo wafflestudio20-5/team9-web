@@ -9,19 +9,10 @@ export default function PostViewer({ post }: { post: FullPost }) {
         <div className={styles.post}>
             <h3 className={styles.title}>
                 {/* {post.title} */}
-                오십자를채워보장일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십
+                Lorem ipsum dolor sit amet
             </h3>
             <div className={styles.content}>
                 {/* {post.content} */}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-                posuere fringilla ipsum non egestas. In a urna vel elit pulvinar
-                euismod. Donec mollis eros ut tincidunt porta. Duis sagittis
-                nisi augue, ut finibus nibh suscipit at. Ut vestibulum vitae
-                metus eu iaculis. Quisque rutrum dui at ante efficitur, quis
-                maximus ex malesuada. Maecenas egestas ultricies sapien sed
-                feugiat. Donec porta sem eu nibh aliquet dapibus. Proin maximus
-                odio viverra nunc vulputate viverra. Donec metus urna, imperdiet
-                eu sagittis at, dictum eu urna. Vivamus pulvinar, velit et
                 sagittis vehicula, elit tortor eleifend magna, non gravida
                 tortor magna in lacus. Duis tristique erat ut arcu feugiat
                 auctor. Aliquam erat volutpat. Sed in nisi et mi consequat

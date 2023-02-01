@@ -1,14 +1,9 @@
 .postPage {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 20px;
-    gap: 20px;
-    min-height: calc(100vh - 65px);
+    gap: 25px;
+    height: calc(100vh - 65px);
     background-color: var(--sidebar-background);
-
-    > div {
-        border: 1px solid var(--structure);
-    }
 }
 
 .right {
@@ -18,16 +13,19 @@
 }
 
 .postContainer {
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--structure);
+    padding-right: 25px;
+    overflow: auto;
 }
 
-.util {
+.postUtils {
     display: flex;
     justify-content: right;
     align-items: center;
-    padding: 0 10px;
     gap: 5px;
+    padding: 10px;
+    height: 80px;
+    border-left: 10px solid var(--login-shadow);
+    background-color: var(--login-background);
 
     button {
         display: flex;
@@ -43,64 +41,107 @@
 .commentsContainer {
     display: flex;
     flex-direction: column;
+    margin-top: 25px;
     gap: 10px;
-    width: 90%;
 
     .comments {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 15px;
     }
 
     .comment {
-        border: 1px solid var(--structure);
-        border-radius: 5px;
+        padding: 10px;
+        border-left: 10px solid var(--structure);
+        background-color: var(--login-background);
+
+        .commentUtils {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            gap: 3px;
+
+            button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 28px;
+                height: 28px;
+                border: none;
+                border-radius: 50%;
+            }
+        }
 
         .content {
-            padding: 5px;
         }
     }
 
     textarea {
         padding: 5px;
         width: 100%;
-        height: 60px;
+        height: 70px;
         resize: none;
         border: 2px solid var(--structure);
         border-radius: 5px;
 
         &:focus {
             outline: none;
-            border: 2px solid var(--today-blueberry);
+            border: 2px solid var(--login-shadow);
         }
     }
 
     .newComment {
+        margin: 10px 0 25px 0;
         text-align: right;
     }
 
     .btnContainer {
-        text-align: right;
-    }
+        display: flex;
+        justify-content: right;
+        gap: 5px;
 
-    button.save,
-    button.cancel {
-        margin-top: 5px;
-        height: 24px;
-        border: none;
-        background-color: var(--today-blueberry);
+        button {
+            padding: 5px 8px;
+            border: none;
+        }
 
-        &:hover {
-            background-color: var(--dark-blueberry);
+        .save {
+            color: white;
+            background-color: var(--login-register-submit-hover);
+
+            &:hover {
+                background-color: var(--syrup-chocolate);
+            }
+        }
+
+        .cancel {
+            color: var(--text-reverse);
+            background-color: var(--stroke-header);
+
+            &:hover {
+                background-color: var(--login-divider-text);
+            }
         }
     }
 
-    button.cancel {
-        background-color: transparent;
+    // button.save,
+    // button.cancel {
+    //     margin-top: 5px;
+    //     height: 24px;
+    //     border: none;
+    //     background-color: var(--today-blueberry);
 
-        &:hover {
-            background-color: var(--button-hover);
-        }
-    }
+    //     &:hover {
+    //         background-color: var(--dark-blueberry);
+    //     }
+    // }
+
+    // button.cancel {
+    //     background-color: transparent;
+
+    //     &:hover {
+    //         background-color: var(--button-hover);
+    //     }
+    // }
 }

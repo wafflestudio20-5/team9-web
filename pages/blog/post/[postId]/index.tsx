@@ -100,23 +100,130 @@ const commentsData = [
     },
 ];
 
+const postdata = {
+    title: 'test post',
+    content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus.',
+    pid: 1,
+    created_at: '2023-01-23',
+    updated_at: '2023-01-29',
+    created_by: 7,
+    schedules: [],
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/1200px-Waffles_with_Strawberries.jpg',
+};
+
+const schedulesData: FullSchedule[] = [
+    {
+        id: 1,
+        title: 'test schedule',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [
+            { username: 'participants1', pk: 1, email: 'use@emaril.com' },
+            { username: 'participants1', pk: 2, email: 'use@emaril.com' },
+            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
+            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
+            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
+            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
+            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
+            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
+            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
+            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
+        ],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus. Phasellus venenatis efficitur rutrum. Mauris non tortor turpis. Cras semper imperdiet nisl ut pellentesque.m',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
+    {
+        id: 2,
+        title: 'test schedule2',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description: 'lorem ipsum',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
+    {
+        id: 3,
+        title: 'test schedule3',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description: 'lorem ipsum',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
+    {
+        id: 4,
+        title: 'test schedule4',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description: 'lorem ipsum',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
+    {
+        id: 6,
+        title: 'test schedule4',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description: 'lorem ipsum',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
+    {
+        id: 5,
+        title: 'test schedule4',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description: 'lorem ipsum',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
+];
+
 export default function PostPage() {
     const { accessToken } = useSessionContext();
-    const [schedules, setSchedules] = useState<FullSchedule[]>([]);
-    const [post, setPost] = useState<FullPost>({
-        title: 'test post',
-        content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus.',
-        pid: 1,
-        created_at: '2023-01-23',
-        updated_at: '2023-01-29',
-        created_by: 7,
-        schedules: [],
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/1200px-Waffles_with_Strawberries.jpg',
-    });
+    const [schedules, setSchedules] = useState<FullSchedule[]>(schedulesData);
+    const [post, setPost] = useState<FullPost>();
     const [comments, setComments] = useState<FullComment[]>(commentsData);
     const [newComment, setNewComment] = useState<Comment>({
-        post: post.pid,
+        post: post?.pid || 0,
         content: '',
     });
     const router = useRouter();
@@ -130,6 +237,7 @@ export default function PostPage() {
         try {
             await deletePostAPI(postId, accessToken);
             successToast('글을 삭제했습니다.');
+            router.replace('/month/today');
         } catch (error) {
             const message = '글을 삭제하지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -161,13 +269,15 @@ export default function PostPage() {
             return;
         }
 
+        if (!post) return;
+
         try {
             const res = await createCommentAPI(
                 post.pid,
                 newComment,
                 accessToken,
             );
-            console.log(res.data);
+            setNewComment(prev => ({ ...prev, content: '' }));
             setComments(prev => [...prev, res.data]);
             successToast('댓글을 추가했습니다.');
         } catch (error) {
@@ -188,7 +298,7 @@ export default function PostPage() {
         try {
             const res = await getParticularPostAPI(postId, accessToken);
             setPost(res.data);
-            setSchedules(res.data.schedules);
+            // setSchedules(res.data.schedules);
         } catch (error) {
             const message = '글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -206,8 +316,7 @@ export default function PostPage() {
     const getComments = async () => {
         try {
             const res = await getEntireCommentAPI(postId, accessToken);
-            console.log(res.data);
-            // setComments(res.data);
+            setComments(res.data.results || []);
         } catch (error) {
             const message = '댓글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -224,33 +333,37 @@ export default function PostPage() {
 
     useEffect(() => {
         getPost();
-        getComments();
+        // getComments();
     }, [router.query]);
+
+    if (!post) return;
 
     return (
         <div className={styles.postPage}>
             <ScheduleList schedules={schedules} />
-            <div className={styles.right}>
-                <div className={styles.postContainer}>
-                    <div className={styles.util}>
-                        <button onClick={onClickEdit}>
-                            <EditIcon className="icon" height="18px" />
-                        </button>
-                        <button onClick={onClickDelete}>
-                            <DeleteIcon className="icon" height="18px" />
-                        </button>
-                    </div>
-                    <PostViewer post={post} />
+            <div className={styles.postContainer}>
+                <div className={styles.postUtils}>
+                    <button onClick={onClickEdit}>
+                        <EditIcon className="icon" height="18px" />
+                    </button>
+                    <button onClick={onClickDelete}>
+                        <DeleteIcon className="icon" height="18px" />
+                    </button>
                 </div>
+                <PostViewer post={post} />
                 <div className={styles.commentsContainer}>
                     <div className={styles.comments}>
-                        {comments.map(c => (
-                            <CommentItem
-                                comment={c}
-                                setComments={setComments}
-                                key={c.cid}
-                            />
-                        ))}
+                        {comments.length < 1 ? (
+                            <div>아직 댓글이 없습니다.</div>
+                        ) : (
+                            comments.map(c => (
+                                <CommentItem
+                                    comment={c}
+                                    setComments={setComments}
+                                    key={c.cid}
+                                />
+                            ))
+                        )}
                     </div>
                     <div className={styles.newComment}>
                         <textarea
@@ -263,9 +376,14 @@ export default function PostPage() {
                             }
                             placeholder="댓글을 작성해주세요."
                         />
-                        <button className={styles.save} onClick={addNewComment}>
-                            저장
-                        </button>
+                        <div className={styles.btnContainer}>
+                            <button
+                                className={styles.save}
+                                onClick={addNewComment}
+                            >
+                                저장
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -382,7 +500,7 @@ function CommentItem({ comment, setComments }: CommentItemProps) {
         </div>
     ) : (
         <div className={styles.comment}>
-            <div className={styles.util}>
+            <div className={styles.commentUtils}>
                 <button onClick={() => setIsEditMode(true)}>
                     <EditIcon className="icon" height="18px" />
                 </button>

@@ -56,21 +56,21 @@ const schedulesData: FullSchedule[] = [
         end_at: '2023-01-30 00:00:00',
         recurring_schedule_group: null,
     },
-    // {
-    //     id: 3,
-    //     title: 'test schedule3',
-    //     created_at: '2022-02-02',
-    //     updated_at: '2022-02-02',
-    //     created_by: 7,
-    //     participants: [],
-    //     is_recurring: false,
-    //     show_content: true,
-    //     protection_level: 1,
-    //     description: 'lorem ipsum',
-    //     start_at: '2023-01-30 00:00:00',
-    //     end_at: '2023-01-30 00:00:00',
-    //     recurring_schedule_group: null,
-    // },
+    {
+        id: 3,
+        title: 'test schedule3',
+        created_at: '2022-02-02',
+        updated_at: '2022-02-02',
+        created_by: 7,
+        participants: [],
+        is_recurring: false,
+        show_content: true,
+        protection_level: 1,
+        description: 'lorem ipsum',
+        start_at: '2023-01-30 00:00:00',
+        end_at: '2023-01-30 00:00:00',
+        recurring_schedule_group: null,
+    },
     // {
     //     id: 4,
     //     title: 'test schedule4',
@@ -131,14 +131,12 @@ export default function PostCreatePage() {
     };
 
     const createPost = async (newPost: FormData) => {
-        console.log(getScheduleIds());
-
         try {
             newPost.append('schedules', JSON.stringify(getScheduleIds()));
             const res = await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
+            router.push(`/blog/post/${res.data.pid}`);
         } catch (error) {
-            console.log(error);
             const message = '글을 생성하지 못했습니다.';
             if (axios.isAxiosError(error)) {
                 const errObj: { [key: string]: string } =

@@ -42,7 +42,7 @@ export default function PostEditPage() {
         try {
             const res = await getParticularPostAPI(postId, accessToken);
             setPost(res.data);
-            setSchedules(res.data.schedules);
+            setSchedules(res.data.schedules || []);
         } catch (error) {
             const message = '글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {

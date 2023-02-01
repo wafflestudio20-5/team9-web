@@ -132,7 +132,7 @@ export default function SchedulePage() {
     const getPosts = async (scheduleId: number) => {
         try {
             const res = await getRelatedPosts(scheduleId, accessToken);
-            setPosts(res.data);
+            setPosts(res.data || []);
         } catch (error) {
             const message = '글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -177,9 +177,11 @@ export default function SchedulePage() {
                 </div>
             ) : (
                 <div className={styles.posts}>
-                    {posts.map(p => (
-                        <PostPreview post={p} key={p.pid} />
-                    ))}
+                    {posts.length < 1 ? (
+                        <div>연관된 포스트가 없습니다.</div>
+                    ) : (
+                        posts.map(p => <PostPreview post={p} key={p.pid} />)
+                    )}
                 </div>
             )}
         </div>
