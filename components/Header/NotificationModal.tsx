@@ -2,21 +2,24 @@ import React, { useState, useEffect } from 'react';
 
 import styles from './NotificationModal.module.scss';
 import { ProtectionLevelText, ScheduleRequestData } from '@customTypes/ScheduleTypes';
+import { FollowRequestData } from '@customTypes/FollowTypes';
 
-import { getFollowRequests, getScheduleRequests, responseScheduleRequests } from '@apis/notification';
+import { getFollowRequests, getScheduleRequests, responseFollowRequests, responseScheduleRequests } from '@apis/notification';
 import ModalFrame from '@components/ModalFrame';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 
 export default function NotificationModal() {
     const { user, accessToken } = useSessionContext();
-    const [followRequests, setFollowRequests] = useState();
+    const [followRequests, setFollowRequests] = useState<FollowRequestData[]>();
     const [scheduleRequests, setScheduleRequests] = useState<ScheduleRequestData[]>();
+    const [isSchedule, setIsSchedule] = useState<boolean>(true);
 
     const getAndSetFollowRequests = () => {
         getFollowRequests(accessToken)
             .then(response => {
                 console.log(response.data.results);
+                setFollowRequests(response.data.results);
             })
             .catch(error => {
                 console.log(error.message);
@@ -32,6 +35,15 @@ export default function NotificationModal() {
                 console.log(error.message);
             });
     };
+    const transferResponseFollowRequests = (id: number, approved: boolean) => {
+        responseFollowRequests(id, approved, accessToken)
+        .then(response => {
+            console.log("yay!");
+        })
+        .catch(error => {
+            console.log(error.message);
+        })
+    }
     const transferResponseScheduleRequests = (id:number, status:number) => {
         responseScheduleRequests(id, status, accessToken)
         .then(response => {
@@ -50,6 +62,16 @@ export default function NotificationModal() {
     return (
         <ModalFrame modalName={MODAL_NAMES.notification}>
             <div className={styles.notificationModal}>
+            <div className={styles.buttonContainer}>
+                <button onClick = {() => {
+                    setIsSchedule(true);
+                }}>일정 수락</button>
+                <button onClick = {() => {
+                    setIsSchedule(false);
+                }}>팔로우 수락</button>
+            </div>
+            {isSchedule ?
+            <>
                 {scheduleRequests?.map((req, index) => {
                     return (
                         <div className={styles.request} key={index}>
@@ -82,6 +104,31 @@ export default function NotificationModal() {
                         </div>
                     );
                 })}
+                </>
+             : 
+             <>
+                {followRequests?.map((req, index) => {
+                    return (
+                        <div className={styles.request} key={index}>
+                            <div className={styles.textContainer}>
+                                {req.followee.username}님이 팔로우를 신청하셨습니다.
+                            </div>
+                            <div className={styles.buttonContainer}>
+                                <button onClick={() => {
+                                    transferResponseFollowRequests(req.id, true);
+                                    getAndSetFollowRequests();
+                                }}>수락</button>
+                                <button onClick={() => {
+                                    transferResponseFollowRequests(req.id, false);
+                                    getAndSetFollowRequests();
+                                }}>거절</button>
+                            </div>
+                        </div>
+                    );
+                })}
+                </>
+            
+            }
             </div>
         </ModalFrame>
     );

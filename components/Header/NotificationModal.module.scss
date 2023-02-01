@@ -1,3 +1,8 @@
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+}
+
 .notificationModal {
     position: fixed;
     top: 60px;
