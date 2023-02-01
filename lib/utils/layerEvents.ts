@@ -1,5 +1,5 @@
 import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
-import { formatDate, formatDatestringToDate } from '@utils/formatting';
+import { formatDate } from '@utils/formatting';
 
 function compareEndAt(eventA: FullSchedule, eventB: FullSchedule) {
     const aEnd = eventA.end_at;
@@ -52,7 +52,7 @@ export default function getLayeredEvents(
     withinEvents.sort(compareEndAt);
     acrossEvents.forEach(event => {
         const startDateString = event.start_at.split(' ')[0];
-        let dateObj = formatDatestringToDate(startDateString);
+        let dateObj = new Date(startDateString);
         const layer = findAvailableLayer(layeredEvents, startDateString);
         while (isDateIncluded(dateObj, event)) {
             if (formatDate(dateObj) < formatDate(dates[0])) {

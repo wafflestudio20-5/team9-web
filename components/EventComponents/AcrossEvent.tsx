@@ -4,9 +4,7 @@ import styles from './AcrossEvent.module.scss';
 
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
-import { useCalendarContext } from '@contexts/CalendarContext';
 import { useBoxSizeContext } from '../../contexts/BoxSizeContext';
-import { formatDatestringToDate } from '@utils/formatting';
 
 export default function AcrossEvent({
     eventData,
@@ -25,6 +23,7 @@ export default function AcrossEvent({
     slopeWidth?: number;
     slopeHeight?: number;
 }) {
+    const dateObj = new Date(dateString);
     const bw = borderWidth ? borderWidth : 12;
     const sw = slopeWidth ? slopeWidth : 6;
     const sh = slopeHeight ? slopeHeight : 3;
@@ -47,7 +46,7 @@ export default function AcrossEvent({
         Number(eventData.end_at.split(' ')[0].split('-')[2]) -
         Number(dateString.split('-')[2]) +
         1;
-    const daysLeftThisWeek = 7 - formatDatestringToDate(dateString).getDay();
+    const daysLeftThisWeek = 7 - dateObj.getDay();
     const numberOfBlocks = Math.min(eventLengthRemaining, daysLeftThisWeek);
     const eventWidth = numberOfBlocks * (boxWidth + 12) - 12;
     const getPathString = () => {
