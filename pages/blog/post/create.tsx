@@ -161,9 +161,7 @@ export default function PostCreatePage() {
                     onClick={() => {
                         router.push('/blog/post/1');
                     }}
-                >
-                    post guide message?
-                </div>
+                ></div>
                 <div className={styles.newPost}>
                     <PostEditor
                         initTitle=""

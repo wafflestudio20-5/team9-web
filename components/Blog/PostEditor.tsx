@@ -93,7 +93,7 @@ export default function PostEditor({
                 </label>
                 {imagePreview && (
                     <div className={styles.preview}>
-                        <img src={imagePreview} width={80} />
+                        <img src={imagePreview} height={80} />
                         <button onClick={deleteImage}>삭제</button>
                     </div>
                 )}

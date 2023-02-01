@@ -16,7 +16,9 @@ export default function ScheduleList({ schedules }: ScheduleListProps) {
         <>
             {selectedId ? (
                 <div className={styles.selectedSchedule}>
-                    <button onClick={() => setSelectedId(0)}>목록</button>
+                    <div className={styles.indexWrapper}>
+                        <button onClick={() => setSelectedId(0)}>목록</button>
+                    </div>
                     <div className={styles.schedule}>
                         <ScheduleContent
                             schedule={schedules.find(s => s.id === selectedId)!}

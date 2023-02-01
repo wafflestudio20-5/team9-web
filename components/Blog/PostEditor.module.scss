@@ -2,17 +2,15 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    gap: 20px;
     overflow: auto;
 
     .title {
         position: relative;
+        margin: 10px 20px;
 
         input {
-            padding: 0 5px;
+            padding: 5px;
             width: 100%;
-            height: 36px;
-            border-bottom: 2px solid var(--structure);
             font-size: medium;
 
             + span {
@@ -31,7 +29,7 @@
                 + span {
                     left: 0;
                     width: 100%;
-                    border-bottom: 2px solid var(--today-blueberry);
+                    border-bottom: 2px solid var(--login-shadow);
                 }
             }
         }
@@ -39,26 +37,30 @@
 
     .content {
         flex-grow: 1;
+        border-top: 10px solid var(--login-shadow);
+        border-left: 10px solid var(--login-shadow);
+        background-color: var(--login-background);
 
         textarea {
-            padding: 5px;
+            padding: 10px;
             width: 100%;
             height: 100%;
-            border: 2px solid var(--structure);
-            border-radius: 5px;
+            border: none;
             resize: none;
 
             &:focus {
                 outline: none;
-                border: 2px solid var(--today-blueberry);
             }
         }
     }
 
     .images {
         display: flex;
+        margin-top: 25px;
         padding: 10px;
-        border: 1px solid var(--structure);
+        border-top: 10px solid var(--login-shadow);
+        border-left: 10px solid var(--login-shadow);
+        background-color: var(--login-background);
 
         input {
             display: none;
@@ -73,17 +75,38 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            margin-right: 10px;
             gap: 3px;
             width: 80px;
             height: 80px;
-            border: 1px solid var(--structure);
+            border: 2px solid var(--login-shadow);
             border-radius: 5px;
             cursor: pointer;
+        }
+
+        .preview {
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+
+            button {
+                width: 50px;
+                height: 30px;
+                color: white;
+                border: none;
+                background-color: var(--login-shadow);
+
+                &:hover {
+                    background-color: var(--syrup-chocolate);
+                }
+            }
         }
     }
 
     .btnContainer {
         display: flex;
+        margin: 25px 0;
+        gap: 10px;
 
         button {
             flex-grow: 1;
@@ -93,18 +116,20 @@
 
         .save {
             color: white;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            background-color: var(--today-blueberry);
+            background-color: var(--login-register-submit-hover);
 
             &:hover {
-                background-color: var(--dark-blueberry);
+                background-color: var(--syrup-chocolate);
             }
         }
 
         .cancel {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
+            color: var(--text-reverse);
+            background-color: var(--stroke-header);
+
+            &:hover {
+                background-color: var(--login-divider-text);
+            }
         }
     }
 }
