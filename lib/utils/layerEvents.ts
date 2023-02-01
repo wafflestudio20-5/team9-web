@@ -43,6 +43,9 @@ export default function getLayeredEvents(
     dates.forEach(date => {
         layeredEvents[formatDate(date)] = { 0: null };
     });
+    if (!events) {
+        return layeredEvents;
+    }
     events.forEach(event => {
         if (event.start_at.split(' ')[0] === event.end_at.split(' ')[0]) {
             withinEvents.push(event);
@@ -55,9 +58,6 @@ export default function getLayeredEvents(
             event.start_at.split(' ')[0] < formatDate(dates[0])
                 ? formatDate(dates[0])
                 : event.start_at.split(' ')[0];
-        console.log(event.start_at.split(' ')[0]);
-        console.log(formatDate(dates[0]));
-        console.log(startDateString);
         let dateObj = new Date(startDateString);
         const layer = findAvailableLayer(layeredEvents, startDateString);
         while (isDateIncluded(dateObj, event)) {
@@ -88,6 +88,7 @@ export default function getLayeredEvents(
     withinEvents.forEach(event => {
         const startDateString = event.start_at.split(' ')[0];
         const layer = findAvailableLayer(layeredEvents, startDateString);
+        // console.log(layeredEvents[startDateString]);
         layeredEvents[startDateString][layer] = {
             type: 'within',
             event: event,
