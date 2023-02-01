@@ -28,6 +28,7 @@ import {
     warningModal,
 } from '@utils/customAlert';
 import { DAYS, formatTime } from '@utils/formatting';
+import { useCalendarContext } from '@contexts/CalendarContext';
 
 function ParticipantItem({ participant }: { participant: Participant }) {
     return (
@@ -51,6 +52,7 @@ interface ScheduleModalProps {
 export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
     const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
+    const { setNeedUpdate } = useCalendarContext();
     const startDate = useMemo(() => new Date(schedule.start_at), [schedule]);
     const endDate = useMemo(() => new Date(schedule.end_at), [schedule]);
 
@@ -88,6 +90,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                 await deleteScheduleAPI(id, accessToken);
             }
             successToast('일정을 삭제했습니다.');
+            setNeedUpdate(true);
             return true;
         } catch (error) {
             const message = '일정을 삭제하지 못했습니다.';
