@@ -24,7 +24,7 @@ export default function AcrossEvent({
     slopeHeight?: number;
 }) {
     const dateObj = new Date(dateString);
-    const endDateObj = new Date(eventData.end_at);
+    const endDateObj = new Date(eventData.end_at.split(' ')[0]);
     const bw = borderWidth ? borderWidth : 12;
     const sw = slopeWidth ? slopeWidth : 6;
     const sh = slopeHeight ? slopeHeight : 3;

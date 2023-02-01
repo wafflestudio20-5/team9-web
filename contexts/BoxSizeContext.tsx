@@ -24,6 +24,8 @@ interface BoxSizeContextData {
     setBoxHeight: Dispatch<SetStateAction<number>>;
     leftMargin: number;
     setLeftMargin: Dispatch<SetStateAction<number>>;
+    clipBy: { horizontal: number; vertical: number };
+    setClipBy: Dispatch<SetStateAction<BoxSizeContextData['clipBy']>>;
 }
 
 const BoxSizeContext = createContext<BoxSizeContextData>({
@@ -45,7 +47,11 @@ const BoxSizeContext = createContext<BoxSizeContextData>({
     },
     leftMargin: 0,
     setLeftMargin() {
-        throw new Error('BoxSizecontext Not provided');
+        throw new Error('BoxSizeContext Not provided');
+    },
+    clipBy: { horizontal: 0, vertical: 0 },
+    setClipBy() {
+        throw new Error('BoxSizeContext Not provided');
     },
 });
 
@@ -59,6 +65,10 @@ export default function BoxSizeProvider({ children }: PropsWithChildren) {
     const [boxWidth, setBoxWidth] = useState(0);
     const [boxHeight, setBoxHeight] = useState(0);
     const [leftMargin, setLeftMargin] = useState(0);
+    const [clipBy, setClipBy] = useState({
+        horizontal: 0,
+        vertical: 0,
+    });
     const windowSize = useWindowSize();
 
     const monthDates = useMemo(() => {
@@ -71,16 +81,25 @@ export default function BoxSizeProvider({ children }: PropsWithChildren) {
 
     useEffect(() => {
         const datesCount = monthDates.length;
-        setTotalHeight(windowSize.height - 66);
-        const width = (windowSize.width - 88) / 7;
-        const height = (windowSize.height - 66 - 12 * (datesCount / 7 - 1)) / 7;
+        setTotalHeight(windowSize.height - 66 - clipBy.vertical);
+        const width = (windowSize.width - 88 - clipBy.horizontal) / 7;
+        console.log(windowSize.width);
+        console.log(clipBy);
+        const height =
+            (windowSize.height -
+                clipBy.vertical -
+                66 -
+                12 * (datesCount / 7 - 1)) /
+            7;
         setBoxWidth(width);
         setBoxHeight(height);
         const longWidth = width * 7 + 12 * 6;
         const longHeight = height * 7 + 12 * (datesCount / 7 - 1);
-        setLeftMargin(windowSize.width - longWidth - 1);
+        setLeftMargin(windowSize.width - clipBy.horizontal - longWidth - 1);
         setTotalWidth(longWidth + 1);
-    }, [windowSize, monthDates]);
+    }, [windowSize, monthDates, clipBy]);
+
+    console.log(boxWidth);
 
     const value = useMemo(
         () => ({
@@ -89,13 +108,15 @@ export default function BoxSizeProvider({ children }: PropsWithChildren) {
             boxWidth,
             boxHeight,
             leftMargin,
+            clipBy,
             setTotalWidth,
             setTotalHeight,
             setBoxHeight,
             setBoxWidth,
             setLeftMargin,
+            setClipBy,
         }),
-        [totalHeight, totalWidth, boxWidth, boxHeight, leftMargin],
+        [totalHeight, totalWidth, boxWidth, boxHeight, leftMargin, clipBy],
     );
 
     return (

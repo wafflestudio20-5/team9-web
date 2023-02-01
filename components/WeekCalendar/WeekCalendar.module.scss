@@ -87,6 +87,38 @@
     }
 }
 
+.acrossHolder {
+    position: relative;
+    height: max-content;
+}
+
+.across {
+    display: flex;
+    height: max-content;
+    min-height: 26px;
+    width: fit-content;
+    gap: 12px;
+    position: absolute;
+    z-index: 1;
+}
+
+.borders {
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    div {
+        background-color: var(--grid-line);
+        width: 12px;
+        box-shadow: var(--grid-shadow) 2px 0px 2px,
+            var(--grid-shadow) -2px 0px 2px;
+        z-index: 2;
+        position: relative;
+    }
+}
+
 .scrollHolder {
     flex-grow: 1;
     overflow-y: scroll;
