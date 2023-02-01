@@ -82,7 +82,6 @@ export default function BoxSizeProvider({ children }: PropsWithChildren) {
     }, [year, month, date]);
 
     useEffect(() => {
-        console.log('updating');
         const datesCount = monthDates.length;
         setTotalHeight(windowSize.height - 66 - clipBy.vertical);
         const sideBarWidth = isOpen ? 256 : 0;

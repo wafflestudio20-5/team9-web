@@ -195,17 +195,6 @@ export default function WeekCalendar() {
                                             className={styles.dayHolder}
                                             style={{ width: `${boxWidth}px` }}
                                         ></div>
-                                        // <DayComponent
-                                        //     isToday={key === dayNow}
-                                        //     date={
-                                        //         new Date(
-                                        //             startDay.getFullYear(),
-                                        //             startDay.getMonth(),
-                                        //             startDay.getDate() + key,
-                                        //         )
-                                        //     }
-                                        //     key={key}
-                                        // />
                                     );
                                 })}
                             </div>
