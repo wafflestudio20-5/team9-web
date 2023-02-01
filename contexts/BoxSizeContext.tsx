@@ -82,11 +82,12 @@ export default function BoxSizeProvider({ children }: PropsWithChildren) {
     }, [year, month, date]);
 
     useEffect(() => {
+        console.log('updating');
         const datesCount = monthDates.length;
         setTotalHeight(windowSize.height - 66 - clipBy.vertical);
-        const width = (windowSize.width - 88 - clipBy.horizontal) / 7;
-        console.log(windowSize.width);
-        console.log(clipBy);
+        const sideBarWidth = isOpen ? 256 : 0;
+        const width =
+            (windowSize.width - 88 - clipBy.horizontal - sideBarWidth) / 7;
         const height =
             (windowSize.height -
                 clipBy.vertical -
@@ -97,16 +98,11 @@ export default function BoxSizeProvider({ children }: PropsWithChildren) {
         setBoxHeight(height);
         const longWidth = width * 7 + 12 * 6;
         const longHeight = height * 7 + 12 * (datesCount / 7 - 1);
-        setLeftMargin(windowSize.width - clipBy.horizontal - longWidth - 1);
+        setLeftMargin(
+            windowSize.width - clipBy.horizontal - sideBarWidth - longWidth - 1,
+        );
         setTotalWidth(longWidth + 1);
-    }, [windowSize, monthDates, clipBy]);
-
-    useEffect(() => {
-        setClipBy({
-            horizontal: clipBy.horizontal + 256 * (isOpen ? 1 : -1),
-            vertical: clipBy.vertical,
-        });
-    }, [isOpen]);
+    }, [windowSize, monthDates, clipBy, isOpen]);
 
     const value = useMemo(
         () => ({
