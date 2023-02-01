@@ -1,0 +1,13 @@
+.notificationModal {
+    position: fixed;
+    top: 60px;
+    right: 30px;
+    width: 350px;
+    height: calc(100vh - 70px);
+    max-height: 450px;
+    border: 1px solid var(--structure);
+    border-radius: 10px;
+    background-color: var(--sidebar-background);
+    box-shadow: 0 1px 5px 1px var(--structure);
+    overflow: auto;
+}
