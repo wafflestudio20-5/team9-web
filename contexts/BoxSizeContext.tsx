@@ -12,6 +12,7 @@ import React, {
 
 import { getCalendarDates } from '@utils/calculateDate';
 import useWindowSize from '@hooks/useWindowSize';
+import { useSidebarContext } from './SidebarContext';
 
 interface BoxSizeContextData {
     totalWidth: number;
@@ -58,6 +59,7 @@ const BoxSizeContext = createContext<BoxSizeContextData>({
 export const useBoxSizeContext = () => useContext(BoxSizeContext);
 
 export default function BoxSizeProvider({ children }: PropsWithChildren) {
+    const { isOpen } = useSidebarContext();
     const router = useRouter();
     const { year, month, date } = router.query;
     const [totalWidth, setTotalWidth] = useState(0);
@@ -99,7 +101,12 @@ export default function BoxSizeProvider({ children }: PropsWithChildren) {
         setTotalWidth(longWidth + 1);
     }, [windowSize, monthDates, clipBy]);
 
-    console.log(boxWidth);
+    useEffect(() => {
+        setClipBy({
+            horizontal: clipBy.horizontal + 256 * (isOpen ? 1 : -1),
+            vertical: clipBy.vertical,
+        });
+    }, [isOpen]);
 
     const value = useMemo(
         () => ({

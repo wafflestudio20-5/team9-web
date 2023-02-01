@@ -22,10 +22,10 @@ export default function WeekCalendar() {
     const { isOpen } = useSidebarContext();
     const { needUpdate, setNeedUpdate } = useCalendarContext();
     const { user, accessToken } = useSessionContext();
-    const { leftMargin, setClipBy } = useBoxSizeContext();
+    const { leftMargin, setClipBy, totalWidth, boxWidth } = useBoxSizeContext();
 
     useEffect(() => {
-        setClipBy({ vertical: 0, horizontal: 115 });
+        setClipBy({ vertical: 0, horizontal: 115 + 8 });
     }, []);
 
     const today = new Date();
@@ -180,24 +180,43 @@ export default function WeekCalendar() {
                 </div>
                 <div className={styles.scrollHolder}>
                     <div className={styles.scrollContent}>
-                        <div className={styles.timestamps}></div>
-                        <div className={styles.borderPortrude}></div>
-                        {weekDates.map((key, index) => {
-                            return (
-                                <div></div>
-                                // <DayComponent
-                                //     isToday={key === dayNow}
-                                //     date={
-                                //         new Date(
-                                //             startDay.getFullYear(),
-                                //             startDay.getMonth(),
-                                //             startDay.getDate() + key,
-                                //         )
-                                //     }
-                                //     key={key}
-                                // />
-                            );
-                        })}
+                        <div
+                            className={styles.lowerLeft}
+                            style={{ width: `${115 + leftMargin}px` }}
+                        >
+                            <div className={styles.timestamps}></div>
+                            <div className={styles.borderPortrude}></div>
+                        </div>
+                        <div className={styles.lowerRight}>
+                            <div className={styles.days}>
+                                {weekDates.map((key, index) => {
+                                    return (
+                                        <div
+                                            className={styles.dayHolder}
+                                            style={{ width: `${boxWidth}px` }}
+                                        ></div>
+                                        // <DayComponent
+                                        //     isToday={key === dayNow}
+                                        //     date={
+                                        //         new Date(
+                                        //             startDay.getFullYear(),
+                                        //             startDay.getMonth(),
+                                        //             startDay.getDate() + key,
+                                        //         )
+                                        //     }
+                                        //     key={key}
+                                        // />
+                                    );
+                                })}
+                            </div>
+                            <div className={styles.borders}>
+                                {Array(6)
+                                    .fill(0)
+                                    .map((v, i) => {
+                                        return <div key={i} />;
+                                    })}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

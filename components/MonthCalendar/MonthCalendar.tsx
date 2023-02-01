@@ -24,7 +24,11 @@ export default function MonthCalendar() {
     const { needUpdate, setNeedUpdate } = useCalendarContext();
     const { user, accessToken } = useSessionContext();
     const { isOpen } = useSidebarContext();
-    const { leftMargin, totalWidth, totalHeight } = useBoxSizeContext();
+    const { leftMargin, totalWidth, totalHeight, setClipBy } =
+        useBoxSizeContext();
+    useEffect(() => {
+        setClipBy({ horizontal: 0, vertical: 0 });
+    }, []);
 
     const monthDates = useMemo(() => {
         return getCalendarDates({
