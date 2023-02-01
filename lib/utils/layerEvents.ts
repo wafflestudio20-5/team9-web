@@ -37,6 +37,8 @@ export default function getLayeredEvents(
     events: FullSchedule[],
     dates: Date[],
 ) {
+    console.log('layerin');
+    console.log(dates);
     let acrossEvents = <FullSchedule[]>[];
     let withinEvents = <FullSchedule[]>[];
     let layeredEvents = <LayeredEvents>{};
@@ -53,46 +55,52 @@ export default function getLayeredEvents(
     });
     acrossEvents.sort(compareEndAt);
     withinEvents.sort(compareEndAt);
-    acrossEvents.forEach(event => {
-        const startDateString =
-            event.start_at.split(' ')[0] < formatDate(dates[0])
-                ? formatDate(dates[0])
-                : event.start_at.split(' ')[0];
-        let dateObj = new Date(startDateString);
-        const layer = findAvailableLayer(layeredEvents, startDateString);
-        while (isDateIncluded(dateObj, event)) {
-            if (formatDate(dateObj) < formatDate(dates[0])) {
+    console.log(acrossEvents);
+    console.log(withinEvents);
+    if (acrossEvents) {
+        acrossEvents.forEach(event => {
+            const startDateString =
+                event.start_at.split(' ')[0] < formatDate(dates[0])
+                    ? formatDate(dates[0])
+                    : event.start_at.split(' ')[0];
+            let dateObj = new Date(startDateString);
+            const layer = findAvailableLayer(layeredEvents, startDateString);
+            while (isDateIncluded(dateObj, event)) {
+                if (formatDate(dateObj) < formatDate(dates[0])) {
+                    dateObj.setDate(dateObj.getDate() + 1);
+                    continue;
+                }
+                if (formatDate(dateObj) > formatDate(dates[dates.length - 1])) {
+                    break;
+                }
+                if (
+                    formatDate(dateObj) === event.start_at.split(' ')[0] ||
+                    dateObj.getDay() === 0
+                ) {
+                    layeredEvents[formatDate(dateObj)][layer] = {
+                        type: 'across',
+                        event: event,
+                    };
+                } else {
+                    layeredEvents[formatDate(dateObj)][layer] = {
+                        type: 'filler',
+                        event: null,
+                    };
+                }
                 dateObj.setDate(dateObj.getDate() + 1);
-                continue;
             }
-            if (formatDate(dateObj) > formatDate(dates[dates.length - 1])) {
-                break;
-            }
-            if (
-                formatDate(dateObj) === event.start_at.split(' ')[0] ||
-                dateObj.getDay() === 0
-            ) {
-                layeredEvents[formatDate(dateObj)][layer] = {
-                    type: 'across',
-                    event: event,
-                };
-            } else {
-                layeredEvents[formatDate(dateObj)][layer] = {
-                    type: 'filler',
-                    event: null,
-                };
-            }
-            dateObj.setDate(dateObj.getDate() + 1);
-        }
-    });
-    withinEvents.forEach(event => {
-        const startDateString = event.start_at.split(' ')[0];
-        const layer = findAvailableLayer(layeredEvents, startDateString);
-        // console.log(layeredEvents[startDateString]);
-        layeredEvents[startDateString][layer] = {
-            type: 'within',
-            event: event,
-        };
-    });
+        });
+    }
+    if (withinEvents) {
+        withinEvents.forEach(event => {
+            const startDateString = event.start_at.split(' ')[0];
+            const layer = findAvailableLayer(layeredEvents, startDateString);
+            console.log(layeredEvents[startDateString]);
+            layeredEvents[startDateString][layer] = {
+                type: 'within',
+                event: event,
+            };
+        });
+    }
     return layeredEvents;
 }

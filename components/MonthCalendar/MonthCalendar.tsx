@@ -78,10 +78,11 @@ export default function MonthCalendar() {
     }, [monthDates, needUpdate]);
 
     useEffect(() => {
-        if (monthDates && monthEvents) {
+        if (monthEvents) {
             setLayeredEvents(getLayeredEvents(monthEvents, monthDates));
         }
-    }, [monthDates, monthEvents]);
+    }, [monthEvents]); // update layeredEvents only after monthEvents was updated to match new monthDates
+    // thus, dependency does not include monthDates to prevent errors
 
     return (
         <div className={styles.wrapper}>
