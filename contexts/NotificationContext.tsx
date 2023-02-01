@@ -1,11 +1,6 @@
-import React, {
-    useContext,
-    useState
-} from 'react';
+import React, { useContext, useState } from 'react';
 
-interface followUser {
-    
-}
+interface followUser {}
 
 interface scheduleUser {
     pk: number;
@@ -13,9 +8,7 @@ interface scheduleUser {
     email: string;
 }
 
-interface followRequestData {
-    
-}
+interface followRequestData {}
 
 interface scheduleRequestData {
     title: string;

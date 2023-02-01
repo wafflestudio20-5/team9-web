@@ -82,15 +82,15 @@ export interface RecurrenceRule {
 export interface ScheduleRequestData {
     created_at: string;
     created_by: number;
-    cron_expr: string|null;
+    cron_expr: string | null;
     end_at: string;
     id: number;
     is_opened: boolean;
     is_recurring: boolean;
     participants: Participant[];
     protection_level: number;
-    recurring_end_at: string|null;
-    recurring_schedule_group: string|null;
+    recurring_end_at: string | null;
+    recurring_schedule_group: string | null;
     show_content: boolean;
     start_at: string;
     title: string;

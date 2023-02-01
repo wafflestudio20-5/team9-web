@@ -5,7 +5,7 @@ export interface Followee {
 }
 
 export interface FollowRequestData {
-    approved: string|null;
+    approved: string | null;
     created_at: string;
     followee: Followee;
     follower: number;
