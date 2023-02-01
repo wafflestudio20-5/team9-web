@@ -6,11 +6,13 @@ import styles from './ScheduleEditorModal.module.scss';
 import {
     CalendarURLParams,
     createScheduleAPI,
+    editRecurringScheduleAPI,
     editScheduleAPI,
 } from '@apis/calendar';
 import MiniCalendarDropDown from '@components/MiniCalendarDropDown';
 import ModalFrame from '@components/ModalFrame';
 import ProtectionLevelDropDown from '@components/ScheduleModal/ProtectionLevelDropDown';
+import RecurrenceDropDown from '@components/ScheduleModal/RecurrenceDropDown';
 import TimeDropDown from '@components/ScheduleModal/TimeDropDown';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
@@ -19,14 +21,22 @@ import {
     ProtectionLevel,
     Schedule,
     Participant,
+    Recurrence,
+    FullSchedule,
 } from '@customTypes/ScheduleTypes';
 import CloseIcon from '@images/close_icon.svg';
 import LockIcon from '@images/lock_icon.svg';
 import PeopleIcon from '@images/people_icon.svg';
 import TextIcon from '@images/text_icon.svg';
 import TimeIcon from '@images/time_icon.svg';
-import { errorToast, successToast, warningModal } from '@utils/customAlert';
-import { formatFullDate } from '@utils/formatDate';
+import { parseCronExpression } from '@utils/cronExpression';
+import {
+    errorToast,
+    radioRecurringModal,
+    successToast,
+    warningModal,
+} from '@utils/customAlert';
+import { formatDate, formatDateWithTime } from '@utils/formatting';
 
 function ErrorMessage({ message }: { message: string }) {
     return <span className={styles.errorMessage}>{message}</span>;
@@ -49,6 +59,11 @@ export default function ScheduleEditorModal({
         new Date(initSchedule.start_at),
     );
     const [endDate, setEndDate] = useState<Date>(new Date(initSchedule.end_at));
+    const [recurrence, setRecurrence] = useState<Recurrence>({
+        isRecurring: initSchedule.is_recurring,
+        cronExpr: initSchedule.cron_expr,
+        endDate: initSchedule.recurring_end_at,
+    });
     const [protectionLevel, setProtectionLevel] = useState<ProtectionLevel>(
         initSchedule.protection_level,
     );
@@ -59,7 +74,7 @@ export default function ScheduleEditorModal({
         initSchedule.description ?? '',
     );
     const [participants, setParticipants] = useState<{ pk: number }[]>(
-        initSchedule.participants ?? [],
+        initSchedule.participants,
     );
     const [dateValidity, setDateValidity] = useState({
         isValid: true,
@@ -102,12 +117,15 @@ export default function ScheduleEditorModal({
         newSchedule: Schedule,
         accessToken: string | null,
     ) => {
-        if (!user) return false;
+        if (!user) {
+            errorToast('로그인을 먼저 해주세요.');
+            return false;
+        }
 
         const urlParams: CalendarURLParams = {
             pk: user.pk,
-            from: formatFullDate(startDate),
-            to: formatFullDate(endDate),
+            from: formatDate(startDate),
+            to: formatDate(endDate),
         };
 
         try {
@@ -117,7 +135,11 @@ export default function ScheduleEditorModal({
         } catch (error) {
             const message = '일정을 생성하지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message ?? message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
@@ -126,23 +148,41 @@ export default function ScheduleEditorModal({
     };
 
     const editSchdule = async (
-        scheduleId: number,
+        id: number, // scheduleId or groupId
         newSchedule: Schedule,
         accessToken: string | null,
+        editRecurring: boolean,
     ) => {
         try {
-            const res = await editScheduleAPI(
-                scheduleId,
-                newSchedule,
-                accessToken,
-            );
+            let newData;
+            if (editRecurring) {
+                const res = await editRecurringScheduleAPI(
+                    id,
+                    {
+                        ...newSchedule,
+                        cron_expr: undefined,
+                        recurring_end_at: undefined,
+                    },
+                    accessToken,
+                );
+                newData = res.data.schedules.find(
+                    (s: FullSchedule) => s.id === newSchedule.id,
+                );
+            } else {
+                const res = await editScheduleAPI(id, newSchedule, accessToken);
+                newData = res.data;
+            }
             successToast('일정이 수정되었습니다.');
-            openModal(MODAL_NAMES.scheduleView, { schedule: res.data });
+            openModal(MODAL_NAMES.scheduleView, { schedule: newData });
             return true;
         } catch (error) {
             const message = '일정을 수정하지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message ?? message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
@@ -167,13 +207,17 @@ export default function ScheduleEditorModal({
         if (!isValid) return;
 
         const newSchedule: Schedule = {
+            id: initSchedule.id,
             title: title,
-            start_at: formatFullDate(startDate, true),
-            end_at: formatFullDate(endDate, true),
-            description: description,
+            start_at: formatDateWithTime(startDate),
+            end_at: formatDateWithTime(endDate),
+            description: description || null,
             protection_level: protectionLevel,
             show_content: !hideDetails,
             participants: participants,
+            is_recurring: recurrence.isRecurring,
+            cron_expr: recurrence.cronExpr,
+            recurring_end_at: recurrence.endDate,
         };
 
         let isSuccessful = false;
@@ -182,13 +226,38 @@ export default function ScheduleEditorModal({
                 isSuccessful = await createSchedule(newSchedule, accessToken);
                 break;
             case 'edit':
-                isSuccessful = initSchedule?.id
-                    ? await editSchdule(
-                          initSchedule.id,
-                          newSchedule,
-                          accessToken,
-                      )
-                    : false;
+                if (!initSchedule.id) return;
+
+                if (initSchedule.is_recurring) {
+                    if (!initSchedule.recurring_schedule_group) return;
+                    const { value, isConfirmed } = await radioRecurringModal(
+                        '수정',
+                    );
+                    if (!isConfirmed) return;
+
+                    if (value === 'all') {
+                        isSuccessful = await editSchdule(
+                            initSchedule.recurring_schedule_group,
+                            newSchedule,
+                            accessToken,
+                            true,
+                        );
+                    } else {
+                        isSuccessful = await editSchdule(
+                            initSchedule.id,
+                            newSchedule,
+                            accessToken,
+                            false,
+                        );
+                    }
+                } else {
+                    isSuccessful = await editSchdule(
+                        initSchedule.id,
+                        newSchedule,
+                        accessToken,
+                        false,
+                    );
+                }
                 break;
         }
 
@@ -301,7 +370,33 @@ export default function ScheduleEditorModal({
                                             />
                                         )}
                                     </div>
-                                    <div className={styles.recurrence}></div>
+                                    {taskType === 'create' ? (
+                                        <RecurrenceDropDown
+                                            date={startDate}
+                                            recurrence={recurrence}
+                                            setRecurrence={setRecurrence}
+                                        />
+                                    ) : (
+                                        // can't edit recurring rule
+                                        initSchedule.is_recurring && (
+                                            <div
+                                                className={
+                                                    styles.recurrenceText
+                                                }
+                                            >
+                                                {initSchedule.cron_expr &&
+                                                    parseCronExpression(
+                                                        initSchedule.cron_expr,
+                                                    )}{' '}
+                                                (종료일:{' '}
+                                                {initSchedule.recurring_end_at &&
+                                                    initSchedule.recurring_end_at.split(
+                                                        ' ',
+                                                    )[0]}
+                                                )
+                                            </div>
+                                        )
+                                    )}
                                 </div>
                             </div>
                             <div className={styles.participants}>
@@ -336,8 +431,8 @@ export default function ScheduleEditorModal({
                                             checked={
                                                 hideDetails || isHideDisabled
                                             }
-                                            onChange={() =>
-                                                setHideDetails(!hideDetails)
+                                            onChange={e =>
+                                                setHideDetails(e.target.checked)
                                             }
                                             disabled={isHideDisabled}
                                         />
@@ -356,7 +451,7 @@ export default function ScheduleEditorModal({
                                     rows={5}
                                     value={description}
                                     onChange={e =>
-                                        setDescription(e.target.value)
+                                        setDescription(e.target.value || '')
                                     }
                                     placeholder="일정에 대한 설명을 간략히 적어주세요."
                                 />

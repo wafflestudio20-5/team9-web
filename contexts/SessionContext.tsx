@@ -10,9 +10,7 @@ import React, {
 } from 'react';
 import Swal from 'sweetalert2';
 
-import keys from '../secrets.json';
-
-import { apiStagingEndPoint } from '@apis/endpoint';
+import { apiEndPoint } from '@apis/endpoint';
 
 interface LoginInfo {
     email: string;
@@ -85,11 +83,11 @@ const SessionContext = createContext<SessionContextData>({
 
 //const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
 //const apiEndPoint = 'http://api-staging-dearj-wafflestudio.site/api/v1/user/';
-const apiEndPoint = apiStagingEndPoint + '/user/';
+const apiEndPointUser = apiEndPoint + '/user/';
 
-const REACT_APP_BASE_BACKEND_URL = 'http://api-staging-dearj-wafflestudio.site';
-
-const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
+const REACT_APP_GOOGLE_CLIENT_ID =
+    '665556060692-i2l61v20chqcvuji0q9uevi50ujld5oh.apps.googleusercontent.com';
+const REACT_APP_KAKAO_REST_API_KEY = '49d202e6f581c3fbdd29922292338f9a';
 
 export const useSessionContext = () => useContext(SessionContext);
 
@@ -105,7 +103,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         // send login request using loginInfo
         // if login success, set user and accessToken
         axios
-            .post(apiEndPoint + 'login/', loginInfo)
+            .post(apiEndPointUser + 'login/', loginInfo)
             .then(response => {
                 setUser({
                     pk: response.data.user.pk,
@@ -132,7 +130,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         // send logout request
         // if logout success, reset user and accessToken to null
         axios
-            .post(apiEndPoint + 'logout/', {
+            .post(apiEndPointUser + 'logout/', {
                 refresh: refreshToken,
             })
             .then(response => {
@@ -154,7 +152,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
 
         try {
             const response = await axios.post(
-                apiEndPoint + 'registration/',
+                apiEndPointUser + 'registration/',
                 registerInfo,
             );
             setUser({
@@ -202,7 +200,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
     // referenced https://www.hacksoft.io/blog/google-oauth2-with-django-react-part-2
     const openGoogleLoginPage = useCallback(() => {
         const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-        const redirectUri = 'api/v1/user/login/google/callback/';
+        const redirectUri = 'user/login/google/callback/';
 
         const scope = [
             'https://www.googleapis.com/auth/userinfo.email',
@@ -212,7 +210,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         const params = {
             response_type: 'code',
             client_id: REACT_APP_GOOGLE_CLIENT_ID,
-            redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${redirectUri}`,
+            redirect_uri: `${apiEndPoint}/${redirectUri}`,
             prompt: 'select_account',
             access_type: 'offline',
             scope,
@@ -225,12 +223,12 @@ export default function SessionProvider({ children }: PropsWithChildren) {
 
     const openKakaoLoginPage = useCallback(() => {
         const kakaoAuthUrl = 'https://kauth.kakao.com/oauth/authorize';
-        const redirectUri = 'api/v1/user/login/kakao/callback/';
+        const redirectUri = 'user/login/kakao/callback/';
 
         const params = {
             response_type: 'code',
             client_id: REACT_APP_KAKAO_REST_API_KEY,
-            redirect_uri: `${REACT_APP_BASE_BACKEND_URL}/${redirectUri}`,
+            redirect_uri: `${apiEndPoint}/${redirectUri}`,
         };
 
         const urlParams = new URLSearchParams(params).toString();
@@ -253,7 +251,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             setRefreshToken(postSocialLoginData.refreshToken);
 
             axios
-                .get(apiEndPoint + 'profile/', {
+                .get(apiEndPointUser + 'profile/', {
                     headers: {
                         Authorization: `Bearer ${postSocialLoginData.accessToken}`,
                     },
