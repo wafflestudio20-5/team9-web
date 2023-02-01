@@ -9,9 +9,9 @@ import React, {
 } from 'react';
 
 import MiniCalendarModal from '@components/Header/MiniCalendarModal';
+import NotificationModal from '@components/Header/NotificationModal';
 import SearchDetailsModal from '@components/Header/SearchDetailsModal';
 import UserModal from '@components/Header/UserModal';
-import NotificationModal from '@components/NotificationModal';
 import RegisterModal from '@components/RegisterModal';
 import CustomRecurrenceModal from '@components/ScheduleModal/CustomRecurrenceModal';
 import ScheduleEditorModal from '@components/ScheduleModal/ScheduleEditorModal';
