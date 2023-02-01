@@ -24,6 +24,7 @@ export default function AcrossEvent({
     slopeHeight?: number;
 }) {
     const dateObj = new Date(dateString);
+    const endDateObj = new Date(eventData.end_at);
     const bw = borderWidth ? borderWidth : 12;
     const sw = slopeWidth ? slopeWidth : 6;
     const sh = slopeHeight ? slopeHeight : 3;
@@ -43,9 +44,10 @@ export default function AcrossEvent({
         return `${styles.chocolate}`;
     };
     const eventLengthRemaining =
-        Number(eventData.end_at.split(' ')[0].split('-')[2]) -
-        Number(dateString.split('-')[2]) +
-        1;
+        Math.floor(
+            Math.abs(endDateObj.getTime() - dateObj.getTime()) /
+                (1000 * 60 * 60 * 24),
+        ) + 1;
     const daysLeftThisWeek = 7 - dateObj.getDay();
     const numberOfBlocks = Math.min(eventLengthRemaining, daysLeftThisWeek);
     const eventWidth = numberOfBlocks * (boxWidth + 12) - 12;

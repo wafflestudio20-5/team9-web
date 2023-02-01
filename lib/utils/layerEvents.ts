@@ -23,7 +23,7 @@ function isDateIncluded(date: Date | string, event: FullSchedule) {
 }
 
 function findAvailableLayer(layeredEvents: LayeredEvents, dateString: string) {
-    if (!layeredEvents[dateString]) {
+    if (layeredEvents[dateString] === undefined) {
         return 0;
     }
     let i = 0;
@@ -51,13 +51,22 @@ export default function getLayeredEvents(
     acrossEvents.sort(compareEndAt);
     withinEvents.sort(compareEndAt);
     acrossEvents.forEach(event => {
-        const startDateString = event.start_at.split(' ')[0];
+        const startDateString =
+            event.start_at.split(' ')[0] < formatDate(dates[0])
+                ? formatDate(dates[0])
+                : event.start_at.split(' ')[0];
+        console.log(event.start_at.split(' ')[0]);
+        console.log(formatDate(dates[0]));
+        console.log(startDateString);
         let dateObj = new Date(startDateString);
         const layer = findAvailableLayer(layeredEvents, startDateString);
         while (isDateIncluded(dateObj, event)) {
             if (formatDate(dateObj) < formatDate(dates[0])) {
                 dateObj.setDate(dateObj.getDate() + 1);
                 continue;
+            }
+            if (formatDate(dateObj) > formatDate(dates[dates.length - 1])) {
+                break;
             }
             if (
                 formatDate(dateObj) === event.start_at.split(' ')[0] ||
