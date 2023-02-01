@@ -9,6 +9,7 @@ import {
     deleteCommentAPI,
     deletePostAPI,
     editCommentAPI,
+    getEntireCommentAPI,
     getParticularPostAPI,
 } from '@apis/blog';
 import PostViewer from '@components/Blog/PostViewer';
@@ -183,7 +184,7 @@ export default function PostPage() {
 
     const getPost = async () => {
         try {
-            const res = await getParticularPostAPI(Number(postId), accessToken);
+            const res = await getParticularPostAPI(postId, accessToken);
             setPost(res.data);
             setSchedules(res.data.schedules);
         } catch (error) {
@@ -200,8 +201,27 @@ export default function PostPage() {
         }
     };
 
+    const getComments = async () => {
+        try {
+            const res = await getEntireCommentAPI(postId, accessToken);
+            setComments(res.data);
+        } catch (error) {
+            const message = '댓글을 불러오지 못했습니다.';
+            if (axios.isAxiosError(error)) {
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
+            } else {
+                errorToast(message);
+            }
+        }
+    };
+
     useEffect(() => {
         // getPost();
+        // getComments();
     }, [router.query]);
 
     return (

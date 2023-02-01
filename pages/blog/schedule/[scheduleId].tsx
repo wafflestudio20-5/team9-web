@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import styles from './scheduleId.module.scss';
 
-import { getParticularPostAPI } from '@apis/blog';
+import { getParticularPostAPI, getRelatedPosts } from '@apis/blog';
 import { getParticularScheduleAPI } from '@apis/calendar';
 import PostViewer from '@components/Blog/PostViewer';
 import ScheduleContent from '@components/ScheduleContent';
@@ -94,8 +94,8 @@ export default function SchedulePage() {
         schedules: [],
     });
     const router = useRouter();
-    const scheduleId = router.query.scheduleId;
-    const postId = router.query.post;
+    const scheduleId = Number(router.query.scheduleId);
+    const postId = Number(router.query.post);
 
     const getSchedule = async (scheduleId: number) => {
         try {
@@ -118,7 +118,11 @@ export default function SchedulePage() {
         } catch (error) {
             const message = '글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message || message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
@@ -126,14 +130,18 @@ export default function SchedulePage() {
     };
 
     const getPosts = async (scheduleId: number) => {
-        return;
+        // return;
         // try {
-        //     const res = await getEntirePostAPI(scheduleId, accessToken);
+        //     const res = await getRelatedPosts(scheduleId, accessToken);
         //     setPosts(res.data);
         // } catch (error) {
         //     const message = '글을 불러오지 못했습니다.';
         //     if (axios.isAxiosError(error)) {
-        //         errorToast(error.response?.data.message || message);
+        //         const errObj: { [key: string]: string } =
+        //             error.response?.data ?? {};
+        //         let errMsg = '';
+        //         for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+        //         errorToast(errMsg.trim() || message);
         //     } else {
         //         errorToast(message);
         //     }
@@ -145,7 +153,7 @@ export default function SchedulePage() {
     }, [scheduleId]);
 
     useEffect(() => {
-        postId ? getPost(Number(postId)) : getPosts(Number(scheduleId));
+        postId ? getPost(postId) : getPosts(scheduleId);
     }, [postId]);
 
     if (!schedule) return;

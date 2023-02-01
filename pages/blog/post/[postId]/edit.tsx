@@ -40,7 +40,7 @@ export default function PostEditPage() {
 
     const getPost = async () => {
         try {
-            const res = await getParticularPostAPI(Number(postId), accessToken);
+            const res = await getParticularPostAPI(postId, accessToken);
             setPost(res.data);
             setSchedules(res.data.schedules);
         } catch (error) {

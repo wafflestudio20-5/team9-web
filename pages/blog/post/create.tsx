@@ -119,8 +119,8 @@ const schedulesData: FullSchedule[] = [
 
 export default function PostCreatePage() {
     const { accessToken } = useSessionContext();
-    // const { schedules, setSchedules } = useScheduleContext();
-    const [schedules, setSchedules] = useState(schedulesData);
+    // const { schedules } = useScheduleContext();
+    const [schedules, setSchedules] = useState(schedulesData); // temp
 
     const getScheduleIds = () => {
         const idList: { pk: number }[] = [];
