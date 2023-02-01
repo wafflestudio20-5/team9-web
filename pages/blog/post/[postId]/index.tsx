@@ -23,7 +23,7 @@ import { errorToast, successToast, warningModal } from '@utils/customAlert';
 
 const commentsData = [
     {
-        cid: 1,
+        cid: 97,
         content:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus.',
         created_by: 7,
@@ -42,7 +42,7 @@ const commentsData = [
         },
     },
     {
-        cid: 2,
+        cid: 98,
         content:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus.',
         created_by: 7,
@@ -61,7 +61,7 @@ const commentsData = [
         },
     },
     {
-        cid: 3,
+        cid: 99,
         content:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus.',
         created_by: 7,
@@ -80,7 +80,7 @@ const commentsData = [
         },
     },
     {
-        cid: 4,
+        cid: 100,
         content:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus.',
         created_by: 7,
@@ -112,6 +112,7 @@ export default function PostPage() {
         updated_at: '2023-01-29',
         created_by: 7,
         schedules: [],
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/1200px-Waffles_with_Strawberries.jpg',
     });
     const [comments, setComments] = useState<FullComment[]>(commentsData);
     const [newComment, setNewComment] = useState<Comment>({
@@ -166,6 +167,7 @@ export default function PostPage() {
                 newComment,
                 accessToken,
             );
+            console.log(res.data);
             setComments(prev => [...prev, res.data]);
             successToast('댓글을 추가했습니다.');
         } catch (error) {
@@ -204,7 +206,8 @@ export default function PostPage() {
     const getComments = async () => {
         try {
             const res = await getEntireCommentAPI(postId, accessToken);
-            setComments(res.data);
+            console.log(res.data);
+            // setComments(res.data);
         } catch (error) {
             const message = '댓글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -220,8 +223,8 @@ export default function PostPage() {
     };
 
     useEffect(() => {
-        // getPost();
-        // getComments();
+        getPost();
+        getComments();
     }, [router.query]);
 
     return (
@@ -356,6 +359,7 @@ function CommentItem({ comment, setComments }: CommentItemProps) {
             return;
         }
         editComment(comment.post.pid, comment.cid, accessToken);
+        setIsEditMode(false);
     };
 
     return isEditMode ? (

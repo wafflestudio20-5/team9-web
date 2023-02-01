@@ -10,7 +10,7 @@ interface PostEditorProps {
     initTitle: string;
     initContent: string;
     initImage?: string | null;
-    submitNewPost(newPost: FormData): void;
+    submitNewPost(newPost: FormData, image?: File): void;
 }
 
 export default function PostEditor({
@@ -45,7 +45,7 @@ export default function PostEditor({
         newPost.append('title', title);
         newPost.append('content', content);
         if (image) newPost.append('image', image);
-        submitNewPost(newPost);
+        submitNewPost(newPost, image);
     };
 
     const onClickCancel = () => {

@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import styles from './create.module.scss';
 
-import { createPostAPI } from '@apis/blog';
+import { createPostAPI, editPostAPI } from '@apis/blog';
 import PostEditor from '@components/Blog/PostEditor';
 import ScheduleList from '@components/Blog/ScheduleList';
 import { useScheduleContext } from '@contexts/ScheduleContext';
@@ -121,6 +122,7 @@ export default function PostCreatePage() {
     const { accessToken } = useSessionContext();
     // const { schedules } = useScheduleContext();
     const [schedules, setSchedules] = useState(schedulesData); // temp
+    const router = useRouter();
 
     const getScheduleIds = () => {
         const idList: { pk: number }[] = [];
@@ -129,9 +131,11 @@ export default function PostCreatePage() {
     };
 
     const createPost = async (newPost: FormData) => {
+        console.log(getScheduleIds());
+
         try {
-            // newPost.append('schedules', JSON.stringify(getScheduleIds()));
-            await createPostAPI(newPost, accessToken);
+            newPost.append('schedules', JSON.stringify(getScheduleIds()));
+            const res = await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
         } catch (error) {
             console.log(error);
@@ -152,7 +156,14 @@ export default function PostCreatePage() {
         <div className={styles.postCreatePage}>
             <ScheduleList schedules={schedules} />
             <div className={styles.createPost}>
-                <div className={styles.guide}>post guide message?</div>
+                <div
+                    className={styles.guide}
+                    onClick={() => {
+                        router.push('/blog/post/1');
+                    }}
+                >
+                    post guide message?
+                </div>
                 <div className={styles.newPost}>
                     <PostEditor
                         initTitle=""

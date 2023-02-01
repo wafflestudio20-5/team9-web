@@ -51,7 +51,7 @@ export const createCommentAPI = (
     newComment: Comment,
     accessToken: string | null,
 ) =>
-    BlogAPI.post(`/post/${postId}/comment/`, newComment, {
+    BlogAPI.post(`/comment/`, newComment, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -59,7 +59,7 @@ export const getEntireCommentAPI = (
     postId: number,
     accessToken: string | null,
 ) =>
-    BlogAPI.get(`/post/${postId}/comment/`, {
+    BlogAPI.get(`/comment/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -68,7 +68,7 @@ export const getParticularCommentAPI = (
     commentId: number,
     accessToken: string | null,
 ) =>
-    BlogAPI.get(`/post/${postId}/comment/${commentId}/`, {
+    BlogAPI.get(`/comment/${commentId}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -78,7 +78,7 @@ export const editCommentAPI = (
     newComment: Comment,
     accessToken: string | null,
 ) =>
-    BlogAPI.patch(`/post/${postId}/comment/${commentId}/`, newComment, {
+    BlogAPI.patch(`/comment/${commentId}/`, newComment, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -87,7 +87,7 @@ export const deleteCommentAPI = (
     commentId: number,
     accessToken: string | null,
 ) =>
-    BlogAPI.delete(`/post/${postId}/comment/${commentId}/`, {
+    BlogAPI.delete(`/comment/${commentId}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 

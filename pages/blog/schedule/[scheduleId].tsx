@@ -130,22 +130,21 @@ export default function SchedulePage() {
     };
 
     const getPosts = async (scheduleId: number) => {
-        // return;
-        // try {
-        //     const res = await getRelatedPosts(scheduleId, accessToken);
-        //     setPosts(res.data);
-        // } catch (error) {
-        //     const message = '글을 불러오지 못했습니다.';
-        //     if (axios.isAxiosError(error)) {
-        //         const errObj: { [key: string]: string } =
-        //             error.response?.data ?? {};
-        //         let errMsg = '';
-        //         for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
-        //         errorToast(errMsg.trim() || message);
-        //     } else {
-        //         errorToast(message);
-        //     }
-        // }
+        try {
+            const res = await getRelatedPosts(scheduleId, accessToken);
+            setPosts(res.data);
+        } catch (error) {
+            const message = '글을 불러오지 못했습니다.';
+            if (axios.isAxiosError(error)) {
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
+            } else {
+                errorToast(message);
+            }
+        }
     };
 
     useEffect(() => {
@@ -153,23 +152,27 @@ export default function SchedulePage() {
     }, [scheduleId]);
 
     useEffect(() => {
-        postId ? getPost(postId) : getPosts(scheduleId);
+        // postId ? getPost(postId) : getPosts(scheduleId);
     }, [postId]);
 
     if (!schedule) return;
 
     return (
         <div className={styles.blogPage}>
-            <ScheduleContent schedule={schedule} />
+            <div className={styles.scheduleWrapper}>
+                <ScheduleContent schedule={schedule} />
+            </div>
             {postId && post ? (
                 <div className={styles.singlePost}>
-                    <button
-                        onClick={() =>
-                            router.push(`/blog/schedule/${scheduleId}`)
-                        }
-                    >
-                        목록
-                    </button>
+                    <div className={styles.indexWrapper}>
+                        <button
+                            onClick={() =>
+                                router.push(`/blog/schedule/${scheduleId}`)
+                            }
+                        >
+                            목록
+                        </button>
+                    </div>
                     <PostViewer post={post} />
                 </div>
             ) : (
