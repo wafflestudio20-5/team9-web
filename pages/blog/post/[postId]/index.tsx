@@ -333,7 +333,7 @@ export default function PostPage() {
 
     useEffect(() => {
         getPost();
-        // getComments();
+        getComments();
     }, [router.query]);
 
     if (!post) return;
