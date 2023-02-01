@@ -10,7 +10,7 @@ interface PostEditorProps {
     initTitle: string;
     initContent: string;
     initImage?: string | null;
-    submitNewPost(newPost: FormData, image?: File): void;
+    submitNewPost(newPost: FormData, image?: File): Promise<void>;
 }
 
 export default function PostEditor({
@@ -23,6 +23,7 @@ export default function PostEditor({
     const [content, setContent] = useState<string>(initContent);
     const [image, setImage] = useState<File>();
     const [imagePreview, setImagePreview] = useState<string>(initImage || ''); // image object url
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const router = useRouter();
 
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,12 +41,15 @@ export default function PostEditor({
         setImage(undefined);
     };
 
-    const onClickSubmitPost = () => {
+    const onClickSubmitPost = async () => {
+        if (isSubmitting) return;
+        setIsSubmitting(true);
         const newPost = new FormData();
         newPost.append('title', title);
         newPost.append('content', content);
         if (image) newPost.append('image', image);
-        submitNewPost(newPost, image);
+        await submitNewPost(newPost, image);
+        setIsSubmitting(false);
     };
 
     const onClickCancel = () => {
@@ -99,10 +103,18 @@ export default function PostEditor({
                 )}
             </div>
             <div className={styles.btnContainer}>
-                <button className={styles.save} onClick={onClickSubmitPost}>
+                <button
+                    className={styles.save}
+                    disabled={isSubmitting}
+                    onClick={onClickSubmitPost}
+                >
                     저장
                 </button>
-                <button className={styles.cancel} onClick={onClickCancel}>
+                <button
+                    className={styles.cancel}
+                    disabled={isSubmitting}
+                    onClick={onClickCancel}
+                >
                     취소
                 </button>
             </div>
