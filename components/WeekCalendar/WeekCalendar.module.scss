@@ -3,22 +3,97 @@
 .wrapper {
     display: flex;
     flex-direction: row;
-    width: 100vw;
+    height: calc(100vh - 66px);
     justify-content: stretch;
+    background-color: var(--sidebar-background);
 }
 
 .weekHolder {
-    display: flex;
+    display: grid;
+    grid-template-rows: min-content 1fr;
     flex-grow: 1;
     position: relative;
-    // display: grid;
-    // grid-template-columns: repeat(7, 1fr);
-    // flex: 1;
-    // border-left: 1px solid v.$border-gray;
+    background-color: var(--waffle-background);
+    border-left: 1px solid var(--structure);
 }
 
 .frozenHolder {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: fit-content;
+    padding-left: 115px;
+    border-bottom: 2px solid var(--structure);
+    box-shadow: 3px 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+.headrow {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    height: 100px;
+
+    .headrowItem {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 2px;
+        padding-bottom: 30px;
+
+        .day {
+            color: var(--text-datesSecondary);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .date {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 550;
+            background-color: transparent;
+            height: 36px;
+            width: 36px;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            div {
+                color: var(--text-datesPrimary);
+            }
+
+            &:hover {
+                background-color: var(--button-hover);
+                cursor: pointer;
+            }
+        }
+
+        &.today {
+            .day {
+                color: var(--today-blueberry);
+            }
+            .date {
+                background-color: var(--today-blueberry);
+                div {
+                    color: var(--text-reverse);
+                }
+
+                &:hover {
+                    background-color: var(--dark-blueberry);
+                }
+            }
+        }
+    }
+}
+
+.scrollHolder {
+    flex-grow: 1;
+    overflow-y: scroll;
+}
+
+.scrollContent {
+    display: flex;
+    flex-direction: row;
+    height: 1320px;
 }
