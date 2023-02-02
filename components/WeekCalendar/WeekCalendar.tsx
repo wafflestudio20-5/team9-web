@@ -178,7 +178,6 @@ export default function WeekCalendar() {
                                             return (
                                                 <DayInWeekWithin
                                                     key={index}
-                                                    dateString={dateString}
                                                     dailyLayerData={
                                                         dailyLayerData
                                                     }

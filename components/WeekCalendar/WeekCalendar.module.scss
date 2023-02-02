@@ -154,5 +154,11 @@
         width: 100%;
         position: absolute;
         z-index: 1;
+        :first-child {
+            margin-left: 0px;
+        }
+        :last-child {
+            margin-right: 0px;
+        }
     }
 }
