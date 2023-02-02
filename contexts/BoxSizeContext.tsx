@@ -12,9 +12,10 @@ import React, {
     useMemo,
 } from 'react';
 
-import { getCalendarDates } from '@utils/calculateDate';
-import useWindowSize from '@hooks/useWindowSize';
 import { useSidebarContext } from './SidebarContext';
+
+import useWindowSize from '@hooks/useWindowSize';
+import { getCalendarDates } from '@utils/calculateDate';
 
 interface BoxSizeContextData {
     totalWidth: number;

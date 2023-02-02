@@ -9,13 +9,13 @@ import { getEntireScheduleAPI, CalendarURLParams } from '@apis/calendar';
 import DayinMonth from '@components/MonthCalendar/DayinMonth';
 import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
 import Sidebar from '@components/Sidebar/Sidebar';
+import { useCalendarContext } from '@contexts/CalendarContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
+import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
 import { getCalendarDates } from '@utils/calculateDate';
 import { DAYS, formatDate } from '@utils/formatting';
-import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
 import getLayeredEvents from '@utils/layerEvents';
-import { useCalendarContext } from '@contexts/CalendarContext';
 export default function MonthCalendar() {
     const router = useRouter();
     const { year, month, date } = router.query;
@@ -34,10 +34,10 @@ export default function MonthCalendar() {
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
 
     useEffect(() => {
-        if ((user && monthDates) || needUpdate) {
+        if ((user?.pk && monthDates) || needUpdate) {
             getEntireScheduleAPI(
                 {
-                    pk: user?.pk!,
+                    pk: user?.pk,
                     from: formatDate(monthDates[0]),
                     to: formatDate(monthDates[monthDates.length - 1]),
                 } as CalendarURLParams,
@@ -87,11 +87,12 @@ export default function MonthCalendar() {
                     </div>
 
                     <div className={`${styles.borders} ${styles.horizontal}`}>
-                        {Array(monthDates?.length! / 7 - 1)
-                            .fill(0)
-                            .map((v, i) => {
-                                return <div key={i} />;
-                            })}
+                        {monthDates &&
+                            Array(monthDates?.length / 7 - 1)
+                                .fill(0)
+                                .map((v, i) => {
+                                    return <div key={i} />;
+                                })}
                     </div>
                 </div>
                 <div className={`${styles.borders} ${styles.vertical}`}>

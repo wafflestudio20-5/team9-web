@@ -1,10 +1,10 @@
 import React from 'react';
 
 import styles from './AcrossEvent.module.scss';
+import getEventColorClass from './getEventColorClass';
 
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
-import getEventColorClass from './getEventColorClass';
 
 export default function AcrossEvent({
     type,

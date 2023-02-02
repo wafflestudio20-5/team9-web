@@ -1,8 +1,9 @@
+import styles from './DayinWeekWithin.module.scss';
+
 import DailyEvent from '@components/EventComponents/DailyEvent';
 import { DailyLayerData, FullSchedule } from '@customTypes/ScheduleTypes';
-import styles from './DayInWeekWithin.module.scss';
 
-export default function DayInWeekWithin({
+export default function DayinWeekWithin({
     dailyLayerData,
 }: {
     dailyLayerData: DailyLayerData;

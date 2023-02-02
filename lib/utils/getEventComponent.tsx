@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { FullSchedule, LayerData } from '@customTypes/ScheduleTypes';
-import FillerEvent from '@components/EventComponents/FillerEvent';
 import AcrossEvent from '@components/EventComponents/AcrossEvent';
+import FillerEvent from '@components/EventComponents/FillerEvent';
 import WithinEvent from '@components/EventComponents/WithinEvent';
+import { FullSchedule, LayerData } from '@customTypes/ScheduleTypes';
 
 interface getEventComponentOptions {
     eventHeight?: number;

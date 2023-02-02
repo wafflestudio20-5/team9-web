@@ -1,28 +1,26 @@
-import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import Swal from 'sweetalert2';
-
-import styles from './WeekCalendar.module.scss';
 
 import DayinWeekAcross from './DayinWeekAcross';
+import DayinWeekWithin from './DayinWeekWithin';
+import styles from './WeekCalendar.module.scss';
+
+import { CalendarURLParams, getEntireScheduleAPI } from '@apis/calendar';
+import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
 import Sidebar from '@components/Sidebar/Sidebar';
+import { useCalendarContext } from '@contexts/CalendarContext';
+import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
-import { DAYS, formatDate, formatHour } from '@utils/formatting';
 import {
     FullSchedule,
     LayeredEvents,
     LayeredWeeklyWithinEvents,
 } from '@customTypes/ScheduleTypes';
-import { useCalendarContext } from '@contexts/CalendarContext';
-import { CalendarURLParams, getEntireScheduleAPI } from '@apis/calendar';
-import { useSessionContext } from '@contexts/SessionContext';
+import { DAYS, formatDate, formatHour } from '@utils/formatting';
 import {
     getLayeredAcrossEvents,
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
-import DayInWeekWithin from './DayInWeekWithin';
-import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
 
 export default function WeekCalendar() {
     const router = useRouter();
@@ -222,7 +220,7 @@ export default function WeekCalendar() {
                                             index,
                                         ) => {
                                             return (
-                                                <DayInWeekWithin
+                                                <DayinWeekWithin
                                                     key={index}
                                                     dailyLayerData={
                                                         dailyLayerData

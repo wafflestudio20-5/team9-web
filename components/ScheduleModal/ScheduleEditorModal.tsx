@@ -22,6 +22,7 @@ import ProtectionLevelDropDown from '@components/ScheduleModal/ProtectionLevelDr
 import RecurrenceDropDown from '@components/ScheduleModal/RecurrenceDropDown';
 import TimeDropDown from '@components/ScheduleModal/TimeDropDown';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
+import { useCalendarContext } from '@contexts/CalendarContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import {
@@ -44,7 +45,6 @@ import {
     warningModal,
 } from '@utils/customAlert';
 import { formatDate, formatDateWithTime } from '@utils/formatting';
-import { useCalendarContext } from '@contexts/CalendarContext';
 
 function ErrorMessage({ message }: { message: string }) {
     return <span className={styles.errorMessage}>{message}</span>;

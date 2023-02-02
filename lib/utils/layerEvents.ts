@@ -55,7 +55,7 @@ function findAvailableLayer(layeredEvents: LayeredEvents, dateString: string) {
 }
 
 function getInitialLayeredEvents(dates: Date[]) {
-    let layeredEvents = <LayeredEvents>{};
+    const layeredEvents = <LayeredEvents>{};
     dates.forEach(date => {
         layeredEvents[formatDate(date)] = { 0: null };
     });
@@ -63,8 +63,8 @@ function getInitialLayeredEvents(dates: Date[]) {
 }
 
 function sortEvents(events: FullSchedule[]) {
-    let acrossEvents = <FullSchedule[]>[];
-    let withinEvents = <FullSchedule[]>[];
+    const acrossEvents = <FullSchedule[]>[];
+    const withinEvents = <FullSchedule[]>[];
 
     events.forEach(event => {
         if (event.start_at.split(' ')[0] === event.end_at.split(' ')[0]) {
@@ -86,7 +86,7 @@ function layerAcrossEvents(
             event.start_at.split(' ')[0] < formatDate(dates[0])
                 ? formatDate(dates[0])
                 : event.start_at.split(' ')[0];
-        let dateObj = new Date(startDateString);
+        const dateObj = new Date(startDateString);
         while (isDateIncluded(dateObj, event)) {
             if (formatDate(dateObj) < formatDate(dates[0])) {
                 dateObj.setDate(dateObj.getDate() + 1);
@@ -97,7 +97,7 @@ function layerAcrossEvents(
             }
 
             if (formatDate(dateObj) === event.start_at.split(' ')[0]) {
-                let newDateObj = new Date(formatDate(dateObj));
+                const newDateObj = new Date(formatDate(dateObj));
                 const layer = findAvailableLayer(
                     layeredEvents,
                     formatDate(newDateObj),
@@ -208,7 +208,7 @@ export default function getLayeredEvents(
     events: FullSchedule[],
     dates: Date[],
 ) {
-    let layeredEvents = getInitialLayeredEvents(dates);
+    const layeredEvents = getInitialLayeredEvents(dates);
     if (!events) {
         return layeredEvents;
     }
@@ -224,7 +224,7 @@ export default function getLayeredEvents(
 }
 
 export function getLayeredAcrossEvents(events: FullSchedule[], dates: Date[]) {
-    let layeredEvents = getInitialLayeredEvents(dates);
+    const layeredEvents = getInitialLayeredEvents(dates);
     if (!events) {
         return layeredEvents;
     }
@@ -243,7 +243,7 @@ function areTimesOverlapping(eventA: FullSchedule, eventB: FullSchedule) {
 }
 
 function getDailyLayerData(events: FullSchedule[]) {
-    let dailyLayerData = <DailyLayerData>{ 0: null };
+    const dailyLayerData = <DailyLayerData>{ 0: null };
     if (!events) {
         return dailyLayerData;
     }
@@ -281,7 +281,7 @@ function assignTextTop(
     dates: Date[],
 ) {
     dates.forEach(date => {
-        let dailyLayerData = layeredWeeklyWithinEvents[formatDate(date)];
+        const dailyLayerData = layeredWeeklyWithinEvents[formatDate(date)];
         let layer = 0;
         while (1) {
             if (!dailyLayerData[layer] || !dailyLayerData[layer + 1]) {
@@ -313,7 +313,7 @@ export function getLayeredWeeklyWithinEvents(
     events: FullSchedule[],
     dates: Date[],
 ) {
-    let layeredWeeklyWithinEvents = <LayeredWeeklyWithinEvents>{};
+    const layeredWeeklyWithinEvents = <LayeredWeeklyWithinEvents>{};
     dates.forEach(date => {
         layeredWeeklyWithinEvents[formatDate(date)] = { 0: null };
     });
@@ -321,7 +321,7 @@ export function getLayeredWeeklyWithinEvents(
         return layeredWeeklyWithinEvents;
     }
     const { withinEvents } = sortEvents(events);
-    let weeklyWithinEvents = <WeeklyWithinEvents>{};
+    const weeklyWithinEvents = <WeeklyWithinEvents>{};
     if (!withinEvents) {
         return layeredWeeklyWithinEvents;
     }

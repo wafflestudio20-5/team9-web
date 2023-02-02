@@ -1,10 +1,10 @@
 import React from 'react';
 
+import getEventColorClass from './getEventColorClass';
 import styles from './WithinEvent.module.scss';
 
 import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
-import getEventColorClass from './getEventColorClass';
 
 export default function WithinEvent({
     eventData,

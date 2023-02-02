@@ -58,9 +58,10 @@ export default function DayinMonth({
                           .map(([layer, data], index) => {
                               if (index === 4) {
                                   return (
-                                      <div className={styles.seeMore}>{`${
-                                          data.length - 4
-                                      }개 더보기`}</div>
+                                      <div
+                                          key={index}
+                                          className={styles.seeMore}
+                                      >{`${data.length - 4}개 더보기`}</div>
                                   );
                               }
                               return getEventComponent({

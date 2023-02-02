@@ -1,7 +1,8 @@
+import styles from './DayinWeekAcross.module.scss';
+
 import { LayerData } from '@customTypes/ScheduleTypes';
 import getEventComponent from '@utils/getEventComponent';
 
-import styles from './DayinWeekAcross.module.scss';
 
 export default function DayinWeekAcross({
     eventData,
