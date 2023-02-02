@@ -9,11 +9,14 @@ export default function WithinEvent({
     eventData,
     eventHeight,
     layer,
+    slopeHeight,
 }: {
     eventData: FullSchedule;
     eventHeight: number;
     layer: number;
+    slopeHeight?: number;
 }) {
+    const sh = slopeHeight ? slopeHeight : 3;
     const { openModal } = useModal();
     const colorLayer = () => {
         if (layer) {
@@ -33,6 +36,7 @@ export default function WithinEvent({
             className={`${styles.event} ${colorLayer()}`}
             style={{
                 height: `${eventHeight}px`,
+                marginTop: `${sh}px`,
             }}
             onClick={() => {
                 openModal(MODAL_NAMES.scheduleView, {

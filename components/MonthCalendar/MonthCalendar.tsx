@@ -91,21 +91,21 @@ export default function MonthCalendar() {
     return (
         <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
-            <div
-                className={styles.calendarHolder}
-                style={{
-                    marginLeft: `${leftMargin}px`,
-                    width: `${totalWidth}px`,
-                    height: `${totalHeight}px`,
-                }}
-            >
+            <div className={styles.calendarHolder}>
                 <div className={styles.headrow}>
                     {DAYS.map((item, index) => {
                         return <div key={index}>{item}</div>;
                     })}
                 </div>
-                <div className={styles.monthHolder}>
-                    <div className={styles.month}>
+                <div className={styles.monthHolder} id="ExpansionBasis">
+                    <div
+                        className={styles.month}
+                        style={{
+                            gridTemplateRows: `${Array(monthDates.length / 7)
+                                .fill('1fr')
+                                .join(' ')}`,
+                        }}
+                    >
                         {layeredEvents &&
                             Object.entries(layeredEvents).map((data, index) => {
                                 return (
@@ -118,30 +118,19 @@ export default function MonthCalendar() {
                             })}
                     </div>
 
-                    <div
-                        className={styles.borders}
-                        style={{ flexDirection: 'column' }}
-                    >
+                    <div className={`${styles.borders} ${styles.horizontal}`}>
                         {Array(monthDates?.length! / 7 - 1)
                             .fill(0)
                             .map((v, i) => {
-                                return (
-                                    <div
-                                        key={i}
-                                        className={styles.horizontal}
-                                    />
-                                );
+                                return <div key={i} />;
                             })}
                     </div>
                 </div>
-                <div
-                    className={styles.borders}
-                    style={{ flexDirection: 'row' }}
-                >
+                <div className={`${styles.borders} ${styles.vertical}`}>
                     {Array(6)
                         .fill(0)
                         .map((v, i) => {
-                            return <div key={i} className={styles.vertical} />;
+                            return <div key={i} />;
                         })}
                 </div>
             </div>

@@ -75,20 +75,89 @@ function layerAcrossEvents(
             if (formatDate(dateObj) > formatDate(dates[dates.length - 1])) {
                 break;
             }
-            if (
-                formatDate(dateObj) === event.start_at.split(' ')[0] ||
-                dateObj.getDay() === 0
-            ) {
-                layeredEvents[formatDate(dateObj)][layer] = {
-                    type: 'across',
-                    event: event,
-                };
-            } else {
-                layeredEvents[formatDate(dateObj)][layer] = {
-                    type: 'filler',
-                    event: null,
-                };
+
+            if (formatDate(dateObj) === event.start_at.split(' ')[0]) {
+                let newDateObj = new Date(formatDate(dateObj));
+                const layer = findAvailableLayer(
+                    layeredEvents,
+                    formatDate(newDateObj),
+                );
+                console.log(layer);
+                while (isDateIncluded(newDateObj, event)) {
+                    console.log(newDateObj);
+                    if (
+                        formatDate(newDateObj) ===
+                            event.start_at.split(' ')[0] &&
+                        newDateObj.getDay() === 6
+                    ) {
+                        layeredEvents[formatDate(newDateObj)][layer] = {
+                            type: 'acrossClosed',
+                            event: event,
+                        };
+                    } else if (newDateObj.getDay() === 0) {
+                        layeredEvents[formatDate(newDateObj)][layer] = {
+                            type: 'acrossLeftEnd',
+                            event: event,
+                        };
+                    } else if (
+                        formatDate(newDateObj) === event.start_at.split(' ')[0]
+                    ) {
+                        layeredEvents[formatDate(newDateObj)][layer] = {
+                            type: 'acrossLeft',
+                            event: event,
+                        };
+                    } else if (newDateObj.getDay() === 6) {
+                        layeredEvents[formatDate(newDateObj)][layer] = {
+                            type: 'acrossRightEnd',
+                            event: event,
+                        };
+                    } else if (
+                        formatDate(newDateObj) === event.end_at.split(' ')[0]
+                    ) {
+                        layeredEvents[formatDate(newDateObj)][layer] = {
+                            type: 'acrossRight',
+                            event: event,
+                        };
+                    } else {
+                        layeredEvents[formatDate(newDateObj)][layer] = {
+                            type: 'acrossMiddle',
+                            event: event,
+                        };
+                    }
+                    newDateObj.setDate(newDateObj.getDate() + 1);
+                }
             }
+
+            // if (
+            //     formatDate(dateObj) === event.start_at.split(' ')[0] &&
+            //     dateObj.getDay() === 6
+            // ) {
+            //     layeredEvents[formatDate(dateObj)][layer] = {
+            //         type: 'acrossClosed',
+            //         event: event,
+            //     };
+            // } else if (
+            //     formatDate(dateObj) === event.start_at.split(' ')[0] ||
+            //     dateObj.getDay() === 0
+            // ) {
+            //     layeredEvents[formatDate(dateObj)][layer] = {
+            //         type: 'acrossLeft',
+            //         event: event,
+            //     };
+            // } else if (
+            //     formatDate(dateObj) === event.end_at.split(' ')[0] ||
+            //     dateObj.getDay() === 6
+            // ) {
+            //     layeredEvents[formatDate(dateObj)][layer] = {
+            //         type: 'acrossRight',
+            //         event: event,
+            //     };
+            // } else {
+            //     layeredEvents[formatDate(dateObj)][layer] = {
+            //         type: 'acrossMiddle',
+            //         event: event,
+            //     };
+            // }
             dateObj.setDate(dateObj.getDate() + 1);
         }
     });
@@ -101,12 +170,26 @@ function layerWithinEvents(
     withinEvents.forEach(event => {
         const startDateString = event.start_at.split(' ')[0];
         const layer = findAvailableLayer(layeredEvents, startDateString);
-        console.log(layeredEvents[startDateString]);
         layeredEvents[startDateString][layer] = {
             type: 'within',
             event: event,
         };
     });
+}
+
+function fillSkippedLayers(dates: Date[], layeredEvents: LayeredEvents) {
+    for (let i = 0; i < dates.length; i++) {
+        const dateString = formatDate(dates[i]);
+        const layers = Object.keys(layeredEvents[dateString]).map(str => {
+            return Number(str);
+        });
+        const maxLayer = layers[layers.length - 1];
+        for (let j = 0; j <= maxLayer; j++) {
+            if (!layeredEvents[dateString][j]) {
+                layeredEvents[dateString][j] = null;
+            }
+        }
+    }
 }
 export default function getLayeredEvents(
     events: FullSchedule[],
@@ -123,6 +206,7 @@ export default function getLayeredEvents(
     if (withinEvents) {
         layerWithinEvents(withinEvents, layeredEvents);
     }
+    fillSkippedLayers(dates, layeredEvents);
     return layeredEvents;
 }
 
@@ -135,5 +219,6 @@ export function getLayeredAcrossEvents(events: FullSchedule[], dates: Date[]) {
     if (acrossEvents) {
         layerAcrossEvents(acrossEvents, dates, layeredEvents);
     }
+    fillSkippedLayers(dates, layeredEvents);
     return layeredEvents;
 }

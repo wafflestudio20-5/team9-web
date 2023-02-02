@@ -99,7 +99,15 @@ export interface ScheduleRequestData {
 
 export interface LayerData {
     [layer: number]: {
-        type: 'across' | 'within' | 'filler';
+        type:
+            | 'acrossLeft'
+            | 'acrossLeftEnd'
+            | 'acrossMiddle'
+            | 'acrossRight'
+            | 'acrossRightEnd'
+            | 'acrossClosed'
+            | 'within'
+            | 'filler';
         event: FullSchedule | null;
     } | null;
 }

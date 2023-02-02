@@ -45,11 +45,9 @@ export default function DayinMonth({
         return `${styles.notCurrMonth} ${date === 1 && styles.textIncluded}`;
     };
 
+    console.log(layerData);
     return (
-        <div
-            className={styles.wrapper}
-            style={{ height: `${boxHeight}px`, width: `${boxWidth}px` }}
-        >
+        <div className={styles.wrapper}>
             <div className={styles.buttonHolder}>
                 <button
                     className={dateHeaderClass()}
@@ -75,14 +73,14 @@ export default function DayinMonth({
                               return getEventComponent({
                                   dateString: dateString,
                                   data: data,
-                                  index: index,
+                                  layer: Number(layer),
                               });
                           })
                     : Object.entries(layerData).map(([layer, data], index) => {
                           return getEventComponent({
                               dateString: dateString,
                               data: data,
-                              index: index,
+                              layer: Number(layer),
                           });
                       })}
             </div>
