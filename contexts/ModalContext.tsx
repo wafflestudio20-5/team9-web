@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 
 import MiniCalendarModal from '@components/Header/MiniCalendarModal';
+import NotificationModal from '@components/Header/NotificationModal';
 import SearchDetailsModal from '@components/Header/SearchDetailsModal';
 import UserModal from '@components/Header/UserModal';
 import RegisterModal from '@components/RegisterModal';
@@ -26,6 +27,7 @@ export enum MODAL_NAMES {
     scheduleView = 'scheduleView',
     scheduleEditor = 'scheduleEditor',
     customRecurrence = 'customRecurrence',
+    notification = 'notification',
 }
 
 // Add your modal component to MODAL_COMPONENTS
@@ -37,6 +39,7 @@ const MODAL_COMPONENTS: { [key: string]: React.ElementType } = {
     [MODAL_NAMES.scheduleView]: ScheduleViewModal,
     [MODAL_NAMES.scheduleEditor]: ScheduleEditorModal,
     [MODAL_NAMES.customRecurrence]: CustomRecurrenceModal,
+    [MODAL_NAMES.notification]: NotificationModal,
 };
 
 type ModalState = 'open' | 'closing' | 'closed';

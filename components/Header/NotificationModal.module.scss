@@ -1,0 +1,55 @@
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.notificationModal {
+    position: fixed;
+    top: 60px;
+    right: 30px;
+    width: 350px;
+    height: calc(100vh - 70px);
+    max-height: 450px;
+    border: 1px solid var(--structure);
+    border-radius: 10px;
+    background-color: var(--sidebar-background);
+    box-shadow: 0 1px 5px 1px var(--structure);
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+
+    .buttonContainer {
+        display: flex;
+        gap: 8px;
+
+        button {
+            height: 30px;
+            font-size: 12px;
+        }
+    }
+
+    .request {
+        display: flex;
+        flex-direction: row;
+        border: 1px solid var(--structure);
+        height: 60px;
+        width: 100%;
+        align-items: center;
+        padding: 10px;
+        justify-content: space-between;
+
+        .textContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            .text {
+                font-size: 11.5px;
+            }
+        }
+    }
+}
