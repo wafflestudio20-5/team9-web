@@ -15,7 +15,7 @@ export default function DayInWeekWithin({
                 return (
                     <div
                         className={styles.layer}
-                        style={{ zIndex: `${layer + 1}` }}
+                        style={{ zIndex: `${Number(layer) + 1}` }}
                     >
                         {eventData &&
                             eventData.map(
@@ -31,6 +31,7 @@ export default function DayInWeekWithin({
                                             key={index}
                                             textTop={eventDataItem.textTop}
                                             event={eventDataItem.event}
+                                            layer={Number(layer)}
                                         />
                                     );
                                 },

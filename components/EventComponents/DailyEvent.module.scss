@@ -1,0 +1,11 @@
+.event {
+    z-index: inherit;
+    position: absolute;
+    padding: 10px;
+    border: 1px solid var(--structure);
+}
+
+.textHolder {
+    display: flex;
+    flex-direction: column;
+}

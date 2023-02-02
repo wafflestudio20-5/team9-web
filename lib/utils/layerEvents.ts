@@ -229,7 +229,6 @@ function areTimesOverlapping(eventA: FullSchedule, eventB: FullSchedule) {
 
 function getDailyLayerData(events: FullSchedule[]) {
     let dailyLayerData = <DailyLayerData>{ 0: null };
-    console.log(events);
     if (!events) {
         return dailyLayerData;
     }
