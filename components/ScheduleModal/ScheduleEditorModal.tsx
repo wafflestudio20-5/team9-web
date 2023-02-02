@@ -1,5 +1,12 @@
 import axios from 'axios';
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, {
+    useState,
+    useMemo,
+    useEffect,
+    useRef,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 
 import styles from './ScheduleEditorModal.module.scss';
 
@@ -37,6 +44,7 @@ import {
     warningModal,
 } from '@utils/customAlert';
 import { formatDate, formatDateWithTime } from '@utils/formatting';
+import { useCalendarContext } from '@contexts/CalendarContext';
 
 function ErrorMessage({ message }: { message: string }) {
     return <span className={styles.errorMessage}>{message}</span>;
@@ -53,6 +61,7 @@ export default function ScheduleEditorModal({
 }: ScheduleEditorModalProps) {
     const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
+    const { setNeedUpdate } = useCalendarContext();
     const titleRef = useRef<HTMLInputElement>(null);
     const [title, setTitle] = useState<string>(initSchedule.title);
     const [startDate, setStartDate] = useState<Date>(
@@ -261,7 +270,12 @@ export default function ScheduleEditorModal({
                 break;
         }
 
-        if (isSuccessful) closeModal(MODAL_NAMES.scheduleEditor);
+        if (isSuccessful) {
+            closeModal(MODAL_NAMES.scheduleEditor);
+            if (setNeedUpdate) {
+                setNeedUpdate(true);
+            }
+        }
     };
 
     const detectChange = () => {

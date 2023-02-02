@@ -1,5 +1,4 @@
-import axios, { Axios, AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
+import axios, { AxiosError } from 'axios';
 import React, {
     createContext,
     PropsWithChildren,
@@ -11,6 +10,8 @@ import React, {
 } from 'react';
 import Swal from 'sweetalert2';
 import useLocalStorage from '@hooks/useLocalStorage';
+
+//import keys from '../secrets.json';
 
 import { apiEndPoint } from '@apis/endpoint';
 
@@ -86,11 +87,18 @@ const SessionContext = createContext<SessionContextData>({
 
 //const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
 //const apiEndPoint = 'http://api-staging-dearj-wafflestudio.site/api/v1/user/';
-const apiEndPointUser = apiEndPoint + '/user/';
+// const apiEndPoint = apiStagingEndPoint + '/user/';
 
-const REACT_APP_GOOGLE_CLIENT_ID =
-    '665556060692-i2l61v20chqcvuji0q9uevi50ujld5oh.apps.googleusercontent.com';
-const REACT_APP_KAKAO_REST_API_KEY = '49d202e6f581c3fbdd29922292338f9a';
+const REACT_APP_BASE_BACKEND_URL = 'http://api-staging-dearj-wafflestudio.site';
+
+const REACT_APP_GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
+const REACT_APP_KAKAO_REST_API_KEY =
+    process.env.REACT_APP_KAKAO_REST_API_KEY || '';
+//const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
+
+// console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
+// console.log(process.env.REACT_APP_KAKAO_REST_API_KEY);
+// console.log(process.env.NODE_ENV);
 
 export const useSessionContext = () => useContext(SessionContext);
 
@@ -158,7 +166,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         // send login request using loginInfo
         // if login success, set user and accessToken
         axios
-            .post(apiEndPointUser + 'login/', loginInfo)
+            .post(apiEndPoint + '/user/login/', loginInfo)
             .then(response => {
                 setUser({
                     pk: response.data.user.pk,
@@ -189,7 +197,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         // send logout request
         // if logout success, reset user and accessToken to null
         axios
-            .post(apiEndPointUser + 'logout/', {
+            .post(apiEndPoint + '/user/logout/', {
                 refresh: refreshToken,
             })
             .then(response => {
@@ -211,7 +219,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
 
         try {
             const response = await axios.post(
-                apiEndPointUser + 'registration/',
+                apiEndPoint + '/user/registration/',
                 registerInfo,
             );
             setUser({
@@ -317,7 +325,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             );
 
             axios
-                .get(apiEndPointUser + 'profile/', {
+                .get(apiEndPoint + '/user/profile/', {
                     headers: {
                         Authorization: `Bearer ${postSocialLoginData.accessToken}`,
                     },

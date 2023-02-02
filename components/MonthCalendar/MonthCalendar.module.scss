@@ -3,41 +3,76 @@
 .wrapper {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 65px);
-    width: 100vw;
+    height: fit-content;
+    width: fit-content;
     background-color: var(--sidebar-background);
+    position: relative;
+    // overflow: hidden;
 }
 
-.monthHolder {
+.calendarHolder {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    margin-left: 8px;
+    // margin-left: 8px;
     border-left: 1px solid var(--structure);
     background-color: var(--waffle-background);
+    position: relative;
+}
+
+.monthHolder {
+    position: relative;
+    flex-grow: 1;
 }
 
 .headrow {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 1px;
-    border-left: 1px solid var(--structure);
+    gap: 12px;
+    height: 32px;
+    align-items: end;
+    z-index: 1;
 
     div {
         color: var(--text-datesSecondary);
         text-align: center;
-        font-size: 11px;
+        font-size: 13px;
         background-color: transparent;
-        border-right: 1px solid var(--structure);
     }
 }
 
 .month {
-    display: grid;
-    grid-template-rows: repeat(auto-fill, 1fr);
-    grid-template-columns: repeat(7, 1fr);
-    flex-grow: 1;
-    gap: 1px;
-    border-left: 1px solid var(--structure);
-    border-top: 1px solid var(--structure);
+    display: flex;
+    flex-wrap: wrap;
+    // grid-auto-rows: 1fr;
+    // grid-template-columns: repeat(7, 1fr);
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    gap: 12px;
+    position: absolute;
+}
+
+.borders {
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    div {
+        background-color: var(--grid-line);
+    }
+    .horizontal {
+        height: 12px;
+        box-shadow: var(--grid-shadow) 0px 2px 2px,
+            var(--grid-shadow) 0px -1px 2px;
+        z-index: 2;
+    }
+    .vertical {
+        width: 12px;
+        box-shadow: var(--grid-shadow) 2px 0px 2px,
+            var(--grid-shadow) -2px 0px 2px;
+        z-index: 3;
+    }
 }

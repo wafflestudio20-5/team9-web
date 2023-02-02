@@ -78,3 +78,14 @@ export interface RecurrenceRule {
     until?: Date;
     count?: number;
 }
+
+export interface LayerData {
+    [layer: number]: {
+        type: 'across' | 'within' | 'filler';
+        event: FullSchedule | null;
+    } | null;
+}
+
+export interface LayeredEvents {
+    [date: string]: LayerData;
+}
