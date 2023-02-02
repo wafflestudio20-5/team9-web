@@ -27,6 +27,10 @@
     padding-right: 8px;
     border-bottom: 2px solid var(--structure);
     box-shadow: 3px 2px 5px var(--structure-shadow);
+
+    &.scrolledToTop {
+        box-shadow: none;
+    }
 }
 
 .headrow {
@@ -142,6 +146,7 @@
     width: 115px;
     display: flex;
     align-items: center;
+
     .timestamps {
         height: 100%;
         width: 87px;
@@ -162,13 +167,14 @@
         }
     }
     .borderPortrude {
-        height: 100%;
+        height: calc(100% - 55px);
         width: 28px;
         background-size: 28px 55px;
         background-image: linear-gradient(
             to bottom,
-            var(--structure) 1px,
-            transparent 1px
+            transparent 0 27px,
+            var(--structure) 27px 28px,
+            transparent 28px 55px
         );
     }
 }
@@ -181,6 +187,7 @@
     .days {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
+        align-items: center;
         height: 100%;
         width: 100%;
         position: absolute;

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
 
 import styles from './WeekCalendar.module.scss';
@@ -30,6 +30,31 @@ export default function WeekCalendar() {
     const { isOpen } = useSidebarContext();
     const { needUpdate, setNeedUpdate } = useCalendarContext();
     const { user, accessToken } = useSessionContext();
+    const scrollHolderRef = useRef<HTMLDivElement>(null);
+    const scrollContentRef = useRef<HTMLDivElement>(null);
+    const scrollObserver = useRef<IntersectionObserver>();
+    const [isScrolledtoTop, setIsScolledtoTop] = useState(true);
+
+    useEffect(() => {
+        scrollObserver.current = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    setIsScolledtoTop(entry.isIntersecting);
+                    console.log(entry);
+                });
+            },
+            {
+                root: scrollHolderRef.current,
+                rootMargin: '0px 0px 1320px 0px',
+                threshold: 1,
+            },
+        );
+    });
+    useEffect(() => {
+        if (scrollContentRef.current) {
+            scrollObserver.current?.observe(scrollContentRef.current!);
+        }
+    }, [scrollContentRef]);
 
     const today = new Date();
     const weekDates = useMemo(() => {
@@ -98,7 +123,11 @@ export default function WeekCalendar() {
         <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
             <div className={styles.weekHolder}>
-                <div className={styles.frozenHolder}>
+                <div
+                    className={`${styles.frozenHolder} ${
+                        isScrolledtoTop ? styles.scrolledToTop : ''
+                    }`}
+                >
                     <div className={styles.headrow}>
                         {weekDates.map((v, i) => {
                             return (
@@ -159,8 +188,11 @@ export default function WeekCalendar() {
                         </div>
                     </div>
                 </div>
-                <div className={styles.scrollHolder}>
-                    <div className={styles.scrollContent}>
+                <div className={styles.scrollHolder} ref={scrollHolderRef}>
+                    <div
+                        className={styles.scrollContent}
+                        ref={scrollContentRef}
+                    >
                         <div className={styles.lowerLeft}>
                             <div className={styles.timestamps}>
                                 {Array(23)
