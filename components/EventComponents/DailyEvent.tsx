@@ -49,6 +49,7 @@ export default function DailyEvent({
                 top: `${topPosition}px`,
                 width: `calc(100% - ${layer * 16}px)`,
                 height: `${height}px`,
+                zIndex: `${Number(layer) + 1}`,
             }}
             data-layer={String(layer)}
             onClick={() => {
