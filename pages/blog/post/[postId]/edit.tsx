@@ -8,7 +8,7 @@ import { editPostAPI, getParticularPostAPI } from '@apis/blog';
 import PostEditor from '@components/Blog/PostEditor';
 import ScheduleList from '@components/Blog/ScheduleList';
 import { useSessionContext } from '@contexts/SessionContext';
-import { FullPost, Post } from '@customTypes/BlogTypes';
+import { FullPost } from '@customTypes/BlogTypes';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { errorToast, successToast } from '@utils/customAlert';
 
@@ -67,7 +67,7 @@ export default function PostEditPage() {
         <div className={styles.postEditPage}>
             <ScheduleList schedules={schedules} />
             <div className={styles.editPost}>
-                <div className={styles.guide}>post guide message?</div>
+                <div className={styles.guide}></div>
                 <div className={styles.newPost}>
                     <PostEditor
                         initTitle={post.title}

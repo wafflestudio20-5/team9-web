@@ -15,7 +15,7 @@ import { errorToast, successToast } from '@utils/customAlert';
 
 const schedulesData: FullSchedule[] = [
     {
-        id: 1,
+        id: 10,
         title: 'test schedule',
         created_at: '2022-02-02',
         updated_at: '2022-02-02',
@@ -41,36 +41,36 @@ const schedulesData: FullSchedule[] = [
         end_at: '2023-01-30 00:00:00',
         recurring_schedule_group: null,
     },
-    {
-        id: 2,
-        title: 'test schedule2',
-        created_at: '2022-02-02',
-        updated_at: '2022-02-02',
-        created_by: 7,
-        participants: [],
-        is_recurring: false,
-        show_content: true,
-        protection_level: 1,
-        description: 'lorem ipsum',
-        start_at: '2023-01-30 00:00:00',
-        end_at: '2023-01-30 00:00:00',
-        recurring_schedule_group: null,
-    },
-    {
-        id: 3,
-        title: 'test schedule3',
-        created_at: '2022-02-02',
-        updated_at: '2022-02-02',
-        created_by: 7,
-        participants: [],
-        is_recurring: false,
-        show_content: true,
-        protection_level: 1,
-        description: 'lorem ipsum',
-        start_at: '2023-01-30 00:00:00',
-        end_at: '2023-01-30 00:00:00',
-        recurring_schedule_group: null,
-    },
+    // {
+    //     id: 2,
+    //     title: 'test schedule2',
+    //     created_at: '2022-02-02',
+    //     updated_at: '2022-02-02',
+    //     created_by: 7,
+    //     participants: [],
+    //     is_recurring: false,
+    //     show_content: true,
+    //     protection_level: 1,
+    //     description: 'lorem ipsum',
+    //     start_at: '2023-01-30 00:00:00',
+    //     end_at: '2023-01-30 00:00:00',
+    //     recurring_schedule_group: null,
+    // },
+    // {
+    //     id: 3,
+    //     title: 'test schedule3',
+    //     created_at: '2022-02-02',
+    //     updated_at: '2022-02-02',
+    //     created_by: 7,
+    //     participants: [],
+    //     is_recurring: false,
+    //     show_content: true,
+    //     protection_level: 1,
+    //     description: 'lorem ipsum',
+    //     start_at: '2023-01-30 00:00:00',
+    //     end_at: '2023-01-30 00:00:00',
+    //     recurring_schedule_group: null,
+    // },
     // {
     //     id: 4,
     //     title: 'test schedule4',
@@ -120,7 +120,7 @@ const schedulesData: FullSchedule[] = [
 
 export default function PostCreatePage() {
     const { accessToken } = useSessionContext();
-    // const { schedules } = useScheduleContext();
+    // const { schedules } = useScheduleContext(); // need to bring related schedules from local storage??
     const [schedules, setSchedules] = useState(schedulesData); // temp
     const router = useRouter();
 
@@ -135,6 +135,7 @@ export default function PostCreatePage() {
             newPost.append('schedules', JSON.stringify(getScheduleIds()));
             const res = await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
+            console.log(res.data);
             router.push(`/blog/post/${res.data.pid}`);
         } catch (error) {
             const message = '글을 생성하지 못했습니다.';

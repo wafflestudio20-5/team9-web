@@ -83,7 +83,7 @@ const tempPosts: FullPost[] = [
 export default function SchedulePage() {
     const { accessToken } = useSessionContext();
     const [schedule, setSchedule] = useState<FullSchedule>();
-    const [posts, setPosts] = useState<FullPost[]>(tempPosts);
+    const [posts, setPosts] = useState<FullPost[]>([]);
     const [post, setPost] = useState<FullPost>({
         title: 'temp post',
         content: ' temp conte',
@@ -132,7 +132,7 @@ export default function SchedulePage() {
     const getPosts = async (scheduleId: number) => {
         try {
             const res = await getRelatedPosts(scheduleId, accessToken);
-            setPosts(res.data || []);
+            setPosts(res.data.results || []);
         } catch (error) {
             const message = '글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -152,7 +152,7 @@ export default function SchedulePage() {
     }, [scheduleId]);
 
     useEffect(() => {
-        // postId ? getPost(postId) : getPosts(scheduleId);
+        postId ? getPost(postId) : getPosts(scheduleId);
     }, [postId]);
 
     if (!schedule) return;

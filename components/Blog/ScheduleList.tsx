@@ -27,15 +27,19 @@ export default function ScheduleList({ schedules }: ScheduleListProps) {
                 </div>
             ) : (
                 <div className={styles.schedules}>
-                    {schedules.map(s => (
-                        <div
-                            className={styles.schedule}
-                            key={s.id}
-                            onClick={() => setSelectedId(s.id)}
-                        >
-                            <ScheduleContent schedule={s} />
-                        </div>
-                    ))}
+                    {schedules.length < 1 ? (
+                        <div>연관된 일정이 없습니다.</div>
+                    ) : (
+                        schedules.map(s => (
+                            <div
+                                className={styles.schedule}
+                                key={s.id}
+                                onClick={() => setSelectedId(s.id)}
+                            >
+                                <ScheduleContent schedule={s} />
+                            </div>
+                        ))
+                    )}
                 </div>
             )}
         </>

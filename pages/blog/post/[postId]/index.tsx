@@ -219,9 +219,9 @@ const schedulesData: FullSchedule[] = [
 
 export default function PostPage() {
     const { accessToken } = useSessionContext();
-    const [schedules, setSchedules] = useState<FullSchedule[]>(schedulesData);
+    const [schedules, setSchedules] = useState<FullSchedule[]>([]);
     const [post, setPost] = useState<FullPost>();
-    const [comments, setComments] = useState<FullComment[]>(commentsData);
+    const [comments, setComments] = useState<FullComment[]>([]);
     const [newComment, setNewComment] = useState<Comment>({
         post: post?.pid || 0,
         content: '',
@@ -298,7 +298,8 @@ export default function PostPage() {
         try {
             const res = await getParticularPostAPI(postId, accessToken);
             setPost(res.data);
-            // setSchedules(res.data.schedules);
+            setSchedules(res.data.schedules || []);
+            setNewComment(prev => ({ ...prev, post: res.data.pid }));
         } catch (error) {
             const message = '글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -408,7 +409,7 @@ function CommentItem({ comment, setComments }: CommentItemProps) {
     ) => {
         try {
             await deleteCommentAPI(postId, commentId, accessToken);
-            setComments(prev => prev.filter(c => c.cid === commentId));
+            setComments(prev => prev.filter(c => c.cid !== commentId));
             successToast('댓글을 삭제했습니다.');
         } catch (error) {
             const message = '댓글을 삭제하지 못했습니다.';
@@ -480,6 +481,11 @@ function CommentItem({ comment, setComments }: CommentItemProps) {
         setIsEditMode(false);
     };
 
+    const onClickCancel = () => {
+        setNewContent(comment.content);
+        setIsEditMode(false);
+    };
+
     return isEditMode ? (
         <div>
             <textarea
@@ -490,10 +496,7 @@ function CommentItem({ comment, setComments }: CommentItemProps) {
                 <button className={styles.save} onClick={onClickEdit}>
                     저장
                 </button>
-                <button
-                    className={styles.cancel}
-                    onClick={() => setIsEditMode(false)}
-                >
+                <button className={styles.cancel} onClick={onClickCancel}>
                     취소
                 </button>
             </div>

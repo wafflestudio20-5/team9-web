@@ -10,7 +10,7 @@ interface PostEditorProps {
     initTitle: string;
     initContent: string;
     initImage?: string | null;
-    submitNewPost(newPost: FormData, image?: File): Promise<void>;
+    submitNewPost(newPost: FormData): Promise<void>;
 }
 
 export default function PostEditor({
@@ -26,12 +26,14 @@ export default function PostEditor({
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const router = useRouter();
 
+    // create url for uploaded image file(e.target.files[0]) using `URL.createObjectURL`
+    // then you can use that url to show preview
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            const file = e.target.files[0];
+            const file = e.target.files[0]; // real image file
             setImagePreview(URL.createObjectURL(file));
             setImage(file);
-            e.currentTarget.value = '';
+            e.currentTarget.value = ''; // need this line to delete and repost the 'same' image
         }
     };
 
@@ -44,11 +46,11 @@ export default function PostEditor({
     const onClickSubmitPost = async () => {
         if (isSubmitting) return;
         setIsSubmitting(true);
-        const newPost = new FormData();
+        const newPost = new FormData(); // use FormData type
         newPost.append('title', title);
         newPost.append('content', content);
         if (image) newPost.append('image', image);
-        await submitNewPost(newPost, image);
+        await submitNewPost(newPost);
         setIsSubmitting(false);
     };
 
