@@ -90,15 +90,15 @@
 
 .acrossHolder {
     position: relative;
-    height: max-content;
+    height: fit-content;
     padding-right: 8px;
     border-left: 1px solid var(--light-structure);
     .across {
-        display: flex;
-        height: max-content;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        height: fit-content;
         min-height: 26px;
-        width: fit-content;
-        gap: 12px;
         position: absolute;
         z-index: 1;
     }
@@ -111,9 +111,10 @@
     z-index: 0;
     height: 100%;
     width: 100%;
+    padding: 0px 0.5%;
     div {
         background-color: var(--grid-line);
-        width: 12px;
+        width: 1%;
         box-shadow: var(--grid-shadow) 2px 0px 2px,
             var(--grid-shadow) -2px 0px 2px;
         z-index: 2;
@@ -137,6 +138,7 @@
 
 .lowerLeft {
     height: 100%;
+    width: 115px;
 }
 
 .lowerRight {
@@ -148,6 +150,7 @@
         display: flex;
         position: relative;
         height: 100%;
+        width: 100%;
         width: max-content;
         gap: 12px;
         position: absolute;

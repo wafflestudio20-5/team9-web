@@ -5,7 +5,6 @@ import React, {
     useState,
     useMemo,
 } from 'react';
-import { useBoxSizeContext } from './BoxSizeContext';
 
 interface SidebarContextData {
     isOpen: boolean;
@@ -30,7 +29,6 @@ export const useSidebarContext = () => useContext(SidebarContext);
 function SidebarProvider({ children }: PropsWithChildren) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isClosing, setIsClosing] = useState<boolean>(false);
-    const { clipBy, setClipBy } = useBoxSizeContext();
 
     const openSidebar = () => {
         setIsOpen(true);

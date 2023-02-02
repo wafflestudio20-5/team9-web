@@ -85,6 +85,16 @@ function layerAcrossEvents(
                 console.log(layer);
                 while (isDateIncluded(newDateObj, event)) {
                     console.log(newDateObj);
+                    if (formatDate(newDateObj) < formatDate(dates[0])) {
+                        newDateObj.setDate(newDateObj.getDate() + 1);
+                        continue;
+                    }
+                    if (
+                        formatDate(newDateObj) >
+                        formatDate(dates[dates.length - 1])
+                    ) {
+                        break;
+                    }
                     if (
                         formatDate(newDateObj) ===
                             event.start_at.split(' ')[0] &&

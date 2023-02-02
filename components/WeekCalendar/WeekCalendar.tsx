@@ -14,7 +14,6 @@ import { useCalendarContext } from '@contexts/CalendarContext';
 import { CalendarURLParams, getEntireScheduleAPI } from '@apis/calendar';
 import { useSessionContext } from '@contexts/SessionContext';
 import { getLayeredAcrossEvents } from '@utils/layerEvents';
-import { useBoxSizeContext } from '@contexts/BoxSizeContext';
 
 export default function WeekCalendar() {
     const router = useRouter();
@@ -22,11 +21,6 @@ export default function WeekCalendar() {
     const { isOpen } = useSidebarContext();
     const { needUpdate, setNeedUpdate } = useCalendarContext();
     const { user, accessToken } = useSessionContext();
-    const { leftMargin, setClipBy, totalWidth, boxWidth } = useBoxSizeContext();
-
-    useEffect(() => {
-        setClipBy({ vertical: 0, horizontal: 115 + 8 });
-    }, []);
 
     const today = new Date();
     const weekDates = useMemo(() => {
@@ -114,10 +108,7 @@ export default function WeekCalendar() {
         <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <></>}
             <div className={styles.weekHolder}>
-                <div
-                    className={styles.frozenHolder}
-                    style={{ paddingLeft: `${leftMargin + 115}px` }}
-                >
+                <div className={styles.frozenHolder}>
                     <div className={styles.headrow}>
                         {weekDates.map((v, i) => {
                             return (
@@ -180,10 +171,7 @@ export default function WeekCalendar() {
                 </div>
                 <div className={styles.scrollHolder}>
                     <div className={styles.scrollContent}>
-                        <div
-                            className={styles.lowerLeft}
-                            style={{ width: `${115 + leftMargin}px` }}
-                        >
+                        <div className={styles.lowerLeft}>
                             <div className={styles.timestamps}></div>
                             <div className={styles.borderPortrude}></div>
                         </div>
@@ -191,10 +179,7 @@ export default function WeekCalendar() {
                             <div className={styles.days}>
                                 {weekDates.map((key, index) => {
                                     return (
-                                        <div
-                                            className={styles.dayHolder}
-                                            style={{ width: `${boxWidth}px` }}
-                                        ></div>
+                                        <div className={styles.dayHolder}></div>
                                     );
                                 })}
                             </div>

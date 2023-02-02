@@ -9,7 +9,6 @@ import {
     LayeredEvents,
 } from '@customTypes/ScheduleTypes';
 import getEventComponent from '@utils/getEventComponent';
-import { useBoxSizeContext } from '@contexts/BoxSizeContext';
 
 export default function DayinMonth({
     dateString,
@@ -19,8 +18,6 @@ export default function DayinMonth({
     layerData: LayerData;
 }) {
     const router = useRouter();
-    const dayRef = useRef<HTMLDivElement>(null);
-    const { boxHeight, boxWidth } = useBoxSizeContext();
     // const layers = useMemo(() => {
     //     return ?.across.length! + eventData?.within.length!;
     // }, [eventData]);

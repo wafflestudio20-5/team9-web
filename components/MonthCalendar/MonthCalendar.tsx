@@ -16,19 +16,12 @@ import { DAYS, formatDate } from '@utils/formatting';
 import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
 import getLayeredEvents from '@utils/layerEvents';
 import { useCalendarContext } from '@contexts/CalendarContext';
-import { useBoxSizeContext } from '../../contexts/BoxSizeContext';
-
 export default function MonthCalendar() {
     const router = useRouter();
     const { year, month, date } = router.query;
     const { needUpdate, setNeedUpdate } = useCalendarContext();
     const { user, accessToken } = useSessionContext();
     const { isOpen } = useSidebarContext();
-    const { leftMargin, totalWidth, totalHeight, setClipBy } =
-        useBoxSizeContext();
-    useEffect(() => {
-        setClipBy({ horizontal: 0, vertical: 0 });
-    }, []);
 
     const monthDates = useMemo(() => {
         return getCalendarDates({

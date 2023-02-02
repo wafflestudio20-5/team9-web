@@ -1,4 +1,3 @@
-import { useBoxSizeContext } from '@contexts/BoxSizeContext';
 import { LayerData } from '@customTypes/ScheduleTypes';
 import getEventComponent from '@utils/getEventComponent';
 
@@ -12,14 +11,13 @@ export default function DayinWeekAcross({
     dateData: string;
 }) {
     const eventDataEntries = Object.entries(eventData);
-    const { boxWidth } = useBoxSizeContext();
     return (
-        <div className={styles.day} style={{ width: `${boxWidth}px` }}>
+        <div className={styles.day}>
             {eventDataEntries.map(([layer, event], index) => {
                 return getEventComponent({
                     dateString: dateData,
                     data: event,
-                    index: index,
+                    layer: Number(layer),
                 });
             })}
         </div>
