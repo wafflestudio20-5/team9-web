@@ -22,6 +22,7 @@ import {
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
 import DayInWeekWithin from './DayInWeekWithin';
+import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
 
 export default function WeekCalendar() {
     const router = useRouter();
@@ -95,7 +96,7 @@ export default function WeekCalendar() {
 
     return (
         <div className={styles.wrapper}>
-            {isOpen ? <Sidebar /> : <></>}
+            {isOpen ? <Sidebar /> : <CreateScheduleButton />}
             <div className={styles.weekHolder}>
                 <div className={styles.frozenHolder}>
                     <div className={styles.headrow}>
