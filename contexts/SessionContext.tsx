@@ -9,11 +9,11 @@ import React, {
     useCallback,
 } from 'react';
 import Swal from 'sweetalert2';
+
+import { apiEndPoint } from '@apis/endpoint';
 import useLocalStorage from '@hooks/useLocalStorage';
 
 //import keys from '../secrets.json';
-
-import { apiEndPoint } from '@apis/endpoint';
 
 interface LoginInfo {
     email: string;
@@ -85,20 +85,9 @@ const SessionContext = createContext<SessionContextData>({
     },
 });
 
-//const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
-//const apiEndPoint = 'http://api-staging-dearj-wafflestudio.site/api/v1/user/';
-// const apiEndPoint = apiStagingEndPoint + '/user/';
-
-const REACT_APP_BASE_BACKEND_URL = 'http://api-staging-dearj-wafflestudio.site';
-
 const REACT_APP_GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
 const REACT_APP_KAKAO_REST_API_KEY =
     process.env.REACT_APP_KAKAO_REST_API_KEY || '';
-//const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_KAKAO_REST_API_KEY } = keys;
-
-// console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
-// console.log(process.env.REACT_APP_KAKAO_REST_API_KEY);
-// console.log(process.env.NODE_ENV);
 
 export const useSessionContext = () => useContext(SessionContext);
 
@@ -108,38 +97,38 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 export default function SessionProvider({ children }: PropsWithChildren) {
     const [user, setUser] = useState<User | null>(null);
     const [accessToken, setAccessToken] = useState<string | null>(null);
-    const { stored, setStored } = useLocalStorage<string | null>(
-        'refreshToken',
-        "",
-    );
     const [refreshToken, setRefreshToken] = useState<string | null | undefined>(
-        stored ? stored : ""
+        '',
     );
 
-    const getAccessTokenIfAvail = () => {
-        if (refreshToken == "") {
+    const { stored, setStored } = useLocalStorage<string | null>(
+        'refreshToken',
+        '',
+    );
+
+    useEffect(() => {
+        setRefreshToken(stored);
+        getAccessTokenIfAvail(stored ? stored : '');
+    }, [stored]);
+
+    const getAccessTokenIfAvail = (storedRefreshToken: string) => {
+        if (storedRefreshToken == '') {
             return;
         }
 
         axios
-            .post(
-                apiEndPointUser + 'token/refresh/',
-                {
-                    refresh: refreshToken
-                },
-            )
-            .then(response => {
-                console.log(response.data.access);
-                setAccessToken(response.data.access);
-                return axios.get(
-                    apiEndPointUser + 'profile/',
-                    {headers: {
-                        Authorization: `Bearer ${response.data.access}`,
-                    }},
-                )
+            .post(apiEndPoint + '/user/token/refresh/', {
+                refresh: storedRefreshToken,
             })
             .then(response => {
-                console.log(response.data);
+                setAccessToken(response.data.access);
+                return axios.get(apiEndPoint + '/user/profile/', {
+                    headers: {
+                        Authorization: `Bearer ${response.data.access}`,
+                    },
+                });
+            })
+            .then(response => {
                 setUser({
                     pk: response.data.pk,
                     email: response.data.email,
@@ -157,11 +146,6 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             });
     };
 
-    useEffect(() => {
-        console.log(refreshToken);
-        getAccessTokenIfAvail();
-    }, []);
-
     const login = (loginInfo: LoginInfo) => {
         // send login request using loginInfo
         // if login success, set user and accessToken
@@ -177,9 +161,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
                 });
                 setAccessToken(response.data.access_token);
                 setRefreshToken(response.data.refresh_token);
-                setStored(
-                    response.data.refresh_token
-                );
+                setStored(response.data.refresh_token);
                 axios.defaults.headers.post['X-CSRFToken'] =
                     response.data._csrf;
             })
@@ -231,9 +213,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             });
             setAccessToken(response.data.access_token);
             setRefreshToken(response.data.refresh_token);
-            setStored(
-                response.data.refresh_token
-            );
+            setStored(response.data.refresh_token);
             axios.defaults.headers.post['X-CSRFToken'] = response.data._csrf;
             return {
                 error: false,
@@ -320,9 +300,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             }
             setAccessToken(postSocialLoginData.accessToken);
             setRefreshToken(postSocialLoginData.refreshToken);
-            setStored(
-                postSocialLoginData.refreshToken
-            );
+            setStored(postSocialLoginData.refreshToken);
 
             axios
                 .get(apiEndPoint + '/user/profile/', {
