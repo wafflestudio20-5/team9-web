@@ -7,24 +7,25 @@ import { FullSchedule, LayerData } from '@customTypes/ScheduleTypes';
 
 interface getEventComponentOptions {
     eventHeight?: number;
-    boxWidth?: number;
+    enforceEnd?: boolean;
 }
 
 export default function getEventComponent({
     dateString,
     data,
     layer,
-    options,
+    eventHeight,
+    enforceEnd,
 }: {
     dateString: string;
     data: LayerData[number];
     layer: number;
-    options?: getEventComponentOptions;
+    eventHeight?: number;
+    enforceEnd?: boolean;
 }) {
-    const eventHeight = options?.eventHeight ? options?.eventHeight : 20;
-    // const boxWidth = options?.boxWidth ? options?.boxWidth : undefined;
+    const eh = eventHeight ? eventHeight : 20;
     if (data === null) {
-        return <FillerEvent key={layer} eventHeight={eventHeight} />;
+        return <FillerEvent key={layer} eventHeight={eh} />;
     }
     if (data === undefined) {
         return;
@@ -32,7 +33,18 @@ export default function getEventComponent({
     if (!data.event) {
         return;
     }
-    switch (data.type) {
+    const getEnforcedType = (type: string) => {
+        switch (type) {
+            case 'acrossLeft':
+                return 'acrossLeftEnd';
+            case 'acrossRight':
+                return 'acrossRightEnd';
+            default:
+                return type;
+        }
+    };
+
+    switch (enforceEnd ? getEnforcedType(data.type) : data.type) {
         case 'acrossLeft':
             return (
                 <AcrossEvent
@@ -41,7 +53,7 @@ export default function getEventComponent({
                     layer={layer}
                     eventData={data.event}
                     dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
                 />
             );
         case 'acrossLeftEnd':
@@ -52,7 +64,7 @@ export default function getEventComponent({
                     layer={layer}
                     eventData={data.event}
                     dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
                 />
             );
         case 'acrossMiddle':
@@ -63,7 +75,7 @@ export default function getEventComponent({
                     layer={layer}
                     eventData={data.event}
                     dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
                 />
             );
         case 'acrossRight':
@@ -74,7 +86,7 @@ export default function getEventComponent({
                     layer={layer}
                     eventData={data.event}
                     dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
                 />
             );
         case 'acrossRightEnd':
@@ -85,7 +97,7 @@ export default function getEventComponent({
                     layer={layer}
                     eventData={data.event}
                     dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
                 />
             );
         case 'acrossClosed':
@@ -96,7 +108,7 @@ export default function getEventComponent({
                     layer={layer}
                     eventData={data.event}
                     dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
                 />
             );
         case 'within':
@@ -106,7 +118,7 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
                 />
             );
         case 'withinLeftEnd':
@@ -116,7 +128,7 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
                 />
             );
         case 'withinRightEnd':
@@ -126,11 +138,11 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
                 />
             );
         case 'filler':
-            return <FillerEvent key={layer} eventHeight={eventHeight} />;
+            return <FillerEvent key={layer} eventHeight={eh} />;
         default:
             throw new Error('invalid LayerData type');
     }

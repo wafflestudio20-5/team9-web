@@ -130,6 +130,7 @@ export default function DayCalendar() {
                                             dateString: formatDate(paramDate),
                                             data: event,
                                             layer: Number(layer),
+                                            enforceEnd: true,
                                         });
                                     },
                                 )}
