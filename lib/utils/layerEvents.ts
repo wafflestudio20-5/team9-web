@@ -1,4 +1,10 @@
-import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
+import {
+    DailyLayerData,
+    FullSchedule,
+    LayeredEvents,
+    LayeredWeeklyWithinEvents,
+    WeeklyWithinEvents,
+} from '@customTypes/ScheduleTypes';
 import { formatDate } from '@utils/formatting';
 
 function compareEndAt(eventA: FullSchedule, eventB: FullSchedule) {
@@ -82,7 +88,6 @@ function layerAcrossEvents(
                     formatDate(newDateObj),
                 );
                 while (isDateIncluded(newDateObj, event)) {
-                    console.log(newDateObj);
                     if (formatDate(newDateObj) < formatDate(dates[0])) {
                         newDateObj.setDate(newDateObj.getDate() + 1);
                         continue;
@@ -214,4 +219,109 @@ export function getLayeredAcrossEvents(events: FullSchedule[], dates: Date[]) {
     }
     fillSkippedLayers(dates, layeredEvents);
     return layeredEvents;
+}
+
+function areTimesOverlapping(eventA: FullSchedule, eventB: FullSchedule) {
+    if (eventA.end_at <= eventB.start_at || eventB.end_at <= eventA.start_at) {
+        return false;
+    } else return true;
+}
+
+function getDailyLayerData(events: FullSchedule[]) {
+    let dailyLayerData = <DailyLayerData>{ 0: null };
+    console.log(events);
+    if (!events) {
+        return dailyLayerData;
+    }
+
+    events.forEach(event => {
+        let layer = 0;
+        while (1) {
+            const data = dailyLayerData[layer];
+            if (!data) {
+                dailyLayerData[layer] = [{ textTop: 0, event: event }];
+                break;
+            } else {
+                let needLayerIncrease = false;
+                for (let i = 0; i < data.length; i++) {
+                    needLayerIncrease =
+                        needLayerIncrease ||
+                        areTimesOverlapping(event, data[i].event);
+                }
+                if (needLayerIncrease) {
+                    layer += 1;
+                } else {
+                    dailyLayerData[layer]?.push({ textTop: 0, event: event });
+                    break;
+                }
+            }
+        }
+    });
+    return dailyLayerData;
+}
+
+function assignTextTop(
+    layeredWeeklyWithinEvents: LayeredWeeklyWithinEvents,
+    dates: Date[],
+) {
+    dates.forEach(date => {
+        let dailyLayerData = layeredWeeklyWithinEvents[formatDate(date)];
+        let layer = 0;
+        while (1) {
+            if (!dailyLayerData[layer] || !dailyLayerData[layer + 1]) {
+                break;
+            }
+            for (let i = 0; i < dailyLayerData[layer]?.length!; i++) {
+                const lowerEvent = dailyLayerData[layer]![i].event;
+                for (let j = 0; j < dailyLayerData[layer + 1]?.length!; j++) {
+                    const upperEvent = dailyLayerData[layer + 1]![j].event;
+                    if (
+                        lowerEvent.start_at >= upperEvent.start_at &&
+                        lowerEvent.start_at < upperEvent.end_at
+                    ) {
+                        const lowerStart = new Date(lowerEvent.start_at);
+                        const upperEnd = new Date(upperEvent.start_at);
+                        dailyLayerData[layer]![i].textTop =
+                            (upperEnd.getTime() - lowerStart.getTime()) *
+                            ((1320 / 24) * 60 * 60 * 1000);
+                    }
+                }
+            }
+            layer++;
+        }
+        layeredWeeklyWithinEvents[formatDate(date)] = dailyLayerData;
+    });
+}
+
+export function getLayeredWeeklyWithinEvents(
+    events: FullSchedule[],
+    dates: Date[],
+) {
+    let layeredWeeklyWithinEvents = <LayeredWeeklyWithinEvents>{};
+    dates.forEach(date => {
+        layeredWeeklyWithinEvents[formatDate(date)] = { 0: null };
+    });
+    if (!events) {
+        return layeredWeeklyWithinEvents;
+    }
+    const { withinEvents } = sortEvents(events);
+    let weeklyWithinEvents = <WeeklyWithinEvents>{};
+    if (!withinEvents) {
+        return layeredWeeklyWithinEvents;
+    }
+    withinEvents.forEach(event => {
+        const dateString = event.start_at.split(' ')[0];
+        if (!weeklyWithinEvents[dateString]) {
+            weeklyWithinEvents[dateString] = [event];
+        } else {
+            weeklyWithinEvents[dateString].push(event);
+        }
+    });
+    dates.forEach(date => {
+        layeredWeeklyWithinEvents[formatDate(date)] = getDailyLayerData(
+            weeklyWithinEvents[formatDate(date)],
+        );
+    });
+    assignTextTop(layeredWeeklyWithinEvents, dates);
+    return layeredWeeklyWithinEvents;
 }

@@ -117,3 +117,15 @@ export interface LayerData {
 export interface LayeredEvents {
     [date: string]: LayerData;
 }
+
+export interface DailyLayerData {
+    [layer: number]: { textTop: number; event: FullSchedule }[] | null;
+}
+
+export interface WeeklyWithinEvents {
+    [date: string]: FullSchedule[];
+}
+
+export interface LayeredWeeklyWithinEvents {
+    [date: string]: DailyLayerData;
+}

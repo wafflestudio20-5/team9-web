@@ -18,9 +18,6 @@ export default function DayinMonth({
     layerData: LayerData;
 }) {
     const router = useRouter();
-    // const layers = useMemo(() => {
-    //     return ?.across.length! + eventData?.within.length!;
-    // }, [eventData]);
 
     const today = new Date();
     const dateToday = today.getDate();
@@ -42,7 +39,6 @@ export default function DayinMonth({
         return `${styles.notCurrMonth} ${date === 1 && styles.textIncluded}`;
     };
 
-    console.log(layerData);
     return (
         <div className={styles.wrapper}>
             <div className={styles.buttonHolder}>

@@ -9,11 +9,19 @@ import DayinWeekAcross from './DayinWeekAcross';
 import Sidebar from '@components/Sidebar/Sidebar';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import { DAYS, formatDate } from '@utils/formatting';
-import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
+import {
+    FullSchedule,
+    LayeredEvents,
+    LayeredWeeklyWithinEvents,
+} from '@customTypes/ScheduleTypes';
 import { useCalendarContext } from '@contexts/CalendarContext';
 import { CalendarURLParams, getEntireScheduleAPI } from '@apis/calendar';
 import { useSessionContext } from '@contexts/SessionContext';
-import { getLayeredAcrossEvents } from '@utils/layerEvents';
+import {
+    getLayeredAcrossEvents,
+    getLayeredWeeklyWithinEvents,
+} from '@utils/layerEvents';
+import DayInWeekWithin from './DayInWeekWithin';
 
 export default function WeekCalendar() {
     const router = useRouter();
@@ -40,6 +48,8 @@ export default function WeekCalendar() {
     const [weekEvents, setWeekEvents] = useState<FullSchedule[]>();
     const [layeredAcrossEvents, setLayeredAcrossEvents] =
         useState<LayeredEvents>();
+    const [layeredWeeklyWithinEvents, setLayeredWeeklyWithinEvents] =
+        useState<LayeredWeeklyWithinEvents>();
     const acrossHolderHeight = useMemo(() => {
         if (layeredAcrossEvents) {
             let maxLayer = 0;
@@ -102,8 +112,12 @@ export default function WeekCalendar() {
             setLayeredAcrossEvents(
                 getLayeredAcrossEvents(weekEvents, weekDates),
             );
+            setLayeredWeeklyWithinEvents(
+                getLayeredWeeklyWithinEvents(weekEvents, weekDates),
+            );
         }
     }, [weekEvents]);
+
     return (
         <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <></>}
@@ -177,11 +191,25 @@ export default function WeekCalendar() {
                         </div>
                         <div className={styles.lowerRight}>
                             <div className={styles.days}>
-                                {weekDates.map((key, index) => {
-                                    return (
-                                        <div className={styles.dayHolder}></div>
-                                    );
-                                })}
+                                {layeredWeeklyWithinEvents &&
+                                    Object.entries(
+                                        layeredWeeklyWithinEvents,
+                                    ).map(
+                                        (
+                                            [dateString, dailyLayerData],
+                                            index,
+                                        ) => {
+                                            return (
+                                                <DayInWeekWithin
+                                                    key={index}
+                                                    dateString={dateString}
+                                                    dailyLayerData={
+                                                        dailyLayerData
+                                                    }
+                                                />
+                                            );
+                                        },
+                                    )}
                             </div>
                             <div className={styles.borders}>
                                 {Array(6)
