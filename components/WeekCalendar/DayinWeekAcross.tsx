@@ -14,7 +14,7 @@ export default function DayinWeekAcross({
     const eventDataEntries = Object.entries(eventData);
     return (
         <div className={styles.day}>
-            {eventDataEntries.map(([layer, event], index) => {
+            {eventDataEntries.map(([layer, event]) => {
                 return getEventComponent({
                     dateString: dateData,
                     data: event,

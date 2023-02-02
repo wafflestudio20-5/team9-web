@@ -1,11 +1,171 @@
 .wrapper {
     display: flex;
     flex-direction: row;
-    width: 100vw;
+    height: calc(100vh - 66px);
     justify-content: stretch;
+    background-color: var(--sidebar-background);
+    position: relative;
 }
 
 .dayHolder {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    flex-grow: 1;
+    position: relative;
+    background-color: var(--waffle-background);
     border-left: 1px solid var(--structure);
-    flex: 1;
+}
+
+.frozenHolder {
+    display: grid;
+    grid-template-columns: 115px 1fr;
+    width: 100%;
+    height: fit-content;
+    padding-right: 8px;
+    border-bottom: 2px solid var(--light-structure);
+    box-shadow: 3px 2px 5px var(--structure-shadow);
+
+    &.scrolledToTop {
+        box-shadow: none;
+    }
+}
+
+.dateHolder {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 34px 0px 0px 14px;
+    width: 115px;
+    gap: 3px;
+    .day {
+        color: var(--text-datesSecondary);
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .date {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 27px;
+        font-weight: 550;
+        background-color: transparent;
+        height: 36px;
+        width: 36px;
+        border: 1px solid transparent;
+        border-radius: 50%;
+
+        div {
+            color: var(--text-datesPrimary);
+        }
+
+        &:hover {
+            background-color: var(--button-hover);
+            cursor: pointer;
+        }
+    }
+    &.today {
+        .day {
+            color: var(--today-blueberry);
+        }
+        .date {
+            background-color: var(--today-blueberry);
+            div {
+                color: var(--text-reverse);
+            }
+
+            &:hover {
+                background-color: var(--dark-blueberry);
+            }
+        }
+    }
+}
+
+.acrossHolder {
+    position: relative;
+    height: fit-content;
+    padding-top: 70px;
+    .across {
+        height: fit-content;
+        min-height: 88px;
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid var(--light-structure);
+    }
+}
+
+.scrollHolder {
+    flex-grow: 1;
+    overflow-y: scroll;
+    position: relative;
+}
+
+.scrollContent {
+    display: flex;
+    flex-direction: row;
+    height: 1320px;
+    width: 100%;
+    position: relative;
+}
+
+.lowerLeft {
+    height: 100%;
+    width: 115px;
+    display: flex;
+    align-items: center;
+
+    .timestamps {
+        height: 100%;
+        width: 87px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        .hour {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 0px;
+
+            div {
+                color: var(--text-datesSecondary);
+                font-size: 10.5px;
+                font-weight: 500;
+            }
+        }
+    }
+    .borderPortrude {
+        height: calc(100% - 55px);
+        width: 28px;
+        background-size: 28px 55px;
+        background-image: linear-gradient(
+            to bottom,
+            transparent 0 27px,
+            var(--structure) 27px 28px,
+            transparent 28px 55px
+        );
+    }
+}
+
+.lowerRight {
+    position: relative;
+    flex-grow: 1;
+    height: 100%;
+    border-left: 1px solid var(--light-structure);
+    z-index: 0;
+
+    .backgroundProvider {
+        height: calc(100% - 55px);
+        width: 100%;
+        top: 27px;
+        background-size: 100% 55px;
+        background-image: linear-gradient(
+            to bottom,
+            transparent 0 27px,
+            var(--structure) 27px 28px,
+            transparent 28px 55px
+        );
+        position: absolute;
+        z-index: 0;
+    }
 }
