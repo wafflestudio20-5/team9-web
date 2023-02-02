@@ -57,7 +57,14 @@ export default function DayinMonth({
                                       <div
                                           key={index}
                                           className={styles.seeMore}
-                                      >{`${data.length - 4}개 더보기`}</div>
+                                          onClick={() => {
+                                              router.push(
+                                                  `/day/${year}/${month}/${date}`,
+                                              );
+                                          }}
+                                      >{`${
+                                          Object.keys(layerData).length - 4
+                                      }개 더보기`}</div>
                                   );
                               }
                               return getEventComponent({
