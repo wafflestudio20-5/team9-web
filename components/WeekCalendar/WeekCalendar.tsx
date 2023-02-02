@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import DayinWeekAcross from './DayinWeekAcross';
-import DayinWeekWithin from './DayinWeekWithin';
 import styles from './WeekCalendar.module.scss';
 
 import { CalendarURLParams, getEntireScheduleAPI } from '@apis/calendar';
 import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
 import Sidebar from '@components/Sidebar/Sidebar';
+import DayinWeekAcross from '@components/WeekCalendar/DayinWeekAcross';
+import DayinWeekWithin from '@components/WeekCalendar/DayinWeekWithin';
 import { useCalendarContext } from '@contexts/CalendarContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
