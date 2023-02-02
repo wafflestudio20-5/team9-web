@@ -91,18 +91,10 @@ export default function NotificationModal() {
                             return (
                                 <div className={styles.request} key={index}>
                                     <div className={styles.textContainer}>
-                                        <div className={styles.textTitle}>
-                                            title:
-                                        </div>
-                                        <div className={styles.textText}>
+                                        <div className={styles.text}>
                                             {req.title}
                                         </div>
-                                    </div>
-                                    <div className={styles.textContainer}>
-                                        <div className={styles.textTitle}>
-                                            공개 범위:
-                                        </div>
-                                        <div className={styles.textText}>
+                                        <div className={styles.text}>
                                             {
                                                 ProtectionLevelText[
                                                     req.protection_level
