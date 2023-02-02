@@ -106,6 +106,8 @@ export interface LayerData {
             | 'acrossRight'
             | 'acrossRightEnd'
             | 'acrossClosed'
+            | 'acrossClosedSat'
+            | 'acrossClosedSun'
             | 'within'
             | 'withinLeftEnd'
             | 'withinRightEnd'

@@ -33,14 +33,23 @@ function compareLength(eventA: FullSchedule, eventB: FullSchedule) {
     return 1;
 }
 
-function isDateIncluded(date: Date | string, event: FullSchedule) {
-    if (date instanceof Date) {
-        return (
-            formatDate(date) >= event.start_at.split(' ')[0] &&
-            formatDate(date) <= event.end_at.split(' ')[0]
-        );
+function isDateIncluded(date: Date, event: FullSchedule) {
+    if (
+        formatDate(date) >= event.start_at.split(' ')[0] &&
+        formatDate(date) < event.end_at.split(' ')[0]
+    ) {
+        return true;
     }
-    throw new Error('wrong parameter type in fn IsDateIncluded');
+    if (formatDate(date) === event.end_at.split(' ')[0])
+        if (event.end_at.split(' ')[1] === '00:00:00') {
+            if (event.start_at === event.end_at) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
 }
 
 function findAvailableLayer(layeredEvents: LayeredEvents, dateString: string) {
@@ -67,9 +76,18 @@ function sortEvents(events: FullSchedule[]) {
     const withinEvents = <FullSchedule[]>[];
 
     events.forEach(event => {
-        if (event.start_at.split(' ')[0] === event.end_at.split(' ')[0]) {
+        const startDate = new Date(event.start_at);
+        const endDate = new Date(event.end_at);
+        if (startDate.toDateString() === endDate.toDateString()) {
             withinEvents.push(event);
-        } else acrossEvents.push(event);
+        } else if (
+            event.end_at.split(' ')[1] === '00:00:00' &&
+            endDate.getTime() - startDate.getTime() <= 24 * 60 * 60 * 1000
+        ) {
+            withinEvents.push(event);
+        } else {
+            acrossEvents.push(event);
+        }
     });
     acrossEvents.sort(compareEndAt);
     withinEvents.sort(compareEndAt);
@@ -86,7 +104,7 @@ function layerAcrossEvents(
             event.start_at.split(' ')[0] < formatDate(dates[0])
                 ? formatDate(dates[0])
                 : event.start_at.split(' ')[0];
-        const dateObj = new Date(startDateString);
+        const dateObj = new Date(`${startDateString} 00:00:00`);
         while (isDateIncluded(dateObj, event)) {
             if (formatDate(dateObj) < formatDate(dates[0])) {
                 dateObj.setDate(dateObj.getDate() + 1);
@@ -96,13 +114,18 @@ function layerAcrossEvents(
                 break;
             }
 
-            if (formatDate(dateObj) === event.start_at.split(' ')[0]) {
-                const newDateObj = new Date(formatDate(dateObj));
+            if (
+                formatDate(dateObj) === event.start_at.split(' ')[0] ||
+                formatDate(dateObj) === formatDate(dates[0])
+            ) {
+                const newDateObj = new Date(`${formatDate(dateObj)} 00:00:00`);
                 const layer = findAvailableLayer(
                     layeredEvents,
                     formatDate(newDateObj),
                 );
+
                 while (isDateIncluded(newDateObj, event)) {
+                    console.log(event, layer);
                     if (formatDate(newDateObj) < formatDate(dates[0])) {
                         newDateObj.setDate(newDateObj.getDate() + 1);
                         continue;
@@ -119,7 +142,20 @@ function layerAcrossEvents(
                         newDateObj.getDay() === 6
                     ) {
                         layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossClosed',
+                            type: 'acrossClosedSat',
+                            event: event,
+                        };
+                    } else if (
+                        (formatDate(newDateObj) ===
+                            event.end_at.split(' ')[0] ||
+                            (event.end_at.split(' ')[1] === '00:00:00' &&
+                                new Date(event.end_at).getTime() -
+                                    newDateObj.getTime() <=
+                                    24 * 60 * 60 * 1000)) &&
+                        newDateObj.getDay() === 0
+                    ) {
+                        layeredEvents[formatDate(newDateObj)][layer] = {
+                            type: 'acrossClosedSun',
                             event: event,
                         };
                     } else if (newDateObj.getDay() === 0) {
@@ -140,7 +176,11 @@ function layerAcrossEvents(
                             event: event,
                         };
                     } else if (
-                        formatDate(newDateObj) === event.end_at.split(' ')[0]
+                        formatDate(newDateObj) === event.end_at.split(' ')[0] ||
+                        (event.end_at.split(' ')[1] === '00:00:00' &&
+                            new Date(event.end_at).getTime() -
+                                newDateObj.getTime() <=
+                                24 * 60 * 60 * 1000)
                     ) {
                         layeredEvents[formatDate(newDateObj)][layer] = {
                             type: 'acrossRight',
@@ -223,17 +263,16 @@ export default function getLayeredEvents(
     return layeredEvents;
 }
 
-export function getLayeredAcrossEvents(events: FullSchedule[], dates: Date[]) {
-    const layeredEvents = getInitialLayeredEvents(dates);
-    if (!events) {
-        return layeredEvents;
-    }
-    const { acrossEvents } = sortEvents(events);
-    if (acrossEvents) {
-        layerAcrossEvents(acrossEvents, dates, layeredEvents);
-    }
-    fillSkippedLayers(dates, layeredEvents);
-    return layeredEvents;
+export function getLayeredFrozenEvents(events: FullSchedule[], dates: Date[]) {
+    const frozenEvents = events.filter(event => {
+        const startDate = new Date(event.start_at);
+        const endDate = new Date(event.end_at);
+        if (endDate.getTime() - startDate.getTime() >= 24 * 60 * 60 * 1000) {
+            return true;
+        }
+        return false;
+    });
+    return getLayeredEvents(frozenEvents, dates);
 }
 
 function areTimesOverlapping(eventA: FullSchedule, eventB: FullSchedule) {

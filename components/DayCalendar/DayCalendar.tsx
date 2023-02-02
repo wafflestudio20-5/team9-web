@@ -16,7 +16,7 @@ import {
     DailyLayerData,
 } from '@customTypes/ScheduleTypes';
 import {
-    getLayeredAcrossEvents,
+    getLayeredFrozenEvents,
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
 import getEventComponent from '@utils/getEventComponent';
@@ -58,7 +58,7 @@ export default function DayCalendar() {
     }, [scrollContentRef]);
 
     const [dayEvents, setDayEvents] = useState<FullSchedule[]>();
-    const [layeredAcrossEvents, setLayeredAcrossEvents] = useState<LayerData>();
+    const [layeredFrozenEvents, setLayeredFrozenEvents] = useState<LayerData>();
     const [layeredWithinEvents, setLayeredWithinEvents] =
         useState<DailyLayerData>();
 
@@ -85,8 +85,8 @@ export default function DayCalendar() {
     }, [needUpdate, user, paramDate]);
     useEffect(() => {
         if (dayEvents) {
-            setLayeredAcrossEvents(
-                getLayeredAcrossEvents(dayEvents, [paramDate])[
+            setLayeredFrozenEvents(
+                getLayeredFrozenEvents(dayEvents, [paramDate])[
                     formatDate(paramDate)
                 ],
             );
@@ -123,8 +123,8 @@ export default function DayCalendar() {
                     </div>
                     <div className={styles.acrossHolder}>
                         <div className={styles.across}>
-                            {layeredAcrossEvents &&
-                                Object.entries(layeredAcrossEvents).map(
+                            {layeredFrozenEvents &&
+                                Object.entries(layeredFrozenEvents).map(
                                     ([layer, event]) => {
                                         return getEventComponent({
                                             dateString: formatDate(paramDate),

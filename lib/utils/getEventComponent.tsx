@@ -100,10 +100,21 @@ export default function getEventComponent({
                     eventHeight={eh}
                 />
             );
-        case 'acrossClosed':
+        case 'acrossClosedSat':
             return (
                 <AcrossEvent
-                    type="closed"
+                    type="closedSat"
+                    key={layer}
+                    layer={layer}
+                    eventData={data.event}
+                    dateString={dateString}
+                    eventHeight={eh}
+                />
+            );
+        case 'acrossClosedSun':
+            return (
+                <AcrossEvent
+                    type="closedSun"
                     key={layer}
                     layer={layer}
                     eventData={data.event}

@@ -16,7 +16,14 @@ export default function AcrossEvent({
     slopeWidthPercentage,
     slopeHeight,
 }: {
-    type: 'left' | 'leftEnd' | 'middle' | 'right' | 'rightEnd' | 'closed';
+    type:
+        | 'left'
+        | 'leftEnd'
+        | 'middle'
+        | 'right'
+        | 'rightEnd'
+        | 'closedSat'
+        | 'closedSun';
     eventData: FullSchedule;
     layer: number;
     dateString: string;
@@ -66,10 +73,14 @@ export default function AcrossEvent({
                     eh + sh
                 } L ${bw * 0.5} ${eh}  L 0 ${eh} L 0 0 Z`;
 
-            case 'closed':
-                return `M ${bw * 0.5} ${sh} L ${100 - bw * 0.5} ${sh} L ${
+            case 'closedSat':
+                return `M ${bw * 0.5} ${sh} L 100 ${sh} L 100 ${eh + sh} L ${
+                    bw * 0.5
+                } ${eh + sh} L ${bw * 0.5} ${sh} Z`;
+            case 'closedSun':
+                return `M 0 ${sh} L ${100 - bw * 0.5} ${sh} L ${
                     100 - bw * 0.5
-                } ${eh + sh} L ${bw * 0.5} ${eh + sh} L ${bw * 0.5} ${sh} Z`;
+                } ${eh + sh} L 0 ${eh + sh} L 0 ${sh} Z`;
         }
     };
     return (
@@ -96,7 +107,10 @@ export default function AcrossEvent({
                 <path d={getPathString(type)} />
             </svg>
 
-            {(type === 'left' || type === 'leftEnd') && (
+            {(type === 'left' ||
+                type === 'leftEnd' ||
+                type === 'closedSat' ||
+                type === 'closedSun') && (
                 <span className={styles.title}>{eventData.title}</span>
             )}
         </div>

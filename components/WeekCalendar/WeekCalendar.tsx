@@ -18,7 +18,7 @@ import {
 } from '@customTypes/ScheduleTypes';
 import { DAYS, formatDate, formatHour } from '@utils/formatting';
 import {
-    getLayeredAcrossEvents,
+    getLayeredFrozenEvents,
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
 
@@ -69,14 +69,14 @@ export default function WeekCalendar() {
             });
     }, [year, month, date]);
     const [weekEvents, setWeekEvents] = useState<FullSchedule[]>();
-    const [layeredAcrossEvents, setLayeredAcrossEvents] =
+    const [layeredFrozenEvents, setLayeredFrozenEvents] =
         useState<LayeredEvents>();
     const [layeredWeeklyWithinEvents, setLayeredWeeklyWithinEvents] =
         useState<LayeredWeeklyWithinEvents>();
     const acrossHolderHeight = useMemo(() => {
-        if (layeredAcrossEvents) {
+        if (layeredFrozenEvents) {
             let maxLayer = 0;
-            Object.entries(layeredAcrossEvents).forEach(
+            Object.entries(layeredFrozenEvents).forEach(
                 ([dateData, eventData]) => {
                     maxLayer = Math.max(
                         Object.keys(eventData).length,
@@ -87,7 +87,7 @@ export default function WeekCalendar() {
             return maxLayer * 24 + 3;
         }
         return 0;
-    }, [layeredAcrossEvents]);
+    }, [layeredFrozenEvents]);
 
     useEffect(() => {
         const lastDay = weekDates[weekDates.length - 1];
@@ -113,8 +113,8 @@ export default function WeekCalendar() {
 
     useEffect(() => {
         if (weekEvents) {
-            setLayeredAcrossEvents(
-                getLayeredAcrossEvents(weekEvents, weekDates),
+            setLayeredFrozenEvents(
+                getLayeredFrozenEvents(weekEvents, weekDates),
             );
             setLayeredWeeklyWithinEvents(
                 getLayeredWeeklyWithinEvents(weekEvents, weekDates),
@@ -169,8 +169,8 @@ export default function WeekCalendar() {
                         }}
                     >
                         <div className={styles.across}>
-                            {layeredAcrossEvents &&
-                                Object.entries(layeredAcrossEvents).map(
+                            {layeredFrozenEvents &&
+                                Object.entries(layeredFrozenEvents).map(
                                     ([dateData, eventData], index) => {
                                         return (
                                             <DayinWeekAcross
