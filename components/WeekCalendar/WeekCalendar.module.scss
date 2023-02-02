@@ -26,7 +26,7 @@
     padding-left: 115px;
     padding-right: 8px;
     border-bottom: 2px solid var(--structure);
-    box-shadow: 3px 2px 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 3px 2px 5px var(--structure-shadow);
 }
 
 .headrow {
@@ -140,6 +140,37 @@
 .lowerLeft {
     height: 100%;
     width: 115px;
+    display: flex;
+    align-items: center;
+    .timestamps {
+        height: 100%;
+        width: 87px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        .hour {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 0px;
+
+            div {
+                color: var(--text-datesSecondary);
+                font-size: 10.5px;
+                font-weight: 500;
+            }
+        }
+    }
+    .borderPortrude {
+        height: 100%;
+        width: 28px;
+        background-size: 28px 55px;
+        background-image: linear-gradient(
+            to bottom,
+            var(--structure) 1px,
+            transparent 1px
+        );
+    }
 }
 
 .lowerRight {

@@ -8,7 +8,7 @@ import styles from './WeekCalendar.module.scss';
 import DayinWeekAcross from './DayinWeekAcross';
 import Sidebar from '@components/Sidebar/Sidebar';
 import { useSidebarContext } from '@contexts/SidebarContext';
-import { DAYS, formatDate } from '@utils/formatting';
+import { DAYS, formatDate, formatHour } from '@utils/formatting';
 import {
     FullSchedule,
     LayeredEvents,
@@ -162,8 +162,23 @@ export default function WeekCalendar() {
                 <div className={styles.scrollHolder}>
                     <div className={styles.scrollContent}>
                         <div className={styles.lowerLeft}>
-                            <div className={styles.timestamps}></div>
-                            <div className={styles.borderPortrude}></div>
+                            <div className={styles.timestamps}>
+                                {Array(23)
+                                    .fill(0)
+                                    .map((v, i) => {
+                                        const newDate = new Date();
+                                        newDate.setHours(i + 1);
+                                        return (
+                                            <div
+                                                key={i}
+                                                className={styles.hour}
+                                            >
+                                                <div>{formatHour(newDate)}</div>
+                                            </div>
+                                        );
+                                    })}
+                            </div>
+                            <div className={styles.borderPortrude} />
                         </div>
                         <div className={styles.lowerRight}>
                             <div className={styles.days}>
