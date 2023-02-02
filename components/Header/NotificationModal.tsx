@@ -27,7 +27,6 @@ export default function NotificationModal() {
     const getAndSetFollowRequests = () => {
         getFollowRequests(accessToken)
             .then(response => {
-                console.log(response.data.results);
                 setFollowRequests(response.data.results);
             })
             .catch(error => {
@@ -37,7 +36,6 @@ export default function NotificationModal() {
     const getAndSetScheduleRequests = () => {
         getScheduleRequests(accessToken)
             .then(response => {
-                console.log(response.data.results);
                 setScheduleRequests(response.data.results);
             })
             .catch(error => {
@@ -48,7 +46,6 @@ export default function NotificationModal() {
         responseFollowRequests(id, approved, accessToken)
             .then(response => {
                 getAndSetFollowRequests();
-                console.log('yay!');
             })
             .catch(error => {
                 console.log(error.message);
@@ -58,7 +55,6 @@ export default function NotificationModal() {
         responseScheduleRequests(id, status, accessToken)
             .then(response => {
                 getAndSetScheduleRequests();
-                console.log('yay!');
             })
             .catch(error => {
                 console.log(error.message);
