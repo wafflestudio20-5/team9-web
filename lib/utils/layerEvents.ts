@@ -10,12 +10,27 @@ import { formatDate } from '@utils/formatting';
 function compareEndAt(eventA: FullSchedule, eventB: FullSchedule) {
     const aEnd = eventA.end_at;
     const bEnd = eventB.end_at;
-    if (aEnd == bEnd) {
+    if (aEnd === bEnd) {
         return 0;
     } else if (aEnd > bEnd) {
         return 1;
     }
     return -1;
+}
+
+function compareLength(eventA: FullSchedule, eventB: FullSchedule) {
+    const aStart = new Date(eventA.start_at);
+    const aEnd = new Date(eventA.end_at);
+    const bStart = new Date(eventB.start_at);
+    const bEnd = new Date(eventB.end_at);
+    const aDuration = aEnd.getTime() - aStart.getTime();
+    const bDuration = bEnd.getTime() - bStart.getTime();
+    if (aDuration === bDuration) {
+        return 0;
+    } else if (aDuration > bDuration) {
+        return -1;
+    }
+    return 1;
 }
 
 function isDateIncluded(date: Date | string, event: FullSchedule) {
@@ -232,8 +247,10 @@ function getDailyLayerData(events: FullSchedule[]) {
     if (!events) {
         return dailyLayerData;
     }
+    let dailyEvents = [...events];
+    dailyEvents.sort(compareLength);
 
-    events.forEach(event => {
+    dailyEvents.forEach(event => {
         let layer = 0;
         while (1) {
             const data = dailyLayerData[layer];
@@ -279,10 +296,11 @@ function assignTextTop(
                         lowerEvent.start_at < upperEvent.end_at
                     ) {
                         const lowerStart = new Date(lowerEvent.start_at);
-                        const upperEnd = new Date(upperEvent.start_at);
+                        const upperEnd = new Date(upperEvent.end_at);
                         dailyLayerData[layer]![i].textTop =
                             (upperEnd.getTime() - lowerStart.getTime()) *
-                            ((1320 / 24) * 60 * 60 * 1000);
+                            (1320 / (24 * 60 * 60 * 1000));
+                        console.log(dailyLayerData[layer]![i]);
                     }
                 }
             }

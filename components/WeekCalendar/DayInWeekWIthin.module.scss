@@ -1,15 +1,23 @@
 .wrapper {
-    height: calc(100% - 54px);
+    height: 100%;
     z-index: 0;
     position: relative;
     margin: 0px 3.5%;
-    background-size: 100% 55px;
-    background-image: linear-gradient(
-        to bottom,
-        transparent 0 27px,
-        var(--structure) 27px 28px,
-        transparent 28px 55px
-    );
+
+    .backgroundProvider {
+        height: calc(100% - 55px);
+        width: 100%;
+        top: 27px;
+        background-size: 100% 55px;
+        background-image: linear-gradient(
+            to bottom,
+            transparent 0 27px,
+            var(--structure) 27px 28px,
+            transparent 28px 55px
+        );
+        position: absolute;
+        z-index: 0;
+    }
 }
 
 .layer {

@@ -9,6 +9,7 @@ export default function DayInWeekWithin({
 }) {
     return (
         <div className={styles.wrapper}>
+            <div className={styles.backgroundProvider} />
             {Object.entries(dailyLayerData).map(([layer, eventData], index) => {
                 return (
                     <div key={index} className={styles.layer}>

@@ -62,7 +62,9 @@ export default function DailyEvent({
                 className={`${styles.textHolder} ${
                     height < 30 ? styles.oneline : styles.twoline
                 }`}
-                style={{ marginTop: `${textTop}px` }}
+                style={{
+                    paddingTop: `${height < 30 ? 0 : textTop + 8}px`,
+                }}
             >
                 {height < 30 ? (
                     <div className={styles.onelineText}>{`${
