@@ -1,11 +1,42 @@
 .event {
     z-index: inherit;
     position: absolute;
-    padding: 10px;
     border: 1px solid var(--structure);
+    box-shadow: 2px 4px 4px var(--structure-shadow);
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.event[data-layer='0'] {
+    box-shadow: none;
 }
 
 .textHolder {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    font-size: 10px;
+    height: 100%;
+    width: 100%;
+    &.oneline {
+        justify-content: center;
+        padding: 3px 0px 3px 8px;
+    }
+    &.twoline {
+        justify-content: flex-start;
+        padding: 8px;
+    }
+    div {
+        text-overflow: ellipsis;
+    }
+
+    .onelineText {
+        text-overflow: ellipsis;
+        height: 12px;
+        width: 100%;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
 }

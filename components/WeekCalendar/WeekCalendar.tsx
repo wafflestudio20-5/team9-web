@@ -40,7 +40,6 @@ export default function WeekCalendar() {
             entries => {
                 entries.forEach(entry => {
                     setIsScolledtoTop(entry.isIntersecting);
-                    console.log(entry);
                 });
             },
             {

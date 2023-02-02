@@ -45,3 +45,17 @@ export const formatHour = (time: Date) => {
     }
     return `${half} ${hour}시`;
 };
+
+export const formatEventTime = (startTime: Date, endTime: Date) => {
+    const startString =
+        startTime.getMinutes() === 0
+            ? formatHour(startTime)
+            : formatTime(startTime);
+    const endString =
+        endTime.getMinutes() === 0 ? formatHour(endTime) : formatTime(endTime);
+    const finalString =
+        startString.split(' ')[0] === endString.split(' ')[0]
+            ? `${startString} ~ ${endString.split(' ')[1]}`
+            : `${startString} ~ ${endString}`;
+    return finalString;
+};

@@ -9,9 +9,10 @@ export default function DayInWeekWithin({
 }) {
     return (
         <div className={styles.wrapper}>
-            {Object.entries(dailyLayerData).map(([layer, eventData]) => {
+            {Object.entries(dailyLayerData).map(([layer, eventData], index) => {
                 return (
                     <div
+                        key={index}
                         className={styles.layer}
                         style={{ zIndex: `${Number(layer) + 1}` }}
                     >
