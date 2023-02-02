@@ -4,6 +4,7 @@ import styles from './AcrossEvent.module.scss';
 
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
+import getEventColorClass from './getEventColorClass';
 
 export default function AcrossEvent({
     type,
@@ -28,19 +29,6 @@ export default function AcrossEvent({
     const sw = slopeWidthPercentage ? slopeWidthPercentage : 4;
     const sh = slopeHeight ? slopeHeight : 3;
     const { openModal } = useModal();
-    const colorLayer = () => {
-        if (layer) {
-            switch (layer % 3) {
-                case 0:
-                    return 'chocolateEvent';
-                case 1:
-                    return 'honeyEvent';
-                case 2:
-                    return 'strawberryEvent';
-            }
-        }
-        return 'chocolateEvent';
-    };
 
     const getPathString = (type: string) => {
         switch (type) {
@@ -97,7 +85,9 @@ export default function AcrossEvent({
     };
     return (
         <div
-            className={`${styles.across} ${colorLayer()} ${type} ${layer}`}
+            className={`${styles.across} ${getEventColorClass(
+                eventData.created_by,
+            )} ${type} ${layer}`}
             onClick={() => {
                 openModal(MODAL_NAMES.scheduleView, {
                     schedule: eventData,

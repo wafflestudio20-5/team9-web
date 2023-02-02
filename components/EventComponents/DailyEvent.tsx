@@ -6,6 +6,7 @@ import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { getTimeInMinutes } from '@utils/calculateDate';
 import { formatEventTime, formatHour, formatTime } from '@utils/formatting';
 import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
+import getEventColorClass from './getEventColorClass';
 
 export default function DailyEvent({
     textTop,
@@ -41,7 +42,9 @@ export default function DailyEvent({
 
     return (
         <div
-            className={styles.event}
+            className={`${styles.event} ${getEventColorClass(
+                event.created_by,
+            )}`}
             style={{
                 top: `${topPosition}px`,
                 width: `calc(100% - ${layer * 16}px)`,

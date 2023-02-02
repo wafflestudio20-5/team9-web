@@ -4,6 +4,7 @@ import styles from './WithinEvent.module.scss';
 
 import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
+import getEventColorClass from './getEventColorClass';
 
 export default function WithinEvent({
     eventData,
@@ -20,23 +21,12 @@ export default function WithinEvent({
 }) {
     const sh = slopeHeight ? slopeHeight : 3;
     const { openModal } = useModal();
-    const colorLayer = () => {
-        if (layer) {
-            switch (layer % 3) {
-                case 0:
-                    return 'chocolateEvent';
-                case 1:
-                    return 'honeyEvent';
-                case 2:
-                    return 'strawberryEvent';
-            }
-        }
-        return 'chocolateEvent';
-    };
 
     return (
         <div
-            className={`${styles.event} ${colorLayer()}`}
+            className={`${styles.event} ${getEventColorClass(
+                eventData.created_by,
+            )}`}
             style={{
                 height: `${eventHeight}px`,
                 marginTop: `${sh}px`,
