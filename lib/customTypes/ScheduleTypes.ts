@@ -95,4 +95,14 @@ export interface ScheduleRequestData {
     start_at: string;
     title: string;
     updated_at: string;
+
+export interface LayerData {
+    [layer: number]: {
+        type: 'across' | 'within' | 'filler';
+        event: FullSchedule | null;
+    } | null;
+}
+
+export interface LayeredEvents {
+    [date: string]: LayerData;
 }
