@@ -107,6 +107,8 @@ export interface LayerData {
             | 'acrossRightEnd'
             | 'acrossClosed'
             | 'within'
+            | 'withinLeftEnd'
+            | 'withinRightEnd'
             | 'filler';
         event: FullSchedule | null;
     } | null;

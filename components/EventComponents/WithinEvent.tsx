@@ -10,11 +10,13 @@ export default function WithinEvent({
     eventHeight,
     layer,
     slopeHeight,
+    type,
 }: {
     eventData: FullSchedule;
     eventHeight: number;
     layer: number;
     slopeHeight?: number;
+    type: string;
 }) {
     const sh = slopeHeight ? slopeHeight : 3;
     const { openModal } = useModal();
@@ -31,12 +33,16 @@ export default function WithinEvent({
         }
         return `${styles.chocolate}`;
     };
+
     return (
         <div
             className={`${styles.event} ${colorLayer()}`}
             style={{
                 height: `${eventHeight}px`,
                 marginTop: `${sh}px`,
+                marginLeft: `${type === 'leftEnd' ? '' : '3.5%'}`,
+                marginRight: `${type === 'rightEnd' ? '' : '3.5%'}`,
+                width: `${type === 'middle' ? '93%' : '96.5%'}`,
             }}
             onClick={() => {
                 openModal(MODAL_NAMES.scheduleView, {

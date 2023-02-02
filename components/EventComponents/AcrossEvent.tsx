@@ -103,53 +103,10 @@ export default function AcrossEvent({
                     bw * 0.5
                 } ${sh} Z`;
         }
-
-        // const upper =
-        //     numberOfBlocks > 1
-        //         ? Array(numberOfBlocks - 1)
-        //               .fill(0)
-        //               .map((v, i) => {
-        //                   const startAt: number = i * (boxWidth + bw);
-        //                   return `L ${startAt + sw} ${sh} L ${
-        //                       startAt + boxWidth - sw
-        //                   } ${sh} L ${startAt + boxWidth} 0 L ${
-        //                       startAt + bw + boxWidth
-        //                   } 0`;
-        //               })
-        //               .join(' ')
-        //         : '';
-        // const lower =
-        //     numberOfBlocks > 1
-        //         ? Array(numberOfBlocks - 1)
-        //               .fill(0)
-        //               .map((v, i) => {
-        //                   const startAt = eventWidth - i * (boxWidth + bw);
-        //                   return `L ${startAt - sw} ${sh + eventHeight} L ${
-        //                       startAt + sw - boxWidth
-        //                   } ${sh + eventHeight} L ${
-        //                       startAt - boxWidth
-        //                   } ${eventHeight} L ${
-        //                       startAt - bw - boxWidth
-        //                   } ${eventHeight}`;
-        //               })
-        //               .join(' ')
-        //         : '';
-        // const pathString = `M 0 ${sh} ${upper} L ${
-        //     eventWidth - boxWidth + sw
-        // } ${sh} L ${eventWidth} ${sh} L ${eventWidth} ${
-        //     sh + eventHeight
-        // } ${lower} L ${boxWidth - sw} ${eventHeight + sh} L 0 ${
-        //     eventHeight + sh
-        // } L 0 ${sh} Z`;
-        // return pathString;
     };
     return (
         <div
             className={`${styles.across} ${colorLayer()} ${type} ${layer}`}
-            // style={{
-            //     width: `${eventWidth}px`,
-            //     height: `${eventHeight + 3}px`,
-            // }}
             onClick={() => {
                 openModal(MODAL_NAMES.scheduleView, {
                     schedule: eventData,
@@ -170,7 +127,9 @@ export default function AcrossEvent({
                     <path d={getPathString(type)} />
                 </svg>
             )}
-            <span className={styles.title}>{eventData.title}</span>
+            {(type === 'left' || type === 'leftEnd') && (
+                <span className={styles.title}>{eventData.title}</span>
+            )}
         </div>
     );
 }

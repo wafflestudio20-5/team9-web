@@ -99,6 +99,27 @@ export default function getEventComponent({
         case 'within':
             return (
                 <WithinEvent
+                    type="middle"
+                    key={layer}
+                    layer={layer}
+                    eventData={data.event!}
+                    eventHeight={eventHeight}
+                />
+            );
+        case 'withinLeftEnd':
+            return (
+                <WithinEvent
+                    type="leftEnd"
+                    key={layer}
+                    layer={layer}
+                    eventData={data.event!}
+                    eventHeight={eventHeight}
+                />
+            );
+        case 'withinRightEnd':
+            return (
+                <WithinEvent
+                    type="rightEnd"
                     key={layer}
                     layer={layer}
                     eventData={data.event!}
