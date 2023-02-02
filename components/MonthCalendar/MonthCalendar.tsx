@@ -1,7 +1,5 @@
-import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState, useMemo } from 'react';
-import Swal from 'sweetalert2';
 
 import styles from './MonthCalendar.module.scss';
 

@@ -29,6 +29,9 @@ export default function getEventComponent({
     if (data === undefined) {
         return;
     }
+    if (!data.event) {
+        return;
+    }
     switch (data.type) {
         case 'acrossLeft':
             return (
@@ -36,7 +39,7 @@ export default function getEventComponent({
                     type="left"
                     key={layer}
                     layer={layer}
-                    eventData={data.event!}
+                    eventData={data.event}
                     dateString={dateString}
                     eventHeight={eventHeight}
                 />
@@ -47,7 +50,7 @@ export default function getEventComponent({
                     type="leftEnd"
                     key={layer}
                     layer={layer}
-                    eventData={data.event!}
+                    eventData={data.event}
                     dateString={dateString}
                     eventHeight={eventHeight}
                 />
@@ -58,7 +61,7 @@ export default function getEventComponent({
                     type="middle"
                     key={layer}
                     layer={layer}
-                    eventData={data.event!}
+                    eventData={data.event}
                     dateString={dateString}
                     eventHeight={eventHeight}
                 />
@@ -69,7 +72,7 @@ export default function getEventComponent({
                     type="right"
                     key={layer}
                     layer={layer}
-                    eventData={data.event!}
+                    eventData={data.event}
                     dateString={dateString}
                     eventHeight={eventHeight}
                 />
@@ -80,7 +83,7 @@ export default function getEventComponent({
                     type="rightEnd"
                     key={layer}
                     layer={layer}
-                    eventData={data.event!}
+                    eventData={data.event}
                     dateString={dateString}
                     eventHeight={eventHeight}
                 />
@@ -91,7 +94,7 @@ export default function getEventComponent({
                     type="closed"
                     key={layer}
                     layer={layer}
-                    eventData={data.event!}
+                    eventData={data.event}
                     dateString={dateString}
                     eventHeight={eventHeight}
                 />
@@ -102,7 +105,7 @@ export default function getEventComponent({
                     type="middle"
                     key={layer}
                     layer={layer}
-                    eventData={data.event!}
+                    eventData={data.event}
                     eventHeight={eventHeight}
                 />
             );
@@ -112,7 +115,7 @@ export default function getEventComponent({
                     type="leftEnd"
                     key={layer}
                     layer={layer}
-                    eventData={data.event!}
+                    eventData={data.event}
                     eventHeight={eventHeight}
                 />
             );
@@ -122,7 +125,7 @@ export default function getEventComponent({
                     type="rightEnd"
                     key={layer}
                     layer={layer}
-                    eventData={data.event!}
+                    eventData={data.event}
                     eventHeight={eventHeight}
                 />
             );

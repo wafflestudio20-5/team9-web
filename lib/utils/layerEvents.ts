@@ -247,7 +247,7 @@ function getDailyLayerData(events: FullSchedule[]) {
     if (!events) {
         return dailyLayerData;
     }
-    let dailyEvents = [...events];
+    const dailyEvents = [...events];
     dailyEvents.sort(compareLength);
 
     dailyEvents.forEach(event => {
@@ -287,6 +287,7 @@ function assignTextTop(
             if (!dailyLayerData[layer] || !dailyLayerData[layer + 1]) {
                 break;
             }
+
             for (let i = 0; i < dailyLayerData[layer]?.length!; i++) {
                 const lowerEvent = dailyLayerData[layer]![i].event;
                 for (let j = 0; j < dailyLayerData[layer + 1]?.length!; j++) {

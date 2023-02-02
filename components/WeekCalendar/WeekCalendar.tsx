@@ -90,10 +90,10 @@ export default function WeekCalendar() {
     }, [layeredAcrossEvents]);
 
     useEffect(() => {
-        if ((user && weekDates) || needUpdate) {
+        if ((user?.pk && weekDates) || needUpdate) {
             getEntireScheduleAPI(
                 {
-                    pk: user?.pk!,
+                    pk: user?.pk,
                     from: formatDate(weekDates[0]),
                     to: formatDate(weekDates[weekDates.length - 1]),
                 } as CalendarURLParams,

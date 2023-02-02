@@ -1,13 +1,9 @@
 import { useRouter } from 'next/router';
-import React, { useRef, useState, useMemo } from 'react';
+import React from 'react';
 
 import styles from './DayinMonth.module.scss';
 
-import {
-    FullSchedule,
-    LayerData,
-    LayeredEvents,
-} from '@customTypes/ScheduleTypes';
+import { LayerData } from '@customTypes/ScheduleTypes';
 import getEventComponent from '@utils/getEventComponent';
 
 export default function DayinMonth({
@@ -70,7 +66,7 @@ export default function DayinMonth({
                                   layer: Number(layer),
                               });
                           })
-                    : Object.entries(layerData).map(([layer, data], index) => {
+                    : Object.entries(layerData).map(([layer, data]) => {
                           return getEventComponent({
                               dateString: dateString,
                               data: data,
