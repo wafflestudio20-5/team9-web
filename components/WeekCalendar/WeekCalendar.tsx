@@ -67,7 +67,7 @@ export default function WeekCalendar() {
     }, [layeredAcrossEvents]);
 
     useEffect(() => {
-        if (weekDates || needUpdate) {
+        if ((user && weekDates) || needUpdate) {
             getEntireScheduleAPI(
                 {
                     pk: user?.pk!,
@@ -75,37 +75,12 @@ export default function WeekCalendar() {
                     to: formatDate(weekDates[weekDates.length - 1]),
                 } as CalendarURLParams,
                 accessToken,
-            )
-                .then(res => {
-                    setWeekEvents(res.data.results);
-                })
-                .catch(err => {
-                    const alertText = (err: Error | AxiosError) => {
-                        if (axios.isAxiosError(err)) {
-                            if (err.response?.status === 401) {
-                                return '로그인해야 합니다.';
-                            }
-                            return `Error Code: ${err.response?.status}\nError Message: ${err.response?.data.detail}`;
-                        }
-                        return err.toString();
-                    };
-                    Swal.fire({
-                        title: '일정을 불러올 수 없습니다.',
-                        text: alertText(err),
-                        confirmButtonText: '확인',
-                    }).then(res => {
-                        if (
-                            res.isConfirmed &&
-                            axios.isAxiosError(err) &&
-                            err.response?.status === 401
-                        ) {
-                            router.push('/login');
-                        }
-                    });
-                });
+            ).then(res => {
+                setWeekEvents(res.data.results);
+            });
         }
         setNeedUpdate(false);
-    }, [weekDates, needUpdate]);
+    }, [weekDates, needUpdate, user]);
 
     useEffect(() => {
         if (weekEvents) {

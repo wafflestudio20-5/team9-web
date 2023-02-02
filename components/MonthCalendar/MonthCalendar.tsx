@@ -34,7 +34,7 @@ export default function MonthCalendar() {
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
 
     useEffect(() => {
-        if (monthDates || needUpdate) {
+        if ((user && monthDates) || needUpdate) {
             getEntireScheduleAPI(
                 {
                     pk: user?.pk!,
@@ -42,37 +42,12 @@ export default function MonthCalendar() {
                     to: formatDate(monthDates[monthDates.length - 1]),
                 } as CalendarURLParams,
                 accessToken,
-            )
-                .then(res => {
-                    setMonthEvents(res.data.results);
-                })
-                .catch(err => {
-                    const alertText = (err: Error | AxiosError) => {
-                        if (axios.isAxiosError(err)) {
-                            if (err.response?.status === 401) {
-                                return '로그인해야 합니다.';
-                            }
-                            return `Error Code: ${err.response?.status}\nError Message: ${err.response?.data.detail}`;
-                        }
-                        return err.toString();
-                    };
-                    Swal.fire({
-                        title: '일정을 불러올 수 없습니다.',
-                        text: alertText(err),
-                        confirmButtonText: '확인',
-                    }).then(res => {
-                        if (
-                            res.isConfirmed &&
-                            axios.isAxiosError(err) &&
-                            err.response?.status === 401
-                        ) {
-                            router.push('/login');
-                        }
-                    });
-                });
+            ).then(res => {
+                setMonthEvents(res.data.results);
+            });
         }
         setNeedUpdate(false);
-    }, [monthDates, needUpdate]);
+    }, [monthDates, needUpdate, user]);
 
     useEffect(() => {
         if (monthEvents) {
