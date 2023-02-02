@@ -24,14 +24,14 @@ export default function WithinEvent({
         if (layer) {
             switch (layer % 3) {
                 case 0:
-                    return `${styles.chocolate}`;
+                    return 'chocolateEvent';
                 case 1:
-                    return `${styles.honey}`;
+                    return 'honeyEvent';
                 case 2:
-                    return `${styles.strawberry}`;
+                    return 'strawberryEvent';
             }
         }
-        return `${styles.chocolate}`;
+        return 'chocolateEvent';
     };
 
     return (

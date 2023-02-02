@@ -24,8 +24,6 @@ export default function AcrossEvent({
     slopeWidthPercentage?: number;
     slopeHeight?: number;
 }) {
-    // const dateObj = new Date(dateString);
-    // const endDateObj = new Date(eventData.end_at.split(' ')[0]);
     const bw = borderWidthPercentage ? borderWidthPercentage : 8;
     const sw = slopeWidthPercentage ? slopeWidthPercentage : 4;
     const sh = slopeHeight ? slopeHeight : 3;
@@ -34,23 +32,16 @@ export default function AcrossEvent({
         if (layer) {
             switch (layer % 3) {
                 case 0:
-                    return `${styles.chocolate}`;
+                    return 'chocolateEvent';
                 case 1:
-                    return `${styles.honey}`;
+                    return 'honeyEvent';
                 case 2:
-                    return `${styles.strawberry}`;
+                    return 'strawberryEvent';
             }
         }
-        return `${styles.chocolate}`;
+        return 'chocolateEvent';
     };
-    // const eventLengthRemaining =
-    //     Math.floor(
-    //         Math.abs(endDateObj.getTime() - dateObj.getTime()) /
-    //             (1000 * 60 * 60 * 24),
-    //     ) + 1;
-    // const daysLeftThisWeek = 7 - dateObj.getDay();
-    // const numberOfBlocks = Math.min(eventLengthRemaining, daysLeftThisWeek);
-    // const eventWidth = numberOfBlocks * (boxWidth + 12) - 12;
+
     const getPathString = (type: string) => {
         switch (type) {
             case 'left':

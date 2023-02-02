@@ -1,5 +1,3 @@
-@use '@styles/variables.scss' as v;
-
 .dayContentHolder {
     .headRow {
         display: flex;
@@ -17,7 +15,7 @@
             color: white;
             border-radius: 50%;
             border-color: transparent;
-            background-color: v.$primary-blue;
+            background-color: var(--today-blueberry);
             height: 24px;
             width: 24px;
         }
@@ -32,13 +30,13 @@
         grid-template-rows: repeat(24, 50px);
         grid-template-columns: repeat(auto-fill, 1fr);
         // flex-grow: 1;
-        border-top: 1px solid v.$border-gray;
+        border-top: 1px solid var(--structure);
         gap: 1px;
 
         .oneHourInDay {
-            border-bottom: 1px v.$border-gray solid;
+            border-bottom: 1px var(--structure) solid;
         }
     }
 
-    border-right: 1px solid v.$border-gray;
+    border-right: 1px solid var(--structure);
 }

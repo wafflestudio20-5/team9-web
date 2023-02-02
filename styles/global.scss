@@ -1,4 +1,3 @@
-@use './variables.scss' as v;
 @import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Nanum+Gothic:wght@400;700;800&display=swap');
 
 :root[data-theme='light'] {
@@ -102,7 +101,7 @@ body {
         background-color: var(--structure);
 
         &:hover {
-            background-color: v.$font-gray;
+            background-color: var(--text-other);
         }
     }
 }
