@@ -300,7 +300,6 @@ function assignTextTop(
                         dailyLayerData[layer]![i].textTop =
                             (upperEnd.getTime() - lowerStart.getTime()) *
                             (1320 / (24 * 60 * 60 * 1000));
-                        console.log(dailyLayerData[layer]![i]);
                     }
                 }
             }
