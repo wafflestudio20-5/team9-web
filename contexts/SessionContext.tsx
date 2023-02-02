@@ -85,7 +85,9 @@ const SessionContext = createContext<SessionContextData>({
 
 //const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
 //const apiEndPoint = 'http://api-staging-dearj-wafflestudio.site/api/v1/user/';
-const apiEndPoint = apiStagingEndPoint + '/user/';
+// const apiEndPoint = apiStagingEndPoint + '/user/';
+// const apiEndPoint = 'https://api-dearj-wafflestudio.site/api/v1/user/';
+const apiEndPoint = 'http://127.0.0.1:8000/api/v1/user/';
 
 const REACT_APP_BASE_BACKEND_URL = 'http://api-staging-dearj-wafflestudio.site';
 

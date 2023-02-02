@@ -15,7 +15,7 @@ import { errorToast, successToast } from '@utils/customAlert';
 
 const schedulesData: FullSchedule[] = [
     {
-        id: 10,
+        id: 1,
         title: 'test schedule',
         created_at: '2022-02-02',
         updated_at: '2022-02-02',
@@ -132,6 +132,7 @@ export default function PostCreatePage() {
 
     const createPost = async (newPost: FormData) => {
         try {
+            console.log(JSON.stringify(getScheduleIds()));
             newPost.append('schedules', JSON.stringify(getScheduleIds()));
             const res = await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
