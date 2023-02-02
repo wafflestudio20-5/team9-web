@@ -1,4 +1,4 @@
-export interface Followee {
+export interface FollowUser {
     pk: number;
     username: string;
     email: string;
@@ -7,8 +7,8 @@ export interface Followee {
 export interface FollowRequestData {
     approved: string | null;
     created_at: string;
-    followee: Followee;
-    follower: number;
+    followee: FollowUser;
+    follower: FollowUser;
     id: number;
     updated_at: string;
 }

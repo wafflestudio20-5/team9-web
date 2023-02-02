@@ -95,6 +95,7 @@ export interface ScheduleRequestData {
     start_at: string;
     title: string;
     updated_at: string;
+}
 
 export interface LayerData {
     [layer: number]: {

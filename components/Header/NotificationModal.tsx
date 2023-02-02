@@ -27,6 +27,7 @@ export default function NotificationModal() {
     const getAndSetFollowRequests = () => {
         getFollowRequests(accessToken)
             .then(response => {
+                console.log(response.data.results);
                 setFollowRequests(response.data.results);
             })
             .catch(error => {
@@ -74,6 +75,7 @@ export default function NotificationModal() {
                         onClick={() => {
                             setIsSchedule(true);
                         }}
+                        style={isSchedule ? undefined : { opacity: 0.5 }}
                     >
                         일정 수락
                     </button>
@@ -81,6 +83,7 @@ export default function NotificationModal() {
                         onClick={() => {
                             setIsSchedule(false);
                         }}
+                        style={isSchedule ? { opacity: 0.5 } : undefined}
                     >
                         팔로우 수락
                     </button>
@@ -134,8 +137,10 @@ export default function NotificationModal() {
                             return (
                                 <div className={styles.request} key={index}>
                                     <div className={styles.textContainer}>
-                                        {req.followee.username}님이 팔로우를
-                                        신청하셨습니다.
+                                        <div className={styles.text}>
+                                            {req.follower.username}님이 팔로우를
+                                            신청하셨습니다.
+                                        </div>
                                     </div>
                                     <div className={styles.buttonContainer}>
                                         <button
