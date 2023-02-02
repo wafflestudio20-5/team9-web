@@ -46,7 +46,7 @@ export default function WeekCalendar() {
                 threshold: 1,
             },
         );
-    });
+    }, []);
     useEffect(() => {
         if (scrollContentRef.current) {
             scrollObserver.current?.observe(scrollContentRef.current!);
@@ -90,12 +90,18 @@ export default function WeekCalendar() {
     }, [layeredAcrossEvents]);
 
     useEffect(() => {
+        const lastDay = weekDates[weekDates.length - 1];
+        const dayAfterLast = new Date(
+            lastDay.getFullYear(),
+            lastDay.getMonth(),
+            lastDay.getDate() + 1,
+        );
         if ((user?.pk && weekDates) || needUpdate) {
             getEntireScheduleAPI(
                 {
                     pk: user?.pk,
                     from: formatDate(weekDates[0]),
-                    to: formatDate(weekDates[weekDates.length - 1]),
+                    to: formatDate(dayAfterLast),
                 } as CalendarURLParams,
                 accessToken,
             ).then(res => {

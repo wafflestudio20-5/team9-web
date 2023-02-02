@@ -68,7 +68,13 @@ export default function DayCalendar() {
                 {
                     pk: user?.pk,
                     from: formatDate(paramDate),
-                    to: formatDate(paramDate),
+                    to: formatDate(
+                        new Date(
+                            paramDate.getFullYear(),
+                            paramDate.getMonth(),
+                            paramDate.getDate() + 1,
+                        ),
+                    ),
                 } as CalendarURLParams,
                 accessToken,
             ).then(res => {
