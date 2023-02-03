@@ -9,6 +9,7 @@ interface CalendarDataForToggle {
     name: string;
 }
 
+// currently not in use
 export default function CalendarToggle({ name }: { name: string }) {
     const [isChosen, setIsChosen] = useState(false);
     return (

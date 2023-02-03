@@ -105,7 +105,7 @@ export default function Sidebar() {
                         resetOnExecution={true}
                     />
                 </div>
-                <div className={styles.accordions}>
+                {/* <div className={styles.accordions}>
                     <Accordion
                         title="내 캘린더"
                         sequence={dummyMyCalendars}
@@ -124,7 +124,7 @@ export default function Sidebar() {
                             title: { marginLeft: '15px' },
                         }}
                     />
-                </div>
+                </div> */}
             </div>
         </div>
     );
