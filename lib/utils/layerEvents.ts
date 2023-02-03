@@ -33,7 +33,7 @@ function compareLength(eventA: FullSchedule, eventB: FullSchedule) {
     return 1;
 }
 
-function isDateIncluded(date: Date, event: FullSchedule) {
+export function isDateIncluded(date: Date, event: FullSchedule) {
     if (
         formatDate(date) >= event.start_at.split(' ')[0] &&
         formatDate(date) < event.end_at.split(' ')[0]

@@ -1,37 +1,40 @@
-import React from 'react';
+import React, { MutableRefObject } from 'react';
 
 import styles from './DayinSchedule.module.scss';
 
 import { useDateContext } from '@contexts/DateContext';
 import { DAYS } from '@utils/formatting';
+import { FullSchedule, NumberedEvent } from '@customTypes/ScheduleTypes';
 
-// interface name overlaps & is different
-// Need to properly decide data structure for further development
-interface DayData {
-    date: number;
-    day: number;
-    events: object[]; // to be specified
+interface DayinScheduleProps {
+    dateString: string;
+    eventData: NumberedEvent[];
+    renderCount: number;
 }
 
-export default function DayinSchedule({ dayData }: { dayData: DayData }) {
-    const { monthNow, dateNow } = useDateContext();
-    const { date, day, events } = dayData;
+export const DayinSchedule = React.forwardRef<
+    HTMLDivElement,
+    DayinScheduleProps
+>(({ dateString, eventData, renderCount }, ref): JSX.Element => {
+    const dateObj = new Date(dateString);
+    const isRefAttached =
+        eventData[eventData.length - 1].num === renderCount - 1;
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} ref={isRefAttached ? ref : undefined}>
             <div className={styles.dateHolder}>
                 <div className={styles.date}>
-                    <div>{date}</div>
+                    <div>{dateObj.getDate()}</div>
                 </div>
-                <div
-                    className={styles.monthDay}
-                >{`${monthNow}월, ${DAYS[day]}`}</div>
+                <div className={styles.monthDay}>{`${
+                    dateObj.getMonth() + 1
+                }월, ${DAYS[dateObj.getDay()]}`}</div>
             </div>
 
             <div>
-                {events.map((event, index) => {
+                {eventData.map((event, index) => {
                     return <div key={index}>event</div>;
                 })}
             </div>
         </div>
     );
-}
+});
