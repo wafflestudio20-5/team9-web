@@ -53,7 +53,7 @@ export default function ScheduleCalendar() {
             },
             accessToken,
         ).then(res => {
-            setScheduleEventByday(getScheduleEventsByDay(res.data.results));
+            setScheduleEventByday(getScheduleEventsByDay(res.data));
         });
     }, [user, needUpdate, dateObj]);
 

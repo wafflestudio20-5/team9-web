@@ -80,7 +80,7 @@ export default function DayCalendar() {
                 } as CalendarURLParams,
                 accessToken,
             ).then(res => {
-                setDayEvents(res.data.results);
+                setDayEvents(res.data);
             });
         }
         setNeedUpdate(false);
@@ -89,11 +89,13 @@ export default function DayCalendar() {
         if (dayEvents) {
             const { frozenEvents, scrollableEvents } =
                 getFrozenEvents(dayEvents);
+            console.log(frozenEvents);
             setLayeredFrozenEvents(
                 getLayeredEvents(frozenEvents, [paramDate], true)[
                     formatDate(paramDate)
                 ],
             );
+            console.log('layered successfully');
             setLayeredWithinEvents(
                 getLayeredWeeklyWithinEvents(scrollableEvents, [paramDate])[
                     formatDate(paramDate)

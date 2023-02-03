@@ -257,6 +257,8 @@ export function getLayeredEvents(
         return layeredEvents;
     }
     const { acrossEvents, withinEvents } = sortEvents(events);
+    console.log(acrossEvents);
+    console.log(withinEvents);
     if (acrossEvents) {
         layerAcrossEvents(acrossEvents, dates, layeredEvents, independentView);
     }

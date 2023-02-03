@@ -47,7 +47,7 @@ export default function MonthCalendar() {
                 } as CalendarURLParams,
                 accessToken,
             ).then(res => {
-                setMonthEvents(res.data.results);
+                setMonthEvents(res.data);
             });
         }
         setNeedUpdate(false);

@@ -106,7 +106,7 @@ export default function WeekCalendar() {
                 } as CalendarURLParams,
                 accessToken,
             ).then(res => {
-                setWeekEvents(res.data.results);
+                setWeekEvents(res.data);
             });
         }
         setNeedUpdate(false);
