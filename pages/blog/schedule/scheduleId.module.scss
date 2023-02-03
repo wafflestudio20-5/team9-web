@@ -38,6 +38,10 @@
     background-color: var(--sidebar-background);
     height: 100%;
     overflow: auto;
+
+    .ioTarget {
+        border: 2px dotted var(--structure);
+    }
 }
 
 .postPreview {

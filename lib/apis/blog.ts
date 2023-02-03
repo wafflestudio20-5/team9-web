@@ -93,7 +93,18 @@ export const deleteCommentAPI = (
 export const getRelatedPosts = (
     scheduleId: number,
     accessToken: string | null,
-) =>
-    BlogAPI.get(`/schedule/post/${scheduleId}/`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    urlParams?: { cursor: string },
+) => {
+    if (urlParams) {
+        return BlogAPI.get(
+            `/schedule/post/${scheduleId}/?cursor=${urlParams.cursor}`,
+            {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            },
+        );
+    } else {
+        return BlogAPI.get(`/schedule/post/${scheduleId}/`, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+    }
+};

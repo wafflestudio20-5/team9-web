@@ -114,11 +114,10 @@ export default function PostPage() {
         }
     };
 
-    // 페이지네이션 필요
     const getComments = async () => {
         try {
             const res = await getEntireCommentAPI(postId, accessToken);
-            setComments(res.data.results || []);
+            setComments(res.data || []);
         } catch (error) {
             const message = '댓글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {

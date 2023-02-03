@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { InView } from 'react-intersection-observer';
 
 import styles from './scheduleId.module.scss';
 
@@ -21,6 +22,7 @@ export default function SchedulePage() {
     const router = useRouter();
     const scheduleId = Number(router.query.scheduleId);
     const postId = Number(router.query.post);
+    const [next, setNext] = useState<string | null>(null);
 
     const getSchedule = async (scheduleId: number) => {
         try {
@@ -58,11 +60,27 @@ export default function SchedulePage() {
         }
     };
 
-    // 여기 페이지네이션 필요
+    const parseCursor = (next: string) => {
+        const regex = /(?<=\?cursor=).+/;
+        const results = next.match(regex);
+        return results ? results[0] : '';
+    };
+
+    const getMorePosts = async (inview: boolean) => {
+        if (!inview || !next) return;
+        const cursor = parseCursor(next);
+        if (!cursor) return;
+        const urlParams = { cursor: cursor };
+        const res = await getRelatedPosts(scheduleId, accessToken, urlParams);
+        setPosts(prev => [...prev, ...res.data.results]);
+        setNext(res.data.next);
+    };
+
     const getPosts = async (scheduleId: number) => {
         try {
             const res = await getRelatedPosts(scheduleId, accessToken);
             setPosts(res.data.results || []);
+            setNext(res.data.next);
         } catch (error) {
             const message = '글을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -117,6 +135,9 @@ export default function SchedulePage() {
                     ) : (
                         posts.map(p => <PostPreview post={p} key={p.pid} />)
                     )}
+                    <InView onChange={inview => getMorePosts(inview)}>
+                        <div className={styles.ioTarget} />
+                    </InView>
                 </div>
             )}
         </div>
