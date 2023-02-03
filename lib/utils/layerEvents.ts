@@ -151,33 +151,27 @@ function layerAcrossEvents(
     independentView: boolean | undefined,
 ) {
     acrossEvents.forEach(event => {
-        const startDateString =
-            event.start_at.split(' ')[0] < formatDate(dates[0])
-                ? formatDate(dates[0])
-                : event.start_at.split(' ')[0];
-        const dateObj = new Date(`${startDateString} 00:00:00`);
-        while (isDateIncluded(dateObj, event)) {
+        const datesInEvent = getDatesInEvent(event);
+        for (let i = 0; i < datesInEvent.length; i++) {
+            const dateObj = new Date(datesInEvent[i]);
             if (formatDate(dateObj) < formatDate(dates[0])) {
-                dateObj.setDate(dateObj.getDate() + 1);
                 continue;
             }
             if (formatDate(dateObj) > formatDate(dates[dates.length - 1])) {
                 break;
             }
-
             if (
                 formatDate(dateObj) === event.start_at.split(' ')[0] ||
                 formatDate(dateObj) === formatDate(dates[0])
             ) {
-                const newDateObj = new Date(`${formatDate(dateObj)} 00:00:00`);
                 const layer = findAvailableLayer(
                     layeredEvents,
-                    formatDate(newDateObj),
+                    formatDate(dateObj),
                 );
+                for (let j = 0; j < datesInEvent.length; j++) {
+                    const newDateObj = new Date(datesInEvent[j]);
 
-                while (isDateIncluded(newDateObj, event)) {
                     if (formatDate(newDateObj) < formatDate(dates[0])) {
-                        newDateObj.setDate(newDateObj.getDate() + 1);
                         continue;
                     }
                     if (
@@ -195,12 +189,8 @@ function layerAcrossEvents(
                         }`,
                         event: event,
                     };
-
-                    newDateObj.setDate(newDateObj.getDate() + 1);
                 }
             }
-
-            dateObj.setDate(dateObj.getDate() + 1);
         }
     });
 }
@@ -217,7 +207,6 @@ function layerWithinEvents(
         if (!layeredEvents[dateString]) {
             return;
         }
-
         if (dateObj.getDay() === 0) {
             layeredEvents[dateString][layer] = {
                 type: 'withinLeftEnd',
