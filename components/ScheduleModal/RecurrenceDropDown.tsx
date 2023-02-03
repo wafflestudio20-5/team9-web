@@ -164,12 +164,10 @@ export default function RecurrenceDropDown({
         dateOption: DateOption,
         ordinal?: number,
     ) => {
-        const time = `${date.getMinutes()} ${date.getHours()}`;
-
         if (dateOption === 'specific') {
             return `* * ${date.getDate()} ${date.getMonth()} * */${interval}`;
         } else if (dateOption === 'last') {
-            return `${time} L 1 * */${interval}`;
+            return `* * L 1 * */${interval}`;
         } else {
             if (ordinal === 5) {
                 return `* * * ${date.getMonth()} ${date.getDay()}L */${interval}`;

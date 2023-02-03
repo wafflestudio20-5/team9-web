@@ -13,14 +13,16 @@ export default function MainPage() {
     return (
         <div className={styles.mainPage}>
             <div className={styles.main}>
-                <h1 className={styles.guide}>
+                <div className={styles.message}>
                     계획이 중요한 당신에게,
                     <br />
                     일정을 회고하고 공유할 수 있게 하는
                     <br />
                     와플을 제공합니다.
-                </h1>
-                <h4>와플스튜디오 토이프로젝트 Team09</h4>
+                </div>
+                <div className={styles.team}>
+                    와플스튜디오 토이프로젝트 Team09
+                </div>
                 <div className={styles.btnContainer}>
                     {user ? (
                         <button onClick={() => router.push('/month/today')}>
@@ -32,7 +34,6 @@ export default function MainPage() {
                         </button>
                     )}
                 </div>
-                <div className={styles.mainImage}></div>
             </div>
         </div>
     );
