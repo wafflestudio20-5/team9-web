@@ -114,6 +114,7 @@ export default function PostPage() {
         }
     };
 
+    // 페이지네이션 필요
     const getComments = async () => {
         try {
             const res = await getEntireCommentAPI(postId, accessToken);
@@ -203,7 +204,6 @@ function CommentItem({ comment, setComments }: CommentItemProps) {
     const [newContent, setNewContent] = useState<string>(comment.content);
 
     const editComment = async (
-        postId: number,
         commentId: number,
         accessToken: string | null,
     ) => {
@@ -213,7 +213,6 @@ function CommentItem({ comment, setComments }: CommentItemProps) {
 
         try {
             const res = await editCommentAPI(
-                postId,
                 commentId,
                 newComment,
                 accessToken,
@@ -242,17 +241,16 @@ function CommentItem({ comment, setComments }: CommentItemProps) {
             errorToast('댓글을 작성해주세요.');
             return;
         }
-        editComment(comment.post, comment.cid, accessToken);
+        editComment(comment.cid, accessToken);
         setIsEditMode(false);
     };
 
     const deleteComment = async (
-        postId: number,
         commentId: number,
         accessToken: string | null,
     ) => {
         try {
-            await deleteCommentAPI(postId, commentId, accessToken);
+            await deleteCommentAPI(commentId, accessToken);
             setComments(prev => prev.filter(c => c.cid !== commentId));
             successToast('댓글을 삭제했습니다.');
         } catch (error) {
@@ -277,7 +275,7 @@ function CommentItem({ comment, setComments }: CommentItemProps) {
         });
 
         if (!isConfirmed) return;
-        await deleteComment(comment.post, comment.cid, accessToken);
+        await deleteComment(comment.cid, accessToken);
     };
 
     const onClickCancel = () => {

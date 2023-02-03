@@ -58,6 +58,7 @@ export default function SchedulePage() {
         }
     };
 
+    // 여기 페이지네이션 필요
     const getPosts = async (scheduleId: number) => {
         try {
             const res = await getRelatedPosts(scheduleId, accessToken);
