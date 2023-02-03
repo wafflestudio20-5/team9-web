@@ -63,7 +63,7 @@ export default function CreateScheduleButton({
                 setIsSelectMode(true);
                 break;
             case 'write':
-                if (schedules.length > 1) router.push('/blog/post/create');
+                if (schedules.length >= 1) router.push('/blog/post/create');
                 else errorToast('포스팅할 일정을 선택해주세요.'); // if there's no schedules selected
                 break;
         }
