@@ -77,3 +77,54 @@ export interface RecurrenceRule {
     until?: Date;
     count?: number;
 }
+
+export interface ScheduleRequestData {
+    created_at: string;
+    created_by: number;
+    cron_expr: string | null;
+    end_at: string;
+    id: number;
+    is_opened: boolean;
+    is_recurring: boolean;
+    participants: Participant[];
+    protection_level: number;
+    recurring_end_at: string | null;
+    recurring_schedule_group: string | null;
+    show_content: boolean;
+    start_at: string;
+    title: string;
+    updated_at: string;
+}
+
+export interface LayerData {
+    [layer: number]: {
+        type:
+            | 'acrossLeft'
+            | 'acrossLeftEnd'
+            | 'acrossMiddle'
+            | 'acrossRight'
+            | 'acrossRightEnd'
+            | 'acrossClosed'
+            | 'within'
+            | 'withinLeftEnd'
+            | 'withinRightEnd'
+            | 'filler';
+        event: FullSchedule | null;
+    } | null;
+}
+
+export interface LayeredEvents {
+    [date: string]: LayerData;
+}
+
+export interface DailyLayerData {
+    [layer: number]: { textTop: number; event: FullSchedule }[] | null;
+}
+
+export interface WeeklyWithinEvents {
+    [date: string]: FullSchedule[];
+}
+
+export interface LayeredWeeklyWithinEvents {
+    [date: string]: DailyLayerData;
+}

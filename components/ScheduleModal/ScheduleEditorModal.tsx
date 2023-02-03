@@ -1,5 +1,12 @@
 import axios from 'axios';
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, {
+    useState,
+    useMemo,
+    useEffect,
+    useRef,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 
 import styles from './ScheduleEditorModal.module.scss';
 
@@ -15,6 +22,7 @@ import ProtectionLevelDropDown from '@components/ScheduleModal/ProtectionLevelDr
 import RecurrenceDropDown from '@components/ScheduleModal/RecurrenceDropDown';
 import TimeDropDown from '@components/ScheduleModal/TimeDropDown';
 import { UserSearchDropDown } from '@components/UserSearchDropDown';
+import { useCalendarContext } from '@contexts/CalendarContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import {
@@ -53,6 +61,7 @@ export default function ScheduleEditorModal({
 }: ScheduleEditorModalProps) {
     const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
+    const { setNeedUpdate } = useCalendarContext();
     const titleRef = useRef<HTMLInputElement>(null);
     const [title, setTitle] = useState<string>(initSchedule.title);
     const [startDate, setStartDate] = useState<Date>(
@@ -261,7 +270,12 @@ export default function ScheduleEditorModal({
                 break;
         }
 
-        if (isSuccessful) closeModal(MODAL_NAMES.scheduleEditor);
+        if (isSuccessful) {
+            closeModal(MODAL_NAMES.scheduleEditor);
+            if (setNeedUpdate) {
+                setNeedUpdate(true);
+            }
+        }
     };
 
     const detectChange = () => {

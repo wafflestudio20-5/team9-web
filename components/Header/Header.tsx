@@ -13,13 +13,13 @@ import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import { useThemeContext } from '@contexts/ThemeContext';
-import AppIcon from '@images/apps_icon.svg';
 import BackIcon from '@images/back_icon.svg';
 import BeforeIcon from '@images/before_icon.svg';
 import CalendarIcon from '@images/calendar_icon.svg';
 import DropdownIcon from '@images/dropdown_icon.svg';
 import MenuIcon from '@images/menu_icon.svg';
 import NextIcon from '@images/next_icon.svg';
+import NotificationIcon from '@images/notification_icon.svg';
 import SearchIcon from '@images/search_icon.svg';
 import {
     getNextDay,
@@ -238,8 +238,10 @@ export default function Header() {
                 {/* user */}
                 <div className={styles.userContainer}>
                     <div className={styles.apps}>
-                        <button>
-                            <AppIcon className="icon" height="24px" />
+                        <button
+                            onClick={() => openModal(MODAL_NAMES.notification)}
+                        >
+                            <NotificationIcon className="icon" height="24px" />
                         </button>
                     </div>
                     {user ? (

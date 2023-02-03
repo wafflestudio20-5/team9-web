@@ -10,6 +10,7 @@ import SessionProvider from '@contexts/SessionContext';
 import SidebarProvider from '@contexts/SidebarContext';
 import ThemeProvider from '@contexts/ThemeContext';
 import '@styles/global.scss';
+import '@styles/EventColorClasses.scss';
 
 function ContextProviders({ children }: PropsWithChildren) {
     return (

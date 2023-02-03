@@ -1,0 +1,32 @@
+.across {
+    display: block;
+    position: relative;
+    z-index: 5;
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.chocolate path {
+        color: var(--syrup-chocolate);
+    }
+    &.honey path {
+        color: var(--syrup-honey);
+    }
+    &.strawberry path {
+        color: var(--syrup-strawberry);
+    }
+
+    svg {
+        position: absolute;
+    }
+}
+
+.title {
+    position: absolute;
+    padding: 7px 10px 4px 10px;
+    color: var(--text-reverse);
+    font-size: 10px;
+    font-weight: 524;
+    width: 100%;
+    text-overflow: ellipsis;
+}
