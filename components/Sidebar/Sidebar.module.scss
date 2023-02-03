@@ -23,6 +23,34 @@
     }
 }
 
+.createButtonHolder {
+    padding: 20px 0px 0px 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 80px;
+
+    .roundedButton {
+        height: 53px;
+        width: 129px;
+        border-radius: 25px;
+        border: 1px solid var(--structure);
+        box-shadow: 2px 2px 2px var(--structure-shadow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        .icon:first-child {
+            box-shadow: 1px 1px 1px var(--structure);
+        }
+    }
+}
+
 .calendar {
     height: 250px;
 }
@@ -32,7 +60,7 @@
     flex-direction: column;
     gap: 5px;
     font-size: 14px;
-    margin: 10px 5px 10px 20px;
+    margin: 10px 10px 10px 15px;
 }
 
 .accordions {

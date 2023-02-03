@@ -14,6 +14,8 @@ import { useCalendarContext } from '@contexts/CalendarContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import { UserDataForSearch } from '@customTypes/UserTypes';
+import AddScheduleIcon from '@images/add_schedule_icon.svg';
+import ExpandIcon from '@images/expand_icon.svg';
 
 export default function Sidebar() {
     const router = useRouter();
@@ -72,7 +74,17 @@ export default function Sidebar() {
             }
         >
             <div className={styles.wrapper}>
-                <div>Create Button</div>
+                <div className={styles.createButtonHolder}>
+                    <div className={styles.roundedButton}>
+                        <AddScheduleIcon
+                            className="icon"
+                            height="36px"
+                            viewBox="46 46 469 469"
+                        />
+                        <div>만들기</div>
+                        <ExpandIcon className="icon" height="15px" />
+                    </div>
+                </div>
                 <div className={styles.calendar}>
                     <MiniCalendar
                         dateVariable={dateObjNow}
@@ -99,7 +111,7 @@ export default function Sidebar() {
                         sequence={dummyMyCalendars}
                         mapFunction={mapCalendarToggle}
                         style={{
-                            title: { marginLeft: '20px' },
+                            title: { marginLeft: '15px' },
                         }}
                     />
                 </div>
@@ -109,7 +121,7 @@ export default function Sidebar() {
                         sequence={dummyOtherCalendars}
                         mapFunction={mapCalendarToggle}
                         style={{
-                            title: { marginLeft: '20px' },
+                            title: { marginLeft: '15px' },
                         }}
                     />
                 </div>
