@@ -4,10 +4,6 @@ import React from 'react';
 import styles from './index.module.scss';
 
 import { useSessionContext } from '@contexts/SessionContext';
-<<<<<<< HEAD
-=======
-import MainImage from '@images/main_images.svg';
->>>>>>> origin/feat/blog
 
 export default function MainPage() {
     const { user } = useSessionContext();
