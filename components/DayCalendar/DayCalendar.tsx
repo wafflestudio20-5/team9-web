@@ -16,7 +16,8 @@ import {
     DailyLayerData,
 } from '@customTypes/ScheduleTypes';
 import {
-    getLayeredFrozenEvents,
+    getFrozenEvents,
+    getLayeredEvents,
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
 import getEventComponent from '@utils/getEventComponent';
@@ -86,13 +87,15 @@ export default function DayCalendar() {
     }, [needUpdate, user, paramDate]);
     useEffect(() => {
         if (dayEvents) {
+            const { frozenEvents, scrollableEvents } =
+                getFrozenEvents(dayEvents);
             setLayeredFrozenEvents(
-                getLayeredFrozenEvents(dayEvents, [paramDate])[
+                getLayeredEvents(frozenEvents, [paramDate], true)[
                     formatDate(paramDate)
                 ],
             );
             setLayeredWithinEvents(
-                getLayeredWeeklyWithinEvents(dayEvents, [paramDate])[
+                getLayeredWeeklyWithinEvents(scrollableEvents, [paramDate])[
                     formatDate(paramDate)
                 ],
             );

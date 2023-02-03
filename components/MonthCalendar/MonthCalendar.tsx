@@ -13,7 +13,7 @@ import { useSidebarContext } from '@contexts/SidebarContext';
 import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
 import { getCalendarDates } from '@utils/calculateDate';
 import { DAYS, formatDate } from '@utils/formatting';
-import getLayeredEvents from '@utils/layerEvents';
+import { getLayeredEvents } from '@utils/layerEvents';
 export default function MonthCalendar() {
     const router = useRouter();
     const { year, month, date } = router.query;

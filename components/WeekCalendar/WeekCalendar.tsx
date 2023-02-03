@@ -18,7 +18,8 @@ import {
 } from '@customTypes/ScheduleTypes';
 import { DAYS, formatDate, formatHour } from '@utils/formatting';
 import {
-    getLayeredFrozenEvents,
+    getFrozenEvents,
+    getLayeredEvents,
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
 
@@ -113,11 +114,11 @@ export default function WeekCalendar() {
 
     useEffect(() => {
         if (weekEvents) {
-            setLayeredFrozenEvents(
-                getLayeredFrozenEvents(weekEvents, weekDates),
-            );
+            const { frozenEvents, scrollableEvents } =
+                getFrozenEvents(weekEvents);
+            setLayeredFrozenEvents(getLayeredEvents(frozenEvents, weekDates));
             setLayeredWeeklyWithinEvents(
-                getLayeredWeeklyWithinEvents(weekEvents, weekDates),
+                getLayeredWeeklyWithinEvents(scrollableEvents, weekDates),
             );
         }
     }, [weekEvents]);

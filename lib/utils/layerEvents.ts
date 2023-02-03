@@ -94,6 +94,21 @@ function sortEvents(events: FullSchedule[]) {
     return { acrossEvents, withinEvents };
 }
 
+export function getFrozenEvents(events: FullSchedule[]) {
+    const frozenEvents = <FullSchedule[]>[];
+    const scrollableEvents = <FullSchedule[]>[];
+    events.forEach(event => {
+        const startDate = new Date(event.start_at);
+        const endDate = new Date(event.end_at);
+        if (endDate.getTime() - startDate.getTime() >= 24 * 60 * 60 * 1000) {
+            frozenEvents.push(event);
+        } else {
+            scrollableEvents.push(event);
+        }
+    });
+    return { frozenEvents, scrollableEvents };
+}
+
 function getAcrossType(dateObj: Date, event: FullSchedule, dates: Date[]) {
     if (
         formatDate(dateObj) === event.start_at.split(' ')[0] &&
@@ -145,7 +160,7 @@ function layerAcrossEvents(
     acrossEvents: FullSchedule[],
     dates: Date[],
     layeredEvents: LayeredEvents,
-    independentView: boolean,
+    independentView: boolean | undefined,
 ) {
     acrossEvents.forEach(event => {
         const startDateString =
@@ -244,10 +259,10 @@ function fillSkippedLayers(dates: Date[], layeredEvents: LayeredEvents) {
         }
     }
 }
-export default function getLayeredEvents(
+export function getLayeredEvents(
     events: FullSchedule[],
     dates: Date[],
-    independentView: boolean,
+    independentView?: boolean,
 ) {
     const layeredEvents = getInitialLayeredEvents(dates);
     if (!events) {
@@ -262,22 +277,6 @@ export default function getLayeredEvents(
     }
     fillSkippedLayers(dates, layeredEvents);
     return layeredEvents;
-}
-
-export function getLayeredFrozenEvents(events: FullSchedule[], dates: Date[]) {
-    const frozenEvents = events.filter(event => {
-        const startDate = new Date(event.start_at);
-        const endDate = new Date(event.end_at);
-        if (endDate.getTime() - startDate.getTime() >= 24 * 60 * 60 * 1000) {
-            return true;
-        }
-        return false;
-    });
-    return getLayeredEvents(
-        frozenEvents,
-        dates,
-        dates.length === 1 ? true : false,
-    );
 }
 
 function areTimesOverlapping(eventA: FullSchedule, eventB: FullSchedule) {
