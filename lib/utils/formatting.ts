@@ -47,6 +47,9 @@ export const formatHour = (time: Date) => {
 };
 
 export const formatEventTime = (startTime: Date, endTime: Date) => {
+    if (endTime.getTime() - startTime.getTime() >= 24 * 60 * 60 * 1000) {
+        return '종일';
+    }
     const startString =
         startTime.getMinutes() === 0
             ? formatHour(startTime)

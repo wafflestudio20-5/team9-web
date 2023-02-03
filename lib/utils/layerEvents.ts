@@ -5,7 +5,8 @@ import {
     LayeredWeeklyWithinEvents,
     WeeklyWithinEvents,
 } from '@customTypes/ScheduleTypes';
-import { formatDate } from '@utils/formatting';
+import { getDatesInEvent, isDateIncluded } from '@utils/calcEventDates';
+import { formatDate, formatDateWithTime } from '@utils/formatting';
 
 function compareEndAt(eventA: FullSchedule, eventB: FullSchedule) {
     const aEnd = eventA.end_at;
@@ -33,16 +34,6 @@ function compareLength(eventA: FullSchedule, eventB: FullSchedule) {
     return 1;
 }
 
-function isDateIncluded(date: Date | string, event: FullSchedule) {
-    if (date instanceof Date) {
-        return (
-            formatDate(date) >= event.start_at.split(' ')[0] &&
-            formatDate(date) <= event.end_at.split(' ')[0]
-        );
-    }
-    throw new Error('wrong parameter type in fn IsDateIncluded');
-}
-
 function findAvailableLayer(layeredEvents: LayeredEvents, dateString: string) {
     if (layeredEvents[dateString] === undefined) {
         return 0;
@@ -67,44 +58,120 @@ function sortEvents(events: FullSchedule[]) {
     const withinEvents = <FullSchedule[]>[];
 
     events.forEach(event => {
-        if (event.start_at.split(' ')[0] === event.end_at.split(' ')[0]) {
+        const startDate = new Date(event.start_at);
+        const endDate = new Date(event.end_at);
+        if (startDate.toDateString() === endDate.toDateString()) {
             withinEvents.push(event);
-        } else acrossEvents.push(event);
+        } else if (
+            event.end_at.split(' ')[1] === '00:00:00' &&
+            endDate.getTime() - startDate.getTime() <= 24 * 60 * 60 * 1000
+        ) {
+            withinEvents.push(event);
+        } else {
+            acrossEvents.push(event);
+        }
     });
     acrossEvents.sort(compareEndAt);
     withinEvents.sort(compareEndAt);
     return { acrossEvents, withinEvents };
 }
 
+export function getFrozenEvents(events: FullSchedule[]) {
+    const frozenEvents = <FullSchedule[]>[];
+    const scrollableEvents = <FullSchedule[]>[];
+    if (!events) {
+        return { frozenEvents, scrollableEvents };
+    }
+    events.forEach(event => {
+        if (!event) {
+            return;
+        }
+        const startDate = new Date(event.start_at);
+        const endDate = new Date(event.end_at);
+        if (endDate.getTime() - startDate.getTime() >= 24 * 60 * 60 * 1000) {
+            frozenEvents.push(event);
+        } else {
+            scrollableEvents.push(event);
+        }
+    });
+    return { frozenEvents, scrollableEvents };
+}
+
+function getAcrossType(dateObj: Date, event: FullSchedule, dates: Date[]) {
+    if (
+        formatDate(dateObj) === event.start_at.split(' ')[0] &&
+        dateObj.getDay() === 6
+    ) {
+        return 'acrossClosedSat';
+    } else if (
+        (formatDate(dateObj) === event.end_at.split(' ')[0] ||
+            (event.end_at.split(' ')[1] === '00:00:00' &&
+                new Date(event.end_at).getTime() - dateObj.getTime() <=
+                    24 * 60 * 60 * 1000)) &&
+        dateObj.getDay() === 0
+    ) {
+        return 'acrossClosedSun';
+    } else if (dateObj.getDay() === 0) {
+        return 'acrossLeftEnd';
+    } else if (formatDate(dateObj) === event.start_at.split(' ')[0]) {
+        return 'acrossLeft';
+    } else if (dateObj.getDay() === 6) {
+        return 'acrossRightEnd';
+    } else if (
+        formatDate(dateObj) === event.end_at.split(' ')[0] ||
+        (event.end_at.split(' ')[1] === '00:00:00' &&
+            new Date(event.end_at).getTime() - dateObj.getTime() <=
+                24 * 60 * 60 * 1000)
+    ) {
+        return 'acrossRight';
+    } else {
+        return 'acrossMiddle';
+    }
+}
+
+function getAcrossTypeForIndepView(dateObj: Date, event: FullSchedule) {
+    if (formatDate(dateObj) === event.start_at.split(' ')[0]) {
+        return 'acrossLeftEnd';
+    } else if (
+        formatDate(dateObj) === event.end_at.split(' ')[0] ||
+        (event.end_at.split(' ')[1] === '00:00:00' &&
+            new Date(event.end_at).getTime() - dateObj.getTime() <=
+                24 * 60 * 60 * 1000)
+    ) {
+        return 'acrossRightEnd';
+    } else {
+        return 'acrossMiddle';
+    }
+}
+
 function layerAcrossEvents(
     acrossEvents: FullSchedule[],
     dates: Date[],
     layeredEvents: LayeredEvents,
+    independentView: boolean | undefined,
 ) {
     acrossEvents.forEach(event => {
-        const startDateString =
-            event.start_at.split(' ')[0] < formatDate(dates[0])
-                ? formatDate(dates[0])
-                : event.start_at.split(' ')[0];
-        const dateObj = new Date(startDateString);
-        while (isDateIncluded(dateObj, event)) {
+        const datesInEvent = getDatesInEvent(event);
+        for (let i = 0; i < datesInEvent.length; i++) {
+            const dateObj = new Date(datesInEvent[i]);
             if (formatDate(dateObj) < formatDate(dates[0])) {
-                dateObj.setDate(dateObj.getDate() + 1);
                 continue;
             }
             if (formatDate(dateObj) > formatDate(dates[dates.length - 1])) {
                 break;
             }
-
-            if (formatDate(dateObj) === event.start_at.split(' ')[0]) {
-                const newDateObj = new Date(formatDate(dateObj));
+            if (
+                formatDate(dateObj) === event.start_at.split(' ')[0] ||
+                formatDate(dateObj) === formatDate(dates[0])
+            ) {
                 const layer = findAvailableLayer(
                     layeredEvents,
-                    formatDate(newDateObj),
+                    formatDate(dateObj),
                 );
-                while (isDateIncluded(newDateObj, event)) {
+                for (let j = 0; j < datesInEvent.length; j++) {
+                    const newDateObj = new Date(datesInEvent[j]);
+
                     if (formatDate(newDateObj) < formatDate(dates[0])) {
-                        newDateObj.setDate(newDateObj.getDate() + 1);
                         continue;
                     }
                     if (
@@ -113,64 +180,33 @@ function layerAcrossEvents(
                     ) {
                         break;
                     }
-                    if (
-                        formatDate(newDateObj) ===
-                            event.start_at.split(' ')[0] &&
-                        newDateObj.getDay() === 6
-                    ) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossClosed',
-                            event: event,
-                        };
-                    } else if (newDateObj.getDay() === 0) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossLeftEnd',
-                            event: event,
-                        };
-                    } else if (
-                        formatDate(newDateObj) === event.start_at.split(' ')[0]
-                    ) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossLeft',
-                            event: event,
-                        };
-                    } else if (newDateObj.getDay() === 6) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossRightEnd',
-                            event: event,
-                        };
-                    } else if (
-                        formatDate(newDateObj) === event.end_at.split(' ')[0]
-                    ) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossRight',
-                            event: event,
-                        };
-                    } else {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossMiddle',
-                            event: event,
-                        };
-                    }
-                    newDateObj.setDate(newDateObj.getDate() + 1);
+
+                    layeredEvents[formatDate(newDateObj)][layer] = {
+                        type: `${
+                            independentView
+                                ? getAcrossTypeForIndepView(newDateObj, event)
+                                : getAcrossType(newDateObj, event, dates)
+                        }`,
+                        event: event,
+                    };
                 }
             }
-
-            dateObj.setDate(dateObj.getDate() + 1);
         }
     });
 }
 
 function layerWithinEvents(
     withinEvents: FullSchedule[],
-    dates: Date[],
     layeredEvents: LayeredEvents,
 ) {
     withinEvents.forEach(event => {
-        const dateString = event.start_at.split(' ')[0];
+        const [dateString] = getDatesInEvent(event);
+        console.log(dateString);
         const dateObj = new Date(dateString);
         const layer = findAvailableLayer(layeredEvents, dateString);
-
+        if (!layeredEvents[dateString]) {
+            return;
+        }
         if (dateObj.getDay() === 0) {
             layeredEvents[dateString][layer] = {
                 type: 'withinLeftEnd',
@@ -204,40 +240,48 @@ function fillSkippedLayers(dates: Date[], layeredEvents: LayeredEvents) {
         }
     }
 }
-export default function getLayeredEvents(
+export function getLayeredEvents(
     events: FullSchedule[],
     dates: Date[],
+    independentView?: boolean,
 ) {
     const layeredEvents = getInitialLayeredEvents(dates);
     if (!events) {
         return layeredEvents;
     }
     const { acrossEvents, withinEvents } = sortEvents(events);
+    console.log(acrossEvents);
+    console.log(withinEvents);
     if (acrossEvents) {
-        layerAcrossEvents(acrossEvents, dates, layeredEvents);
+        layerAcrossEvents(acrossEvents, dates, layeredEvents, independentView);
     }
     if (withinEvents) {
-        layerWithinEvents(withinEvents, dates, layeredEvents);
-    }
-    fillSkippedLayers(dates, layeredEvents);
-    return layeredEvents;
-}
-
-export function getLayeredAcrossEvents(events: FullSchedule[], dates: Date[]) {
-    const layeredEvents = getInitialLayeredEvents(dates);
-    if (!events) {
-        return layeredEvents;
-    }
-    const { acrossEvents } = sortEvents(events);
-    if (acrossEvents) {
-        layerAcrossEvents(acrossEvents, dates, layeredEvents);
+        layerWithinEvents(withinEvents, layeredEvents);
     }
     fillSkippedLayers(dates, layeredEvents);
     return layeredEvents;
 }
 
 function areTimesOverlapping(eventA: FullSchedule, eventB: FullSchedule) {
-    if (eventA.end_at <= eventB.start_at || eventB.end_at <= eventA.start_at) {
+    const minimumHeightAsMilliseconds = 20 / (1320 / (24 * 60 * 60 * 1000));
+    const aEndasDisplayed = new Date(eventA.end_at);
+    aEndasDisplayed.setMilliseconds(
+        Math.max(
+            aEndasDisplayed.getTime() - new Date(eventA.start_at).getTime(),
+            minimumHeightAsMilliseconds,
+        ),
+    );
+    const bEndasDisplayed = new Date(eventB.end_at);
+    bEndasDisplayed.setMilliseconds(
+        Math.max(
+            bEndasDisplayed.getTime() - new Date(eventB.start_at).getTime(),
+            minimumHeightAsMilliseconds,
+        ),
+    );
+    if (
+        formatDateWithTime(aEndasDisplayed) <= eventB.start_at ||
+        formatDateWithTime(bEndasDisplayed) <= eventA.start_at
+    ) {
         return false;
     } else return true;
 }
@@ -298,9 +342,11 @@ function assignTextTop(
                     ) {
                         const lowerStart = new Date(lowerEvent.start_at);
                         const upperEnd = new Date(upperEvent.end_at);
-                        dailyLayerData[layer]![i].textTop =
+                        dailyLayerData[layer]![i].textTop = Math.max(
                             (upperEnd.getTime() - lowerStart.getTime()) *
-                            (1320 / (24 * 60 * 60 * 1000));
+                                (1320 / (24 * 60 * 60 * 1000)),
+                            20,
+                        );
                     }
                 }
             }

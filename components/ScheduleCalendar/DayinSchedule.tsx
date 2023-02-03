@@ -1,35 +1,101 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { MutableRefObject } from 'react';
 
 import styles from './DayinSchedule.module.scss';
 
-import { useDateContext } from '@contexts/DateContext';
-import { DAYS } from '@utils/formatting';
+import getEventColorClass from '@components/EventComponents/getEventColorClass';
+import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
+import { FullSchedule, NumberedEvent } from '@customTypes/ScheduleTypes';
+import { getDatesInEvent } from '@utils/calcEventDates';
+import { DAYS, formatEventTime } from '@utils/formatting';
 
-// interface name overlaps & is different
-// Need to properly decide data structure for further development
-interface DayData {
-    date: number;
-    day: number;
-    events: object[]; // to be specified
+interface DayinScheduleProps {
+    dateString: string;
+    eventData: NumberedEvent[];
 }
 
-export default function DayinSchedule({ dayData }: { dayData: DayData }) {
-    const { monthNow, dateNow } = useDateContext();
-    const { date, day, events } = dayData;
+export default function DayinSchedule({
+    dateString,
+    eventData,
+}: DayinScheduleProps) {
+    const [year, month, date] = dateString.split(' ');
+    const dateObj = new Date(dateString);
+    const today = new Date();
+    const router = useRouter();
+    const { openModal } = useModal();
+
+    const MSPERDAY = 24 * 60 * 60 * 1000;
+    const eventDurationMilliseconds = (event: FullSchedule) => {
+        const endDate = new Date(event.end_at);
+        const startDate = new Date(event.start_at);
+        return endDate.getTime() - startDate.getTime();
+    };
+
+    const getPartSuffix = (event: FullSchedule) => {
+        const eventDuration = eventDurationMilliseconds(event);
+        if (eventDuration <= MSPERDAY) {
+            return '';
+        }
+        const dateStrings = getDatesInEvent(event);
+        return `(${dateStrings.indexOf(dateString)}/${dateStrings.length}일)`;
+    };
     return (
         <div className={styles.wrapper}>
-            <div className={styles.dateHolder}>
-                <div className={styles.date}>
-                    <div>{date}</div>
-                </div>
+            <div
+                className={`${styles.dateHolder} ${
+                    dateObj.toDateString() === today.toDateString()
+                        ? styles.today
+                        : ''
+                }`}
+            >
                 <div
-                    className={styles.monthDay}
-                >{`${monthNow}월, ${DAYS[day]}`}</div>
+                    className={styles.date}
+                    onClick={() => {
+                        router.push(`/day/${year}/${month}/${date}`);
+                    }}
+                >
+                    <div>{dateObj.getDate()}</div>
+                </div>
+                <div className={styles.monthDay}>{`${
+                    dateObj.getMonth() + 1
+                }월, ${DAYS[dateObj.getDay()]}`}</div>
             </div>
 
-            <div>
-                {events.map((event, index) => {
-                    return <div key={index}>event</div>;
+            <div className={styles.eventsHolder}>
+                {eventData.map((event, index) => {
+                    return (
+                        <div
+                            key={index}
+                            className={styles.eventItem}
+                            onClick={() => {
+                                openModal(MODAL_NAMES.scheduleView, {
+                                    schedule: event.event,
+                                });
+                            }}
+                        >
+                            <div
+                                className={`${
+                                    styles.dotHolder
+                                }  ${getEventColorClass(
+                                    event.event.created_by,
+                                )}`}
+                            >
+                                <div className={styles.colorDot} />
+                            </div>
+
+                            <div
+                                className={styles.duration}
+                            >{`${formatEventTime(
+                                new Date(event.event.start_at),
+                                new Date(event.event.end_at),
+                            )}`}</div>
+                            <div className={styles.title}>
+                                {`${event.event.title} ${getPartSuffix(
+                                    event.event,
+                                )}`}
+                            </div>
+                        </div>
+                    );
                 })}
             </div>
         </div>

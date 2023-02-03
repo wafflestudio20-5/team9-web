@@ -14,13 +14,6 @@ export interface CalendarURLParams {
     to: string;
 }
 
-// temp (will be removed after merging backend pr)
-export interface CalendarURLParamsEmail {
-    email: string;
-    from: string;
-    to: string;
-}
-
 export const createScheduleAPI = (
     newSchedule: Schedule,
     urlParams: CalendarURLParams,
@@ -33,16 +26,6 @@ export const createScheduleAPI = (
 
 export const getEntireScheduleAPI = (
     urlParams: CalendarURLParams,
-    accessToken: string | null,
-) =>
-    CalendarAPI.get('/', {
-        params: urlParams,
-        headers: { Authorization: `Bearer ${accessToken}` },
-    });
-
-// temp (will be removed after merging backend pr)
-export const getEntireScheduleAPIEmail = (
-    urlParams: CalendarURLParamsEmail,
     accessToken: string | null,
 ) =>
     CalendarAPI.get('/', {

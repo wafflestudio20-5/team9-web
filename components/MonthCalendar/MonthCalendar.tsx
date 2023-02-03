@@ -13,7 +13,7 @@ import { useSidebarContext } from '@contexts/SidebarContext';
 import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
 import { getCalendarDates } from '@utils/calculateDate';
 import { DAYS, formatDate } from '@utils/formatting';
-import getLayeredEvents from '@utils/layerEvents';
+import { getLayeredEvents } from '@utils/layerEvents';
 export default function MonthCalendar() {
     const router = useRouter();
     const { year, month, date } = router.query;
@@ -32,16 +32,22 @@ export default function MonthCalendar() {
     const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
 
     useEffect(() => {
+        const lastDay = monthDates[monthDates.length - 1];
+        const dayAfterLast = new Date(
+            lastDay.getFullYear(),
+            lastDay.getMonth(),
+            lastDay.getDate() + 1,
+        );
         if ((user?.pk && monthDates) || needUpdate) {
             getEntireScheduleAPI(
                 {
                     pk: user?.pk,
                     from: formatDate(monthDates[0]),
-                    to: formatDate(monthDates[monthDates.length - 1]),
+                    to: formatDate(dayAfterLast),
                 } as CalendarURLParams,
                 accessToken,
             ).then(res => {
-                setMonthEvents(res.data.results);
+                setMonthEvents(res.data);
             });
         }
         setNeedUpdate(false);
