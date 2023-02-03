@@ -1,0 +1,20 @@
+.post {
+    margin-bottom: 25px;
+
+    h3.title {
+        margin: 15px 25px;
+        background-color: var(--sidebar-background);
+    }
+    .content {
+        padding: 15px;
+        border-top: 10px solid var(--login-shadow);
+        border-left: 10px solid var(--login-shadow);
+        background-color: var(--login-background);
+        overflow: auto;
+
+        .image {
+            margin: 15px auto;
+            width: 90%;
+        }
+    }
+}

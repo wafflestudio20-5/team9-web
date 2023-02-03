@@ -6,6 +6,7 @@
     z-index: 50;
     top: 25px;
     left: 30px;
+    padding: 0;
     border-radius: 5px;
     box-shadow: 0px 0px 3px 1px var(--structure);
     text-align: center;
@@ -13,10 +14,10 @@
     cursor: pointer;
 
     &.withText {
-        padding: 0 10px 0 15px;
-        height: 55px;
+        padding: 0 10px 0 8px;
+        height: 50px;
         border: 1px solid var(--structure);
-        border-radius: 25px;
+        border-radius: 10px;
         background-color: var(--header-background);
     }
 
@@ -34,5 +35,9 @@
 
     &:hover {
         box-shadow: 0px 0px 7px 3px var(--structure);
+    }
+
+    &:focus {
+        background-color: var(--button-hover);
     }
 }

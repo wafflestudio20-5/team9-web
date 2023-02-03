@@ -1,4 +1,3 @@
-// the same as UserDataForSearch interface in `UserTypes.ts`
 export interface Participant {
     pk: number;
     username: string;
@@ -17,7 +16,7 @@ export interface Schedule {
     is_recurring: boolean;
     cron_expr?: string | null;
     recurring_end_at?: string | null;
-    readonly recurring_schedule_group?: number;
+    readonly recurring_schedule_group?: number | null;
 }
 
 export interface FullSchedule extends Readonly<Omit<Schedule, 'participants'>> {
@@ -26,18 +25,18 @@ export interface FullSchedule extends Readonly<Omit<Schedule, 'participants'>> {
     created_at: string;
     updated_at: string;
     participants: Participant[];
-    recurring_schedule_group: number;
+    recurring_schedule_group: number | null;
 }
 
 export enum ProtectionLevel {
-    pulbic = 1,
-    follwer,
+    public = 1,
+    follower,
     private,
 }
 
 export const ProtectionLevelText: { [key: number]: string } = {
-    [ProtectionLevel.pulbic]: '전체공개',
-    [ProtectionLevel.follwer]: '친구공개',
+    [ProtectionLevel.public]: '전체공개',
+    [ProtectionLevel.follower]: '친구공개',
     [ProtectionLevel.private]: '비공개',
 };
 
