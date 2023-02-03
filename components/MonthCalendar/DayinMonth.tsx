@@ -1,17 +1,10 @@
 import { useRouter } from 'next/router';
-import React, { useRef, useState, useMemo } from 'react';
+import React from 'react';
 
 import styles from './DayinMonth.module.scss';
 
-import {
-    FullSchedule,
-    LayerData,
-    LayeredEvents,
-} from '@customTypes/ScheduleTypes';
-import AcrossEvent from '@components/EventComponents/AcrossEvent';
-import WithinEvent from '@components/EventComponents/WithinEvent';
-import FillerEvent from '@components/EventComponents/FillerEvent';
-import { useBoxSizeContext } from '../../contexts/BoxSizeContext';
+import { LayerData } from '@customTypes/ScheduleTypes';
+import getEventComponent from '@utils/getEventComponent';
 
 export default function DayinMonth({
     dateString,
@@ -21,11 +14,6 @@ export default function DayinMonth({
     layerData: LayerData;
 }) {
     const router = useRouter();
-    const dayRef = useRef<HTMLDivElement>(null);
-    const { boxHeight, boxWidth } = useBoxSizeContext();
-    // const layers = useMemo(() => {
-    //     return ?.across.length! + eventData?.within.length!;
-    // }, [eventData]);
 
     const today = new Date();
     const dateToday = today.getDate();
@@ -47,51 +35,8 @@ export default function DayinMonth({
         return `${styles.notCurrMonth} ${date === 1 && styles.textIncluded}`;
     };
 
-    const getEventComponent = (
-        dateString: string,
-        data: {
-            type: 'across' | 'within' | 'filler';
-            event: FullSchedule | null;
-        },
-        index: number,
-    ) => {
-        if (data === null) {
-            return <FillerEvent key={index} eventHeight={20} />;
-        }
-        if (data === undefined) {
-            return;
-        }
-        switch (data.type) {
-            case 'across':
-                return (
-                    <AcrossEvent
-                        key={index}
-                        layer={index}
-                        eventData={data.event!}
-                        dateString={dateString}
-                        eventHeight={20}
-                    />
-                );
-            case 'within':
-                return (
-                    <WithinEvent
-                        key={index}
-                        layer={index}
-                        eventData={data.event!}
-                        eventHeight={20}
-                    />
-                );
-            case 'filler':
-                return <FillerEvent key={index} eventHeight={20} />;
-            default:
-                throw new Error('invalid LayerData type');
-        }
-    };
     return (
-        <div
-            className={styles.wrapper}
-            style={{ height: `${boxHeight}px`, width: `${boxWidth}px` }}
-        >
+        <div className={styles.wrapper}>
             <div className={styles.buttonHolder}>
                 <button
                     className={dateHeaderClass()}
@@ -109,48 +54,32 @@ export default function DayinMonth({
                           .map(([layer, data], index) => {
                               if (index === 4) {
                                   return (
-                                      <div className={styles.seeMore}>{`${
-                                          data.length - 4
+                                      <div
+                                          key={index}
+                                          className={styles.seeMore}
+                                          onClick={() => {
+                                              router.push(
+                                                  `/day/${year}/${month}/${date}`,
+                                              );
+                                          }}
+                                      >{`${
+                                          Object.keys(layerData).length - 4
                                       }개 더보기`}</div>
                                   );
                               }
-                              return getEventComponent(dateString, data, index);
+                              return getEventComponent({
+                                  dateString: dateString,
+                                  data: data,
+                                  layer: Number(layer),
+                              });
                           })
-                    : Object.entries(layerData).map(([layer, data], index) => {
-                          return getEventComponent(dateString, data, index);
+                    : Object.entries(layerData).map(([layer, data]) => {
+                          return getEventComponent({
+                              dateString: dateString,
+                              data: data,
+                              layer: Number(layer),
+                          });
                       })}
-                {/* {eventData?.across.map((event, index) => {
-                    if (event.layer && event.layer <= 3) {
-                        return (
-                            <AcrossEvent
-                                key={index}
-                                eventData={event}
-                                dateString={dateString}
-                                eventHeight={20}
-                            />
-                        );
-                    } else if (event.layer == 4 && layers > 4) {
-                        return (
-                            <div className={styles.seeMore}>{`${
-                                layers - event.layer
-                            }개 더보기`}</div>
-                        );
-                    } else return null;
-                })}
-                {eventData?.within.map((event, index) => {
-                    if (
-                        event.layer &&
-                        event.layer + eventData?.across.length <= 3
-                    ) {
-                        return (
-                            <WithinEvent
-                                key={index}
-                                eventData={event}
-                                eventHeight={20}
-                            />
-                        );
-                    }
-                })} */}
             </div>
         </div>
     );

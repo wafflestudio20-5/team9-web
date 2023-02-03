@@ -99,11 +99,33 @@ export interface ScheduleRequestData {
 
 export interface LayerData {
     [layer: number]: {
-        type: 'across' | 'within' | 'filler';
+        type:
+            | 'acrossLeft'
+            | 'acrossLeftEnd'
+            | 'acrossMiddle'
+            | 'acrossRight'
+            | 'acrossRightEnd'
+            | 'acrossClosed'
+            | 'within'
+            | 'withinLeftEnd'
+            | 'withinRightEnd'
+            | 'filler';
         event: FullSchedule | null;
     } | null;
 }
 
 export interface LayeredEvents {
     [date: string]: LayerData;
+}
+
+export interface DailyLayerData {
+    [layer: number]: { textTop: number; event: FullSchedule }[] | null;
+}
+
+export interface WeeklyWithinEvents {
+    [date: string]: FullSchedule[];
+}
+
+export interface LayeredWeeklyWithinEvents {
+    [date: string]: DailyLayerData;
 }

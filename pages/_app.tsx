@@ -9,7 +9,7 @@ import SessionProvider from '@contexts/SessionContext';
 import SidebarProvider from '@contexts/SidebarContext';
 import ThemeProvider from '@contexts/ThemeContext';
 import '@styles/global.scss';
-import BoxSizeProvider from '@contexts/BoxSizeContext';
+import '@styles/EventColorClasses.scss';
 
 function ContextProviders({ children }: PropsWithChildren) {
     return (
@@ -18,9 +18,7 @@ function ContextProviders({ children }: PropsWithChildren) {
                 <CalendarProvider>
                     <DateProvider>
                         <ModalProvider>
-                            <SidebarProvider>
-                                <BoxSizeProvider>{children}</BoxSizeProvider>
-                            </SidebarProvider>
+                            <SidebarProvider>{children}</SidebarProvider>
                         </ModalProvider>
                     </DateProvider>
                 </CalendarProvider>
