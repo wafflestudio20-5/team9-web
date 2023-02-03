@@ -85,9 +85,9 @@ const SessionContext = createContext<SessionContextData>({
     },
 });
 
-const REACT_APP_GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
-const REACT_APP_KAKAO_REST_API_KEY =
-    process.env.REACT_APP_KAKAO_REST_API_KEY || '';
+const REACT_APP_GOOGLE_CLIENT_ID =
+    '665556060692-i2l61v20chqcvuji0q9uevi50ujld5oh.apps.googleusercontent.com';
+const REACT_APP_KAKAO_REST_API_KEY = '49d202e6f581c3fbdd29922292338f9a';
 
 export const useSessionContext = () => useContext(SessionContext);
 
