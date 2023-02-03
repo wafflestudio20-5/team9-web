@@ -24,6 +24,7 @@ interface UserSearchDropDownProps {
     resetOnExecution?: boolean;
     submitButtonNotRequired?: boolean;
     placeholder?: string;
+    getImage?: boolean;
 }
 
 export function UserSearchDropDown({
@@ -35,6 +36,7 @@ export function UserSearchDropDown({
     resetOnExecution,
     submitButtonNotRequired,
     placeholder,
+    getImage,
 }: UserSearchDropDownProps) {
     const { dropDownRef, openDropDown, closeDropDown, isOpen } = useDropDown();
 
@@ -158,6 +160,7 @@ export function UserSearchDropDown({
                         {selectedResults?.map(item => {
                             return (
                                 <SelectedResultItem
+                                    getImage={getImage ? true : false}
                                     key={item.pk}
                                     item={item}
                                     onClick={e => {
@@ -236,6 +239,7 @@ export function UserSearchDropDown({
                         suggestions.slice(0, 4)?.map(item => {
                             return (
                                 <SuggestionItem
+                                    getImage={getImage ? true : false}
                                     key={item.pk}
                                     item={item}
                                     onClick={() => handleSubmit(item)}
@@ -254,16 +258,18 @@ export function UserSearchDropDown({
 const SelectedResultItem = ({
     item,
     onClick,
+    getImage,
 }: {
     item: UserDataForSearch;
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    getImage?: boolean;
 }) => {
     // display rounded rectangles for each item selected (staged)
     // TODO after profile pictures are added:
     //          get profile picture with UserData and pass that to Image src prop
     return (
         <div className={styles.selected}>
-            <AccountDefaultIcon className="icon" width="20px" />
+            {getImage && <AccountDefaultIcon className="icon" width="20px" />}
             <div>{item.username}</div>
             <button onClick={onClick}>
                 <CloseIcon />
@@ -275,15 +281,19 @@ const SelectedResultItem = ({
 const SuggestionItem = ({
     item,
     onClick,
+    getImage,
 }: {
     item: UserDataForSearch;
     onClick: (e: React.MouseEvent<HTMLLIElement>) => void;
+    getImage?: boolean;
 }) => {
     return (
         <li onClick={onClick}>
             <div className={styles.suggestion}>
-                <AccountDefaultIcon className="icon" width="30px" />
-                <div>
+                {getImage && (
+                    <AccountDefaultIcon className="icon" width="30px" />
+                )}
+                <div className={styles.textHolder}>
                     <div className={styles.username}>{item.username}</div>
                     <div className={styles.email}>{item.email}</div>
                 </div>

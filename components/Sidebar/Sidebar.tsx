@@ -103,6 +103,7 @@ export default function Sidebar() {
                         toExecute={sendFollowRequest}
                         buttonText="요청"
                         resetOnExecution={true}
+                        getImage={false}
                     />
                 </div>
                 {/* <div className={styles.accordions}>
