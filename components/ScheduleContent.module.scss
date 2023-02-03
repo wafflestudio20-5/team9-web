@@ -1,0 +1,105 @@
+.scheduleContent {
+    padding: 12px 36px;
+    height: 100%;
+    overflow: auto;
+
+    h2.title {
+        display: flex;
+        align-items: center;
+        margin: 0 0 8px 0;
+
+        .color {
+            margin-left: 3px;
+            margin-right: 31px;
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+        }
+    }
+
+    > div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        height: 36px;
+
+        .icon {
+            display: flex;
+            align-items: center;
+            width: 54px;
+            flex-shrink: 0;
+        }
+    }
+
+    .times {
+        display: block;
+        margin-left: 52px;
+
+        > div {
+            font-size: small;
+        }
+    }
+
+    .date {
+        gap: 5px;
+
+        .dash {
+            margin: 0 5px;
+        }
+    }
+
+    .recurrence {
+        margin-top: 5px;
+    }
+
+    .participants {
+        align-items: flex-start;
+        height: fit-content;
+
+        ul {
+            flex-grow: 1;
+            max-height: 150px;
+            overflow: auto;
+        }
+    }
+
+    .participant {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        gap: 5px;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .username {
+            font-size: small;
+        }
+
+        .email {
+            font-size: 11px;
+        }
+    }
+
+    .description {
+        align-items: flex-start;
+        height: fit-content;
+        max-height: minmax(200px, auto);
+
+        p {
+            margin: 0;
+            padding-top: 1px;
+            max-height: 200px;
+            overflow: auto;
+        }
+    }
+
+    .protectionLevel {
+        .hideDetails {
+            margin-left: 5px;
+            font-size: small;
+        }
+    }
+}

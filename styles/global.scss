@@ -98,10 +98,10 @@ body {
 
     &::-webkit-scrollbar-thumb {
         border-radius: 10px;
-        background-color: var(--structure);
+        background-color: var(--login-register-submit-hover);
 
         &:hover {
-            background-color: var(--text-other);
+            background-color: var(--syrup-chocolate);
         }
     }
 }
