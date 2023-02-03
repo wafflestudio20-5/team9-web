@@ -1,70 +1,104 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import styles from './MonthCalendar.module.scss';
 
+import { getEntireScheduleAPI, CalendarURLParams } from '@apis/calendar';
 import DayinMonth from '@components/MonthCalendar/DayinMonth';
 import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
 import Sidebar from '@components/Sidebar/Sidebar';
+import { useCalendarContext } from '@contexts/CalendarContext';
+import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
-import { DAYS_ARR } from '@utils/formatDay';
-
+import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
+import { getCalendarDates } from '@utils/calculateDate';
+import { DAYS, formatDate } from '@utils/formatting';
+import getLayeredEvents from '@utils/layerEvents';
 export default function MonthCalendar() {
+    const router = useRouter();
+    const { year, month, date } = router.query;
+    const { needUpdate, setNeedUpdate } = useCalendarContext();
+    const { user, accessToken } = useSessionContext();
     const { isOpen } = useSidebarContext();
 
-    // data for month to be displayed
-    // will fetch from api request
-    // need to specify response format
-    const monthData = [
-        { month: 11, date: 27, events: [] },
-        { month: 11, date: 28, events: [] },
-        { month: 11, date: 29, events: [] },
-        { month: 11, date: 30, events: [] },
-        { month: 12, date: 1, events: [] },
-        { month: 12, date: 2, events: [] },
-        { month: 12, date: 3, events: [] },
-        { month: 12, date: 4, events: [] },
-        { month: 12, date: 5, events: [] },
-        { month: 12, date: 6, events: [] },
-        { month: 12, date: 7, events: [] },
-        { month: 12, date: 8, events: [] },
-        { month: 12, date: 9, events: [] },
-        { month: 12, date: 10, events: [] },
-        { month: 12, date: 11, events: [] },
-        { month: 12, date: 12, events: [] },
-        { month: 12, date: 13, events: [] },
-        { month: 12, date: 14, events: [] },
-        { month: 12, date: 15, events: [] },
-        { month: 12, date: 16, events: [] },
-        { month: 12, date: 17, events: [] },
-        { month: 12, date: 18, events: [] },
-        { month: 12, date: 19, events: [] },
-        { month: 12, date: 20, events: [] },
-        { month: 12, date: 21, events: [] },
-        { month: 12, date: 22, events: [] },
-        { month: 12, date: 23, events: [] },
-        { month: 12, date: 24, events: [] },
-        { month: 12, date: 25, events: [] },
-        { month: 12, date: 26, events: [] },
-        { month: 12, date: 27, events: [] },
-        { month: 12, date: 28, events: [] },
-        { month: 12, date: 29, events: [] },
-        { month: 12, date: 30, events: [] },
-        { month: 12, date: 31, events: [] },
-    ];
+    const monthDates = useMemo(() => {
+        return getCalendarDates({
+            dateObj: year
+                ? new Date(Number(year), Number(month) - 1, Number(date))
+                : new Date(),
+        });
+    }, [year, month, date]);
+    const [monthEvents, setMonthEvents] = useState<FullSchedule[]>();
+    const [layeredEvents, setLayeredEvents] = useState<LayeredEvents>();
+
+    useEffect(() => {
+        if ((user?.pk && monthDates) || needUpdate) {
+            getEntireScheduleAPI(
+                {
+                    pk: user?.pk,
+                    from: formatDate(monthDates[0]),
+                    to: formatDate(monthDates[monthDates.length - 1]),
+                } as CalendarURLParams,
+                accessToken,
+            ).then(res => {
+                setMonthEvents(res.data.results);
+            });
+        }
+        setNeedUpdate(false);
+    }, [monthDates, needUpdate, user]);
+
+    useEffect(() => {
+        if (monthEvents) {
+            setLayeredEvents(getLayeredEvents(monthEvents, monthDates));
+        }
+    }, [monthEvents]); // update layeredEvents only after monthEvents was updated to match new monthDates
+    // thus, dependency does not include monthDates to prevent errors
 
     return (
         <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
-            <div className={styles.monthHolder}>
+            <div className={styles.calendarHolder}>
                 <div className={styles.headrow}>
-                    {DAYS_ARR.map((item, index) => {
+                    {DAYS.map((item, index) => {
                         return <div key={index}>{item}</div>;
                     })}
                 </div>
-                <div className={styles.month}>
-                    {monthData.map((dayData, index) => {
-                        return <DayinMonth key={index} dayData={dayData} />;
-                    })}
+                <div className={styles.monthHolder} id="ExpansionBasis">
+                    <div
+                        className={styles.month}
+                        style={{
+                            gridTemplateRows: `${Array(monthDates.length / 7)
+                                .fill('1fr')
+                                .join(' ')}`,
+                        }}
+                    >
+                        {layeredEvents &&
+                            Object.entries(layeredEvents).map((data, index) => {
+                                return (
+                                    <DayinMonth
+                                        key={index}
+                                        dateString={data[0]}
+                                        layerData={data[1]}
+                                    />
+                                );
+                            })}
+                    </div>
+
+                    <div className={`${styles.borders} ${styles.horizontal}`}>
+                        {monthDates &&
+                            Array(monthDates?.length / 7 - 1)
+                                .fill(0)
+                                .map((v, i) => {
+                                    return <div key={i} />;
+                                })}
+                    </div>
+                </div>
+                <div className={`${styles.borders} ${styles.vertical}`}>
+                    {Array(6)
+                        .fill(0)
+                        .map((v, i) => {
+                            return <div key={i} />;
+                        })}
                 </div>
             </div>
         </div>

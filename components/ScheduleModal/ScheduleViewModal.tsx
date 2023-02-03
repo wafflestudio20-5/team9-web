@@ -5,6 +5,7 @@ import styles from './ScheduleViewModal.module.scss';
 
 import { deleteRecurringScheduleAPI, deleteScheduleAPI } from '@apis/calendar';
 import ModalFrame from '@components/ModalFrame';
+import { useCalendarContext } from '@contexts/CalendarContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import {
@@ -51,6 +52,7 @@ interface ScheduleModalProps {
 export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
     const { openModal, closeModal } = useModal();
     const { user, accessToken } = useSessionContext();
+    const { setNeedUpdate } = useCalendarContext();
     const startDate = useMemo(() => new Date(schedule.start_at), [schedule]);
     const endDate = useMemo(() => new Date(schedule.end_at), [schedule]);
 
@@ -88,6 +90,7 @@ export default function ScheduleViewModal({ schedule }: ScheduleModalProps) {
                 await deleteScheduleAPI(id, accessToken);
             }
             successToast('일정을 삭제했습니다.');
+            setNeedUpdate(true);
             return true;
         } catch (error) {
             const message = '일정을 삭제하지 못했습니다.';

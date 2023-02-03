@@ -1,16 +1,19 @@
-import axios, { Axios, AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
+import axios, { AxiosError } from 'axios';
 import React, {
     createContext,
     PropsWithChildren,
     useContext,
     useMemo,
     useState,
+    useEffect,
     useCallback,
 } from 'react';
 import Swal from 'sweetalert2';
 
 import { apiEndPoint } from '@apis/endpoint';
+import useLocalStorage from '@hooks/useLocalStorage';
+
+//import keys from '../secrets.json';
 
 interface LoginInfo {
     email: string;
@@ -30,6 +33,7 @@ interface User {
     email: string;
     birthdate: string;
     username: string;
+    image: string;
 }
 
 interface SessionContextData {
@@ -81,10 +85,6 @@ const SessionContext = createContext<SessionContextData>({
     },
 });
 
-//const apiEndPoint = 'http://ec2-43-201-9-194.ap-northeast-2.compute.amazonaws.com/api/v1/user/'
-//const apiEndPoint = 'http://api-staging-dearj-wafflestudio.site/api/v1/user/';
-const apiEndPointUser = apiEndPoint + '/user/';
-
 const REACT_APP_GOOGLE_CLIENT_ID =
     '665556060692-i2l61v20chqcvuji0q9uevi50ujld5oh.apps.googleusercontent.com';
 const REACT_APP_KAKAO_REST_API_KEY = '49d202e6f581c3fbdd29922292338f9a';
@@ -97,22 +97,71 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 export default function SessionProvider({ children }: PropsWithChildren) {
     const [user, setUser] = useState<User | null>(null);
     const [accessToken, setAccessToken] = useState<string | null>(null);
-    const [refreshToken, setRefreshToken] = useState<string | null>(null);
+    const [refreshToken, setRefreshToken] = useState<string | null | undefined>(
+        '',
+    );
+
+    const { stored, setStored } = useLocalStorage<string | null>(
+        'refreshToken',
+        '',
+    );
+
+    useEffect(() => {
+        setRefreshToken(stored);
+        getAccessTokenIfAvail(stored ? stored : '');
+    }, [stored]);
+
+    const getAccessTokenIfAvail = (storedRefreshToken: string) => {
+        if (storedRefreshToken == '') {
+            return;
+        }
+
+        axios
+            .post(apiEndPoint + '/user/token/refresh/', {
+                refresh: storedRefreshToken,
+            })
+            .then(response => {
+                setAccessToken(response.data.access);
+                return axios.get(apiEndPoint + '/user/profile/', {
+                    headers: {
+                        Authorization: `Bearer ${response.data.access}`,
+                    },
+                });
+            })
+            .then(response => {
+                setUser({
+                    pk: response.data.pk,
+                    email: response.data.email,
+                    birthdate: response.data.birthdate,
+                    username: response.data.username,
+                    image: response.data.image,
+                });
+            })
+            .catch(error => {
+                if (error.response.status === 401) {
+                    return;
+                } else {
+                    console.log('Error in getting access token: ' + error);
+                }
+            });
+    };
 
     const login = (loginInfo: LoginInfo) => {
         // send login request using loginInfo
         // if login success, set user and accessToken
         axios
-            .post(apiEndPointUser + 'login/', loginInfo)
+            .post(apiEndPoint + '/user/login/', loginInfo)
             .then(response => {
                 setUser({
                     pk: response.data.user.pk,
                     email: response.data.user.email,
                     birthdate: response.data.user.birthdate,
                     username: response.data.user.username,
+                    image: response.data.user.image,
                 });
                 setAccessToken(response.data.access_token);
                 setRefreshToken(response.data.refresh_token);
+                setStored(response.data.refresh_token);
                 axios.defaults.headers.post['X-CSRFToken'] =
                     response.data._csrf;
             })
@@ -130,7 +179,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         // send logout request
         // if logout success, reset user and accessToken to null
         axios
-            .post(apiEndPointUser + 'logout/', {
+            .post(apiEndPoint + '/user/logout/', {
                 refresh: refreshToken,
             })
             .then(response => {
@@ -152,7 +201,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
 
         try {
             const response = await axios.post(
-                apiEndPointUser + 'registration/',
+                apiEndPoint + '/user/registration/',
                 registerInfo,
             );
             setUser({
@@ -160,9 +209,11 @@ export default function SessionProvider({ children }: PropsWithChildren) {
                 email: response.data.user.email,
                 birthdate: response.data.user.birthdate,
                 username: response.data.user.username,
+                image: response.data.user.image,
             });
             setAccessToken(response.data.access_token);
             setRefreshToken(response.data.refresh_token);
+            setStored(response.data.refresh_token);
             axios.defaults.headers.post['X-CSRFToken'] = response.data._csrf;
             return {
                 error: false,
@@ -249,9 +300,10 @@ export default function SessionProvider({ children }: PropsWithChildren) {
             }
             setAccessToken(postSocialLoginData.accessToken);
             setRefreshToken(postSocialLoginData.refreshToken);
+            setStored(postSocialLoginData.refreshToken);
 
             axios
-                .get(apiEndPointUser + 'profile/', {
+                .get(apiEndPoint + '/user/profile/', {
                     headers: {
                         Authorization: `Bearer ${postSocialLoginData.accessToken}`,
                     },
@@ -262,6 +314,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
                         email: response.data.email,
                         birthdate: response.data.birthdate,
                         username: response.data.username,
+                        image: response.data.image,
                     });
                     axios.defaults.headers.post['X-CSRFToken'] =
                         response.data._csrf;
