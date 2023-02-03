@@ -63,7 +63,11 @@ export default function DailyEvent({
                     height < 30 ? styles.oneline : styles.twoline
                 }`}
                 style={{
-                    paddingTop: `${height < 30 ? 0 : textTop + 8}px`,
+                    paddingTop: `${
+                        height < 30
+                            ? 0
+                            : Math.min(textTop + 8, Math.max(height - 38, 0))
+                    }px`,
                 }}
             >
                 {height < 30 ? (

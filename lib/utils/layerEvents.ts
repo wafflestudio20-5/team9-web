@@ -5,7 +5,7 @@ import {
     LayeredWeeklyWithinEvents,
     WeeklyWithinEvents,
 } from '@customTypes/ScheduleTypes';
-import { formatDate } from '@utils/formatting';
+import { formatDate, formatDateWithTime } from '@utils/formatting';
 
 function compareEndAt(eventA: FullSchedule, eventB: FullSchedule) {
     const aEnd = eventA.end_at;
@@ -281,7 +281,25 @@ export function getLayeredFrozenEvents(events: FullSchedule[], dates: Date[]) {
 }
 
 function areTimesOverlapping(eventA: FullSchedule, eventB: FullSchedule) {
-    if (eventA.end_at <= eventB.start_at || eventB.end_at <= eventA.start_at) {
+    const minimumHeightAsMilliseconds = 20 / (1320 / (24 * 60 * 60 * 1000));
+    const aEndasDisplayed = new Date(eventA.end_at);
+    aEndasDisplayed.setMilliseconds(
+        Math.max(
+            aEndasDisplayed.getTime() - new Date(eventA.start_at).getTime(),
+            minimumHeightAsMilliseconds,
+        ),
+    );
+    const bEndasDisplayed = new Date(eventB.end_at);
+    bEndasDisplayed.setMilliseconds(
+        Math.max(
+            bEndasDisplayed.getTime() - new Date(eventB.start_at).getTime(),
+            minimumHeightAsMilliseconds,
+        ),
+    );
+    if (
+        formatDateWithTime(aEndasDisplayed) <= eventB.start_at ||
+        formatDateWithTime(bEndasDisplayed) <= eventA.start_at
+    ) {
         return false;
     } else return true;
 }
@@ -342,9 +360,11 @@ function assignTextTop(
                     ) {
                         const lowerStart = new Date(lowerEvent.start_at);
                         const upperEnd = new Date(upperEvent.end_at);
-                        dailyLayerData[layer]![i].textTop =
+                        dailyLayerData[layer]![i].textTop = Math.max(
                             (upperEnd.getTime() - lowerStart.getTime()) *
-                            (1320 / (24 * 60 * 60 * 1000));
+                                (1320 / (24 * 60 * 60 * 1000)),
+                            20,
+                        );
                     }
                 }
             }

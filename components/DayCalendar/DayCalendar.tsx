@@ -5,8 +5,6 @@ import styles from './DayCalendar.module.scss';
 
 import { getEntireScheduleAPI, CalendarURLParams } from '@apis/calendar';
 import Sidebar from '@components/Sidebar/Sidebar';
-import AcrossEvent from '@components/EventComponents/AcrossEvent';
-import FillerEvent from '@components/EventComponents/FillerEvent';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
 import { formatHour, formatDate, DAYS } from '@utils/formatting';
@@ -133,61 +131,6 @@ export default function DayCalendar() {
                                             layer: Number(layer),
                                             independentView: true,
                                         });
-                                        // if (data === null) {
-                                        //     return (
-                                        //         <FillerEvent
-                                        //             key={layer}
-                                        //             eventHeight={20}
-                                        //         />
-                                        //     );
-                                        // }
-                                        // if (data === undefined) {
-                                        //     return;
-                                        // }
-                                        // if (!data.event) {
-                                        //     return;
-                                        // }
-                                        // const type = () => {
-                                        //     if (
-                                        //         data.event.start_at.split(
-                                        //             ' ',
-                                        //         )[0] === formatDate(paramDate)
-                                        //     ) {
-                                        //         return 'leftEnd';
-                                        //     } else if (
-                                        //         data.event.end_at.split(
-                                        //             ' ',
-                                        //         )[0] === formatDate(paramDate)
-                                        //     ) {
-                                        //         return 'rightEnd';
-                                        //     } else if (
-                                        //         data.event.end_at.split(
-                                        //             ' ',
-                                        //         )[1] === '00:00:00' &&
-                                        //         data.event.end_at.split(
-                                        //             ' ',
-                                        //         )[0] ===
-                                        //             formatDate(
-                                        //                 new Date(
-                                        //                     paramDate.getFullYear(),
-                                        //                     paramDate.getMonth(),
-                                        //                     paramDate.getDate() +
-                                        //                         1,
-                                        //                 ),
-                                        //             )
-                                        //     ) {
-                                        //         return 'rightEnd';
-                                        //     } else {
-                                        //         return 'middle';
-                                        //     }
-                                        // };
-                                        // return (
-                                        //     <AcrossEvent
-                                        //         type={type()}
-                                        //         eventData={data.event}
-                                        //         layer={Number(layer)}
-                                        //     />
-                                        // );
                                     },
                                 )}
                         </div>
