@@ -17,6 +17,7 @@ import { formatDate } from '@utils/formatting';
 import { getEntireScheduleAPI } from '@apis/calendar';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useRouter } from 'next/router';
+import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
 
 //temporary until backend changes
 function toHttps(url: string) {
@@ -24,8 +25,6 @@ function toHttps(url: string) {
         return '';
     }
     const [protocol, path] = url.split('://');
-    console.log(url);
-    console.log(path);
     return protocol === 'https' ? url : `https://${path}`;
 }
 
@@ -57,9 +56,8 @@ export default function ScheduleCalendar() {
     const scrollHolderRef = useRef<HTMLDivElement>(null);
     const targetRef = React.createRef<HTMLDivElement>();
     const [next, setNext] = useState<string>('');
-    const [loadCount, setLoadCount] = useState(0);
-    const [renderCount, setRenderCount] = useState(0);
     useEffect(() => {
+        console.log('double call');
         // initial API call -> get total of 40 entries, only display 20
         if (user?.pk) {
             getEntireScheduleAPI(
@@ -71,8 +69,6 @@ export default function ScheduleCalendar() {
                 accessToken,
             )
                 .then(res => {
-                    setLoadCount(20);
-                    setRenderCount(20);
                     setScheduleEvent(
                         res.data.results.map(
                             (event: FullSchedule, index: number) => {
@@ -93,7 +89,6 @@ export default function ScheduleCalendar() {
                                 },
                             })
                             .then(res => {
-                                setLoadCount(40);
                                 setNext(toHttps(res.data.next));
                                 setBufferData(
                                     res.data.results &&
@@ -113,36 +108,56 @@ export default function ScheduleCalendar() {
                     }
                 });
         }
-    }, [user?.pk]);
+    }, [user?.pk, dateObj]);
 
     const [setTarget] = useInfiniteScroll(
-        () => {
-            console.log('intersecting');
-            if (!scheduleEvent || !bufferData || !next) {
-                return;
+        (entry: IntersectionObserverEntry, observer: IntersectionObserver) => {
+            if (entry.isIntersecting) {
+                console.log(entry);
+                if (scheduleEvent && next) {
+                    if (next) {
+                        axios
+                            .get(toHttps(next), {
+                                headers: {
+                                    Authorization: `Bearer ${accessToken}`,
+                                },
+                            })
+                            .then(res => {
+                                if (res.data.next) {
+                                    setNext(toHttps(res.data.next));
+                                }
+                                setNext(toHttps(res.data.next));
+                                if (bufferData) {
+                                    setScheduleEvent([
+                                        ...scheduleEvent,
+                                        ...bufferData,
+                                    ]);
+                                    setBufferData([]);
+                                }
+                                setBufferData(res.data.results);
+                            });
+                    }
+                }
+                observer.unobserve(entry.target);
             }
-            setScheduleEvent([...scheduleEvent, ...bufferData]);
-            setRenderCount(renderCount + 20);
-            axios
-                .get(next, {
-                    headers: { Authorization: `Bearer ${accessToken}` },
-                })
-                .then(res => {
-                    setLoadCount(loadCount + 20);
-                    setNext(toHttps(res.data.next));
-                    setBufferData(res.data.results);
-                });
         },
-        { threshold: 0, root: scrollHolderRef?.current },
+        { threshold: [0, 1], root: scrollHolderRef?.current },
     );
 
     useEffect(() => {
-        if (typeof targetRef !== 'function') {
+        if (typeof targetRef !== 'function' && targetRef.current) {
             setTarget(targetRef.current);
         }
-    }, [targetRef.current]);
+    }, [scheduleEventByDay]);
+
+    const refIndex = useMemo(() => {
+        return scheduleEventByDay
+            ? Object.keys(scheduleEventByDay).length - 1
+            : -1;
+    }, [scheduleEventByDay]);
 
     useEffect(() => {
+        console.log('recalc');
         if (scheduleEvent) {
             const eventsByDay = {} as NumberedEventsByDay;
             const { frozenEvents, scrollableEvents } = getFrozenEvents(
@@ -202,29 +217,36 @@ export default function ScheduleCalendar() {
                 );
                 i += eventData?.length;
             });
-            console.log(eventsByDay);
             setScheduleEventByDay(eventsByDay);
         }
     }, [scheduleEvent]);
 
     return (
         <div className={styles.wrapper}>
-            {isOpen && <Sidebar />}
+            {isOpen ? <Sidebar /> : <CreateScheduleButton />}
             <div className={styles.scrollHolder} ref={scrollHolderRef}>
-                {scheduleEventByDay &&
-                    Object.entries(scheduleEventByDay).map(
-                        ([dateString, eventData], index) => {
-                            return (
-                                <DayinSchedule
-                                    key={index}
-                                    dateString={dateString}
-                                    eventData={eventData}
-                                    ref={targetRef}
-                                    renderCount={renderCount}
-                                />
-                            );
-                        },
-                    )}
+                <div className={styles.scrollContent}>
+                    {scheduleEventByDay &&
+                        Object.entries(scheduleEventByDay).map(
+                            ([dateString, eventData], index) => {
+                                return (
+                                    <DayinSchedule
+                                        key={index}
+                                        dateString={dateString}
+                                        eventData={eventData}
+                                        ref={
+                                            index ===
+                                            Object.keys(scheduleEventByDay)
+                                                .length -
+                                                1
+                                                ? targetRef
+                                                : undefined
+                                        }
+                                    />
+                                );
+                            },
+                        )}
+                </div>
             </div>
         </div>
     );

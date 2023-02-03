@@ -97,7 +97,13 @@ function sortEvents(events: FullSchedule[]) {
 export function getFrozenEvents(events: FullSchedule[]) {
     const frozenEvents = <FullSchedule[]>[];
     const scrollableEvents = <FullSchedule[]>[];
+    if (!events) {
+        return { frozenEvents, scrollableEvents };
+    }
     events.forEach(event => {
+        if (!event) {
+            return;
+        }
         const startDate = new Date(event.start_at);
         const endDate = new Date(event.end_at);
         if (endDate.getTime() - startDate.getTime() >= 24 * 60 * 60 * 1000) {

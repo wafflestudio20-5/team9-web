@@ -2,25 +2,21 @@ import React, { MutableRefObject } from 'react';
 
 import styles from './DayinSchedule.module.scss';
 
-import { useDateContext } from '@contexts/DateContext';
 import { DAYS } from '@utils/formatting';
-import { FullSchedule, NumberedEvent } from '@customTypes/ScheduleTypes';
+import { NumberedEvent } from '@customTypes/ScheduleTypes';
 
 interface DayinScheduleProps {
     dateString: string;
     eventData: NumberedEvent[];
-    renderCount: number;
 }
 
 export const DayinSchedule = React.forwardRef<
     HTMLDivElement,
     DayinScheduleProps
->(({ dateString, eventData, renderCount }, ref): JSX.Element => {
+>(({ dateString, eventData }, ref): JSX.Element => {
     const dateObj = new Date(dateString);
-    const isRefAttached =
-        eventData[eventData.length - 1].num === renderCount - 1;
     return (
-        <div className={styles.wrapper} ref={isRefAttached ? ref : undefined}>
+        <div className={styles.wrapper} ref={ref}>
             <div className={styles.dateHolder}>
                 <div className={styles.date}>
                     <div>{dateObj.getDate()}</div>
@@ -32,7 +28,11 @@ export const DayinSchedule = React.forwardRef<
 
             <div>
                 {eventData.map((event, index) => {
-                    return <div key={index}>event</div>;
+                    return (
+                        <div
+                            key={index}
+                        >{`${event.num} ${event.event.title}`}</div>
+                    );
                 })}
             </div>
         </div>
