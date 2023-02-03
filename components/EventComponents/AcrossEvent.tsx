@@ -94,7 +94,7 @@ export default function AcrossEvent({
             style={{
                 width: '100%',
                 height: `${eh + sh}px`,
-                filter: `${getEventItemFilterProp(event)}`,
+                filter: `${getEventItemFilterProp(eventData)}`,
             }}
         >
             <svg
