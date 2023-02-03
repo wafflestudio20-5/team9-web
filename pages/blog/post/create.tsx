@@ -14,7 +14,7 @@ import { errorToast, successToast } from '@utils/customAlert';
 // temp data for related schedule list
 const schedulesData: FullSchedule[] = [
     {
-        id: 1,
+        id: 993,
         title: '',
         created_at: '',
         updated_at: '',
@@ -45,7 +45,7 @@ export default function PostCreatePage() {
 
     const createPost = async (newPost: FormData) => {
         try {
-            newPost.append('nested_json', JSON.stringify(getScheduleIds()));
+            newPost.append('schedules_json', JSON.stringify(getScheduleIds()));
             const res = await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
             router.push(`/blog/post/${res.data.pid}`);

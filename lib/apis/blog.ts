@@ -8,7 +8,7 @@ const BlogAPI = axios.create({
     baseURL: `${apiEndPoint}/blog`,
 });
 
-// FormData: {title: string, content: string, image?: File | '', nested_json: {pk: number}[]}
+// FormData: {title: string, content: string, image?: File | '', schedules_json: {pk: number}[]}
 export const createPostAPI = (newPost: FormData, accessToken: string | null) =>
     BlogAPI.post('/post/', newPost, {
         headers: {
@@ -53,7 +53,7 @@ export const createCommentAPI = (
     newComment: Comment,
     accessToken: string | null,
 ) =>
-    BlogAPI.post(`/comment/`, newComment, {
+    BlogAPI.post(`/post/${postId}/comment/`, newComment, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -61,12 +61,11 @@ export const getEntireCommentAPI = (
     postId: number,
     accessToken: string | null,
 ) =>
-    BlogAPI.get(`/comment/`, {
+    BlogAPI.get(`/post/${postId}/comment/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
 export const getParticularCommentAPI = (
-    postId: number,
     commentId: number,
     accessToken: string | null,
 ) =>
@@ -75,7 +74,6 @@ export const getParticularCommentAPI = (
     });
 
 export const editCommentAPI = (
-    postId: number,
     commentId: number,
     newComment: Comment,
     accessToken: string | null,
@@ -85,7 +83,6 @@ export const editCommentAPI = (
     });
 
 export const deleteCommentAPI = (
-    postId: number,
     commentId: number,
     accessToken: string | null,
 ) =>
@@ -96,7 +93,18 @@ export const deleteCommentAPI = (
 export const getRelatedPosts = (
     scheduleId: number,
     accessToken: string | null,
-) =>
-    BlogAPI.get(`/schedule/post/${scheduleId}/`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    urlParams?: { cursor: string },
+) => {
+    if (urlParams) {
+        return BlogAPI.get(
+            `/schedule/post/${scheduleId}/?cursor=${urlParams.cursor}`,
+            {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            },
+        );
+    } else {
+        return BlogAPI.get(`/schedule/post/${scheduleId}/`, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+    }
+};
