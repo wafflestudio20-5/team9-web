@@ -14,11 +14,13 @@ import { NumberedEventsByDay, FullSchedule } from '@customTypes/ScheduleTypes';
 import { getDatesInEvent } from '@utils/calcEventDates';
 import { formatDate } from '@utils/formatting';
 import { getFrozenEvents } from '@utils/layerEvents';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 
 export default function ScheduleCalendar() {
     const { isOpen } = useSidebarContext();
     const { accessToken, user } = useSessionContext();
     const { needUpdate } = useCalendarContext();
+    const { isSelectMode } = useScheduleContext();
     const router = useRouter();
     const { year, month, date } = router.query;
     const today = new Date();
@@ -119,7 +121,10 @@ export default function ScheduleCalendar() {
     };
 
     return (
-        <div className={styles.wrapper}>
+        <div
+            className={styles.wrapper}
+            style={{ filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}` }}
+        >
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
             <div className={styles.scrollHolder}>
                 <div className={styles.scrollContent}>

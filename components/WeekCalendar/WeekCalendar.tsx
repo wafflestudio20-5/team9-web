@@ -22,6 +22,7 @@ import {
     getLayeredEvents,
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 
 export default function WeekCalendar() {
     const router = useRouter();
@@ -29,6 +30,7 @@ export default function WeekCalendar() {
     const { isOpen } = useSidebarContext();
     const { needUpdate, setNeedUpdate } = useCalendarContext();
     const { user, accessToken } = useSessionContext();
+    const { isSelectMode } = useScheduleContext();
     const scrollHolderRef = useRef<HTMLDivElement>(null);
     const scrollContentRef = useRef<HTMLDivElement>(null);
     const scrollObserver = useRef<IntersectionObserver>();
@@ -124,7 +126,10 @@ export default function WeekCalendar() {
     }, [weekEvents]);
 
     return (
-        <div className={styles.wrapper}>
+        <div
+            className={styles.wrapper}
+            style={{ filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}` }}
+        >
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
             <div className={styles.weekHolder}>
                 <div

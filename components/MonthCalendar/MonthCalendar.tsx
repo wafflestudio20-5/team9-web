@@ -22,6 +22,7 @@ export default function MonthCalendar() {
     const { needUpdate, setNeedUpdate } = useCalendarContext();
     const { user, accessToken } = useSessionContext();
     const { isOpen } = useSidebarContext();
+    const { isSelectMode } = useScheduleContext();
 
     const monthDates = useMemo(() => {
         return getCalendarDates({
@@ -63,7 +64,10 @@ export default function MonthCalendar() {
     // thus, dependency does not include monthDates to prevent errors
 
     return (
-        <div className={styles.wrapper}>
+        <div
+            className={styles.wrapper}
+            style={{ filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}` }}
+        >
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
             <div className={styles.calendarHolder}>
                 <div className={styles.headrow}>

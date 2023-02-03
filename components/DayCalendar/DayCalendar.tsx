@@ -22,6 +22,7 @@ import {
     getLayeredEvents,
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 
 export default function DayCalendar() {
     const router = useRouter();
@@ -33,6 +34,7 @@ export default function DayCalendar() {
     const { isOpen } = useSidebarContext();
     const { user, accessToken } = useSessionContext();
     const { needUpdate, setNeedUpdate } = useCalendarContext();
+    const { isSelectMode } = useScheduleContext();
 
     const scrollHolderRef = useRef<HTMLDivElement>(null);
     const scrollContentRef = useRef<HTMLDivElement>(null);
@@ -105,7 +107,10 @@ export default function DayCalendar() {
     }, [dayEvents]);
 
     return (
-        <div className={styles.wrapper}>
+        <div
+            className={styles.wrapper}
+            style={{ filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}` }}
+        >
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
             <div className={styles.dayHolder}>
                 <div

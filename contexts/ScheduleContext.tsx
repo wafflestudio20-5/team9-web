@@ -40,7 +40,6 @@ const ScheduleContext = createContext<ScheduleContextData>({
 
 export const useScheduleContext = () => useContext(ScheduleContext);
 
-// will be discarded (replace with local storage)
 export default function ScheduleProvider({ children }: PropsWithChildren) {
     const { openModal } = useModal();
     const { stored: schedules, setStored: setSchedules } = useLocalStorage<
@@ -75,7 +74,7 @@ export default function ScheduleProvider({ children }: PropsWithChildren) {
     };
     const getEventItemFilterProp = (eventData: FullSchedule) => {
         if (isSelectMode && schedules?.includes(eventData)) {
-            return 'none';
+            return 'brightness(1.5)';
         } else if (isSelectMode) {
             return 'brightness(0.3)';
         } else {
