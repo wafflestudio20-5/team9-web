@@ -47,7 +47,7 @@ export default function DailyEvent({
             )}`}
             style={{
                 top: `${topPosition}px`,
-                width: `calc(100% - ${layer * 16}px)`,
+                width: `${100 - layer * 12}%`,
                 height: `${height}px`,
                 zIndex: `${Number(layer) + 1}`,
             }}

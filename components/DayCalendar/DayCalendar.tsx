@@ -20,6 +20,7 @@ import {
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
 import getEventComponent from '@utils/getEventComponent';
+import DailyEvent from '@components/EventComponents/DailyEvent';
 
 export default function DayCalendar() {
     const router = useRouter();
@@ -166,7 +167,36 @@ export default function DayCalendar() {
                                 Object.entries(layeredWithinEvents).map(
                                     ([layer, eventData], index) => {
                                         return (
-                                            <div className={styles.layer}></div>
+                                            <div
+                                                key={index}
+                                                className={styles.layer}
+                                            >
+                                                {eventData &&
+                                                    eventData.map(
+                                                        (
+                                                            eventDataItem: {
+                                                                textTop: number;
+                                                                event: FullSchedule;
+                                                            },
+                                                            index: number,
+                                                        ) => {
+                                                            return (
+                                                                <DailyEvent
+                                                                    key={index}
+                                                                    textTop={
+                                                                        eventDataItem.textTop
+                                                                    }
+                                                                    event={
+                                                                        eventDataItem.event
+                                                                    }
+                                                                    layer={Number(
+                                                                        layer,
+                                                                    )}
+                                                                />
+                                                            );
+                                                        },
+                                                    )}
+                                            </div>
                                         );
                                     },
                                 )}
