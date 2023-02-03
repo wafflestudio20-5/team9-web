@@ -66,10 +66,31 @@
                 border-radius: 50%;
                 box-shadow: 0 1px 5px 1px var(--structure);
                 background-color: var(--sidebar-background);
+                
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
                 &:hover {
                     background-color: var(--button-hover);
                 }
+            }
+
+            img {
+                width: 100px;
+                height: 100px;
+            }
+
+            input {
+                display: none;
+
+                &:disabled + label {
+                    cursor: default;
+                }
+            }
+
+            label {
+                cursor: pointer;
             }
         }
 

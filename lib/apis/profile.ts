@@ -6,8 +6,8 @@ const UserAPI = axios.create({
     baseURL: `${apiEndPoint}/user`,
 });
 
-export const patchProfileAPI = (newPost: FormData, accessToken: string | null) =>
-    UserAPI.patch('/profile/', newPost, {
+export const patchProfileAPI = (newProfile: FormData, accessToken: string | null) =>
+    UserAPI.patch('/profile/', newProfile, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
             'content-type': 'multipart/form-data',
