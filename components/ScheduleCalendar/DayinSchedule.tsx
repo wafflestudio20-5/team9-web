@@ -7,8 +7,7 @@ import getEventColorClass from '@components/EventComponents/getEventColorClass';
 import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
 import { FullSchedule, NumberedEvent } from '@customTypes/ScheduleTypes';
 import { getDatesInEvent } from '@utils/calcEventDates';
-import { DAYS , formatEventTime } from '@utils/formatting';
-
+import { DAYS, formatEventTime } from '@utils/formatting';
 
 interface DayinScheduleProps {
     dateString: string;
