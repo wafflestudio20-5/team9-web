@@ -1,4 +1,3 @@
-// the same as UserDataForSearch interface in `UserTypes.ts`
 export interface Participant {
     pk: number;
     username: string;
@@ -30,14 +29,14 @@ export interface FullSchedule extends Readonly<Omit<Schedule, 'participants'>> {
 }
 
 export enum ProtectionLevel {
-    pulbic = 1,
-    follwer,
+    public = 1,
+    follower,
     private,
 }
 
 export const ProtectionLevelText: { [key: number]: string } = {
-    [ProtectionLevel.pulbic]: '전체공개',
-    [ProtectionLevel.follwer]: '친구공개',
+    [ProtectionLevel.public]: '전체공개',
+    [ProtectionLevel.follower]: '친구공개',
     [ProtectionLevel.private]: '비공개',
 };
 

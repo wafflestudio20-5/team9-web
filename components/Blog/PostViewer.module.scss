@@ -1,4 +1,6 @@
 .post {
+    margin-bottom: 25px;
+
     h3.title {
         margin: 15px 25px;
         background-color: var(--sidebar-background);
@@ -9,10 +11,10 @@
         border-left: 10px solid var(--login-shadow);
         background-color: var(--login-background);
         overflow: auto;
-    }
 
-    .image {
-        margin: 15px auto;
-        width: 90%;
+        .image {
+            margin: 15px auto;
+            width: 90%;
+        }
     }
 }

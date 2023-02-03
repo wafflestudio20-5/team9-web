@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import styles from './ScheduleList.module.scss';
@@ -11,13 +12,21 @@ interface ScheduleListProps {
 
 export default function ScheduleList({ schedules }: ScheduleListProps) {
     const [selectedId, setSelectedId] = useState<number>(0);
+    const router = useRouter();
 
     return (
         <>
             {selectedId ? (
                 <div className={styles.selectedSchedule}>
-                    <div className={styles.indexWrapper}>
+                    <div className={styles.utilContainer}>
                         <button onClick={() => setSelectedId(0)}>목록</button>
+                        <button
+                            onClick={() =>
+                                router.push(`/blog/schedule/${selectedId}`)
+                            }
+                        >
+                            일정 상세 페이지
+                        </button>
                     </div>
                     <div className={styles.schedule}>
                         <ScheduleContent

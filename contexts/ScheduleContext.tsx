@@ -30,6 +30,7 @@ const ScheduleContext = createContext<ScheduleContextData>({
 
 export const useScheduleContext = () => useContext(ScheduleContext);
 
+// will be discarded (replace with local storage)
 export default function ScheduleProvider({ children }: PropsWithChildren) {
     const [schedules, setSchedules] = useState<FullSchedule[]>([]);
     const [isSelectMode, setIsSelectMode] = useState<boolean>(false);

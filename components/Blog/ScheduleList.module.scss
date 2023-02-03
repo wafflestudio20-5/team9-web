@@ -1,7 +1,7 @@
 .schedules {
     display: grid;
     grid-auto-rows: minmax(100px, 1fr);
-    padding: 25px 0 25px 25px;
+    padding: 25px 5px 25px 25px;
     gap: 25px;
     height: 100%;
     overflow: auto;
@@ -21,19 +21,19 @@
     gap: 25px;
     overflow: auto;
 
-    .indexWrapper {
+    .utilContainer {
         padding: 10px;
         border-left: 10px solid var(--login-shadow);
         background-color: var(--login-background);
+
+        button {
+            margin-right: 5px;
+            padding: 10px;
+        }
     }
 
     .schedule {
         border-top: 10px solid var(--login-shadow);
         border-left: 10px solid var(--login-shadow);
-    }
-
-    button {
-        width: 60px;
-        height: 36px;
     }
 }

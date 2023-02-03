@@ -31,13 +31,11 @@ import {
     getMonthInThisWeek,
     getTwoMonth,
 } from '@utils/calculateDate';
-import { getParticularCommentAPI } from '@apis/blog';
-import { getParticularScheduleAPI } from '@apis/calendar';
 
 export default function Header() {
     const { yearNow, monthNow, dateNow, dayNow } = useDateContext();
     const { calendarType } = useCalendarContext();
-    const { user, accessToken } = useSessionContext();
+    const { user } = useSessionContext();
     const { openModal } = useModal();
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const router = useRouter();
@@ -131,20 +129,9 @@ export default function Header() {
 
     const { isOpen, openSidebar, closeSidebar } = useSidebarContext();
 
-    const myget = async () => {
-        try {
-            const res = await getParticularScheduleAPI(1, accessToken);
-            console.log(res.data);
-            openModal(MODAL_NAMES.scheduleView, { schedule: res.data });
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     return (
         <header className={styles.header}>
             <div className={styles.left}>
-                <button onClick={myget}></button>
                 {/* sidebar menu */}
                 <div
                     className={`${styles.sidebarContainer} ${

@@ -13,86 +13,11 @@ import { FullPost } from '@customTypes/BlogTypes';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { errorToast } from '@utils/customAlert';
 
-const tempPosts: FullPost[] = [
-    {
-        title: 'temp post1',
-        content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus.',
-        pid: 1,
-        created_by: 7,
-        created_at: '2023-01-30',
-        updated_at: '2023-01-30',
-        schedules: [],
-    },
-    {
-        title: 'temp post2',
-        content: ' temp conte',
-        pid: 2,
-        created_by: 7,
-        created_at: '2023-01-30',
-        updated_at: '2023-01-30',
-        schedules: [],
-    },
-    {
-        title: 'temp post3',
-        content: ' temp conte',
-        pid: 3,
-        created_by: 7,
-        created_at: '2023-01-30',
-        updated_at: '2023-01-30',
-        schedules: [],
-    },
-    {
-        title: 'temp post4',
-        content: ' temp conte',
-        pid: 4,
-        created_by: 7,
-        created_at: '2023-01-30',
-        updated_at: '2023-01-30',
-        schedules: [],
-    },
-    {
-        title: 'temp post5',
-        content: ' temp conte',
-        pid: 5,
-        created_by: 7,
-        created_at: '2023-01-30',
-        updated_at: '2023-01-30',
-        schedules: [],
-    },
-    {
-        title: 'temp post6',
-        content: ' temp conte',
-        pid: 6,
-        created_by: 7,
-        created_at: '2023-01-30',
-        updated_at: '2023-01-30',
-        schedules: [],
-    },
-    {
-        title: 'temp post7',
-        content: ' temp conte',
-        pid: 7,
-        created_by: 7,
-        created_at: '2023-01-30',
-        updated_at: '2023-01-30',
-        schedules: [],
-    },
-];
-
 export default function SchedulePage() {
     const { accessToken } = useSessionContext();
     const [schedule, setSchedule] = useState<FullSchedule>();
     const [posts, setPosts] = useState<FullPost[]>([]);
-    const [post, setPost] = useState<FullPost>({
-        title: 'temp post',
-        content: ' temp conte',
-        pid: 1,
-        created_by: 7,
-        created_at: '2023-01-30',
-        updated_at: '2023-01-30',
-        schedules: [],
-    });
+    const [post, setPost] = useState<FullPost>();
     const router = useRouter();
     const scheduleId = Number(router.query.scheduleId);
     const postId = Number(router.query.post);
@@ -104,7 +29,11 @@ export default function SchedulePage() {
         } catch (error) {
             const message = '일정을 불러오지 못했습니다.';
             if (axios.isAxiosError(error)) {
-                errorToast(error.response?.data.message || message);
+                const errObj: { [key: string]: string } =
+                    error.response?.data ?? {};
+                let errMsg = '';
+                for (const k in errObj) errMsg += `${k}: ${errObj[k]}\n\n`;
+                errorToast(errMsg.trim() || message);
             } else {
                 errorToast(message);
             }
@@ -164,13 +93,18 @@ export default function SchedulePage() {
             </div>
             {postId && post ? (
                 <div className={styles.singlePost}>
-                    <div className={styles.indexWrapper}>
+                    <div className={styles.utilContainer}>
                         <button
                             onClick={() =>
                                 router.push(`/blog/schedule/${scheduleId}`)
                             }
                         >
                             목록
+                        </button>
+                        <button
+                            onClick={() => router.push(`/blog/post/${postId}`)}
+                        >
+                            포스트 상세 페이지
                         </button>
                     </div>
                     <PostViewer post={post} />

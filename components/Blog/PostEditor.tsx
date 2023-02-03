@@ -37,6 +37,7 @@ export default function PostEditor({
         }
     };
 
+    // delete uploaded image (and its preview)
     const deleteImage = () => {
         URL.revokeObjectURL(imagePreview); // delete image object url
         setImagePreview('');
@@ -50,6 +51,7 @@ export default function PostEditor({
         newPost.append('title', title);
         newPost.append('content', content);
         if (image) newPost.append('image', image);
+        else if (!imagePreview) newPost.append('image', ''); // if there's no image when creating the post, or the user wants to delete the image when editing the post
         await submitNewPost(newPost);
         setIsSubmitting(false);
     };

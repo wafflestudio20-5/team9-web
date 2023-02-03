@@ -2,12 +2,13 @@ import axios from 'axios';
 
 import { apiEndPoint } from './endpoint';
 
-import { Comment, Post } from '@customTypes/BlogTypes';
+import { Comment } from '@customTypes/BlogTypes';
 
 const BlogAPI = axios.create({
     baseURL: `${apiEndPoint}/blog`,
 });
 
+// FormData: {title: string, content: string, image?: File | '', nested_json: {pk: number}[]}
 export const createPostAPI = (newPost: FormData, accessToken: string | null) =>
     BlogAPI.post('/post/', newPost, {
         headers: {
@@ -29,6 +30,7 @@ export const getParticularPostAPI = (
         headers: { Authorization: `Bearer ${accessToken}` },
     });
 
+// FormData: {title: string, content: string, image?: File | '', nested_json: {pk: number}[]}
 export const editPostAPI = (
     postId: number,
     newPost: FormData,

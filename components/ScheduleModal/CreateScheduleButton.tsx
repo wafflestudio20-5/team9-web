@@ -35,14 +35,14 @@ export default function CreateScheduleButton({
         maintainFocus,
     } = useDropDown(triggerRef);
     const { yearNow, monthNow, dateNow } = useDateContext();
-    const { schedules: scheduleIds, setIsSelectMode } = useScheduleContext();
+    const { schedules, setIsSelectMode } = useScheduleContext(); // need to be changed
     const router = useRouter();
 
     const initSchedule: Schedule = {
         title: '',
         start_at: `${yearNow}-${monthNow}-${dateNow}`,
         end_at: `${yearNow}-${monthNow}-${dateNow}`,
-        protection_level: ProtectionLevel.pulbic,
+        protection_level: ProtectionLevel.public,
         show_content: true,
         description: '',
         participants: [],
@@ -63,8 +63,8 @@ export default function CreateScheduleButton({
                 setIsSelectMode(true);
                 break;
             case 'write':
-                if (scheduleIds.length === 0) router.push('/blog/post/create');
-                else errorToast('포스팅할 일정을 선택해주세요.');
+                if (schedules.length > 1) router.push('/blog/post/create');
+                else errorToast('포스팅할 일정을 선택해주세요.'); // if there's no schedules selected
                 break;
         }
         closeDropDown();

@@ -1,127 +1,40 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import styles from './create.module.scss';
 
-import { createPostAPI, editPostAPI } from '@apis/blog';
+import { createPostAPI } from '@apis/blog';
 import PostEditor from '@components/Blog/PostEditor';
 import ScheduleList from '@components/Blog/ScheduleList';
-import { useScheduleContext } from '@contexts/ScheduleContext';
 import { useSessionContext } from '@contexts/SessionContext';
-import { Post } from '@customTypes/BlogTypes';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { errorToast, successToast } from '@utils/customAlert';
 
+// temp data for related schedule list
 const schedulesData: FullSchedule[] = [
     {
         id: 1,
-        title: 'test schedule',
-        created_at: '2022-02-02',
-        updated_at: '2022-02-02',
-        created_by: 7,
-        participants: [
-            { username: 'participants1', pk: 1, email: 'use@emaril.com' },
-            { username: 'participants1', pk: 2, email: 'use@emaril.com' },
-            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
-            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
-            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
-            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
-            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
-            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
-            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
-            { username: 'participants1', pk: 3, email: 'use@emaril.com' },
-        ],
+        title: '',
+        created_at: '',
+        updated_at: '',
+        created_by: 0,
         is_recurring: false,
-        show_content: true,
+        description: '',
+        participants: [],
+        show_content: false,
         protection_level: 1,
-        description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero iaculis, vehicula erat vel, placerat tellus. Morbi porta tristique erat, non vestibulum lectus. Phasellus venenatis efficitur rutrum. Mauris non tortor turpis. Cras semper imperdiet nisl ut pellentesque.m',
-        start_at: '2023-01-30 00:00:00',
-        end_at: '2023-01-30 00:00:00',
         recurring_schedule_group: null,
+        recurring_end_at: null,
+        cron_expr: null,
+        start_at: '',
+        end_at: '',
     },
-    // {
-    //     id: 2,
-    //     title: 'test schedule2',
-    //     created_at: '2022-02-02',
-    //     updated_at: '2022-02-02',
-    //     created_by: 7,
-    //     participants: [],
-    //     is_recurring: false,
-    //     show_content: true,
-    //     protection_level: 1,
-    //     description: 'lorem ipsum',
-    //     start_at: '2023-01-30 00:00:00',
-    //     end_at: '2023-01-30 00:00:00',
-    //     recurring_schedule_group: null,
-    // },
-    // {
-    //     id: 3,
-    //     title: 'test schedule3',
-    //     created_at: '2022-02-02',
-    //     updated_at: '2022-02-02',
-    //     created_by: 7,
-    //     participants: [],
-    //     is_recurring: false,
-    //     show_content: true,
-    //     protection_level: 1,
-    //     description: 'lorem ipsum',
-    //     start_at: '2023-01-30 00:00:00',
-    //     end_at: '2023-01-30 00:00:00',
-    //     recurring_schedule_group: null,
-    // },
-    // {
-    //     id: 4,
-    //     title: 'test schedule4',
-    //     created_at: '2022-02-02',
-    //     updated_at: '2022-02-02',
-    //     created_by: 7,
-    //     participants: [],
-    //     is_recurring: false,
-    //     show_content: true,
-    //     protection_level: 1,
-    //     description: 'lorem ipsum',
-    //     start_at: '2023-01-30 00:00:00',
-    //     end_at: '2023-01-30 00:00:00',
-    //     recurring_schedule_group: null,
-    // },
-    // {
-    //     id: 6,
-    //     title: 'test schedule4',
-    //     created_at: '2022-02-02',
-    //     updated_at: '2022-02-02',
-    //     created_by: 7,
-    //     participants: [],
-    //     is_recurring: false,
-    //     show_content: true,
-    //     protection_level: 1,
-    //     description: 'lorem ipsum',
-    //     start_at: '2023-01-30 00:00:00',
-    //     end_at: '2023-01-30 00:00:00',
-    //     recurring_schedule_group: null,
-    // },
-    // {
-    //     id: 5,
-    //     title: 'test schedule4',
-    //     created_at: '2022-02-02',
-    //     updated_at: '2022-02-02',
-    //     created_by: 7,
-    //     participants: [],
-    //     is_recurring: false,
-    //     show_content: true,
-    //     protection_level: 1,
-    //     description: 'lorem ipsum',
-    //     start_at: '2023-01-30 00:00:00',
-    //     end_at: '2023-01-30 00:00:00',
-    //     recurring_schedule_group: null,
-    // },
 ];
 
 export default function PostCreatePage() {
     const { accessToken } = useSessionContext();
-    // const { schedules } = useScheduleContext(); // need to bring related schedules from local storage??
-    const [schedules, setSchedules] = useState(schedulesData); // temp
+    const [schedules, setSchedules] = useState(schedulesData); // need to bring related schedules from local storage
     const router = useRouter();
 
     const getScheduleIds = () => {
@@ -132,11 +45,9 @@ export default function PostCreatePage() {
 
     const createPost = async (newPost: FormData) => {
         try {
-            console.log(JSON.stringify(getScheduleIds()));
-            newPost.append('schedules', JSON.stringify(getScheduleIds()));
+            newPost.append('nested_json', JSON.stringify(getScheduleIds()));
             const res = await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
-            console.log(res.data);
             router.push(`/blog/post/${res.data.pid}`);
         } catch (error) {
             const message = '글을 생성하지 못했습니다.';
@@ -152,16 +63,16 @@ export default function PostCreatePage() {
         }
     };
 
+    /**
+     * TODO: bring releated schedules from local storage
+     *       and assign it to `schedules` using `setSchedules` when this component is first rendered
+     */
+
     return (
         <div className={styles.postCreatePage}>
             <ScheduleList schedules={schedules} />
             <div className={styles.createPost}>
-                <div
-                    className={styles.guide}
-                    onClick={() => {
-                        router.push('/blog/post/1');
-                    }}
-                ></div>
+                <div className={styles.guide}></div>
                 <div className={styles.newPost}>
                     <PostEditor
                         initTitle=""
