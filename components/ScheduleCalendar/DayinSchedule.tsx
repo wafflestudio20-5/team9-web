@@ -1,24 +1,60 @@
+import { useRouter } from 'next/router';
 import React, { MutableRefObject } from 'react';
 
 import styles from './DayinSchedule.module.scss';
 
 import { DAYS } from '@utils/formatting';
-import { NumberedEvent } from '@customTypes/ScheduleTypes';
+import { FullSchedule, NumberedEvent } from '@customTypes/ScheduleTypes';
+import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
+import getEventColorClass from '@components/EventComponents/getEventColorClass';
+import { getDatesInEvent } from '@utils/calcEventDates';
+import { formatEventTime } from '@utils/formatting';
 
 interface DayinScheduleProps {
     dateString: string;
     eventData: NumberedEvent[];
 }
 
-export const DayinSchedule = React.forwardRef<
-    HTMLDivElement,
-    DayinScheduleProps
->(({ dateString, eventData }, ref): JSX.Element => {
+export default function DayinSchedule({
+    dateString,
+    eventData,
+}: DayinScheduleProps) {
+    const [year, month, date] = dateString.split(' ');
     const dateObj = new Date(dateString);
+    const today = new Date();
+    const router = useRouter();
+    const { openModal } = useModal();
+
+    const MSPERDAY = 24 * 60 * 60 * 1000;
+    const eventDurationMilliseconds = (event: FullSchedule) => {
+        const endDate = new Date(event.end_at);
+        const startDate = new Date(event.start_at);
+        return endDate.getTime() - startDate.getTime();
+    };
+
+    const getPartSuffix = (event: FullSchedule) => {
+        const eventDuration = eventDurationMilliseconds(event);
+        if (eventDuration <= MSPERDAY) {
+            return '';
+        }
+        const dateStrings = getDatesInEvent(event);
+        return `(${dateStrings.indexOf(dateString)}/${dateStrings.length}일)`;
+    };
     return (
-        <div className={styles.wrapper} ref={ref}>
-            <div className={styles.dateHolder}>
-                <div className={styles.date}>
+        <div className={styles.wrapper}>
+            <div
+                className={`${styles.dateHolder} ${
+                    dateObj.toDateString() === today.toDateString()
+                        ? styles.today
+                        : ''
+                }`}
+            >
+                <div
+                    className={styles.date}
+                    onClick={() => {
+                        router.push(`/day/${year}/${month}/${date}`);
+                    }}
+                >
                     <div>{dateObj.getDate()}</div>
                 </div>
                 <div className={styles.monthDay}>{`${
@@ -26,15 +62,43 @@ export const DayinSchedule = React.forwardRef<
                 }월, ${DAYS[dateObj.getDay()]}`}</div>
             </div>
 
-            <div>
+            <div className={styles.eventsHolder}>
                 {eventData.map((event, index) => {
                     return (
                         <div
                             key={index}
-                        >{`${event.num} ${event.event.title}`}</div>
+                            className={styles.eventItem}
+                            onClick={() => {
+                                openModal(MODAL_NAMES.scheduleView, {
+                                    schedule: event.event,
+                                });
+                            }}
+                        >
+                            <div
+                                className={`${
+                                    styles.dotHolder
+                                }  ${getEventColorClass(
+                                    event.event.created_by,
+                                )}`}
+                            >
+                                <div className={styles.colorDot} />
+                            </div>
+
+                            <div
+                                className={styles.duration}
+                            >{`${formatEventTime(
+                                new Date(event.event.start_at),
+                                new Date(event.event.end_at),
+                            )}`}</div>
+                            <div className={styles.title}>
+                                {`${event.event.title} ${getPartSuffix(
+                                    event.event,
+                                )}`}
+                            </div>
+                        </div>
                     );
                 })}
             </div>
         </div>
     );
-});
+}

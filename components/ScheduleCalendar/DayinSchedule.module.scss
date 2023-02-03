@@ -9,6 +9,8 @@
 .dateHolder {
     display: flex;
     align-items: baseline;
+    width: 115px;
+    height: 100%;
     .date {
         font-size: 18px;
         border-radius: 50%;
@@ -21,9 +23,64 @@
 
         &:hover {
             background-color: var(--button-hover);
+            cursor: pointer;
         }
     }
     .monthDay {
         font-size: 11px;
+    }
+
+    &.today {
+        .day {
+            color: var(--today-blueberry);
+        }
+        .date {
+            background-color: var(--today-blueberry);
+            div {
+                color: var(--text-reverse);
+            }
+
+            &:hover {
+                background-color: var(--dark-blueberry);
+            }
+        }
+    }
+}
+
+.eventsHolder {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.eventItem {
+    height: 32px;
+    width: 100%;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 14px;
+    color: var(--text-other);
+    font-weight: 400;
+    &:hover {
+        background-color: var(--button-hover);
+        cursor: pointer;
+    }
+
+    .dotHolder {
+        padding: 10px;
+        .colorDot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+        }
+    }
+
+    .duration {
+        padding-left: 10px;
+        width: 160px;
+        color: var(--text-other);
     }
 }

@@ -6,6 +6,7 @@ import {
     WeeklyWithinEvents,
 } from '@customTypes/ScheduleTypes';
 import { formatDate, formatDateWithTime } from '@utils/formatting';
+import { isDateIncluded } from '@utils/calcEventDates';
 
 function compareEndAt(eventA: FullSchedule, eventB: FullSchedule) {
     const aEnd = eventA.end_at;
@@ -31,25 +32,6 @@ function compareLength(eventA: FullSchedule, eventB: FullSchedule) {
         return -1;
     }
     return 1;
-}
-
-export function isDateIncluded(date: Date, event: FullSchedule) {
-    if (
-        formatDate(date) >= event.start_at.split(' ')[0] &&
-        formatDate(date) < event.end_at.split(' ')[0]
-    ) {
-        return true;
-    }
-    if (formatDate(date) === event.end_at.split(' ')[0])
-        if (event.end_at.split(' ')[1] === '00:00:00') {
-            if (event.start_at === event.end_at) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
 }
 
 function findAvailableLayer(layeredEvents: LayeredEvents, dateString: string) {

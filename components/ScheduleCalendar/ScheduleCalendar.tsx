@@ -9,7 +9,7 @@ import React, {
 
 import styles from './ScheduleCalendar.module.scss';
 
-import { DayinSchedule } from '@components/ScheduleCalendar/DayinSchedule';
+import DayinSchedule from '@components/ScheduleCalendar/DayinSchedule';
 import Sidebar from '@components/Sidebar/Sidebar';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import {
@@ -17,22 +17,14 @@ import {
     NumberedEventsByDay,
     FullSchedule,
 } from '@customTypes/ScheduleTypes';
-import { getFrozenEvents, isDateIncluded } from '@utils/layerEvents';
+import { getFrozenEvents } from '@utils/layerEvents';
+import { getDatesInEvent, isDateIncluded } from '@utils/calcEventDates';
 import { formatDate } from '@utils/formatting';
 import { getEntireScheduleAPI } from '@apis/calendar';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useRouter } from 'next/router';
 import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
 import { useCalendarContext } from '@contexts/CalendarContext';
-
-//temporary until backend changes
-function toHttps(url: string) {
-    if (url === null) {
-        return '';
-    }
-    const [protocol, path] = url.split('://');
-    return protocol === 'https' ? url : `https://${path}`;
-}
 
 export default function ScheduleCalendar() {
     const { isOpen } = useSidebarContext();
@@ -48,20 +40,16 @@ export default function ScheduleCalendar() {
     }, [year, month, date]);
     const dateBoundaryObj = useMemo(() => {
         return year
-            ? new Date(Number(year) + 10, Number(month) - 1, Number(date))
+            ? new Date(Number(year), Number(month) + 1, Number(date))
             : new Date(
-                  today.getFullYear() + 10,
-                  today.getMonth(),
+                  today.getFullYear(),
+                  today.getMonth() + 2,
                   today.getDate(),
               );
     }, [year, month, date]);
-    const [next, setNext] = useState('');
-    const [scheduleEvent, setScheduleEvent] = useState<FullSchedule[]>();
+
     const [scheduleEventByDay, setScheduleEventByday] =
         useState<NumberedEventsByDay>();
-    const [loadMore, setLoadMore] = useState(false);
-    const [isEndOfList, setIsEndOfList] = useState(false);
-    const targetRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         // initial api call
@@ -76,52 +64,9 @@ export default function ScheduleCalendar() {
             },
             accessToken,
         ).then(res => {
-            setNext(res.data.next);
-            setScheduleEvent(res.data.results);
+            setScheduleEventByday(getScheduleEventsByDay(res.data.results));
         });
-    }, [user, needUpdate]);
-
-    const fetchData = useCallback(async () => {
-        if (!next) {
-            setIsEndOfList(true);
-        }
-        axios
-            .get(next, {
-                headers: { Authorization: `Bearer ${accessToken}` },
-            })
-            .then(res => {
-                setNext(res.data.next);
-                setScheduleEvent(
-                    scheduleEvent
-                        ? [...res.data.results, ...scheduleEvent]
-                        : res.data.results,
-                );
-            });
-    }, []);
-
-    useEffect(() => {
-        // layer events after data has been fetched
-        if (scheduleEvent) {
-            console.log(getScheduleEventsByDay(scheduleEvent));
-            setScheduleEventByday(getScheduleEventsByDay(scheduleEvent));
-        }
-    }, [scheduleEvent]);
-
-    useEffect(() => {
-        if (!targetRef.current || isEndOfList) return;
-
-        // load more on intersection
-        const io = new IntersectionObserver((entries, observer) => {
-            if (entries[0].isIntersecting) {
-                fetchData();
-            }
-        });
-        io.observe(targetRef.current);
-
-        return () => {
-            io.disconnect();
-        };
-    }, [fetch, isEndOfList]);
+    }, [user, needUpdate, dateObj]);
 
     const getScheduleEventsByDay = (scheduleEvent: FullSchedule[]) => {
         const eventsByDay = {} as NumberedEventsByDay;
@@ -129,23 +74,18 @@ export default function ScheduleCalendar() {
             getFrozenEvents(scheduleEvent);
         if (frozenEvents) {
             frozenEvents.forEach(event => {
-                const dateObj = new Date(event.start_at);
-                while (isDateIncluded(dateObj, event)) {
-                    const dateString = formatDate(dateObj);
-                    if (eventsByDay[dateString]) {
-                        eventsByDay[dateString].push({
+                const datesInEvent = getDatesInEvent(event);
+                for (let i = 0; i < datesInEvent.length; i++) {
+                    if (eventsByDay[datesInEvent[i]]) {
+                        eventsByDay[datesInEvent[i]].push({
                             num: 0,
                             event: event,
                         });
                     } else {
-                        eventsByDay[dateString] = [
-                            {
-                                num: 0,
-                                event: event,
-                            },
+                        eventsByDay[datesInEvent[i]] = [
+                            { num: 0, event: event },
                         ];
                     }
-                    dateObj.setDate(dateObj.getDate() + 1);
                 }
             });
         }
@@ -205,10 +145,7 @@ export default function ScheduleCalendar() {
 
                     <div
                         style={{ position: 'absolute', bottom: '100px' }}
-                        ref={targetRef}
-                    >
-                        {isEndOfList && <div>end of schedules</div>}
-                    </div>
+                    ></div>
                 </div>
             </div>
         </div>
