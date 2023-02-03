@@ -2,6 +2,8 @@ import type { AppProps } from 'next/app';
 import React, { PropsWithChildren } from 'react';
 
 import Header from '@components/Header/Header';
+import RouteGuard from '@components/RouteGuard';
+import BoxSizeProvider from '@contexts/BoxSizeContext';
 import CalendarProvider from '@contexts/CalendarContext';
 import DateProvider from '@contexts/DateContext';
 import ModalProvider, { ModalContainer } from '@contexts/ModalContext';
@@ -30,6 +32,7 @@ function ContextProviders({ children }: PropsWithChildren) {
 export default function MyApp({ Component, pageProps }: AppProps) {
     return (
         <ContextProviders>
+            <RouteGuard />
             <Header />
             <Component {...pageProps} />
             <ModalContainer />
