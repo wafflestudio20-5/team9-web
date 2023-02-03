@@ -4,6 +4,7 @@
     z-index: 5;
     &:hover {
         cursor: pointer;
+        filter: none;
     }
 
     &.chocolate path {

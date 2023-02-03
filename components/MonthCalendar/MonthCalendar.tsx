@@ -11,9 +11,11 @@ import { useCalendarContext } from '@contexts/CalendarContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
+import useLocalStorage from '@hooks/useLocalStorage';
 import { getCalendarDates } from '@utils/calculateDate';
 import { DAYS, formatDate } from '@utils/formatting';
 import { getLayeredEvents } from '@utils/layerEvents';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 export default function MonthCalendar() {
     const router = useRouter();
     const { year, month, date } = router.query;
