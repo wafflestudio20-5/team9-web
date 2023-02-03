@@ -38,7 +38,15 @@ export default function HelpDropDown() {
                     ))}
                 </ul>
                 <ul>
-                    <li>J에게 의견 보내기</li>
+                    <li
+                        onClick={() => {
+                            window.open(
+                                'https://github.com/wafflestudio20-5/team9-web/issues',
+                            );
+                        }}
+                    >
+                        J에게 의견 보내기
+                    </li>
                 </ul>
             </DropDownBody>
         </DropDown>
