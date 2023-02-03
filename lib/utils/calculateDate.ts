@@ -165,3 +165,7 @@ export const getCalendarDates = ({
     // (=== index 35 does not represent the date in concern), return only up to the necessary 35 elements
     return calendarDates.slice(0, 35);
 };
+
+export function getTimeInMinutes(dateObj: Date) {
+    return dateObj.getHours() * 60 + dateObj.getMinutes();
+}

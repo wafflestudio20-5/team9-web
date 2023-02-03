@@ -1,8 +1,10 @@
-@use '@styles/variables.scss' as v;
-
 .wrapper {
     background-color: transparent;
     position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .buttonHolder {
@@ -11,6 +13,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    margin-top: 2%;
 
     button {
         border: 1px solid transparent;
@@ -61,5 +64,19 @@
 
 .eventsHolder {
     position: relative;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .seeMore {
+        font-size: 10px;
+        text-align: center;
+        height: 23px;
+        padding: 6.5px;
+        border-radius: 50%;
+        &:hover {
+            cursor: pointer;
+            background-color: var(--button-hover);
+        }
+    }
 }

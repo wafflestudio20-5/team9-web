@@ -1,15 +1,200 @@
-@use '@styles/variables.scss' as v;
-
 .wrapper {
     display: flex;
     flex-direction: row;
-    width: 100vw;
+    height: calc(100vh - 66px);
     justify-content: stretch;
+    background-color: var(--sidebar-background);
+    position: relative;
 }
 
 .weekHolder {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    flex: 1;
-    border-left: 1px solid v.$border-gray;
+    grid-template-rows: min-content 1fr;
+    flex-grow: 1;
+    position: relative;
+    background-color: var(--waffle-background);
+    border-left: 1px solid var(--structure);
+}
+
+.frozenHolder {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    padding-left: 115px;
+    padding-right: 8px;
+    border-bottom: 2px solid var(--structure);
+    box-shadow: 3px 2px 5px var(--structure-shadow);
+
+    &.scrolledToTop {
+        box-shadow: none;
+    }
+}
+
+.headrow {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    height: 100px;
+
+    .headrowItem {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 2px;
+        padding-bottom: 30px;
+
+        .day {
+            color: var(--text-datesSecondary);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .date {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 550;
+            background-color: transparent;
+            height: 36px;
+            width: 36px;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            div {
+                color: var(--text-datesPrimary);
+            }
+
+            &:hover {
+                background-color: var(--button-hover);
+                cursor: pointer;
+            }
+        }
+
+        &.today {
+            .day {
+                color: var(--today-blueberry);
+            }
+            .date {
+                background-color: var(--today-blueberry);
+                div {
+                    color: var(--text-reverse);
+                }
+
+                &:hover {
+                    background-color: var(--dark-blueberry);
+                }
+            }
+        }
+    }
+}
+
+.acrossHolder {
+    position: relative;
+    height: fit-content;
+    padding-right: 8px;
+    border-left: 1px solid var(--light-structure);
+    .across {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        height: fit-content;
+        min-height: 26px;
+        position: absolute;
+        z-index: 1;
+    }
+}
+
+.borders {
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    padding: 0px 0.5%;
+    div {
+        background-color: var(--grid-line);
+        width: 1%;
+        box-shadow: var(--grid-shadow) 2px 0px 2px,
+            var(--grid-shadow) -2px 0px 2px;
+        z-index: 2;
+        position: relative;
+    }
+}
+
+.scrollHolder {
+    flex-grow: 1;
+    overflow-y: scroll;
+    position: relative;
+}
+
+.scrollContent {
+    display: flex;
+    flex-direction: row;
+    height: 1320px;
+    width: 100%;
+    position: relative;
+}
+
+.lowerLeft {
+    height: 100%;
+    width: 115px;
+    display: flex;
+    align-items: center;
+
+    .timestamps {
+        height: 100%;
+        width: 87px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        .hour {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 0px;
+
+            div {
+                color: var(--text-datesSecondary);
+                font-size: 10.5px;
+                font-weight: 500;
+            }
+        }
+    }
+    .borderPortrude {
+        height: calc(100% - 55px);
+        width: 28px;
+        background-size: 28px 55px;
+        background-image: linear-gradient(
+            to bottom,
+            transparent 0 27px,
+            var(--structure) 27px 28px,
+            transparent 28px 55px
+        );
+    }
+}
+
+.lowerRight {
+    position: relative;
+    flex-grow: 1;
+    height: 100%;
+    border-left: 1px solid var(--light-structure);
+    .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        z-index: 1;
+        :first-child {
+            margin-left: 0px;
+        }
+        :last-child {
+            margin-right: 0px;
+        }
+    }
 }

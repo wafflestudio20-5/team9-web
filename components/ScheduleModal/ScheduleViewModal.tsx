@@ -5,6 +5,7 @@ import styles from './ScheduleViewModal.module.scss';
 
 import { deleteRecurringScheduleAPI, deleteScheduleAPI } from '@apis/calendar';
 import ModalFrame from '@components/ModalFrame';
+import { useCalendarContext } from '@contexts/CalendarContext';
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import {
@@ -28,7 +29,6 @@ import {
     warningModal,
 } from '@utils/customAlert';
 import { DAYS, formatTime } from '@utils/formatting';
-import { useCalendarContext } from '@contexts/CalendarContext';
 
 function ParticipantItem({ participant }: { participant: Participant }) {
     return (

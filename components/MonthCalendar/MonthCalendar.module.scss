@@ -1,20 +1,17 @@
-@use '@styles/variables.scss' as v;
-
 .wrapper {
     display: flex;
     flex-direction: row;
-    height: fit-content;
-    width: fit-content;
+    justify-content: space-between;
+    height: calc(100vh - 66px);
+    width: 100vw;
     background-color: var(--sidebar-background);
     position: relative;
-    // overflow: hidden;
 }
 
 .calendarHolder {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    // margin-left: 8px;
     border-left: 1px solid var(--structure);
     background-color: var(--waffle-background);
     position: relative;
@@ -42,14 +39,11 @@
 }
 
 .month {
-    display: flex;
-    flex-wrap: wrap;
-    // grid-auto-rows: 1fr;
-    // grid-template-columns: repeat(7, 1fr);
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     height: 100%;
     width: 100%;
     z-index: 1;
-    gap: 12px;
     position: absolute;
 }
 
@@ -63,16 +57,25 @@
     div {
         background-color: var(--grid-line);
     }
-    .horizontal {
-        height: 12px;
-        box-shadow: var(--grid-shadow) 0px 2px 2px,
-            var(--grid-shadow) 0px -1px 2px;
-        z-index: 2;
+
+    &.horizontal {
+        flex-direction: column;
+        padding: 0.5% 0px;
+        div {
+            height: 1%;
+            box-shadow: var(--grid-shadow) 0px 2px 2px,
+                var(--grid-shadow) 0px -1px 2px;
+            z-index: 2;
+        }
     }
-    .vertical {
-        width: 12px;
-        box-shadow: var(--grid-shadow) 2px 0px 2px,
-            var(--grid-shadow) -2px 0px 2px;
-        z-index: 3;
+    &.vertical {
+        flex-direction: row;
+        padding: 0px 0.5%;
+        div {
+            width: 1%;
+            box-shadow: var(--grid-shadow) 2px 0px 2px,
+                var(--grid-shadow) -2px 0px 2px;
+            z-index: 3;
+        }
     }
 }
