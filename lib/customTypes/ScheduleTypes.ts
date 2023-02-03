@@ -105,6 +105,8 @@ export interface LayerData {
             | 'acrossRight'
             | 'acrossRightEnd'
             | 'acrossClosed'
+            | 'acrossClosedSat'
+            | 'acrossClosedSun'
             | 'within'
             | 'withinLeftEnd'
             | 'withinRightEnd'
@@ -127,4 +129,12 @@ export interface WeeklyWithinEvents {
 
 export interface LayeredWeeklyWithinEvents {
     [date: string]: DailyLayerData;
+}
+
+export interface NumberedEvent {
+    num: number;
+    event: FullSchedule;
+}
+export interface NumberedEventsByDay {
+    [dateString: string]: NumberedEvent[];
 }

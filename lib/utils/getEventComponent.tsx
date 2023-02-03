@@ -3,28 +3,23 @@ import React from 'react';
 import AcrossEvent from '@components/EventComponents/AcrossEvent';
 import FillerEvent from '@components/EventComponents/FillerEvent';
 import WithinEvent from '@components/EventComponents/WithinEvent';
-import { FullSchedule, LayerData } from '@customTypes/ScheduleTypes';
-
-interface getEventComponentOptions {
-    eventHeight?: number;
-    boxWidth?: number;
-}
+import { LayerData } from '@customTypes/ScheduleTypes';
 
 export default function getEventComponent({
-    dateString,
     data,
     layer,
-    options,
+    eventHeight,
+    independentView,
 }: {
-    dateString: string;
     data: LayerData[number];
     layer: number;
-    options?: getEventComponentOptions;
+    eventHeight?: number;
+    independentView?: boolean;
 }) {
-    const eventHeight = options?.eventHeight ? options?.eventHeight : 20;
-    // const boxWidth = options?.boxWidth ? options?.boxWidth : undefined;
+    const eh = eventHeight ? eventHeight : 20;
+    const sh = independentView ? 5 : 3;
     if (data === null) {
-        return <FillerEvent key={layer} eventHeight={eventHeight} />;
+        return <FillerEvent key={layer} eventHeight={eh} />;
     }
     if (data === undefined) {
         return;
@@ -32,6 +27,7 @@ export default function getEventComponent({
     if (!data.event) {
         return;
     }
+
     switch (data.type) {
         case 'acrossLeft':
             return (
@@ -40,8 +36,9 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
+                    forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'acrossLeftEnd':
@@ -51,8 +48,9 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
+                    forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'acrossMiddle':
@@ -62,8 +60,9 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
+                    forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'acrossRight':
@@ -73,8 +72,9 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
+                    forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'acrossRightEnd':
@@ -84,19 +84,33 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
+                    forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
-        case 'acrossClosed':
+        case 'acrossClosedSat':
             return (
                 <AcrossEvent
-                    type="closed"
+                    type="closedSat"
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
+                    forceTextDisplay={independentView}
+                    slopeHeight={sh}
+                />
+            );
+        case 'acrossClosedSun':
+            return (
+                <AcrossEvent
+                    type="closedSun"
+                    key={layer}
+                    layer={layer}
+                    eventData={data.event}
+                    eventHeight={eh}
+                    forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'within':
@@ -104,9 +118,9 @@ export default function getEventComponent({
                 <WithinEvent
                     type="middle"
                     key={layer}
-                    layer={layer}
                     eventData={data.event}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
+                    expandSides={independentView}
                 />
             );
         case 'withinLeftEnd':
@@ -114,9 +128,9 @@ export default function getEventComponent({
                 <WithinEvent
                     type="leftEnd"
                     key={layer}
-                    layer={layer}
                     eventData={data.event}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
+                    expandSides={independentView}
                 />
             );
         case 'withinRightEnd':
@@ -124,13 +138,13 @@ export default function getEventComponent({
                 <WithinEvent
                     type="rightEnd"
                     key={layer}
-                    layer={layer}
                     eventData={data.event}
-                    eventHeight={eventHeight}
+                    eventHeight={eh}
+                    expandSides={independentView}
                 />
             );
         case 'filler':
-            return <FillerEvent key={layer} eventHeight={eventHeight} />;
+            return <FillerEvent key={layer} eventHeight={eh} />;
         default:
             throw new Error('invalid LayerData type');
     }

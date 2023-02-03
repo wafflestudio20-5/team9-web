@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styles from './DayinWeekWithin.module.scss';
 
 import DailyEvent from '@components/EventComponents/DailyEvent';

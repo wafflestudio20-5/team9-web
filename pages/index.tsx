@@ -4,7 +4,6 @@ import React from 'react';
 import styles from './index.module.scss';
 
 import { useSessionContext } from '@contexts/SessionContext';
-import MainImage from '@images/main_images.svg';
 
 export default function MainPage() {
     const { user } = useSessionContext();
@@ -34,6 +33,7 @@ export default function MainPage() {
                         </button>
                     )}
                 </div>
+                <div className={styles.image}></div>
             </div>
         </div>
     );

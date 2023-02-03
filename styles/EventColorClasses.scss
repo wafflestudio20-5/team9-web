@@ -2,7 +2,8 @@
     path {
         color: var(--syrup-chocolate);
     }
-    div {
+    div,
+    span:first-child {
         background-color: var(--syrup-chocolate);
     }
 }
@@ -11,7 +12,8 @@
     path {
         color: var(--syrup-strawberry);
     }
-    div {
+    div,
+    span:first-child {
         background-color: var(--syrup-strawberry);
     }
 }
@@ -20,7 +22,8 @@
     path {
         color: var(--syrup-honey);
     }
-    div {
+    div,
+    span:first-child {
         background-color: var(--syrup-honey);
     }
 }

@@ -68,14 +68,12 @@ export default function DayinMonth({
                                   );
                               }
                               return getEventComponent({
-                                  dateString: dateString,
                                   data: data,
                                   layer: Number(layer),
                               });
                           })
                     : Object.entries(layerData).map(([layer, data]) => {
                           return getEventComponent({
-                              dateString: dateString,
                               data: data,
                               layer: Number(layer),
                           });

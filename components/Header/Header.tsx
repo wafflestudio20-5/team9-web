@@ -15,8 +15,8 @@ import { useSidebarContext } from '@contexts/SidebarContext';
 import { useThemeContext } from '@contexts/ThemeContext';
 import BackIcon from '@images/back_icon.svg';
 import BeforeIcon from '@images/before_icon.svg';
-import CalendarIcon from '@images/calendar_icon.svg';
 import DropdownIcon from '@images/dropdown_icon.svg';
+import Logo from '@images/logo.svg';
 import MenuIcon from '@images/menu_icon.svg';
 import NextIcon from '@images/next_icon.svg';
 import NotificationIcon from '@images/notification_icon.svg';
@@ -148,10 +148,10 @@ export default function Header() {
                     className={`${styles.titleContainer} ${
                         isSearchOpen && styles.hidden
                     }`}
+                    onClick={() => router.push('/')}
                 >
                     <div>
-                        <CalendarIcon className="icon" height="40px" />
-
+                        <Logo />
                         <span className={styles.dateToday}>
                             {now.getDate()}
                         </span>

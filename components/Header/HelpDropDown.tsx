@@ -31,14 +31,39 @@ export default function HelpDropDown() {
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ width: '150px' }}>
                 <ul>
-                    {['도움말', '학습센터', '업데이트'].map((v, i) => (
-                        <li key={i} onClick={closeDropDown}>
-                            {v}
-                        </li>
-                    ))}
+                    <li
+                        onClick={() => {
+                            window.open(
+                                'https://github.com/wafflestudio20-5/team9-web/blob/main/README.md',
+                            );
+                            closeDropDown();
+                        }}
+                    >
+                        도움말
+                    </li>
+                    <li onClick={closeDropDown}>학습센터</li>
+                    <li
+                        onClick={() => {
+                            window.open(
+                                'https://github.com/wafflestudio20-5/team9-web',
+                            );
+                            closeDropDown();
+                        }}
+                    >
+                        업데이트
+                    </li>
                 </ul>
                 <ul>
-                    <li>J에게 의견 보내기</li>
+                    <li
+                        onClick={() => {
+                            window.open(
+                                'https://github.com/wafflestudio20-5/team9-web/issues',
+                            );
+                            closeDropDown();
+                        }}
+                    >
+                        J에게 의견 보내기
+                    </li>
                 </ul>
             </DropDownBody>
         </DropDown>
