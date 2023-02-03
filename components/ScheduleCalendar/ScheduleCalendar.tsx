@@ -65,6 +65,12 @@ export default function ScheduleCalendar() {
             frozenEvents.forEach(event => {
                 const datesInEvent = getDatesInEvent(event);
                 for (let i = 0; i < datesInEvent.length; i++) {
+                    if (datesInEvent[i] < formatDate(dateObj)) {
+                        continue;
+                    }
+                    if (datesInEvent[i] > formatDate(dateBoundaryObj)) {
+                        break;
+                    }
                     if (eventsByDay[datesInEvent[i]]) {
                         eventsByDay[datesInEvent[i]].push({
                             num: 0,
