@@ -86,12 +86,14 @@
     position: relative;
     height: fit-content;
     padding-top: 70px;
+    padding-bottom: 4px;
     .across {
         height: fit-content;
         min-height: 88px;
         display: flex;
         flex-direction: column;
         border-left: 1px solid var(--light-structure);
+        gap: 2px;
     }
 }
 

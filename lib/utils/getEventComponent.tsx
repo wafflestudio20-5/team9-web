@@ -22,6 +22,7 @@ export default function getEventComponent({
     independentView?: boolean;
 }) {
     const eh = eventHeight ? eventHeight : 20;
+    const sh = independentView ? 5 : 3;
     if (data === null) {
         return <FillerEvent key={layer} eventHeight={eh} />;
     }
@@ -42,6 +43,7 @@ export default function getEventComponent({
                     eventData={data.event}
                     eventHeight={eh}
                     forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'acrossLeftEnd':
@@ -53,6 +55,7 @@ export default function getEventComponent({
                     eventData={data.event}
                     eventHeight={eh}
                     forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'acrossMiddle':
@@ -64,6 +67,7 @@ export default function getEventComponent({
                     eventData={data.event}
                     eventHeight={eh}
                     forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'acrossRight':
@@ -75,6 +79,7 @@ export default function getEventComponent({
                     eventData={data.event}
                     eventHeight={eh}
                     forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'acrossRightEnd':
@@ -86,6 +91,7 @@ export default function getEventComponent({
                     eventData={data.event}
                     eventHeight={eh}
                     forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'acrossClosedSat':
@@ -97,6 +103,7 @@ export default function getEventComponent({
                     eventData={data.event}
                     eventHeight={eh}
                     forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'acrossClosedSun':
@@ -108,6 +115,7 @@ export default function getEventComponent({
                     eventData={data.event}
                     eventHeight={eh}
                     forceTextDisplay={independentView}
+                    slopeHeight={sh}
                 />
             );
         case 'within':
