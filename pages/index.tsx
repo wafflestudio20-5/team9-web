@@ -33,6 +33,7 @@ export default function MainPage() {
                         </button>
                     )}
                 </div>
+                <div className={styles.image}></div>
             </div>
         </div>
     );
