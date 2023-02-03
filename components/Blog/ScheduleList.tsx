@@ -10,6 +10,7 @@ interface ScheduleListProps {
     schedules: FullSchedule[];
 }
 
+// list of schedules associated with a particular post
 export default function ScheduleList({ schedules }: ScheduleListProps) {
     const [selectedId, setSelectedId] = useState<number>(0);
     const router = useRouter();

@@ -92,7 +92,7 @@ export default function CreateScheduleButton({
                     {text && <span>{text}</span>}
                 </button>
             </DropDownHeader>
-            <DropDownBody isOpen={isOpen} style={{ top: '75px', left: '32px' }}>
+            <DropDownBody isOpen={isOpen} style={{ top: '80px', left: '32px' }}>
                 <ul>
                     <li onClick={() => onClickOption('add')}>새 일정 추가</li>
                     <li onClick={() => onClickOption('select')}>일정 선택</li>

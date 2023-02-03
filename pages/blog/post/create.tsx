@@ -64,7 +64,7 @@ export default function PostCreatePage() {
     };
 
     /**
-     * TODO: bring releated schedules from local storage
+     * TODO: get associated schedules from local storage
      *       and assign it to `schedules` using `setSchedules` when this component is first rendered
      */
 
