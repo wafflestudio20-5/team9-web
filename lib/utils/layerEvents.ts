@@ -5,7 +5,7 @@ import {
     LayeredWeeklyWithinEvents,
     WeeklyWithinEvents,
 } from '@customTypes/ScheduleTypes';
-import { isDateIncluded } from '@utils/calcEventDates';
+import { getDatesInEvent, isDateIncluded } from '@utils/calcEventDates';
 import { formatDate, formatDateWithTime } from '@utils/formatting';
 
 function compareEndAt(eventA: FullSchedule, eventB: FullSchedule) {
@@ -210,9 +210,13 @@ function layerWithinEvents(
     layeredEvents: LayeredEvents,
 ) {
     withinEvents.forEach(event => {
-        const dateString = event.start_at.split(' ')[0];
+        const [dateString] = getDatesInEvent(event);
+        console.log(dateString);
         const dateObj = new Date(dateString);
         const layer = findAvailableLayer(layeredEvents, dateString);
+        if (!layeredEvents[dateString]) {
+            return;
+        }
 
         if (dateObj.getDay() === 0) {
             layeredEvents[dateString][layer] = {
