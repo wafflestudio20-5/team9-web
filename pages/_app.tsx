@@ -20,9 +20,7 @@ function ContextProviders({ children }: PropsWithChildren) {
                     <DateProvider>
                         <ModalProvider>
                             <SidebarProvider>
-                                <BoxSizeProvider>
-                                    <RouteGuard>{children}</RouteGuard>
-                                </BoxSizeProvider>
+                                <BoxSizeProvider>{children}</BoxSizeProvider>
                             </SidebarProvider>
                         </ModalProvider>
                     </DateProvider>
@@ -35,6 +33,7 @@ function ContextProviders({ children }: PropsWithChildren) {
 export default function MyApp({ Component, pageProps }: AppProps) {
     return (
         <ContextProviders>
+            <RouteGuard />
             <Header />
             <Component {...pageProps} />
             <ModalContainer />
