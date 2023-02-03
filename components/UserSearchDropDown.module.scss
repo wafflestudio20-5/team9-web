@@ -14,9 +14,9 @@
 }
 
 .selected {
-    border: 2px solid #dadce0;
+    border: 2px solid var(--light-structure);
     border-radius: 20px;
-    background-color: white;
+    background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,6 +36,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        color: #000000;
     }
 
     button {
