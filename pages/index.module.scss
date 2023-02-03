@@ -1,0 +1,53 @@
+.mainPage {
+    height: calc(100vh - 65px);
+    background-color: var(--login-background);
+
+    .main {
+        margin: 0 auto;
+        padding: 0px 0px;
+        width: 80%;
+        height: 100%;
+        border-right: 30px solid var(--login-shadow);
+        background-color: var(--sidebar-background);
+        background-image: url('../public/images/main_images.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        background-clip: content-box;
+
+        .message {
+            margin: 0;
+            padding: 70px 50px 10px 50px;
+            line-height: 50px;
+            font-size: xx-large;
+            font-weight: bold;
+        }
+
+        .team {
+            padding: 20px 50px;
+            font-weight: bold;
+        }
+
+        .btnContainer {
+            padding: 0 50px;
+
+            button {
+                padding: 10px;
+                color: white;
+                border: none;
+                background-color: var(--today-blueberry);
+
+                &:hover {
+                    background-color: var(--dark-blueberry);
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .mainPage .main .message {
+        line-height: 40px;
+        font-size: 28px;
+    }
+}
