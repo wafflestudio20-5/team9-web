@@ -11,17 +11,15 @@ interface getEventComponentOptions {
 }
 
 export default function getEventComponent({
-    dateString,
     data,
     layer,
     eventHeight,
-    enforceEnd,
+    independentView,
 }: {
-    dateString: string;
     data: LayerData[number];
     layer: number;
     eventHeight?: number;
-    enforceEnd?: boolean;
+    independentView?: boolean;
 }) {
     const eh = eventHeight ? eventHeight : 20;
     if (data === null) {
@@ -33,18 +31,8 @@ export default function getEventComponent({
     if (!data.event) {
         return;
     }
-    const getEnforcedType = (type: string) => {
-        switch (type) {
-            case 'acrossLeft':
-                return 'acrossLeftEnd';
-            case 'acrossRight':
-                return 'acrossRightEnd';
-            default:
-                return type;
-        }
-    };
 
-    switch (enforceEnd ? getEnforcedType(data.type) : data.type) {
+    switch (data.type) {
         case 'acrossLeft':
             return (
                 <AcrossEvent
@@ -52,8 +40,8 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
                     eventHeight={eh}
+                    forceTextDisplay={independentView}
                 />
             );
         case 'acrossLeftEnd':
@@ -63,8 +51,8 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
                     eventHeight={eh}
+                    forceTextDisplay={independentView}
                 />
             );
         case 'acrossMiddle':
@@ -74,8 +62,8 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
                     eventHeight={eh}
+                    forceTextDisplay={independentView}
                 />
             );
         case 'acrossRight':
@@ -85,8 +73,8 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
                     eventHeight={eh}
+                    forceTextDisplay={independentView}
                 />
             );
         case 'acrossRightEnd':
@@ -96,8 +84,8 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
                     eventHeight={eh}
+                    forceTextDisplay={independentView}
                 />
             );
         case 'acrossClosedSat':
@@ -107,8 +95,8 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
                     eventHeight={eh}
+                    forceTextDisplay={independentView}
                 />
             );
         case 'acrossClosedSun':
@@ -118,8 +106,8 @@ export default function getEventComponent({
                     key={layer}
                     layer={layer}
                     eventData={data.event}
-                    dateString={dateString}
                     eventHeight={eh}
+                    forceTextDisplay={independentView}
                 />
             );
         case 'within':
@@ -130,6 +118,7 @@ export default function getEventComponent({
                     layer={layer}
                     eventData={data.event}
                     eventHeight={eh}
+                    expandSides={independentView}
                 />
             );
         case 'withinLeftEnd':
@@ -140,6 +129,7 @@ export default function getEventComponent({
                     layer={layer}
                     eventData={data.event}
                     eventHeight={eh}
+                    expandSides={independentView}
                 />
             );
         case 'withinRightEnd':
@@ -150,6 +140,7 @@ export default function getEventComponent({
                     layer={layer}
                     eventData={data.event}
                     eventHeight={eh}
+                    expandSides={independentView}
                 />
             );
         case 'filler':

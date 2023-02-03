@@ -12,15 +12,26 @@ export default function WithinEvent({
     layer,
     slopeHeight,
     type,
+    expandSides,
 }: {
     eventData: FullSchedule;
     eventHeight: number;
     layer: number;
     slopeHeight?: number;
     type: string;
+    expandSides: boolean | undefined;
 }) {
     const sh = slopeHeight ? slopeHeight : 3;
     const { openModal } = useModal();
+    const getWidth = () => {
+        if (expandSides) {
+            return '100%';
+        } else if (type === 'middle') {
+            return '93%';
+        } else {
+            return '96.5%';
+        }
+    };
 
     return (
         <div
@@ -30,9 +41,13 @@ export default function WithinEvent({
             style={{
                 height: `${eventHeight}px`,
                 marginTop: `${sh}px`,
-                marginLeft: `${type === 'leftEnd' ? '' : '3.5%'}`,
-                marginRight: `${type === 'rightEnd' ? '' : '3.5%'}`,
-                width: `${type === 'middle' ? '93%' : '96.5%'}`,
+                marginLeft: `${
+                    type === 'leftEnd' || expandSides ? '' : '3.5%'
+                }`,
+                marginRight: `${
+                    type === 'rightEnd' || expandSides ? '' : '3.5%'
+                }`,
+                width: `${getWidth()}`,
             }}
             onClick={() => {
                 openModal(MODAL_NAMES.scheduleView, {

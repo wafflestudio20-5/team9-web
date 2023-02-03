@@ -10,11 +10,11 @@ export default function AcrossEvent({
     type,
     eventData,
     layer,
-    dateString,
     eventHeight,
     borderWidthPercentage,
     slopeWidthPercentage,
     slopeHeight,
+    forceTextDisplay,
 }: {
     type:
         | 'left'
@@ -26,11 +26,11 @@ export default function AcrossEvent({
         | 'closedSun';
     eventData: FullSchedule;
     layer: number;
-    dateString: string;
     eventHeight?: number;
     borderWidthPercentage?: number;
     slopeWidthPercentage?: number;
     slopeHeight?: number;
+    forceTextDisplay: boolean | undefined;
 }) {
     const eh = eventHeight ? eventHeight : 20;
     const bw = borderWidthPercentage ? borderWidthPercentage : 8;
@@ -107,11 +107,23 @@ export default function AcrossEvent({
                 <path d={getPathString(type)} />
             </svg>
 
-            {(type === 'left' ||
+            {(forceTextDisplay ||
+                type === 'left' ||
                 type === 'leftEnd' ||
                 type === 'closedSat' ||
                 type === 'closedSun') && (
-                <span className={styles.title}>{eventData.title}</span>
+                <span
+                    className={styles.title}
+                    style={{
+                        padding: `${
+                            forceTextDisplay && type !== 'leftEnd'
+                                ? '4px 10px 7px 10px'
+                                : '7px 10px 4px 10px'
+                        }`,
+                    }}
+                >
+                    {eventData.title}
+                </span>
             )}
         </div>
     );

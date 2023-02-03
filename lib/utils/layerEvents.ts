@@ -94,10 +94,58 @@ function sortEvents(events: FullSchedule[]) {
     return { acrossEvents, withinEvents };
 }
 
+function getAcrossType(dateObj: Date, event: FullSchedule, dates: Date[]) {
+    if (
+        formatDate(dateObj) === event.start_at.split(' ')[0] &&
+        dateObj.getDay() === 6
+    ) {
+        return 'acrossClosedSat';
+    } else if (
+        (formatDate(dateObj) === event.end_at.split(' ')[0] ||
+            (event.end_at.split(' ')[1] === '00:00:00' &&
+                new Date(event.end_at).getTime() - dateObj.getTime() <=
+                    24 * 60 * 60 * 1000)) &&
+        dateObj.getDay() === 0
+    ) {
+        return 'acrossClosedSun';
+    } else if (dateObj.getDay() === 0) {
+        return 'acrossLeftEnd';
+    } else if (formatDate(dateObj) === event.start_at.split(' ')[0]) {
+        return 'acrossLeft';
+    } else if (dateObj.getDay() === 6) {
+        return 'acrossRightEnd';
+    } else if (
+        formatDate(dateObj) === event.end_at.split(' ')[0] ||
+        (event.end_at.split(' ')[1] === '00:00:00' &&
+            new Date(event.end_at).getTime() - dateObj.getTime() <=
+                24 * 60 * 60 * 1000)
+    ) {
+        return 'acrossRight';
+    } else {
+        return 'acrossMiddle';
+    }
+}
+
+function getAcrossTypeForIndepView(dateObj: Date, event: FullSchedule) {
+    if (formatDate(dateObj) === event.start_at.split(' ')[0]) {
+        return 'acrossLeftEnd';
+    } else if (
+        formatDate(dateObj) === event.end_at.split(' ')[0] ||
+        (event.end_at.split(' ')[1] === '00:00:00' &&
+            new Date(event.end_at).getTime() - dateObj.getTime() <=
+                24 * 60 * 60 * 1000)
+    ) {
+        return 'acrossRightEnd';
+    } else {
+        return 'acrossMiddle';
+    }
+}
+
 function layerAcrossEvents(
     acrossEvents: FullSchedule[],
     dates: Date[],
     layeredEvents: LayeredEvents,
+    independentView: boolean,
 ) {
     acrossEvents.forEach(event => {
         const startDateString =
@@ -125,7 +173,6 @@ function layerAcrossEvents(
                 );
 
                 while (isDateIncluded(newDateObj, event)) {
-                    console.log(event, layer);
                     if (formatDate(newDateObj) < formatDate(dates[0])) {
                         newDateObj.setDate(newDateObj.getDate() + 1);
                         continue;
@@ -136,62 +183,16 @@ function layerAcrossEvents(
                     ) {
                         break;
                     }
-                    if (
-                        formatDate(newDateObj) ===
-                            event.start_at.split(' ')[0] &&
-                        newDateObj.getDay() === 6
-                    ) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossClosedSat',
-                            event: event,
-                        };
-                    } else if (
-                        (formatDate(newDateObj) ===
-                            event.end_at.split(' ')[0] ||
-                            (event.end_at.split(' ')[1] === '00:00:00' &&
-                                new Date(event.end_at).getTime() -
-                                    newDateObj.getTime() <=
-                                    24 * 60 * 60 * 1000)) &&
-                        newDateObj.getDay() === 0
-                    ) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossClosedSun',
-                            event: event,
-                        };
-                    } else if (newDateObj.getDay() === 0) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossLeftEnd',
-                            event: event,
-                        };
-                    } else if (
-                        formatDate(newDateObj) === event.start_at.split(' ')[0]
-                    ) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossLeft',
-                            event: event,
-                        };
-                    } else if (newDateObj.getDay() === 6) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossRightEnd',
-                            event: event,
-                        };
-                    } else if (
-                        formatDate(newDateObj) === event.end_at.split(' ')[0] ||
-                        (event.end_at.split(' ')[1] === '00:00:00' &&
-                            new Date(event.end_at).getTime() -
-                                newDateObj.getTime() <=
-                                24 * 60 * 60 * 1000)
-                    ) {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossRight',
-                            event: event,
-                        };
-                    } else {
-                        layeredEvents[formatDate(newDateObj)][layer] = {
-                            type: 'acrossMiddle',
-                            event: event,
-                        };
-                    }
+
+                    layeredEvents[formatDate(newDateObj)][layer] = {
+                        type: `${
+                            independentView
+                                ? getAcrossTypeForIndepView(newDateObj, event)
+                                : getAcrossType(newDateObj, event, dates)
+                        }`,
+                        event: event,
+                    };
+
                     newDateObj.setDate(newDateObj.getDate() + 1);
                 }
             }
@@ -203,7 +204,6 @@ function layerAcrossEvents(
 
 function layerWithinEvents(
     withinEvents: FullSchedule[],
-    dates: Date[],
     layeredEvents: LayeredEvents,
 ) {
     withinEvents.forEach(event => {
@@ -247,6 +247,7 @@ function fillSkippedLayers(dates: Date[], layeredEvents: LayeredEvents) {
 export default function getLayeredEvents(
     events: FullSchedule[],
     dates: Date[],
+    independentView: boolean,
 ) {
     const layeredEvents = getInitialLayeredEvents(dates);
     if (!events) {
@@ -254,10 +255,10 @@ export default function getLayeredEvents(
     }
     const { acrossEvents, withinEvents } = sortEvents(events);
     if (acrossEvents) {
-        layerAcrossEvents(acrossEvents, dates, layeredEvents);
+        layerAcrossEvents(acrossEvents, dates, layeredEvents, independentView);
     }
     if (withinEvents) {
-        layerWithinEvents(withinEvents, dates, layeredEvents);
+        layerWithinEvents(withinEvents, layeredEvents);
     }
     fillSkippedLayers(dates, layeredEvents);
     return layeredEvents;
@@ -272,7 +273,11 @@ export function getLayeredFrozenEvents(events: FullSchedule[], dates: Date[]) {
         }
         return false;
     });
-    return getLayeredEvents(frozenEvents, dates);
+    return getLayeredEvents(
+        frozenEvents,
+        dates,
+        dates.length === 1 ? true : false,
+    );
 }
 
 function areTimesOverlapping(eventA: FullSchedule, eventB: FullSchedule) {
