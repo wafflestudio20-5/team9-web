@@ -1,30 +1,19 @@
-import axios from 'axios';
-import React, {
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-    useCallback,
-} from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import styles from './ScheduleCalendar.module.scss';
 
-import DayinSchedule from '@components/ScheduleCalendar/DayinSchedule';
-import Sidebar from '@components/Sidebar/Sidebar';
-import { useSidebarContext } from '@contexts/SidebarContext';
-import {
-    NumberedEvent,
-    NumberedEventsByDay,
-    FullSchedule,
-} from '@customTypes/ScheduleTypes';
-import { getFrozenEvents } from '@utils/layerEvents';
-import { getDatesInEvent, isDateIncluded } from '@utils/calcEventDates';
-import { formatDate } from '@utils/formatting';
 import { getEntireScheduleAPI } from '@apis/calendar';
-import { useSessionContext } from '@contexts/SessionContext';
-import { useRouter } from 'next/router';
+import DayinSchedule from '@components/ScheduleCalendar/DayinSchedule';
 import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
+import Sidebar from '@components/Sidebar/Sidebar';
 import { useCalendarContext } from '@contexts/CalendarContext';
+import { useSessionContext } from '@contexts/SessionContext';
+import { useSidebarContext } from '@contexts/SidebarContext';
+import { NumberedEventsByDay, FullSchedule } from '@customTypes/ScheduleTypes';
+import { getDatesInEvent } from '@utils/calcEventDates';
+import { formatDate } from '@utils/formatting';
+import { getFrozenEvents } from '@utils/layerEvents';
 
 export default function ScheduleCalendar() {
     const { isOpen } = useSidebarContext();

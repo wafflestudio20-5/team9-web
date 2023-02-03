@@ -3,12 +3,7 @@ import React from 'react';
 import AcrossEvent from '@components/EventComponents/AcrossEvent';
 import FillerEvent from '@components/EventComponents/FillerEvent';
 import WithinEvent from '@components/EventComponents/WithinEvent';
-import { FullSchedule, LayerData } from '@customTypes/ScheduleTypes';
-
-interface getEventComponentOptions {
-    eventHeight?: number;
-    enforceEnd?: boolean;
-}
+import { LayerData } from '@customTypes/ScheduleTypes';
 
 export default function getEventComponent({
     data,
@@ -123,7 +118,6 @@ export default function getEventComponent({
                 <WithinEvent
                     type="middle"
                     key={layer}
-                    layer={layer}
                     eventData={data.event}
                     eventHeight={eh}
                     expandSides={independentView}
@@ -134,7 +128,6 @@ export default function getEventComponent({
                 <WithinEvent
                     type="leftEnd"
                     key={layer}
-                    layer={layer}
                     eventData={data.event}
                     eventHeight={eh}
                     expandSides={independentView}
@@ -145,7 +138,6 @@ export default function getEventComponent({
                 <WithinEvent
                     type="rightEnd"
                     key={layer}
-                    layer={layer}
                     eventData={data.event}
                     eventHeight={eh}
                     expandSides={independentView}

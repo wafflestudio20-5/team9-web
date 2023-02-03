@@ -5,8 +5,8 @@ import {
     LayeredWeeklyWithinEvents,
     WeeklyWithinEvents,
 } from '@customTypes/ScheduleTypes';
-import { formatDate, formatDateWithTime } from '@utils/formatting';
 import { isDateIncluded } from '@utils/calcEventDates';
+import { formatDate, formatDateWithTime } from '@utils/formatting';
 
 function compareEndAt(eventA: FullSchedule, eventB: FullSchedule) {
     const aEnd = eventA.end_at;

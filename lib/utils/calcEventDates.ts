@@ -1,5 +1,6 @@
-import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { formatDate } from './formatting';
+
+import { FullSchedule } from '@customTypes/ScheduleTypes';
 
 export function isDateIncluded(date: Date, event: FullSchedule) {
     if (
@@ -21,8 +22,8 @@ export function isDateIncluded(date: Date, event: FullSchedule) {
 }
 
 export function getDatesInEvent(event: FullSchedule) {
-    let dateStrings = [];
-    let dateVar = new Date(event.start_at);
+    const dateStrings = [];
+    const dateVar = new Date(event.start_at);
     while (isDateIncluded(dateVar, event)) {
         dateStrings.push(formatDate(dateVar));
         dateVar.setDate(dateVar.getDate() + 1);

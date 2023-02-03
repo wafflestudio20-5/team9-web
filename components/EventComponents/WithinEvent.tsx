@@ -9,14 +9,12 @@ import { FullSchedule } from '@customTypes/ScheduleTypes';
 export default function WithinEvent({
     eventData,
     eventHeight,
-    layer,
     slopeHeight,
     type,
     expandSides,
 }: {
     eventData: FullSchedule;
     eventHeight: number;
-    layer: number;
     slopeHeight?: number;
     type: string;
     expandSides: boolean | undefined;

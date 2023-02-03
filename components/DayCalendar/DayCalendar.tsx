@@ -4,24 +4,24 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import styles from './DayCalendar.module.scss';
 
 import { getEntireScheduleAPI, CalendarURLParams } from '@apis/calendar';
-import Sidebar from '@components/Sidebar/Sidebar';
-import { useSidebarContext } from '@contexts/SidebarContext';
+import DailyEvent from '@components/EventComponents/DailyEvent';
 import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
-import { formatHour, formatDate, DAYS } from '@utils/formatting';
-import { useSessionContext } from '@contexts/SessionContext';
+import Sidebar from '@components/Sidebar/Sidebar';
 import { useCalendarContext } from '@contexts/CalendarContext';
+import { useSessionContext } from '@contexts/SessionContext';
+import { useSidebarContext } from '@contexts/SidebarContext';
 import {
     FullSchedule,
     LayerData,
     DailyLayerData,
 } from '@customTypes/ScheduleTypes';
+import { formatHour, formatDate, DAYS } from '@utils/formatting';
+import getEventComponent from '@utils/getEventComponent';
 import {
     getFrozenEvents,
     getLayeredEvents,
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
-import getEventComponent from '@utils/getEventComponent';
-import DailyEvent from '@components/EventComponents/DailyEvent';
 
 export default function DayCalendar() {
     const router = useRouter();

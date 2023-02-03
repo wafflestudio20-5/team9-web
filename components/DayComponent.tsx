@@ -2,7 +2,6 @@ import React from 'react';
 
 import styles from './DayComponent.module.scss';
 
-import { useCalendarContext } from '@contexts/CalendarContext';
 import { DAYS } from '@utils/formatting';
 
 export default function DayComponent({
@@ -12,8 +11,6 @@ export default function DayComponent({
     isToday: boolean;
     date: Date;
 }) {
-    const { calendarType } = useCalendarContext();
-
     const twentyFourHours: Array<number> = Array.from(
         { length: 24 },
         (v, i) => i + 1,
@@ -38,7 +35,7 @@ export default function DayComponent({
                 </div>
             </div>
             <div className={styles.mainSchedules}>
-                {twentyFourHours.map((key, index) => {
+                {twentyFourHours.map(key => {
                     return (
                         <div className={styles.oneHourInDay} key={key}></div>
                     );

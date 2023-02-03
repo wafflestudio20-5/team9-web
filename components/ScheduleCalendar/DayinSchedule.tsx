@@ -3,12 +3,12 @@ import React, { MutableRefObject } from 'react';
 
 import styles from './DayinSchedule.module.scss';
 
-import { DAYS } from '@utils/formatting';
-import { FullSchedule, NumberedEvent } from '@customTypes/ScheduleTypes';
-import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
 import getEventColorClass from '@components/EventComponents/getEventColorClass';
+import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
+import { FullSchedule, NumberedEvent } from '@customTypes/ScheduleTypes';
 import { getDatesInEvent } from '@utils/calcEventDates';
-import { formatEventTime } from '@utils/formatting';
+import { DAYS , formatEventTime } from '@utils/formatting';
+
 
 interface DayinScheduleProps {
     dateString: string;
