@@ -121,12 +121,14 @@ export default function ScheduleCalendar() {
     };
 
     return (
-        <div
-            className={styles.wrapper}
-            style={{ filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}` }}
-        >
+        <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
-            <div className={styles.scrollHolder}>
+            <div
+                className={styles.scrollHolder}
+                style={{
+                    filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}`,
+                }}
+            >
                 <div className={styles.scrollContent}>
                     {scheduleEventByDay &&
                         Object.entries(scheduleEventByDay)

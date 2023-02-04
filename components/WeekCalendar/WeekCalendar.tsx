@@ -126,12 +126,14 @@ export default function WeekCalendar() {
     }, [weekEvents]);
 
     return (
-        <div
-            className={styles.wrapper}
-            style={{ filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}` }}
-        >
+        <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
-            <div className={styles.weekHolder}>
+            <div
+                className={styles.weekHolder}
+                style={{
+                    filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}`,
+                }}
+            >
                 <div
                     className={`${styles.frozenHolder} ${
                         isScrolledtoTop ? styles.scrolledToTop : ''

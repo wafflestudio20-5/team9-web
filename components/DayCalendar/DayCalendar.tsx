@@ -91,13 +91,11 @@ export default function DayCalendar() {
         if (dayEvents) {
             const { frozenEvents, scrollableEvents } =
                 getFrozenEvents(dayEvents);
-            console.log(frozenEvents);
             setLayeredFrozenEvents(
                 getLayeredEvents(frozenEvents, [paramDate], true)[
                     formatDate(paramDate)
                 ],
             );
-            console.log('layered successfully');
             setLayeredWithinEvents(
                 getLayeredWeeklyWithinEvents(scrollableEvents, [paramDate])[
                     formatDate(paramDate)
@@ -107,12 +105,14 @@ export default function DayCalendar() {
     }, [dayEvents]);
 
     return (
-        <div
-            className={styles.wrapper}
-            style={{ filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}` }}
-        >
+        <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
-            <div className={styles.dayHolder}>
+            <div
+                className={styles.dayHolder}
+                style={{
+                    filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}`,
+                }}
+            >
                 <div
                     className={`${styles.frozenHolder} ${
                         isScrolledtoTop ? styles.scrolledToTop : ''

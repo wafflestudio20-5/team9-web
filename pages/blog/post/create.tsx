@@ -52,8 +52,6 @@ export default function PostCreatePage() {
         });
     };
 
-    console.log(localStorageSchedules);
-
     const createPost = async (newPost: FormData) => {
         try {
             newPost.append('schedules_json', JSON.stringify(getScheduleIds()));

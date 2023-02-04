@@ -53,9 +53,11 @@ export default function ScheduleProvider({ children }: PropsWithChildren) {
         );
 
     useEffect(() => {
-        if (!schedules) {
+        if (schedules === undefined) {
             setIsSelectMode(false);
-        }
+        } else if (schedules) {
+            setIsSelectMode(true);
+        } // isSelected is not affected by a empty list of schedules
     }, [schedules]);
     const getOnClickFunction = (eventData: FullSchedule) => {
         if (isSelectMode) {

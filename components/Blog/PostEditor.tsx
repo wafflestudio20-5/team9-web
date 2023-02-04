@@ -66,7 +66,7 @@ export default function PostEditor({
         };
         warningModal(warningContent).then(result => {
             if (result.isConfirmed) {
-                setSchedules([]);
+                setSchedules(undefined);
                 setIsSelectMode(false);
                 router.back();
             }

@@ -70,7 +70,7 @@ export default function CreateScheduleButton({
                 break;
             case 'abort':
                 setIsSelectMode(false);
-                setSchedules([]);
+                setSchedules(undefined);
         }
         closeDropDown();
     };
