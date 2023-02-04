@@ -6,14 +6,17 @@ import { useSessionContext } from '@contexts/SessionContext';
 export default function RouteGuard({ children }: PropsWithChildren) {
     const router = useRouter();
     const { user } = useSessionContext();
+    const [pathName, setPathName] = useState(router.pathname);
 
     useEffect(() => {
-        if (user === null) {
+        if (user === null && pathName !== '/login') {
             router.push({
-                pathname: '/login',
+                pathname: '/',
             });
         } else {
-            router.back();
+            router.push({
+                pathname: pathName,
+            });
         }
     }, [user]);
 
