@@ -21,6 +21,14 @@ export default function UserModal() {
                         <button className={styles.addPhoto}>
                             <CameraIcon height="20px" className="icon" />
                         </button>
+                        {user.image ? (
+                            <img
+                                className={styles.imageRound}
+                                src={user.image}
+                            />
+                        ) : (
+                            <div className={styles.imageRound}></div>
+                        )}
                     </div>
                     <div className={styles.basic}>
                         <span className={styles.name}>{user?.username}</span>
