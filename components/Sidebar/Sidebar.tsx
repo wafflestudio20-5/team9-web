@@ -16,6 +16,7 @@ import { useSidebarContext } from '@contexts/SidebarContext';
 import { UserDataForSearch } from '@customTypes/UserTypes';
 import AddScheduleIcon from '@images/add_schedule_icon.svg';
 import ExpandIcon from '@images/expand_icon.svg';
+import CreateScheduleButton from '@components/ScheduleModal/CreateScheduleButton';
 
 export default function Sidebar() {
     const router = useRouter();
@@ -74,7 +75,16 @@ export default function Sidebar() {
             }
         >
             <div className={styles.wrapper}>
-                <div className={styles.createButtonHolder}>
+                <CreateScheduleButton
+                    text="만들기"
+                    style={{
+                        borderRadius: '25px',
+                        left: '20px',
+                        border: '1px solid var(--structure)',
+                        boxShadow: '2px 2px 2px var(--structure-shadow)',
+                    }}
+                />
+                {/* <div className={styles.createButtonHolder}>
                     <div className={styles.roundedButton}>
                         <AddScheduleIcon
                             className="icon"
@@ -84,7 +94,7 @@ export default function Sidebar() {
                         <div>만들기</div>
                         <ExpandIcon className="icon" height="15px" />
                     </div>
-                </div>
+                </div> */}
                 <div className={styles.calendar}>
                     <MiniCalendar
                         dateVariable={dateObjNow}
