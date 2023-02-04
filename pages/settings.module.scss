@@ -63,8 +63,13 @@
             position: relative;
             width: 100px;
             height: 100px;
-            border: 1px solid var(--structure);
-            border-radius: 50%;
+
+            .imageRound {
+                width: 100px;
+                height: 100px;
+                border: 1px solid var(--structure);
+                border-radius: 50%;
+            }
 
             .addPhoto {
                 position: absolute;

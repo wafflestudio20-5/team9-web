@@ -46,7 +46,7 @@ export default function SettingsPage() {
         if (username !== user.username) newProfile.append('username', username);
         newProfile.append('birthdate', birthdate);
         if (image) newProfile.append('image', image);
-        else if (!imagePreview) newProfile.append('image', ''); // if there's no image when creating the post, or the user wants to delete the image when editing the post
+        //else if (!imagePreview) newProfile.append('image', ''); // if there's no image when creating the post, or the user wants to delete the image when editing the post
         console.log(newProfile.get('username'));
         console.log(newProfile.get('birthdate'));
         console.log(newProfile.get('image'));
@@ -96,7 +96,14 @@ export default function SettingsPage() {
                             onChange={uploadImage}
                             disabled={Boolean(imagePreview)}
                         />
-                        {imagePreview && <img src={imagePreview} />}
+                        {imagePreview ? (
+                            <img
+                                className={styles.imageRound}
+                                src={imagePreview}
+                            />
+                        ) : (
+                            <div className={styles.imageRound}></div>
+                        )}
                     </div>
                     {imagePreview && (
                         <button onClick={deleteImage} type="button">
