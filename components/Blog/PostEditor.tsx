@@ -37,6 +37,7 @@ export default function PostEditor({
             const file = e.target.files[0]; // real image file
             if (file.size > FILE_SIZE_LIMIT) {
                 errorToast('이미지 최대 용량은 10MB입니다.');
+                e.currentTarget.value = ''; // need this line to delete and repost the 'same' image
                 return;
             }
             setImagePreview(URL.createObjectURL(file));
