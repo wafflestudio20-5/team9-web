@@ -25,7 +25,19 @@
     <img src="https://img.shields.io/badge/eslint-4b32c3?style=for-the-badge&logo=eslint&logoColor=white">
     <img src="https://img.shields.io/badge/prettier-f7b93e?style=for-the-badge&logo=prettier&logoColor=white">
   </div>
+    <br/>
   <div align="center">
-    <img src="workflow.png">
+    <h3>  Workflow</h3>
+    <div align="center">
+        <img src="workflow.png">
+    </div>
+  </div>
+
+<br/>
+  <div align="center">
+    <h3>Contributors</h3>
+    <div> 이아영 </div>
+    <div>임찬솔</div> 
+    <div>윤효정  </div>
   </div>
 </div>
