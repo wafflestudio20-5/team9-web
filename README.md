@@ -25,4 +25,7 @@
     <img src="https://img.shields.io/badge/eslint-4b32c3?style=for-the-badge&logo=eslint&logoColor=white">
     <img src="https://img.shields.io/badge/prettier-f7b93e?style=for-the-badge&logo=prettier&logoColor=white">
   </div>
+  <div align="center">
+    <img src="workflow.png">
+  </div>
 </div>
