@@ -247,7 +247,7 @@ export function UserSearchDropDown({
                             );
                         })
                     ) : (
-                        <li>No results...</li>
+                        <li style={{ padding: '8px 10px' }}>No results...</li>
                     )}
                 </ul>
             </DropDownBody>
