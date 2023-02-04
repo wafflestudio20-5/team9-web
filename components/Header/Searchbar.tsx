@@ -6,6 +6,7 @@ import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import CloseIcon from '@images/close_icon.svg';
 import DropdownIcon from '@images/dropdown_icon.svg';
 import SearchIcon from '@images/search_icon.svg';
+import { errorToast } from '@utils/customAlert';
 
 interface SearchbarProps {
     isOpen: boolean;
@@ -20,6 +21,7 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
 
     const searchSchedule = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        errorToast('장식입니다.');
     };
 
     const clearQuery = () => {
@@ -39,6 +41,8 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
     useEffect(() => {
         if (isOpen && getState(MODAL_NAMES.searchDetails) === 'closed') {
             window.addEventListener('click', onClickOuterArea);
+        } else if (!isOpen) {
+            setQuery('');
         }
         return () => {
             window.removeEventListener('click', onClickOuterArea);
@@ -62,7 +66,7 @@ export default function Searchbar({ isOpen, close }: SearchbarProps) {
                     value={query}
                     ref={inputRef}
                     onChange={e => setQuery(e.target.value)}
-                    placeholder="검색"
+                    placeholder="검색!은 할 수 없습니다. 돌아가세요."
                     autoFocus
                 />
                 <button
