@@ -6,12 +6,12 @@ import React, {
     useContext,
     useEffect,
     useMemo,
-    useState,
 } from 'react';
+
+import { useModal, MODAL_NAMES } from './ModalContext';
 
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import useLocalStorage from '@hooks/useLocalStorage';
-import { useModal, MODAL_NAMES } from './ModalContext';
 
 interface ScheduleContextData {
     schedules: FullSchedule[] | undefined;
