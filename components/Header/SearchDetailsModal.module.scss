@@ -29,6 +29,11 @@
         }
     }
 
+    .inputWrapper {
+        position: relative;
+        height: 100%;
+    }
+
     label {
         width: 150px;
     }
@@ -42,9 +47,29 @@
         background-color: var(--fill-inputBox);
         color: black;
 
+        + span {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 0;
+            transition: all 0.3s ease-in-out;
+            border-bottom: 2px solid var(--button-hover);
+        }
+
+        &:hover {
+            background-color: var(--button-hover);
+        }
+
         &:focus {
-            border-bottom: 2px solid var(--today-blueberry);
             outline: none;
+            background-color: var(--button-hover);
+
+            // underline
+            + span {
+                left: 0;
+                width: 100%;
+                border-bottom: 2px solid var(--today-blueberry);
+            }
         }
     }
 

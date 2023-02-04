@@ -7,6 +7,7 @@ import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { getTimeInMinutes } from '@utils/calculateDate';
 import { formatEventTime, formatHour, formatTime } from '@utils/formatting';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 
 export default function DailyEvent({
     textTop,
@@ -18,6 +19,7 @@ export default function DailyEvent({
     layer: number;
 }) {
     const { openModal } = useModal();
+    const { getOnClickFunction, getEventItemStyleProp } = useScheduleContext();
 
     const heightPerMinute = 1320 / (24 * 60);
     const startTimeInMinutes = getTimeInMinutes(new Date(event.start_at));
@@ -46,17 +48,14 @@ export default function DailyEvent({
                 event.created_by,
             )}`}
             style={{
+                ...getEventItemStyleProp(event),
                 top: `${topPosition}px`,
                 width: `${100 - layer * 12}%`,
                 height: `${height}px`,
                 zIndex: `${Number(layer) + 1}`,
             }}
             data-layer={String(layer)}
-            onClick={() => {
-                openModal(MODAL_NAMES.scheduleView, {
-                    schedule: event,
-                });
-            }}
+            onClick={getOnClickFunction(event)}
         >
             <div
                 className={`${styles.textHolder} ${

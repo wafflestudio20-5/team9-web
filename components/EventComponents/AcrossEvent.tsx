@@ -5,6 +5,7 @@ import getEventColorClass from './getEventColorClass';
 
 import { MODAL_NAMES, useModal } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 
 export default function AcrossEvent({
     type,
@@ -37,6 +38,7 @@ export default function AcrossEvent({
     const sw = slopeWidthPercentage ? slopeWidthPercentage : 4;
     const sh = slopeHeight ? slopeHeight : 3;
     const { openModal } = useModal();
+    const { getOnClickFunction, getEventItemStyleProp } = useScheduleContext();
 
     const getPathString = (type: string) => {
         switch (type) {
@@ -88,12 +90,12 @@ export default function AcrossEvent({
             className={`${styles.across} ${getEventColorClass(
                 eventData.created_by,
             )} ${type} ${layer}`}
-            onClick={() => {
-                openModal(MODAL_NAMES.scheduleView, {
-                    schedule: eventData,
-                });
+            onClick={getOnClickFunction(eventData)}
+            style={{
+                ...getEventItemStyleProp(eventData),
+                width: '100%',
+                height: `${eh + sh}px`,
             }}
-            style={{ width: '100%', height: `${eh + sh}px` }}
         >
             <svg
                 fill="currentColor"

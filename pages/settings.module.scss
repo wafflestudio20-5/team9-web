@@ -25,10 +25,133 @@
     margin: 8px 0px 0px 100px;
 }
 
+.whiteBack {
+    background-color: #f9f7f3;
+}
+
 .settingBlock {
     margin: 8px;
     padding-bottom: 40px;
     display: flex;
+    gap: 10px;
     flex-direction: column;
     align-items: flex-start;
+    font-size: 15px;
+}
+
+.userModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    width: 350px;
+    max-height: 450px;
+    overflow: auto;
+
+    .userInfo {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        width: 100%;
+        height: 240px;
+        gap: 10px;
+
+        .photo {
+            position: relative;
+            width: 100px;
+            height: 100px;
+
+            .imageRound {
+                width: 100px;
+                height: 100px;
+                border: 1px solid var(--structure);
+                border-radius: 50%;
+            }
+
+            .addPhoto {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                padding: 0;
+                width: 30px;
+                height: 30px;
+                border: none;
+                border-radius: 50%;
+                box-shadow: 0 1px 5px 1px var(--structure);
+                background-color: var(--sidebar-background);
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &:hover {
+                    background-color: var(--button-hover);
+                }
+            }
+
+            img {
+                width: 100px;
+                height: 100px;
+            }
+
+            input {
+                display: none;
+
+                &:disabled + label {
+                    cursor: default;
+                }
+            }
+
+            label {
+                cursor: pointer;
+            }
+        }
+
+        .basic {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            span {
+                display: block;
+
+                input {
+                    font-size: 15px;
+                }
+            }
+
+            .name {
+                border: 1px solid var(--structure);
+                border-radius: 5px;
+            }
+        }
+
+        .management {
+            button {
+                padding: 8px 15px;
+                border-radius: 20px;
+            }
+        }
+    }
+
+    .otherAccount {
+        width: 100%;
+        min-height: 60px;
+        border-bottom: 1px solid var(--structure);
+    }
+
+    .logout {
+        width: 100%;
+        height: 70px;
+        text-align: center;
+        line-height: 70px;
+        border-bottom: 1px solid var(--structure);
+
+        button {
+            padding: 10px 20px;
+        }
+    }
 }

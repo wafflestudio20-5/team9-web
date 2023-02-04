@@ -5,6 +5,7 @@ import styles from './PostEditor.module.scss';
 
 import ImageIcon from '@images/image_icon.svg';
 import { warningModal } from '@utils/customAlert';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 
 interface PostEditorProps {
     initTitle: string;
@@ -25,6 +26,7 @@ export default function PostEditor({
     const [imagePreview, setImagePreview] = useState<string>(initImage || ''); // image object url
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const router = useRouter();
+    const { setSchedules, setIsSelectMode } = useScheduleContext();
 
     // create url for uploaded image file(e.target.files[0]) using `URL.createObjectURL`
     // then you can use that url to show preview
@@ -64,6 +66,8 @@ export default function PostEditor({
         };
         warningModal(warningContent).then(result => {
             if (result.isConfirmed) {
+                setSchedules(undefined);
+                setIsSelectMode(false);
                 router.back();
             }
         });

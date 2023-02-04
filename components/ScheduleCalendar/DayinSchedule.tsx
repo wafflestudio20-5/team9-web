@@ -4,7 +4,7 @@ import React, { MutableRefObject } from 'react';
 import styles from './DayinSchedule.module.scss';
 
 import getEventColorClass from '@components/EventComponents/getEventColorClass';
-import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 import { FullSchedule, NumberedEvent } from '@customTypes/ScheduleTypes';
 import { getDatesInEvent } from '@utils/calcEventDates';
 import { DAYS, formatEventTime } from '@utils/formatting';
@@ -22,7 +22,8 @@ export default function DayinSchedule({
     const dateObj = new Date(dateString);
     const today = new Date();
     const router = useRouter();
-    const { openModal } = useModal();
+    const { getOnClickFunction, getScheduleEventItemStyleProp } =
+        useScheduleContext();
 
     const MSPERDAY = 24 * 60 * 60 * 1000;
     const eventDurationMilliseconds = (event: FullSchedule) => {
@@ -67,11 +68,8 @@ export default function DayinSchedule({
                         <div
                             key={index}
                             className={styles.eventItem}
-                            onClick={() => {
-                                openModal(MODAL_NAMES.scheduleView, {
-                                    schedule: event.event,
-                                });
-                            }}
+                            onClick={getOnClickFunction(event.event)}
+                            style={getScheduleEventItemStyleProp(event.event)}
                         >
                             <div
                                 className={`${

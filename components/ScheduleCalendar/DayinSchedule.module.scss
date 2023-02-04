@@ -64,6 +64,7 @@
     font-size: 14px;
     color: var(--text-other);
     font-weight: 400;
+    background-color: var(--waffle-background);
     &:hover {
         background-color: var(--button-hover);
         cursor: pointer;
@@ -81,6 +82,12 @@
     .duration {
         padding-left: 10px;
         width: 160px;
-        color: var(--text-other);
+        color: inherit;
+        font-weight: inherit;
+    }
+
+    .title {
+        color: inherit;
+        font-weight: inherit;
     }
 }

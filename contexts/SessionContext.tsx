@@ -138,7 +138,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
                 });
             })
             .catch(error => {
-                if (error.response.status === 401) {
+                if (error.response && error.response.status === 401) {
                     return;
                 } else {
                     console.log('Error in getting access token: ' + error);
