@@ -12,6 +12,7 @@ import KakaoLogo from '@images/kakao_logo.svg';
 export default function LoginPage() {
     const router = useRouter();
     const {
+        user,
         login,
         openGoogleLoginPage,
         openKakaoLoginPage,
@@ -35,7 +36,6 @@ export default function LoginPage() {
                 refreshToken: searchParams.get('refresh_token'),
                 error: searchParams.get('error'),
             });
-            router.push('/');
         }
     });
 

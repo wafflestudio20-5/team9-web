@@ -9,14 +9,18 @@ export default function RouteGuard({ children }: PropsWithChildren) {
     const [pathName, setPathName] = useState(router.pathname);
 
     useEffect(() => {
-        if (user === null && pathName !== '/login') {
+        if (user === null) {
             router.push({
-                pathname: '/',
+                pathname: '/login',
             });
         } else {
-            router.push({
-                pathname: pathName,
-            });
+            if (router.pathname === '/login') {
+                router.push('/');
+            } else {
+                router.push({
+                    pathname: pathName,
+                });
+            }
         }
     }, [user]);
 
