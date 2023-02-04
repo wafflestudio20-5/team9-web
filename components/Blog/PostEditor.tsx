@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 
 import styles from './PostEditor.module.scss';
 
-import ImageIcon from '@images/image_icon.svg';
-import { warningModal } from '@utils/customAlert';
 import { useScheduleContext } from '@contexts/ScheduleContext';
+import ImageIcon from '@images/image_icon.svg';
+import { errorToast, warningModal } from '@utils/customAlert';
 
 interface PostEditorProps {
     initTitle: string;
@@ -13,6 +13,8 @@ interface PostEditorProps {
     initImage?: string | null;
     submitNewPost(newPost: FormData): Promise<void>;
 }
+
+const FILE_SIZE_LIMIT = 1 * 1024 * 1024;
 
 export default function PostEditor({
     initTitle,
@@ -33,6 +35,10 @@ export default function PostEditor({
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const file = e.target.files[0]; // real image file
+            if (file.size < FILE_SIZE_LIMIT) {
+                errorToast('이미지 최대 용량은 1MB입니다.');
+                return;
+            }
             setImagePreview(URL.createObjectURL(file));
             setImage(file);
             e.currentTarget.value = ''; // need this line to delete and repost the 'same' image
