@@ -42,14 +42,17 @@ export default function SearchCategoryDropDown() {
                     <DropdownIcon height="17px" className="icon" />
                 </button>
             </DropDownHeader>
-            <DropDownBody isOpen={isOpen} style={{ width: '125px' }}>
+            <DropDownBody
+                isOpen={isOpen}
+                style={{ width: '125px', top: '40px' }}
+            >
                 <ul>
                     <li onClick={changeCategory}>사용 중인 캘린더</li>
                     <li onClick={changeCategory}>전체 캘린더</li>
                 </ul>
                 <ul>
-                    <li onClick={changeCategory}>이것은</li>
-                    <li onClick={changeCategory}>카테고리</li>
+                    <li onClick={changeCategory}>이것도</li>
+                    <li onClick={changeCategory}>장식</li>
                 </ul>
             </DropDownBody>
         </DropDown>
