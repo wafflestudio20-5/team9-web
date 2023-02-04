@@ -19,7 +19,7 @@ export default function DailyEvent({
     layer: number;
 }) {
     const { openModal } = useModal();
-    const { getOnClickFunction, getEventItemFilterProp } = useScheduleContext();
+    const { getOnClickFunction, getEventItemStyleProp } = useScheduleContext();
 
     const heightPerMinute = 1320 / (24 * 60);
     const startTimeInMinutes = getTimeInMinutes(new Date(event.start_at));
@@ -48,11 +48,11 @@ export default function DailyEvent({
                 event.created_by,
             )}`}
             style={{
+                ...getEventItemStyleProp(event),
                 top: `${topPosition}px`,
                 width: `${100 - layer * 12}%`,
                 height: `${height}px`,
                 zIndex: `${Number(layer) + 1}`,
-                filter: `${getEventItemFilterProp(event)}`,
             }}
             data-layer={String(layer)}
             onClick={getOnClickFunction(event)}

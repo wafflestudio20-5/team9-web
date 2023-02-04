@@ -20,7 +20,7 @@ export default function WithinEvent({
     type: string;
     expandSides: boolean | undefined;
 }) {
-    const { getOnClickFunction, getEventItemFilterProp } = useScheduleContext();
+    const { getOnClickFunction, getEventItemStyleProp } = useScheduleContext();
 
     const sh = slopeHeight ? slopeHeight : 3;
     const getWidth = () => {
@@ -39,6 +39,7 @@ export default function WithinEvent({
                 eventData.created_by,
             )}`}
             style={{
+                ...getEventItemStyleProp(eventData),
                 height: `${eventHeight}px`,
                 marginTop: `${sh}px`,
                 marginLeft: `${
@@ -48,7 +49,6 @@ export default function WithinEvent({
                     type === 'rightEnd' || expandSides ? '' : '3.5%'
                 }`,
                 width: `${getWidth()}`,
-                filter: `${getEventItemFilterProp(eventData)}`,
             }}
             onClick={getOnClickFunction(eventData)}
         >

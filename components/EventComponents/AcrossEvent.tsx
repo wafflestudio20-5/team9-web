@@ -38,7 +38,7 @@ export default function AcrossEvent({
     const sw = slopeWidthPercentage ? slopeWidthPercentage : 4;
     const sh = slopeHeight ? slopeHeight : 3;
     const { openModal } = useModal();
-    const { getOnClickFunction, getEventItemFilterProp } = useScheduleContext();
+    const { getOnClickFunction, getEventItemStyleProp } = useScheduleContext();
 
     const getPathString = (type: string) => {
         switch (type) {
@@ -92,9 +92,9 @@ export default function AcrossEvent({
             )} ${type} ${layer}`}
             onClick={getOnClickFunction(eventData)}
             style={{
+                ...getEventItemStyleProp(eventData),
                 width: '100%',
                 height: `${eh + sh}px`,
-                filter: `${getEventItemFilterProp(eventData)}`,
             }}
         >
             <svg

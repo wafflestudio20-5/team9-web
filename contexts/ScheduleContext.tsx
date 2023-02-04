@@ -19,7 +19,10 @@ interface ScheduleContextData {
     isSelectMode: boolean | undefined;
     setIsSelectMode: Dispatch<SetStateAction<boolean | undefined>>;
     getOnClickFunction: (eventData: FullSchedule) => () => void;
-    getEventItemFilterProp: (eventData: FullSchedule) => string;
+    getEventItemStyleProp: (eventData: FullSchedule) => React.CSSProperties;
+    getScheduleEventItemStyleProp: (
+        eventData: FullSchedule,
+    ) => React.CSSProperties;
 }
 
 const ScheduleContext = createContext<ScheduleContextData>({
@@ -34,7 +37,10 @@ const ScheduleContext = createContext<ScheduleContextData>({
     getOnClickFunction() {
         throw new Error('ScheduleContext not provided');
     },
-    getEventItemFilterProp() {
+    getEventItemStyleProp() {
+        throw new Error('ScheduleContext not provided');
+    },
+    getScheduleEventItemStyleProp() {
         throw new Error('ScheduleContext not provided');
     },
 });
@@ -87,7 +93,7 @@ export default function ScheduleProvider({ children }: PropsWithChildren) {
             });
         };
     };
-    const getEventItemFilterProp = (eventData: FullSchedule) => {
+    const getEventItemStyleProp = (eventData: FullSchedule) => {
         if (
             schedules
                 ?.map(event => {
@@ -95,11 +101,31 @@ export default function ScheduleProvider({ children }: PropsWithChildren) {
                 })
                 .includes(eventData.id)
         ) {
-            return 'brightness(1.5)';
+            return { filter: 'brightness(2.0)', fontWeight: '700' };
         } else if (isSelectMode) {
-            return 'brightness(0.3)';
+            return { fontWeight: '100', filter: 'brightness(0.5)' };
         } else {
-            return 'none';
+            return {};
+        }
+    };
+
+    const getScheduleEventItemStyleProp = (eventData: FullSchedule) => {
+        if (
+            schedules
+                ?.map(event => {
+                    return event.id;
+                })
+                .includes(eventData.id)
+        ) {
+            return {
+                border: '2px solid var(--structure)',
+                boxShadow: '4px 0px 4px var(--grid-shadow)',
+                fontWeight: '700',
+            };
+        } else if (isSelectMode) {
+            return { color: 'var(--text-datesSecondary)', fontWeight: '100' };
+        } else {
+            return {};
         }
     };
 
@@ -110,7 +136,8 @@ export default function ScheduleProvider({ children }: PropsWithChildren) {
             isSelectMode,
             setIsSelectMode,
             getOnClickFunction,
-            getEventItemFilterProp,
+            getEventItemStyleProp,
+            getScheduleEventItemStyleProp,
         }),
         [schedules, isSelectMode],
     );
