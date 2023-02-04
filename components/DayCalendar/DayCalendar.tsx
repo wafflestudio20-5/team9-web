@@ -22,6 +22,7 @@ import {
     getLayeredEvents,
     getLayeredWeeklyWithinEvents,
 } from '@utils/layerEvents';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 
 export default function DayCalendar() {
     const router = useRouter();
@@ -33,6 +34,7 @@ export default function DayCalendar() {
     const { isOpen } = useSidebarContext();
     const { user, accessToken } = useSessionContext();
     const { needUpdate, setNeedUpdate } = useCalendarContext();
+    const { isSelectMode } = useScheduleContext();
 
     const scrollHolderRef = useRef<HTMLDivElement>(null);
     const scrollContentRef = useRef<HTMLDivElement>(null);
@@ -89,13 +91,11 @@ export default function DayCalendar() {
         if (dayEvents) {
             const { frozenEvents, scrollableEvents } =
                 getFrozenEvents(dayEvents);
-            console.log(frozenEvents);
             setLayeredFrozenEvents(
                 getLayeredEvents(frozenEvents, [paramDate], true)[
                     formatDate(paramDate)
                 ],
             );
-            console.log('layered successfully');
             setLayeredWithinEvents(
                 getLayeredWeeklyWithinEvents(scrollableEvents, [paramDate])[
                     formatDate(paramDate)
@@ -107,7 +107,12 @@ export default function DayCalendar() {
     return (
         <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
-            <div className={styles.dayHolder}>
+            <div
+                className={styles.dayHolder}
+                style={{
+                    filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}`,
+                }}
+            >
                 <div
                     className={`${styles.frozenHolder} ${
                         isScrolledtoTop ? styles.scrolledToTop : ''

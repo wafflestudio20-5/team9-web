@@ -5,6 +5,7 @@ import styles from './WithinEvent.module.scss';
 
 import { useModal, MODAL_NAMES } from '@contexts/ModalContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 
 export default function WithinEvent({
     eventData,
@@ -19,8 +20,9 @@ export default function WithinEvent({
     type: string;
     expandSides: boolean | undefined;
 }) {
+    const { getOnClickFunction, getEventItemStyleProp } = useScheduleContext();
+
     const sh = slopeHeight ? slopeHeight : 3;
-    const { openModal } = useModal();
     const getWidth = () => {
         if (expandSides) {
             return '100%';
@@ -37,6 +39,7 @@ export default function WithinEvent({
                 eventData.created_by,
             )}`}
             style={{
+                ...getEventItemStyleProp(eventData),
                 height: `${eventHeight}px`,
                 marginTop: `${sh}px`,
                 marginLeft: `${
@@ -47,11 +50,7 @@ export default function WithinEvent({
                 }`,
                 width: `${getWidth()}`,
             }}
-            onClick={() => {
-                openModal(MODAL_NAMES.scheduleView, {
-                    schedule: eventData,
-                });
-            }}
+            onClick={getOnClickFunction(eventData)}
         >
             <span>{eventData.title}</span>
         </div>

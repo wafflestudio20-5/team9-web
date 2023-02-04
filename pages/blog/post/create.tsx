@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styles from './create.module.scss';
 
@@ -10,6 +10,7 @@ import ScheduleList from '@components/Blog/ScheduleList';
 import { useSessionContext } from '@contexts/SessionContext';
 import { FullSchedule } from '@customTypes/ScheduleTypes';
 import { errorToast, successToast } from '@utils/customAlert';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 
 // temp data for related schedule list
 const schedulesData: FullSchedule[] = [
@@ -35,12 +36,20 @@ const schedulesData: FullSchedule[] = [
 export default function PostCreatePage() {
     const { accessToken } = useSessionContext();
     const [schedules, setSchedules] = useState(schedulesData); // need to bring related schedules from local storage
+    const {
+        setIsSelectMode,
+        schedules: localStorageSchedules,
+        setSchedules: setLocalStorageSchedules,
+    } = useScheduleContext();
     const router = useRouter();
 
     const getScheduleIds = () => {
-        const idList: { pk: number }[] = [];
-        schedules.forEach(s => idList.push({ pk: s.id }));
-        return idList;
+        if (!schedules) {
+            return [];
+        }
+        return schedules.map(event => {
+            return event.id;
+        });
     };
 
     const createPost = async (newPost: FormData) => {
@@ -49,6 +58,7 @@ export default function PostCreatePage() {
             const res = await createPostAPI(newPost, accessToken);
             successToast('새 글을 생성했습니다.');
             router.push(`/blog/post/${res.data.pid}`);
+            setLocalStorageSchedules([]);
         } catch (error) {
             const message = '글을 생성하지 못했습니다.';
             if (axios.isAxiosError(error)) {
@@ -63,14 +73,13 @@ export default function PostCreatePage() {
         }
     };
 
-    /**
-     * TODO: get associated schedules from local storage
-     *       and assign it to `schedules` using `setSchedules` when this component is first rendered
-     */
+    useEffect(() => {
+        setSchedules(localStorageSchedules ?? []);
+    }, []);
 
     return (
         <div className={styles.postCreatePage}>
-            <ScheduleList schedules={schedules} />
+            <ScheduleList schedules={schedules ?? []} />
             <div className={styles.createPost}>
                 <div className={styles.guide}></div>
                 <div className={styles.newPost}>
