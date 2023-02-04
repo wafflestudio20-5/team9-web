@@ -26,7 +26,7 @@ export default function PostEditor({
     const [imagePreview, setImagePreview] = useState<string>(initImage || ''); // image object url
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const router = useRouter();
-    const { setSchedules } = useScheduleContext();
+    const { setSchedules, setIsSelectMode } = useScheduleContext();
 
     // create url for uploaded image file(e.target.files[0]) using `URL.createObjectURL`
     // then you can use that url to show preview
@@ -67,6 +67,7 @@ export default function PostEditor({
         warningModal(warningContent).then(result => {
             if (result.isConfirmed) {
                 setSchedules([]);
+                setIsSelectMode(false);
                 router.back();
             }
         });

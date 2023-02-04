@@ -62,7 +62,7 @@ export default function ScheduleProvider({ children }: PropsWithChildren) {
                 ) {
                     setSchedules(
                         schedules.filter(v => {
-                            return v !== eventData;
+                            return v.id !== eventData.id;
                         }),
                     );
                 } else if (schedules) {
@@ -79,7 +79,13 @@ export default function ScheduleProvider({ children }: PropsWithChildren) {
         };
     };
     const getEventItemFilterProp = (eventData: FullSchedule) => {
-        if (isSelectMode && schedules?.includes(eventData)) {
+        if (
+            schedules
+                ?.map(event => {
+                    return event.id;
+                })
+                .includes(eventData.id)
+        ) {
             return 'brightness(1.5)';
         } else if (isSelectMode) {
             return 'brightness(0.3)';

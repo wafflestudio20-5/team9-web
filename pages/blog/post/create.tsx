@@ -37,6 +37,7 @@ export default function PostCreatePage() {
     const { accessToken } = useSessionContext();
     const [schedules, setSchedules] = useState(schedulesData); // need to bring related schedules from local storage
     const {
+        setIsSelectMode,
         schedules: localStorageSchedules,
         setSchedules: setLocalStorageSchedules,
     } = useScheduleContext();
@@ -76,7 +77,6 @@ export default function PostCreatePage() {
 
     useEffect(() => {
         setSchedules(localStorageSchedules ?? []);
-        setLocalStorageSchedules([]);
     }, []);
 
     return (
