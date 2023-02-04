@@ -5,6 +5,7 @@
 
     &:hover {
         cursor: pointer;
+        filter: none;
     }
 }
 
@@ -19,13 +20,16 @@
     font-size: 10px;
     height: 100%;
     width: 100%;
+    font-weight: inherit;
     &.oneline {
         justify-content: center;
         padding: 3px 0px 3px 8px;
+        font-weight: inherit;
     }
     &.twoline {
         justify-content: flex-start;
         padding: 8px;
+        font-weight: inherit;
     }
     div {
         text-overflow: ellipsis;
@@ -38,5 +42,6 @@
         width: 100%;
         white-space: nowrap;
         overflow-x: hidden;
+        font-weight: inherit;
     }
 }

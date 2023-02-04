@@ -11,15 +11,18 @@ import { useCalendarContext } from '@contexts/CalendarContext';
 import { useSessionContext } from '@contexts/SessionContext';
 import { useSidebarContext } from '@contexts/SidebarContext';
 import { FullSchedule, LayeredEvents } from '@customTypes/ScheduleTypes';
+import useLocalStorage from '@hooks/useLocalStorage';
 import { getCalendarDates } from '@utils/calculateDate';
 import { DAYS, formatDate } from '@utils/formatting';
 import { getLayeredEvents } from '@utils/layerEvents';
+import { useScheduleContext } from '@contexts/ScheduleContext';
 export default function MonthCalendar() {
     const router = useRouter();
     const { year, month, date } = router.query;
     const { needUpdate, setNeedUpdate } = useCalendarContext();
     const { user, accessToken } = useSessionContext();
     const { isOpen } = useSidebarContext();
+    const { isSelectMode } = useScheduleContext();
 
     const monthDates = useMemo(() => {
         return getCalendarDates({
@@ -63,7 +66,12 @@ export default function MonthCalendar() {
     return (
         <div className={styles.wrapper}>
             {isOpen ? <Sidebar /> : <CreateScheduleButton />}
-            <div className={styles.calendarHolder}>
+            <div
+                className={styles.calendarHolder}
+                style={{
+                    filter: `${isSelectMode ? 'brightness(0.8)' : 'none'}`,
+                }}
+            >
                 <div className={styles.headrow}>
                     {DAYS.map((item, index) => {
                         return <div key={index}>{item}</div>;

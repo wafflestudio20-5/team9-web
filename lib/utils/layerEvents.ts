@@ -201,7 +201,6 @@ function layerWithinEvents(
 ) {
     withinEvents.forEach(event => {
         const [dateString] = getDatesInEvent(event);
-        console.log(dateString);
         const dateObj = new Date(dateString);
         const layer = findAvailableLayer(layeredEvents, dateString);
         if (!layeredEvents[dateString]) {
@@ -250,8 +249,6 @@ export function getLayeredEvents(
         return layeredEvents;
     }
     const { acrossEvents, withinEvents } = sortEvents(events);
-    console.log(acrossEvents);
-    console.log(withinEvents);
     if (acrossEvents) {
         layerAcrossEvents(acrossEvents, dates, layeredEvents, independentView);
     }

@@ -35,7 +35,8 @@ export default function CreateScheduleButton({
         maintainFocus,
     } = useDropDown(triggerRef);
     const { yearNow, monthNow, dateNow } = useDateContext();
-    const { schedules, setIsSelectMode } = useScheduleContext(); // need to be changed
+    const { schedules, isSelectMode, setIsSelectMode, setSchedules } =
+        useScheduleContext();
     const router = useRouter();
 
     const initSchedule: Schedule = {
@@ -51,7 +52,7 @@ export default function CreateScheduleButton({
         recurring_end_at: null,
     };
 
-    const onClickOption = (option: 'add' | 'select' | 'write') => {
+    const onClickOption = (option: 'add' | 'select' | 'write' | 'abort') => {
         switch (option) {
             case 'add':
                 openModal(MODAL_NAMES.scheduleEditor, {
@@ -63,12 +64,17 @@ export default function CreateScheduleButton({
                 setIsSelectMode(true);
                 break;
             case 'write':
-                if (schedules.length >= 1) router.push('/blog/post/create');
-                else errorToast('포스팅할 일정을 선택해주세요.'); // if there's no schedules selected
+                if (schedules && schedules.length >= 1) {
+                    router.push('/blog/post/create');
+                } else errorToast('포스팅할 일정을 선택해주세요.');
                 break;
+            case 'abort':
+                setIsSelectMode(false);
+                setSchedules(undefined);
         }
         closeDropDown();
     };
+    console.log(isSelectMode);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
@@ -93,11 +99,25 @@ export default function CreateScheduleButton({
                 </button>
             </DropDownHeader>
             <DropDownBody isOpen={isOpen} style={{ top: '80px', left: '32px' }}>
-                <ul>
-                    <li onClick={() => onClickOption('add')}>새 일정 추가</li>
-                    <li onClick={() => onClickOption('select')}>일정 선택</li>
-                    <li onClick={() => onClickOption('write')}>포스트 작성</li>
-                </ul>
+                {isSelectMode ? (
+                    <ul>
+                        <li onClick={() => onClickOption('write')}>
+                            포스트 작성
+                        </li>
+                        <li onClick={() => onClickOption('abort')}>
+                            선택 취소
+                        </li>
+                    </ul>
+                ) : (
+                    <ul>
+                        <li onClick={() => onClickOption('add')}>
+                            새 일정 추가
+                        </li>
+                        <li onClick={() => onClickOption('select')}>
+                            일정 선택
+                        </li>
+                    </ul>
+                )}
             </DropDownBody>
         </DropDown>
     );
