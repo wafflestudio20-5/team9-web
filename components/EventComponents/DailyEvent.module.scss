@@ -2,6 +2,7 @@
     position: absolute;
     border: 1px solid var(--structure);
     box-shadow: 2px 4px 4px var(--structure-shadow);
+    overflow-y: hidden;
 
     &:hover {
         cursor: pointer;
@@ -20,6 +21,7 @@
     font-size: 10px;
     height: 100%;
     width: 100%;
+    overflow-y: hidden;
     font-weight: inherit;
     &.oneline {
         justify-content: center;
@@ -42,6 +44,7 @@
         width: 100%;
         white-space: nowrap;
         overflow-x: hidden;
+        overflow-y: hidden;
         font-weight: inherit;
     }
 }
