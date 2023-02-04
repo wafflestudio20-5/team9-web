@@ -58,7 +58,7 @@ export default function SearchDetailsModal() {
 
     const searchSchedule = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        errorToast('장식입니다.');
+        errorToast('안타깝게도 장식이에요.');
     };
 
     const resetAllOptions = () => {
