@@ -35,7 +35,7 @@ export default function CreateScheduleButton({
         maintainFocus,
     } = useDropDown(triggerRef);
     const { yearNow, monthNow, dateNow } = useDateContext();
-    const { schedules, setIsSelectMode } = useScheduleContext(); // need to be changed
+    const { schedules, isSelectMode, setIsSelectMode } = useScheduleContext(); // need to be changed
     const router = useRouter();
 
     const initSchedule: Schedule = {
@@ -62,10 +62,6 @@ export default function CreateScheduleButton({
             case 'select':
                 setIsSelectMode(true);
                 break;
-            case 'write':
-                if (schedules.length >= 1) router.push('/blog/post/create');
-                else errorToast('포스팅할 일정을 선택해주세요.'); // if there's no schedules selected
-                break;
         }
         closeDropDown();
     };
@@ -79,7 +75,15 @@ export default function CreateScheduleButton({
                     }`}
                     style={style}
                     ref={triggerRef}
-                    onClick={toggleDropDown}
+                    onClick={e => {
+                        if (isSelectMode) {
+                            if (schedules && schedules.length >= 1) {
+                                router.push('/blog/post/create');
+                            } else errorToast('포스팅할 일정을 선택해주세요.'); // if there's no schedules selected
+                        } else {
+                            toggleDropDown(e);
+                        }
+                    }}
                     onBlur={maintainFocus}
                 >
                     <div className={styles.iconWrapper}>
@@ -95,8 +99,7 @@ export default function CreateScheduleButton({
             <DropDownBody isOpen={isOpen} style={{ top: '80px', left: '32px' }}>
                 <ul>
                     <li onClick={() => onClickOption('add')}>새 일정 추가</li>
-                    <li onClick={() => onClickOption('select')}>일정 선택</li>
-                    <li onClick={() => onClickOption('write')}>포스트 작성</li>
+                    <li onClick={() => onClickOption('select')}>포스트 작성</li>
                 </ul>
             </DropDownBody>
         </DropDown>

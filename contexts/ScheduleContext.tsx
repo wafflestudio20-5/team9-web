@@ -53,7 +53,13 @@ export default function ScheduleProvider({ children }: PropsWithChildren) {
     const getOnClickFunction = (eventData: FullSchedule) => {
         if (isSelectMode) {
             return () => {
-                if (schedules?.includes(eventData)) {
+                if (
+                    schedules
+                        ?.map(event => {
+                            return event.id;
+                        })
+                        .includes(eventData.id)
+                ) {
                     setSchedules(
                         schedules.filter(v => {
                             return v !== eventData;
