@@ -17,7 +17,11 @@ export default function UserModal() {
         <ModalFrame modalName={MODAL_NAMES.user}>
             <div className={styles.userModal}>
                 <div className={styles.userInfo}>
-                    <div className={styles.photo}>
+                    <div
+                        className={`${styles.photo} ${
+                            user.image ? styles.whiteBack : ''
+                        }`}
+                    >
                         <button className={styles.addPhoto}>
                             <CameraIcon height="20px" className="icon" />
                         </button>
