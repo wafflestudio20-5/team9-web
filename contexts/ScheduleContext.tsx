@@ -4,6 +4,7 @@ import React, {
     PropsWithChildren,
     SetStateAction,
     useContext,
+    useEffect,
     useMemo,
     useState,
 } from 'react';
@@ -50,6 +51,12 @@ export default function ScheduleProvider({ children }: PropsWithChildren) {
             'is_schedule_selection_ongiong',
             undefined,
         );
+
+    useEffect(() => {
+        if (!schedules) {
+            setIsSelectMode(false);
+        }
+    }, [schedules]);
     const getOnClickFunction = (eventData: FullSchedule) => {
         if (isSelectMode) {
             return () => {
