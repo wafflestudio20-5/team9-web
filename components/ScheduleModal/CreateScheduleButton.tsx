@@ -74,7 +74,6 @@ export default function CreateScheduleButton({
         }
         closeDropDown();
     };
-    console.log(isSelectMode);
 
     return (
         <DropDown dropDownRef={dropDownRef}>
