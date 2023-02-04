@@ -8,7 +8,7 @@
     top: 60px;
     right: 10px;
     width: 350px;
-    height: calc(100vh - 70px);
+    height: 300px;
     max-height: 450px;
     border: 1px solid var(--structure);
     border-radius: 10px;
@@ -23,8 +23,7 @@
         align-items: center;
         padding: 20px 0;
         width: 100%;
-        height: 240px;
-        border-bottom: 1px solid var(--structure);
+        height: 200px;
 
         .photo {
             position: relative;
@@ -72,21 +71,20 @@
         }
     }
 
-    .otherAccount {
-        width: 100%;
-        min-height: 60px;
-        border-bottom: 1px solid var(--structure);
-    }
+    .buttonContainer {
+        display: flex;
+        gap: 10px;
+        padding-right: 10px;
+        justify-content: center;
 
-    .logout {
-        width: 100%;
-        height: 70px;
-        text-align: center;
-        line-height: 70px;
-        border-bottom: 1px solid var(--structure);
+        .button {
+            text-align: center;
+            line-height: 70px;
 
-        button {
-            padding: 10px 20px;
+            button {
+                width: 80px;
+                height: 30px;
+            }
         }
     }
 }

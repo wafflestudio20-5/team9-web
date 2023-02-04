@@ -1,3 +1,4 @@
+import router from 'next/router';
 import React from 'react';
 
 import styles from './UserModal.module.scss';
@@ -38,20 +39,27 @@ export default function UserModal() {
                         <span className={styles.name}>{user?.username}</span>
                         <span className={styles.id}>{user?.email}</span>
                     </div>
-                    <div className={styles.management}>
-                        <button>Google 계정 관리</button>
-                    </div>
                 </div>
-                <div className={styles.otherAccount}></div>
-                <div className={styles.logout}>
-                    <button
-                        onClick={() => {
-                            logout();
-                            closeModal(MODAL_NAMES.user);
-                        }}
-                    >
-                        로그아웃
-                    </button>
+                <div className={styles.buttonContainer}>
+                    <div className={styles.button}>
+                        <button
+                            onClick={() => {
+                                router.push('/settings');
+                            }}
+                        >
+                            설정
+                        </button>
+                    </div>
+                    <div className={styles.button}>
+                        <button
+                            onClick={() => {
+                                logout();
+                                closeModal(MODAL_NAMES.user);
+                            }}
+                        >
+                            로그아웃
+                        </button>
+                    </div>
                 </div>
             </div>
         </ModalFrame>
