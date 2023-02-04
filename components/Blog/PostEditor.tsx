@@ -14,7 +14,7 @@ interface PostEditorProps {
     submitNewPost(newPost: FormData): Promise<void>;
 }
 
-const FILE_SIZE_LIMIT = 1 * 1024 * 1024;
+const FILE_SIZE_LIMIT = 10 * 1024 * 1024;
 
 export default function PostEditor({
     initTitle,
@@ -36,7 +36,7 @@ export default function PostEditor({
         if (e.target.files) {
             const file = e.target.files[0]; // real image file
             if (file.size < FILE_SIZE_LIMIT) {
-                errorToast('이미지 최대 용량은 1MB입니다.');
+                errorToast('이미지 최대 용량은 10MB입니다.');
                 return;
             }
             setImagePreview(URL.createObjectURL(file));
