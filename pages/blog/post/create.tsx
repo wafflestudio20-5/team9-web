@@ -13,7 +13,7 @@ import { errorToast, successToast } from '@utils/customAlert';
 
 export default function PostCreatePage() {
     const { accessToken } = useSessionContext();
-    const { schedules, setSchedules } = useScheduleContext();
+    const { schedules, setSchedules, setIsSelectMode } = useScheduleContext();
     const router = useRouter();
 
     const getScheduleIds = () => {
@@ -30,6 +30,7 @@ export default function PostCreatePage() {
             successToast('새 글을 생성했습니다.');
             router.push(`/blog/post/${res.data.pid}`);
             setSchedules([]);
+            setIsSelectMode(false);
         } catch (error) {
             const message = '글을 생성하지 못했습니다.';
             if (axios.isAxiosError(error)) {
