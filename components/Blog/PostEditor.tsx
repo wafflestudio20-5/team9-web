@@ -35,7 +35,7 @@ export default function PostEditor({
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const file = e.target.files[0]; // real image file
-            if (file.size < FILE_SIZE_LIMIT) {
+            if (file.size > FILE_SIZE_LIMIT) {
                 errorToast('이미지 최대 용량은 10MB입니다.');
                 return;
             }
