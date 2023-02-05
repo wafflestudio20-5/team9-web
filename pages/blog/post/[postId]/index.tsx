@@ -22,7 +22,7 @@ import EditIcon from '@images/edit_icon.svg';
 import { errorToast, successToast, warningModal } from '@utils/customAlert';
 
 export default function PostPage() {
-    const { accessToken } = useSessionContext();
+    const { user, accessToken } = useSessionContext();
     const [schedules, setSchedules] = useState<FullSchedule[]>([]);
     const [post, setPost] = useState<FullPost>();
     const [comments, setComments] = useState<FullComment[]>([]);
@@ -144,12 +144,16 @@ export default function PostPage() {
             <ScheduleList schedules={schedules} />
             <div className={styles.postContainer}>
                 <div className={styles.postUtils}>
-                    <button onClick={onClickEdit}>
-                        <EditIcon className="icon" height="18px" />
-                    </button>
-                    <button onClick={onClickDelete}>
-                        <DeleteIcon className="icon" height="18px" />
-                    </button>
+                    {user?.pk === post.created_by && (
+                        <>
+                            <button onClick={onClickEdit}>
+                                <EditIcon className="icon" height="18px" />
+                            </button>
+                            <button onClick={onClickDelete}>
+                                <DeleteIcon className="icon" height="18px" />
+                            </button>
+                        </>
+                    )}
                 </div>
                 <PostViewer post={post} />
                 <div className={styles.commentsContainer}>
@@ -198,7 +202,7 @@ interface CommentItemProps {
 }
 
 function CommentItem({ comment, setComments }: CommentItemProps) {
-    const { accessToken } = useSessionContext();
+    const { user, accessToken } = useSessionContext();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [newContent, setNewContent] = useState<string>(comment.content);
 
@@ -299,14 +303,16 @@ function CommentItem({ comment, setComments }: CommentItemProps) {
         </div>
     ) : (
         <div className={styles.comment}>
-            <div className={styles.commentUtils}>
-                <button onClick={() => setIsEditMode(true)}>
-                    <EditIcon className="icon" height="18px" />
-                </button>
-                <button onClick={onClickDelete}>
-                    <DeleteIcon className="icon" height="18px" />
-                </button>
-            </div>
+            {user?.pk === comment.created_by && (
+                <div className={styles.commentUtils}>
+                    <button onClick={() => setIsEditMode(true)}>
+                        <EditIcon className="icon" height="18px" />
+                    </button>
+                    <button onClick={onClickDelete}>
+                        <DeleteIcon className="icon" height="18px" />
+                    </button>
+                </div>
+            )}
             <div className={styles.content}>{comment.content}</div>
         </div>
     );
